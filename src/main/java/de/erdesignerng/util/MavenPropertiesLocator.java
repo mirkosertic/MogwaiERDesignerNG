@@ -44,11 +44,11 @@ public final class MavenPropertiesLocator {
      * @return the properties
      * @throws IOException will be thrown in case of an error
      */
-    public static Properties locatePropertiesFor(String aGroupId, String aArtifactId) throws IOException {
+    public static Properties locatePropertiesFor(final String aGroupId, final String aArtifactId) throws IOException {
 
-        URL theResource = MavenPropertiesLocator.class.getClassLoader().getResource(
+        final URL theResource = MavenPropertiesLocator.class.getClassLoader().getResource(
                 "META-INF/maven/" + aGroupId + "/" + aArtifactId + "/pom.properties");
-        Properties theProperties = new Properties();
+        final Properties theProperties = new Properties();
         theProperties.load(theResource.openStream());
 
         return theProperties;
@@ -62,8 +62,8 @@ public final class MavenPropertiesLocator {
      * @return the version info
      * @throws IOException will be thrown in case of an error
      */
-    public static String getVersionFor(String aGroupId, String aArtifactId) throws IOException {
-        Properties theProperties = locatePropertiesFor(aGroupId, aArtifactId);
+    public static String getVersionFor(final String aGroupId, final String aArtifactId) throws IOException {
+        final Properties theProperties = locatePropertiesFor(aGroupId, aArtifactId);
         return theProperties.getProperty("version");
     }
 
@@ -77,7 +77,7 @@ public final class MavenPropertiesLocator {
             String theVersion = CANNOT_IDENTIFY_VERSION;
             try {
                 theVersion = getVersionFor("net.sourceforge.mogwai", "mogwai-erdesignerng");
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 // Nothing shall happen here
             }
             VERSION = theVersion;

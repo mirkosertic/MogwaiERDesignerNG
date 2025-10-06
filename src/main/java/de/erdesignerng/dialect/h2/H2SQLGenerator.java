@@ -33,13 +33,13 @@ import org.apache.commons.lang.StringUtils;
  */
 public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 
-	public H2SQLGenerator(H2Dialect aDialect) {
+	public H2SQLGenerator(final H2Dialect aDialect) {
 		super(aDialect);
 	}
 
 	@Override
-	protected void addAdditionalInformationToPreCreateTableStatement(Table aTable, StringBuilder aStatement) {
-		H2TableProperties theProperties = (H2TableProperties) getDialect().createTablePropertiesFor(aTable);
+	protected void addAdditionalInformationToPreCreateTableStatement(final Table aTable, final StringBuilder aStatement) {
+		final H2TableProperties theProperties = (H2TableProperties) getDialect().createTablePropertiesFor(aTable);
 		switch (theProperties.getTableType()) {
 			case GLOBAL_TEMPORARY:
 				aStatement.append("GLOBAL TEMPORARY ");
@@ -61,12 +61,12 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 	}
 
 	@Override
-	public StatementList createAddViewStatement(View aView) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddViewStatement(final View aView) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 		theStatement.append("CREATE ");
 
-		H2ViewProperties theProperties = (H2ViewProperties) getDialect().createViewPropertiesFor(aView);
+		final H2ViewProperties theProperties = (H2ViewProperties) getDialect().createViewPropertiesFor(aView);
 		if (Boolean.TRUE.equals(theProperties.getForce())) {
 			theStatement.append("FORCE ");
 		}
@@ -80,9 +80,9 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 	}
 
 	@Override
-	public StatementList createAddIndexToTableStatement(Table aTable, Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddIndexToTableStatement(final Table aTable, final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("CREATE ");
 
@@ -94,7 +94,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 				break;
 		}
 
-		H2IndexProperties theProperties = (H2IndexProperties) getDialect().createIndexPropertiesFor(aIndex);
+		final H2IndexProperties theProperties = (H2IndexProperties) getDialect().createIndexPropertiesFor(aIndex);
 		if (Boolean.TRUE.equals(theProperties.getHash())) {
 			theStatement.append("HASH ");
 		}
@@ -106,7 +106,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 		theStatement.append(" (");
 
 		for (int i = 0; i < aIndex.getExpressions().size(); i++) {
-			IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
+			final IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
 
 			if (i > 0) {
 				theStatement.append(",");
@@ -125,11 +125,11 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 	}
 
 	@Override
-	public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder("CREATE PRIMARY KEY ");
+	public StatementList createAddPrimaryKeyToTable(final Table aTable, final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder("CREATE PRIMARY KEY ");
 
-		H2IndexProperties theProperties = (H2IndexProperties) getDialect().createIndexPropertiesFor(aIndex);
+		final H2IndexProperties theProperties = (H2IndexProperties) getDialect().createIndexPropertiesFor(aIndex);
 		if (Boolean.TRUE.equals(theProperties.getHash())) {
 			theStatement.append("HASH ");
 		}
@@ -143,7 +143,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 			if (i > 0) {
 				theStatement.append(",");
 			}
-			IndexExpression theExpression = aIndex.getExpressions().get(i);
+			final IndexExpression theExpression = aIndex.getExpressions().get(i);
 			if (!StringUtils.isEmpty(theExpression.getExpression())) {
 				theStatement.append(theExpression.getExpression());
 			} else {
@@ -157,9 +157,9 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 	}
 
 	@Override
-	public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createRemoveIndexFromTableStatement(final Table aTable, final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("DROP INDEX ");
 		theStatement.append(aIndex.getName());
@@ -170,10 +170,10 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 	}
 
 	@Override
-	public StatementList createRenameTableStatement(Table aTable, String aNewName) {
+	public StatementList createRenameTableStatement(final Table aTable, final String aNewName) {
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(aTable));
@@ -187,11 +187,11 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createRenameAttributeStatement(final Attribute<Table> anExistingAttribute, final String aNewName) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -206,12 +206,12 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createChangeAttributeStatement(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 
-		StringBuilder theStatement = new StringBuilder();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -220,7 +220,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 		theStatement.append(" ");
 		theStatement.append(aNewAttribute.getPhysicalDeclaration());
 
-		boolean isNullable = aNewAttribute.isNullable();
+		final boolean isNullable = aNewAttribute.isNullable();
 
 		if (!isNullable) {
 			theStatement.append(" NOT NULL");
@@ -234,9 +234,9 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 	}
 
 	@Override
-	public StatementList createAddSchemaStatement(String aSchema) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddSchemaStatement(final String aSchema) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 		theStatement.append("CREATE SCHEMA ");
 		theStatement.append(createUniqueSchemaName(aSchema));
 		theStatement.append(" authorization SA");

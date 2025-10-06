@@ -31,17 +31,17 @@ import java.awt.geom.Point2D;
  */
 public class CommentTool extends BaseTool {
 
-    public CommentTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
+    public CommentTool(final GenericModelEditor aEditor, final ERDesignerGraph aGraph) {
         super(aEditor, aGraph);
     }
 
     @Override
-    public boolean isForceMarqueeEvent(MouseEvent event) {
+    public boolean isForceMarqueeEvent(final MouseEvent event) {
         return true;
     }
 
     @Override
-    public boolean startCreateNew(MouseEvent e) {
+    public boolean startCreateNew(final MouseEvent e) {
         graph.commandNewComment(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())));
         return true;
     }

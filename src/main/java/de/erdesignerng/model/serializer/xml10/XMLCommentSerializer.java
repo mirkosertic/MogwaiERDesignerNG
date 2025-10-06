@@ -31,9 +31,9 @@ import org.w3c.dom.NodeList;
 public class XMLCommentSerializer extends AbstractXMLCommentSerializer {
 
 	@Override
-	public void serialize(Comment aComment, Document aDocument, Element aRootElement) {
+	public void serialize(final Comment aComment, final Document aDocument, final Element aRootElement) {
 
-		Element theSubjectAreaElement = addElement(aDocument, aRootElement, COMMENT);
+		final Element theSubjectAreaElement = addElement(aDocument, aRootElement, COMMENT);
 
 		// Basisdaten des Modelelementes speichern
 		serializeProperties(aDocument, theSubjectAreaElement, aComment);
@@ -41,13 +41,13 @@ public class XMLCommentSerializer extends AbstractXMLCommentSerializer {
 	}
 
 	@Override
-	public void deserialize(Model aModel, Document aDocument) {
+	public void deserialize(final Model aModel, final Document aDocument) {
 
-		NodeList theElements = aDocument.getElementsByTagName(COMMENT);
+		final NodeList theElements = aDocument.getElementsByTagName(COMMENT);
 		for (int i = 0; i < theElements.getLength(); i++) {
-			Element theElement = (Element) theElements.item(i);
+			final Element theElement = (Element) theElements.item(i);
 
-			Comment theComment = new Comment();
+			final Comment theComment = new Comment();
 			theComment.setOwner(aModel);
 			deserializeProperties(theElement, theComment);
 			deserializeCommentElement(theElement, theComment);

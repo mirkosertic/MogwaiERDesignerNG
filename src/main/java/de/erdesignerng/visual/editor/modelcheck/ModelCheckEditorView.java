@@ -35,13 +35,13 @@ public class ModelCheckEditorView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,fill:300dlu:grow,10dlu,p,2dlu";
-        String colDef = "2dlu,fill:300dlu:grow,2dlu";
+        final String rowDef = "2dlu,fill:300dlu:grow,10dlu,p,2dlu";
+        final String colDef = "2dlu,fill:300dlu:grow,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
+        final FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(getErrorList().getScrollPane(), cons.xywh(2, 2, 1, 1));
         add(getButtonPanel(), cons.xywh(2, 4, 1, 1));
@@ -72,13 +72,13 @@ public class ModelCheckEditorView extends JPanel {
         if (buttonPanel == null) {
             buttonPanel = new JPanel();
 
-            String rowDef = "10dlu,p";
-            String colDef = "fill:80dlu,2dlu:grow,fill:80dlu,2dlu,fill:80dlu";
+            final String rowDef = "10dlu,p";
+            final String colDef = "fill:80dlu,2dlu:grow,fill:80dlu,2dlu,fill:80dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             buttonPanel.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             buttonPanel.add(getQuickFixButton(), cons.xywh(1, 2, 1, 1));
             buttonPanel.add(getCloseButton(), cons.xywh(5, 2, 1, 1));

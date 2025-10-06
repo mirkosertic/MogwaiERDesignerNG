@@ -24,7 +24,7 @@ jobs:
          java-version: 25
          distribution: "temurin"
          cache: maven
-     - run: mvn verify -DskipTests
+     - run: mvn verify
      - uses: actions/upload-artifact@v4
        with:
            name: ${{ matrix.releasename }}

@@ -52,17 +52,17 @@ public class ViewEditorView extends DefaultPanel {
      */
     private void initialize() {
 
-        EditorKit editorKit = new SQLEditorKit();
+        final EditorKit editorKit = new SQLEditorKit();
         sqlText.setEditorKitForContentType("text/sql", editorKit);
         sqlText.setContentType("text/sql");
 
-        String rowDef = "2dlu,p,2dlu,p,fill:220dlu,10dlu,p,2dlu";
-        String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
+        final String rowDef = "2dlu,p,2dlu,p,fill:220dlu,10dlu,p,2dlu";
+        final String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
+        final FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(getComponent1(), cons.xywh(2, 2, 1, 1));
         add(getEntityName(), cons.xywh(4, 2, 4, 1));
@@ -110,13 +110,13 @@ public class ViewEditorView extends DefaultPanel {
             tableCommentsTab = new DefaultTabbedPaneTab(mainTabbedPane,
                     ERDesignerBundle.COMMENTS);
 
-            String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
-            String colDef = "2dlu,40dlu:grow,2dlu";
+            final String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
+            final String colDef = "2dlu,40dlu:grow,2dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             tableCommentsTab.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             tableCommentsTab.add(new DefaultScrollPane(getEntityComment()),
                     cons.xywh(2, 2, 1, 3));

@@ -30,45 +30,45 @@ import de.erdesignerng.model.Table;
  */
 public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
 
-	public DB2SQLGenerator(DB2Dialect aDialect) {
+	public DB2SQLGenerator(final DB2Dialect aDialect) {
 		super(aDialect);
 	}
 
 	@Override
-	public StatementList createRemoveRelationStatement(Relation aRelation) {
-		Table theImportingTable = aRelation.getImportingTable();
+	public StatementList createRemoveRelationStatement(final Relation aRelation) {
+		final Table theImportingTable = aRelation.getImportingTable();
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 		theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable) + " DROP CONSTRAINT "
 				+ createUniqueRelationName(aRelation)));
 		return theResult;
 	}
 
 	@Override
-	public StatementList createRenameTableStatement(Table aTable, String aNewName) {
+	public StatementList createRenameTableStatement(final Table aTable, final String aNewName) {
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 		theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(aTable) + "' , '" + aNewName + "'"));
 		return theResult;
 
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createRenameAttributeStatement(final Attribute<Table> anExistingAttribute, final String aNewName) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 		theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(theTable) + "."
 				+ anExistingAttribute.getName() + "' , '" + aNewName + "' , 'COLUMN'"));
 		return theResult;
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createChangeAttributeStatement(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -79,7 +79,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
 		theStatement.append(aNewAttribute.getPhysicalDeclaration());
 		theStatement.append(" ");
 
-		boolean isNullable = aNewAttribute.isNullable();
+		final boolean isNullable = aNewAttribute.isNullable();
 
 		if (!isNullable) {
 			theStatement.append("NOT NULL");

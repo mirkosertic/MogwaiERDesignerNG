@@ -29,12 +29,12 @@ import java.awt.event.MouseEvent;
  */
 public class HandTool extends BaseTool {
 
-    public HandTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
+    public HandTool(final GenericModelEditor aEditor, final ERDesignerGraph aGraph) {
         super(aEditor, aGraph);
     }
 
     @Override
-    public boolean isForceMarqueeEvent(MouseEvent e) {
+    public boolean isForceMarqueeEvent(final MouseEvent e) {
         return SwingUtilities.isRightMouseButton(e) && !e.isAltDown();
     }
 }

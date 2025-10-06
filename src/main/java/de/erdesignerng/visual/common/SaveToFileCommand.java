@@ -45,7 +45,7 @@ public class SaveToFileCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (component.currentEditingFile != null) {
             executeSaveToFile(component.currentEditingFile);
@@ -56,35 +56,35 @@ public class SaveToFileCommand extends UICommand {
 
     public void executeSaveFileAs() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        ModelFileFilter theFiler = new ModelFileFilter();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ModelFileFilter theFiler = new ModelFileFilter();
 
-        JFileChooser theChooser = new JFileChooser();
+        final JFileChooser theChooser = new JFileChooser();
         theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         theChooser.setFileFilter(theFiler);
         theChooser.setSelectedFile(component.currentEditingFile);
         if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-            File theFile = theFiler.getCompletedFile(theChooser
+            final File theFile = theFiler.getCompletedFile(theChooser
                     .getSelectedFile());
             executeSaveToFile(theFile);
 
         }
     }
 
-    private void executeSaveToFile(File aFile) {
+    private void executeSaveToFile(final File aFile) {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        Date theNow = new Date();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        final Date theNow = new Date();
 
         PrintWriter theWriter = null;
         try {
 
-            Model theModel = component.getModel();
+            final Model theModel = component.getModel();
 
             if (aFile.exists()) {
-                File theBakFile = new File(aFile.toString() + "_"
+                final File theBakFile = new File(aFile + "_"
                         + theFormat.format(theNow));
                 aFile.renameTo(theBakFile);
             }
@@ -101,17 +101,17 @@ public class SaveToFileCommand extends UICommand {
             component.updateRecentlyUsedMenuEntries();
 
             if (theModel.getModificationTracker() instanceof HistoryModificationTracker) {
-                HistoryModificationTracker theTracker = (HistoryModificationTracker) theModel
+                final HistoryModificationTracker theTracker = (HistoryModificationTracker) theModel
                         .getModificationTracker();
-                StatementList theStatements = theTracker
+                final StatementList theStatements = theTracker
                         .getNotSavedStatements();
-                if (theStatements.size() > 0) {
+                if (!theStatements.isEmpty()) {
                     StringBuilder theFileName = new StringBuilder(aFile
                             .toString());
-                    int p = theFileName.lastIndexOf(".");
+                    final int p = theFileName.lastIndexOf(".");
                     if (p > 0) {
 
-                        SQLGenerator theGenerator = theModel.getDialect()
+                        final SQLGenerator theGenerator = theModel.getDialect()
                                 .createSQLGenerator();
 
                         theFileName = new StringBuilder(theFileName.substring(
@@ -122,7 +122,7 @@ public class SaveToFileCommand extends UICommand {
 
                         theWriter = new PrintWriter(new File(theFileName
                                 .toString()));
-                        for (Statement theStatement : theStatements) {
+                        for (final Statement theStatement : theStatements) {
                             theWriter.print(theStatement.getSql());
                             theWriter.println(theGenerator
                                     .createScriptStatementSeparator());
@@ -138,7 +138,7 @@ public class SaveToFileCommand extends UICommand {
                     component.getResourceHelper().getText(
                             ERDesignerBundle.FILESAVED));
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             getWorldConnector().notifyAboutException(e);
         } finally {
             if (theWriter != null) {

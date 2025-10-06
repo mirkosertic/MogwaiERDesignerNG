@@ -40,7 +40,7 @@ public final class ERDesigner {
 	private ERDesigner() {
 	}
 
-	public static void main(String[] args)
+	static void main(final String[] args)
 			throws
 			IllegalAccessException,
 			TransformerException, IOException, ParserConfigurationException,
@@ -48,7 +48,7 @@ public final class ERDesigner {
 
 		String theFilenameToOpen = null;
 		if (args != null) {
-			for (String theArgument : args) {
+			for (final String theArgument : args) {
 				LOGGER.info("Was called with argument :" + theArgument);
 			}
 			// In WebStart mode or standalone, there can be two options
@@ -67,7 +67,7 @@ public final class ERDesigner {
 		// Disable D3D rendering pipeline
 		System.setProperty("sun.java2d.d3d", "false");
 
-		DefaultSplashScreen theScreen = new DefaultSplashScreen(
+		final DefaultSplashScreen theScreen = new DefaultSplashScreen(
 				"/de/erdesignerng/splashscreen.jpg");
 		theScreen.setVisible(true);
 
@@ -79,7 +79,7 @@ public final class ERDesigner {
 
 		try {
 			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			// Just wait here :-)
 		}
 

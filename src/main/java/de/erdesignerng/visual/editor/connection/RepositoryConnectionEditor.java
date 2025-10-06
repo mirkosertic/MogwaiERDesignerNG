@@ -32,30 +32,30 @@ public class RepositoryConnectionEditor extends BaseEditor {
 	private final RepositoryConnectionEditorView view = new RepositoryConnectionEditorView() {
 
 		@Override
-		public void handleDialectChange(Dialect aDialect) {
+		public void handleDialectChange(final Dialect aDialect) {
 			commandChangeDialect(aDialect);
 		}
 	};
 
 	private final BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<>();
 
-	public RepositoryConnectionEditor(Component aParent) {
+	public RepositoryConnectionEditor(final Component aParent) {
 		super(aParent, ERDesignerBundle.REPOSITORYCONNECTION);
 
 		initialize();
 
-		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+		final DefaultComboBoxModel theModel = new DefaultComboBoxModel();
 		theModel.addElement(null);
 
-		List<Dialect> theDialects = DialectFactory.getInstance()
+		final List<Dialect> theDialects = DialectFactory.getInstance()
 				.getSupportedDialects();
         theDialects.forEach(theModel::addElement);
 
 		view.getDialect().setModel(theModel);
 
-		DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
+		final DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
 
-		ConnectionDescriptor theConnection = ApplicationPreferences
+		final ConnectionDescriptor theConnection = ApplicationPreferences
 				.getInstance().getRepositoryConnection();
 		if (theConnection != null) {
 			if (theConnection.getDialect() != null) {
@@ -95,9 +95,9 @@ public class RepositoryConnectionEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 
-		DatabaseConnectionDatamodel theDescriptor = bindingInfo
+		final DatabaseConnectionDatamodel theDescriptor = bindingInfo
 				.getDefaultModel();
 		ApplicationPreferences.getInstance().setRepositoryConnection(
 				theDescriptor.createConnectionDescriptor());
@@ -120,23 +120,23 @@ public class RepositoryConnectionEditor extends BaseEditor {
 
 			bindingInfo.view2model();
 
-			DatabaseConnectionDatamodel theModel = bindingInfo
+			final DatabaseConnectionDatamodel theModel = bindingInfo
 					.getDefaultModel();
 
-			Dialect theDialect = theModel.getDialect();
+			final Dialect theDialect = theModel.getDialect();
 
 			try {
 
-				Connection theConnection = theDialect.createConnection(
+				final Connection theConnection = theDialect.createConnection(
 						ApplicationPreferences.getInstance()
 								.createDriverClassLoader(), theModel
 								.getDriver(), theModel.getUrl(), theModel
 								.getUser(), theModel.getPassword(), false);
 
-				DatabaseMetaData theMeta = theConnection.getMetaData();
+				final DatabaseMetaData theMeta = theConnection.getMetaData();
 
-				String theDB = theMeta.getDatabaseProductName();
-				String theVersion = theMeta.getDatabaseProductVersion();
+				final String theDB = theMeta.getDatabaseProductName();
+				final String theVersion = theMeta.getDatabaseProductVersion();
 
 				if (!theDialect.generatesManagedConnection()) {
 					theConnection.close();
@@ -146,17 +146,17 @@ public class RepositoryConnectionEditor extends BaseEditor {
 						.getText(ERDesignerBundle.CONNECTIONSEEMSTOBEOK)
 						+ " DB : " + theDB + " " + theVersion);
 
-			} catch (Exception e) {
+			} catch (final Exception e) {
 
 				MessagesHelper.displayErrorMessage(this, e.getMessage());
 			}
 		}
 	}
 
-	private void commandChangeDialect(Dialect aDialect) {
+	private void commandChangeDialect(final Dialect aDialect) {
 
 		if (!bindingInfo.isBinding()) {
-			DatabaseConnectionDatamodel theDescriptor = bindingInfo
+			final DatabaseConnectionDatamodel theDescriptor = bindingInfo
 					.getDefaultModel();
 
 			if (aDialect != null) {

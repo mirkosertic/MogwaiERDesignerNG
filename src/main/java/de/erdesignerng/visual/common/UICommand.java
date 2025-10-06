@@ -39,12 +39,12 @@ public abstract class UICommand implements ActionEventProcessor, ActionListener 
     public abstract void execute();
 
     @Override
-    public void processActionEvent(ActionEvent e) {
+    public void processActionEvent(final ActionEvent e) {
         execute();
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
         execute();
     }
 
@@ -52,7 +52,7 @@ public abstract class UICommand implements ActionEventProcessor, ActionListener 
      * Refresh the display of a specific object.
      */
     public void refreshDisplayAndOutline() {
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
         component.repaintGraph();
         OutlineComponent.getDefault().refresh(component.getModel());
     }

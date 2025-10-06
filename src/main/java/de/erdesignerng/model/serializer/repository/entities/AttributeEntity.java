@@ -60,7 +60,7 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @param datatype the datatype to set
      */
-    public void setDatatype(String datatype) {
+    public void setDatatype(final String datatype) {
         this.datatype = datatype;
     }
 
@@ -74,7 +74,7 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @param domain the domain to set
      */
-    public void setDomainId(String domain) {
+    public void setDomainId(final String domain) {
         domainId = domain;
     }
 
@@ -88,7 +88,7 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @param size the size to set
      */
-    public void setSize(Integer size) {
+    public void setSize(final Integer size) {
         this.size = size;
     }
 
@@ -102,7 +102,7 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @param fraction the fraction to set
      */
-    public void setFraction(Integer fraction) {
+    public void setFraction(final Integer fraction) {
         this.fraction = fraction;
     }
 
@@ -116,7 +116,7 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @param scale the scale to set
      */
-    public void setScale(Integer scale) {
+    public void setScale(final Integer scale) {
         this.scale = scale;
     }
 
@@ -130,7 +130,7 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @param nullable the nullable to set
      */
-    public void setNullable(boolean nullable) {
+    public void setNullable(final boolean nullable) {
         this.nullable = nullable;
     }
 
@@ -144,7 +144,7 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @param defaultValue the defaultValue to set
      */
-    public void setDefaultValue(String defaultValue) {
+    public void setDefaultValue(final String defaultValue) {
         this.defaultValue = defaultValue;
     }
 
@@ -158,7 +158,7 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @param extra the extra to set
      */
-    public void setExtra(String extra) {
+    public void setExtra(final String extra) {
         this.extra = extra;
     }
 }

@@ -36,20 +36,20 @@ import java.util.List;
  */
 public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<H2Dialect> {
 
-	public H2ReverseEngineeringStrategy(H2Dialect aDialect) {
+	public H2ReverseEngineeringStrategy(final H2Dialect aDialect) {
 		super(aDialect);
 	}
 
 	@Override
-	public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
-		List<SchemaEntry> theList = new ArrayList<>();
+	public List<SchemaEntry> getSchemaEntries(final Connection aConnection) throws SQLException {
+		final List<SchemaEntry> theList = new ArrayList<>();
 
-		DatabaseMetaData theMetadata = aConnection.getMetaData();
-		ResultSet theResult = theMetadata.getSchemas();
+		final DatabaseMetaData theMetadata = aConnection.getMetaData();
+		final ResultSet theResult = theMetadata.getSchemas();
 
 		while (theResult.next()) {
-			String theSchemaName = theResult.getString("TABLE_SCHEM");
-			String theCatalogName = null;
+			final String theSchemaName = theResult.getString("TABLE_SCHEM");
+			final String theCatalogName = null;
 
 			theList.add(new SchemaEntry(theCatalogName, theSchemaName));
 		}
@@ -58,7 +58,7 @@ public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy
 	}
 
 	@Override
-	protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException {
+	protected String reverseEngineerViewSQL(final TableEntry aViewEntry, final Connection aConnection, final View aView) throws SQLException {
 		PreparedStatement theStatement = null;
 		ResultSet theResult = null;
 
@@ -80,7 +80,7 @@ public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy
 			if (theStatement != null) {
 				try {
 					theStatement.close();
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 					// ignore this
 				}
 			}
@@ -88,7 +88,7 @@ public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy
 			if (theResult != null) {
 				try {
 					theResult.close();
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 					// Ignore this
 				}
 			}

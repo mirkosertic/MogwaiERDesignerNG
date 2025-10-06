@@ -58,13 +58,13 @@ public class TablesSelectEditorView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "8dlu,fill:250dlu,8dlu,p,2dlu";
-        String colDef = "2dlu,fill:60dlu,2dlu:grow,fill:60dlu,2dlu";
+        final String rowDef = "8dlu,fill:250dlu,8dlu,p,2dlu";
+        final String colDef = "2dlu,fill:60dlu,2dlu:grow,fill:60dlu,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
+        final FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(getContentPanel(), cons.xywh(2, 2, 3, 1));
         add(getOkButton(), cons.xywh(2, 4, 1, 1));
@@ -83,18 +83,18 @@ public class TablesSelectEditorView extends JPanel {
         if (contentPanel == null) {
             contentPanel = new JPanel();
 
-            String rowDef = "2dlu,fill:200dlu:grow,2dlu,p,2dlu";
-            String colDef = "fill:180dlu:grow";
+            final String rowDef = "2dlu,fill:200dlu:grow,2dlu,p,2dlu";
+            final String colDef = "fill:180dlu:grow";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             contentPanel.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             contentPanel.add(getTableList().getScrollPane(), cons.xywh(1, 2, 1,
                     1));
 
-            DefaultPanel thePanel = new DefaultPanel();
+            final DefaultPanel thePanel = new DefaultPanel();
             thePanel.setLayout(new FormLayout(
                     "fill:60dlu:grow,2dlu,fill:60dlu:grow", "p,2dlu,p"));
             thePanel.add(selectAll, cons.xy(1, 1));

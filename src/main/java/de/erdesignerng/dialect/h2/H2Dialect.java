@@ -103,39 +103,39 @@ public final class H2Dialect extends Dialect {
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final int... aJdbcType) {
 		return new H2DataType(aName, aDefinition, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcType) {
 		return new H2DataType(aName, aDefinition, anIdentity, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcType) {
 		return new H2DataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
 	}
 
 	@Override
-	public TableProperties createTablePropertiesFor(Table aTable) {
-		H2TableProperties theResult = new H2TableProperties();
+	public TableProperties createTablePropertiesFor(final Table aTable) {
+		final H2TableProperties theResult = new H2TableProperties();
 		theResult.initializeFrom(aTable);
 
 		return theResult;
 	}
 
 	@Override
-	public ViewProperties createViewPropertiesFor(View aView) {
-		H2ViewProperties theResult = new H2ViewProperties();
+	public ViewProperties createViewPropertiesFor(final View aView) {
+		final H2ViewProperties theResult = new H2ViewProperties();
 		theResult.initializeFrom(aView);
 
 		return theResult;
 	}
 
 	@Override
-	public IndexProperties createIndexPropertiesFor(Index aIndex) {
-		H2IndexProperties theResult = new H2IndexProperties();
+	public IndexProperties createIndexPropertiesFor(final Index aIndex) {
+		final H2IndexProperties theResult = new H2IndexProperties();
 		theResult.initializeFrom(aIndex);
 
 		return theResult;

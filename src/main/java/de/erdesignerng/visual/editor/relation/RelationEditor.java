@@ -54,7 +54,7 @@ public class RelationEditor extends BaseEditor {
      * @param aModel  the model
      * @param aParent the parent container
      */
-    public RelationEditor(Model aModel, Component aParent) {
+    public RelationEditor(final Model aModel, final Component aParent) {
         super(aParent, ERDesignerBundle.RELATIONEDITOR);
 
         initialize();
@@ -64,14 +64,14 @@ public class RelationEditor extends BaseEditor {
         bindingInfo.addBinding("name", editingView.getRelationName(), true);
         bindingInfo.addBinding("mapping", new RelationAttributesPropertyAdapter(editingView.getAttributeMappingTable(), getResourceHelper()));
 
-        RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
+        final RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
         theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView.getOnDeleteCascadeNothing());
         theOnDeleteAdapter.addMapping(CascadeType.CASCADE, editingView.getOnDeleteCascade());
         theOnDeleteAdapter.addMapping(CascadeType.SETNULL, editingView.getOnDeleteSetNull());
         theOnDeleteAdapter.addMapping(CascadeType.RESTRICT, editingView.getOnDeleteRestrict());
         bindingInfo.addBinding("onDelete", theOnDeleteAdapter);
 
-        RadioButtonAdapter theOnUpdateAdapter = new RadioButtonAdapter();
+        final RadioButtonAdapter theOnUpdateAdapter = new RadioButtonAdapter();
         theOnUpdateAdapter.addMapping(CascadeType.NOTHING, editingView.getOnUpdateCascadeNothing());
         theOnUpdateAdapter.addMapping(CascadeType.CASCADE, editingView.getOnUpdateCascade());
         theOnUpdateAdapter.addMapping(CascadeType.SETNULL, editingView.getOnUpdateSetNull());
@@ -98,12 +98,12 @@ public class RelationEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
-    public void initializeFor(Relation aRelation) {
+    public void initializeFor(final Relation aRelation) {
         bindingInfo.setDefaultModel(aRelation);
         bindingInfo.model2view();
 
         relationProperties = model.getDialect().createRelationPropertiesFor(aRelation);
-        DefaultPanel theProperties = editingView.getPropertiesPanel();
+        final DefaultPanel theProperties = editingView.getPropertiesPanel();
         relationPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, relationProperties);
 
         theProperties.setLayout(new BorderLayout());
@@ -123,7 +123,7 @@ public class RelationEditor extends BaseEditor {
 
     @Override
     public void applyValues() throws Exception {
-        Relation theRelation = bindingInfo.getDefaultModel();
+        final Relation theRelation = bindingInfo.getDefaultModel();
 
         relationPropertiesWrapper.save();
         relationProperties.copyTo(theRelation);
@@ -133,8 +133,8 @@ public class RelationEditor extends BaseEditor {
             bindingInfo.view2model();
 
             // Try to detect if there were foreign key suggestions used
-            for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : theRelation.getMapping().entrySet()) {
-                Attribute<Table> theAttribute = theEntry.getValue();
+            for (final Map.Entry<IndexExpression, Attribute<Table>> theEntry : theRelation.getMapping().entrySet()) {
+                final Attribute<Table> theAttribute = theEntry.getValue();
                 if (theAttribute.getOwner() == null) {
                     // A suggested foreign key was used, so add it to the table
                     model.addAttributeToTable(theRelation.getImportingTable(), theAttribute);
@@ -145,7 +145,7 @@ public class RelationEditor extends BaseEditor {
 
         } else {
 
-            Relation theTempRelation = theRelation.clone();
+            final Relation theTempRelation = theRelation.clone();
             bindingInfo.setDefaultModel(theTempRelation);
             bindingInfo.view2model();
 

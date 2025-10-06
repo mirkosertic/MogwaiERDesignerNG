@@ -32,7 +32,6 @@ import org.apache.commons.beanutils.BeanComparator;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ConvertPropertyAdapter extends PropertyAdapter {
@@ -41,37 +40,37 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
 
     private final ResourceHelper helper;
 
-    public ConvertPropertyAdapter(JComponent aComponent, String aPropertyName, ResourceHelper aHelper) {
+    public ConvertPropertyAdapter(final JComponent aComponent, final String aPropertyName, final ResourceHelper aHelper) {
         super(aComponent, aPropertyName);
         helper = aHelper;
     }
 
     @Override
-    public void model2view(Object aModel, String aPropertyName) {
+    public void model2view(final Object aModel, final String aPropertyName) {
 
-        OpenXavaOptions theOptions = (OpenXavaOptions) aModel;
+        final OpenXavaOptions theOptions = (OpenXavaOptions) aModel;
 
-        String theCurrentTypeName = helper.getText(ERDesignerBundle.CURRENTDATATYPE);
-        String theTargetTypeName = helper.getText(ERDesignerBundle.TARGETDATATYPE);
-        String theStereoTypeName = helper.getText(ERDesignerBundle.STEREOTYPE);
+        final String theCurrentTypeName = helper.getText(ERDesignerBundle.CURRENTDATATYPE);
+        final String theTargetTypeName = helper.getText(ERDesignerBundle.TARGETDATATYPE);
+        final String theStereoTypeName = helper.getText(ERDesignerBundle.STEREOTYPE);
 
-        String[] theTargetTypes = new String[theOptions.getTypeMapping().keySet().size()];
-        String[] theStereoTypes = new String[theOptions.getTypeMapping().keySet().size()];
+        final String[] theTargetTypes = new String[theOptions.getTypeMapping().keySet().size()];
+        final String[] theStereoTypes = new String[theOptions.getTypeMapping().keySet().size()];
 
-        List<DataType> theCurrentTypes = new ArrayList<>();
+        final List<DataType> theCurrentTypes = new ArrayList<>();
         theCurrentTypes.addAll(theOptions.getTypeMapping().keySet());
 
-        Collections.sort(theCurrentTypes, new BeanComparator("name"));
+        theCurrentTypes.sort(new BeanComparator("name"));
         int theRow = 0;
-        for (DataType theType : theCurrentTypes) {
-            OpenXavaTypeMap theMap = theOptions.getTypeMapping().get(theType);
+        for (final DataType theType : theCurrentTypes) {
+            final OpenXavaTypeMap theMap = theOptions.getTypeMapping().get(theType);
             theTargetTypes[theRow] = theMap.getJavaType();
             theStereoTypes[theRow] = theMap.getStereoType();
             theRow++;
         }
 
-        DefaultTable theTable = (DefaultTable) getComponent()[0];
-        OpenXavaExportTableModel theModel = new OpenXavaExportTableModel(theCurrentTypeName, theTargetTypeName,
+        final DefaultTable theTable = (DefaultTable) getComponent()[0];
+        final OpenXavaExportTableModel theModel = new OpenXavaExportTableModel(theCurrentTypeName, theTargetTypeName,
                 theStereoTypeName, theCurrentTypes, theTargetTypes, theStereoTypes);
         theTable.setModel(theModel);
 
@@ -79,7 +78,7 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
         theTable.getColumnModel().getColumn(1).setCellRenderer(ModelItemDefaultCellRenderer.getInstance());
         theTable.getColumnModel().getColumn(2).setCellRenderer(ModelItemDefaultCellRenderer.getInstance());
 
-        DefaultComboBox theTargetTypesEditor = new DefaultComboBox();
+        final DefaultComboBox theTargetTypesEditor = new DefaultComboBox();
         theTargetTypesEditor.setBorder(BorderFactory.createEmptyBorder());
         theTargetTypesEditor.setModel(new DefaultComboBoxModel(OpenXavaOptions.SUPPORTED_STEREOTYPES));
         theTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(theTargetTypesEditor));
@@ -87,18 +86,18 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
     }
 
     @Override
-    public void view2model(Object aModel, String aPropertyName) {
-        OpenXavaOptions theConversionInfos = (OpenXavaOptions) aModel;
-        DefaultTable theTable = (DefaultTable) getComponent()[0];
-        OpenXavaExportTableModel theTableModel = (OpenXavaExportTableModel) theTable.getModel();
+    public void view2model(final Object aModel, final String aPropertyName) {
+        final OpenXavaOptions theConversionInfos = (OpenXavaOptions) aModel;
+        final DefaultTable theTable = (DefaultTable) getComponent()[0];
+        final OpenXavaExportTableModel theTableModel = (OpenXavaExportTableModel) theTable.getModel();
 
         theConversionInfos.getTypeMapping().clear();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
-            DataType theSourceType = (DataType) theTableModel.getValueAt(i, 0);
-            String theJavaType = (String) theTableModel.getValueAt(i, 1);
-            String theStereoType = (String) theTableModel.getValueAt(i, 2);
+            final DataType theSourceType = (DataType) theTableModel.getValueAt(i, 0);
+            final String theJavaType = (String) theTableModel.getValueAt(i, 1);
+            final String theStereoType = (String) theTableModel.getValueAt(i, 2);
 
-            OpenXavaTypeMap theMapping = new OpenXavaTypeMap();
+            final OpenXavaTypeMap theMapping = new OpenXavaTypeMap();
             theMapping.setJavaType(theJavaType);
             theMapping.setStereoType(theStereoType);
 
@@ -108,12 +107,12 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
 
     @Override
     public List<ValidationError> validate() {
-        DefaultTable theTable = (DefaultTable) getComponent()[0];
-        List<ValidationError> theErrors = new ArrayList<>();
-        OpenXavaExportTableModel theTableModel = (OpenXavaExportTableModel) theTable.getModel();
+        final DefaultTable theTable = (DefaultTable) getComponent()[0];
+        final List<ValidationError> theErrors = new ArrayList<>();
+        final OpenXavaExportTableModel theTableModel = (OpenXavaExportTableModel) theTable.getModel();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
             // A Datatype mapping must be there, the other things are optional
-            String theAssignedAttribute = (String) theTableModel.getValueAt(i, 1);
+            final String theAssignedAttribute = (String) theTableModel.getValueAt(i, 1);
             if (theAssignedAttribute == null) {
                 theErrors.add(new ValidationError(this, BINDINGHELPER.getText(BindingBundle.MISSINGREQUIREDFIELD)));
             }

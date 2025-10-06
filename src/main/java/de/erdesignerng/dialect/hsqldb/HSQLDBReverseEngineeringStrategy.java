@@ -36,21 +36,21 @@ import java.util.List;
  */
 public class HSQLDBReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<HSQLDBDialect> {
 
-    public HSQLDBReverseEngineeringStrategy(HSQLDBDialect aDialect) {
+    public HSQLDBReverseEngineeringStrategy(final HSQLDBDialect aDialect) {
         super(aDialect);
     }
 
     @Override
-    public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
+    public List<SchemaEntry> getSchemaEntries(final Connection aConnection) throws SQLException {
 
-        List<SchemaEntry> theList = new ArrayList<>();
+        final List<SchemaEntry> theList = new ArrayList<>();
 
-        DatabaseMetaData theMetadata = aConnection.getMetaData();
-        ResultSet theResult = theMetadata.getSchemas();
+        final DatabaseMetaData theMetadata = aConnection.getMetaData();
+        final ResultSet theResult = theMetadata.getSchemas();
 
         while (theResult.next()) {
-            String theSchemaName = theResult.getString("TABLE_SCHEM");
-            String theCatalogName = null;
+            final String theSchemaName = theResult.getString("TABLE_SCHEM");
+            final String theCatalogName = null;
 
             theList.add(new SchemaEntry(theCatalogName, theSchemaName));
         }
@@ -59,7 +59,7 @@ public class HSQLDBReverseEngineeringStrategy extends JDBCReverseEngineeringStra
     }
 
     @Override
-    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
+    protected String reverseEngineerViewSQL(final TableEntry aViewEntry, final Connection aConnection, final View aView)
             throws SQLException {
         PreparedStatement theStatement = null;
         ResultSet theResult = null;
@@ -80,14 +80,14 @@ public class HSQLDBReverseEngineeringStrategy extends JDBCReverseEngineeringStra
             if (theStatement != null) {
                 try {
                     theStatement.close();
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     // ignore this
                 }
             }
             if (theResult != null) {
                 try {
                     theResult.close();
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     // Ignore this
                 }
             }

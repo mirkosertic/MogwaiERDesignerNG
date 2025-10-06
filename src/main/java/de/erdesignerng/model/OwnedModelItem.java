@@ -38,7 +38,7 @@ public abstract class OwnedModelItem<T extends ModelItem> extends ModelItem {
 	 * @param aOwner
 	 *			the owner to set
 	 */
-	public void setOwner(T aOwner) {
+	public void setOwner(final T aOwner) {
 		owner = aOwner;
 	}
 }

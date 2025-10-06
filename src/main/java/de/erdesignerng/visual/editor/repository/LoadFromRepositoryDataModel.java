@@ -39,7 +39,7 @@ public class LoadFromRepositoryDataModel {
 	 * @param entry
 	 *			the entry to set
 	 */
-	public void setEntry(RepositoryEntryDescriptor entry) {
+	public void setEntry(final RepositoryEntryDescriptor entry) {
 		this.entry = entry;
 	}
 }

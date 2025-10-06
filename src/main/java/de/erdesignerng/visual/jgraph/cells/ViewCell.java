@@ -35,7 +35,7 @@ import org.jgraph.graph.GraphConstants;
 public class ViewCell extends DefaultGraphCell implements
         ModelCellWithPosition<View> {
 
-    public ViewCell(View aTable) {
+    public ViewCell(final View aTable) {
         super(aTable);
 
         GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20,
@@ -48,18 +48,18 @@ public class ViewCell extends DefaultGraphCell implements
     }
 
     @Override
-    public void transferAttributesToProperties(Map aAttributes) {
+    public void transferAttributesToProperties(final Map aAttributes) {
 
-        View theTable = (View) getUserObject();
-        Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
+        final View theTable = (View) getUserObject();
+        final Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
         theTable.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION,
                 (int) theBounds.getX(), (int) theBounds.getY());
     }
 
     @Override
-    public void transferPropertiesToAttributes(View aObject) {
+    public void transferPropertiesToAttributes(final View aObject) {
 
-        Point2D thePoint = aObject
+        final Point2D thePoint = aObject
                 .getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
         if (thePoint != null) {
             GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(
@@ -68,7 +68,7 @@ public class ViewCell extends DefaultGraphCell implements
     }
 
     @Override
-    public void setBounds(Rectangle2D aBounds) {
+    public void setBounds(final Rectangle2D aBounds) {
         GraphConstants.setBounds(getAttributes(), aBounds);
     }
 }

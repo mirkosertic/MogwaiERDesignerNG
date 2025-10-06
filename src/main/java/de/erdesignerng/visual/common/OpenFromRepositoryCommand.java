@@ -41,8 +41,8 @@ public class OpenFromRepositoryCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        ConnectionDescriptor theRepositoryConnection = ApplicationPreferences
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ConnectionDescriptor theRepositoryConnection = ApplicationPreferences
                 .getInstance().getRepositoryConnection();
         if (theRepositoryConnection == null) {
             MessagesHelper.displayErrorMessage(getDetailComponent(), component
@@ -51,7 +51,7 @@ public class OpenFromRepositoryCommand extends UICommand {
             return;
         }
         Connection theConnection = null;
-        Dialect theDialect = DialectFactory.getInstance().getDialect(
+        final Dialect theDialect = DialectFactory.getInstance().getDialect(
                 theRepositoryConnection.getDialect());
         try {
             theConnection = theDialect.createConnection(ApplicationPreferences
@@ -61,18 +61,18 @@ public class OpenFromRepositoryCommand extends UICommand {
                     .getUsername(), theRepositoryConnection
                     .getPassword(), false);
 
-            List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities
+            final List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities
                     .getInstance().getRepositoryEntries(theDialect,
                             theConnection);
 
-            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(
+            final LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(
                     getDetailComponent(), theEntries);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-                RepositoryEntryDescriptor theDescriptor = theEditor.getModel()
+                final RepositoryEntryDescriptor theDescriptor = theEditor.getModel()
                         .getEntry();
 
-                Model theModel = ModelIOUtilities.getInstance()
+                final Model theModel = ModelIOUtilities.getInstance()
                         .deserializeModelFromRepository(theDescriptor,
                                 theDialect, theConnection);
                 getWorldConnector().initializeLoadedModel(theModel);
@@ -88,14 +88,14 @@ public class OpenFromRepositoryCommand extends UICommand {
                 component.setModel(theModel);
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             getWorldConnector().notifyAboutException(e);
         } finally {
             if (theConnection != null
                     && !theDialect.generatesManagedConnection()) {
                 try {
                     theConnection.close();
-                } catch (SQLException e) {
+                } catch (final SQLException e) {
                     // Do nothing here
                 }
             }

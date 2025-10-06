@@ -53,7 +53,7 @@ public class MigrationScriptView extends JPanel {
 		FormLayout theLayout = new FormLayout(theColDef, theRowDef);
 		setLayout(theLayout);
 
-		CellConstraints cons = new CellConstraints();
+		final CellConstraints cons = new CellConstraints();
 
 		add(new DefaultLabel(ERDesignerBundle.FROMVERSION), cons.xy(2, 2));
 		add(sourceVersion, cons.xy(4, 2));
@@ -61,7 +61,7 @@ public class MigrationScriptView extends JPanel {
 		add(new DefaultLabel(ERDesignerBundle.TOVERSION), cons.xy(2, 4));
 		add(destinationVersion, cons.xy(4, 4));
 
-		JPanel thePanel = new JPanel();
+		final JPanel thePanel = new JPanel();
 
 		theColDef = "60dlu,fill:2dlu:grow,60dlu";
 		theRowDef = "p";

@@ -40,7 +40,7 @@ public final class ModelUtilities {
 	 * @param aDialect the dialect
 	 * @throws ElementAlreadyExistsException is thrown if name exists
 	 */
-	public static void checkExistence(ModelItemVector aVector, String aName, Dialect aDialect)
+	public static void checkExistence(final ModelItemVector aVector, final String aName, final Dialect aDialect)
 			throws ElementAlreadyExistsException {
 
 		boolean theCaseSensitive = false;
@@ -64,7 +64,7 @@ public final class ModelUtilities {
 	 * @throws ElementInvalidNameException   is thrown in case of an error
 	 * @throws ElementAlreadyExistsException is thrown in case of an error
 	 */
-	public static void checkNameAndExistence(ModelItemVector aVector, OwnedModelItem aItem, Dialect aDialect)
+	public static void checkNameAndExistence(final ModelItemVector aVector, final OwnedModelItem aItem, final Dialect aDialect)
 			throws ElementInvalidNameException, ElementAlreadyExistsException {
 
 		if (aDialect != null) {

@@ -33,7 +33,7 @@ public class MSSQLIndexProperties extends IndexProperties {
 		return indexType;
 	}
 
-	public void setIndexType(IndexTypeEnum indexType) {
+	public void setIndexType(final IndexTypeEnum indexType) {
 		this.indexType = indexType;
 	}
 
@@ -41,7 +41,7 @@ public class MSSQLIndexProperties extends IndexProperties {
 		return fileGroup;
 	}
 
-	public void setFileGroup(String fileGroup) {
+	public void setFileGroup(final String fileGroup) {
 		this.fileGroup = fileGroup;
 	}
 }

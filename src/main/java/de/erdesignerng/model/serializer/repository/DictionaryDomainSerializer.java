@@ -34,7 +34,7 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryDomainSerializer SERIALIZER = new DictionaryDomainSerializer();
 
-    private void copyExtendedAttributes(Domain aSource, DomainEntity aDestination) {
+    private void copyExtendedAttributes(final Domain aSource, final DomainEntity aDestination) {
         aDestination.setSystemId(aSource.getSystemId());
         aDestination.setName(aSource.getName());
         aDestination.setDatatype(aSource.getConcreteType().getName());
@@ -44,7 +44,7 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
         aDestination.setNullable(aSource.isNullable());
     }
 
-    private void copyExtendedAttributes(DomainEntity aSource, Domain aDestination, Model aModel) {
+    private void copyExtendedAttributes(final DomainEntity aSource, final Domain aDestination, final Model aModel) {
         aDestination.setSystemId(aSource.getSystemId());
         aDestination.setName(aSource.getName());
         aDestination.setConcreteType(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
@@ -54,12 +54,12 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
         aDestination.setNullable(aSource.isNullable());
     }
 
-    public void serialize(Model aModel, RepositoryEntity aDictionaryEntity) {
+    public void serialize(final Model aModel, final RepositoryEntity aDictionaryEntity) {
 
-        Map<String, ModelEntity> theDomains = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity
+        final Map<String, ModelEntity> theDomains = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity
                 .getDomains());
 
-        for (Domain theDomain : aModel.getDomains()) {
+        for (final Domain theDomain : aModel.getDomains()) {
             boolean existing = true;
             DomainEntity theExisting = (DomainEntity) theDomains.get(theDomain.getSystemId());
             if (theExisting == null) {
@@ -76,10 +76,10 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
         }
     }
 
-    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-        for (DomainEntity theEntity : aRepositoryEntity.getDomains()) {
+    public void deserialize(final Model aModel, final RepositoryEntity aRepositoryEntity) {
+        for (final DomainEntity theEntity : aRepositoryEntity.getDomains()) {
 
-            Domain theDomain = new Domain();
+            final Domain theDomain = new Domain();
             copyBaseAttributes(theEntity, theDomain);
             copyExtendedAttributes(theEntity, theDomain, aModel);
 

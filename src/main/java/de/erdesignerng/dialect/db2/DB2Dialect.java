@@ -88,17 +88,17 @@ public final class DB2Dialect extends Dialect {
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final int... aJdbcType) {
 		return new DB2DataType(aName, aDefinition, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcType) {
 		return new DB2DataType(aName, aDefinition, anIdentity, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcType) {
 		return new DB2DataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
 	}
 

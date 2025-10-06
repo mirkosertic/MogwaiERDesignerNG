@@ -48,8 +48,8 @@ public class MySQLInnoDBDialect extends MySQLDialect {
 	}
 
 	@Override
-	public TableProperties createTablePropertiesFor(Table aTable) {
-		MySQLTableProperties theProperties = new MySQLTableProperties();
+	public TableProperties createTablePropertiesFor(final Table aTable) {
+		final MySQLTableProperties theProperties = new MySQLTableProperties();
 		theProperties.initializeFrom(aTable);
 		theProperties.setEngine(EngineEnum.InnoDB);
 		return theProperties;

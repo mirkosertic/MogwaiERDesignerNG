@@ -31,15 +31,15 @@ import de.erdesignerng.model.Table;
  */
 public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
-	public MySQLSQLGenerator(MySQLDialect aDialect) {
+	public MySQLSQLGenerator(final MySQLDialect aDialect) {
 		super(aDialect);
 	}
 
 	@Override
-	public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
+	public StatementList createAddPrimaryKeyToTable(final Table aTable, final Index aIndex) {
 		boolean theHasAutoIncrement = false;
-		for (Attribute<Table> theAttribute : aTable.getAttributes()) {
-			String theExtra = theAttribute.getExtra();
+		for (final Attribute<Table> theAttribute : aTable.getAttributes()) {
+			final String theExtra = theAttribute.getExtra();
 			if (theExtra != null) {
 				if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
 					theHasAutoIncrement = true;
@@ -54,10 +54,10 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 	}
 
 	@Override
-	public StatementList createRenameTableStatement(Table aTable, String aNewName) {
+	public StatementList createRenameTableStatement(final Table aTable, final String aNewName) {
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(aTable));
@@ -71,11 +71,11 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 	}
 
 	@Override
-	public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) {
+	public StatementList createRemovePrimaryKeyStatement(final Table aTable, final Index aIndex) {
 
 		boolean theHasAutoIncrement = false;
-		for (Attribute<Table> theAttribute : aTable.getAttributes()) {
-			String theExtra = theAttribute.getExtra();
+		for (final Attribute<Table> theAttribute : aTable.getAttributes()) {
+			final String theExtra = theAttribute.getExtra();
 			if (theExtra != null) {
 				if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
 					theHasAutoIncrement = true;
@@ -86,8 +86,8 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 			return new StatementList();
 		}
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(aTable));
@@ -99,11 +99,11 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createRenameAttributeStatement(final Attribute<Table> anExistingAttribute, final String aNewName) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -116,7 +116,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 		theStatement.append(anExistingAttribute.getPhysicalDeclaration());
 		theStatement.append(" ");
 
-		boolean isNullable = anExistingAttribute.isNullable();
+		final boolean isNullable = anExistingAttribute.isNullable();
 
 		if (!isNullable) {
 			theStatement.append("NOT NULL");
@@ -129,11 +129,11 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createChangeAttributeStatement(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -149,20 +149,20 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 	}
 
 	@Override
-	public StatementList createRemoveRelationStatement(Relation aRelation) {
+	public StatementList createRemoveRelationStatement(final Relation aRelation) {
 
-		Table theImportingTable = aRelation.getImportingTable();
+		final Table theImportingTable = aRelation.getImportingTable();
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 		theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable) + " DROP FOREIGN KEY "
 				+ createUniqueRelationName(aRelation)));
 		return theResult;
 	}
 
 	@Override
-	protected String createCreateTableSuffix(Table aTable) {
-		StringBuilder theBuilder = new StringBuilder();
-		MySQLTableProperties theProperties = (MySQLTableProperties) getDialect().createTablePropertiesFor(aTable);
+	protected String createCreateTableSuffix(final Table aTable) {
+		final StringBuilder theBuilder = new StringBuilder();
+		final MySQLTableProperties theProperties = (MySQLTableProperties) getDialect().createTablePropertiesFor(aTable);
 		boolean first = true;
 		if (theProperties.getEngine() != null) {
 			if (first) {
@@ -328,7 +328,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 			}
 		}
 
-		if (theBuilder.length() > 0) {
+		if (!theBuilder.isEmpty()) {
 			theBuilder.insert(0, ' ');
 		}
 		return theBuilder.toString();

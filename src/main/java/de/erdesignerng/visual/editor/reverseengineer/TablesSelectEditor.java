@@ -43,8 +43,8 @@ public class TablesSelectEditor extends BaseEditor {
 	 * @param aParent  the parent container
 	 * @param aOptions the options
 	 */
-	public TablesSelectEditor(ReverseEngineeringOptions aOptions,
-							  Component aParent) {
+	public TablesSelectEditor(final ReverseEngineeringOptions aOptions,
+                              final Component aParent) {
 		super(aParent, ERDesignerBundle.TABLESELECTION);
 
 		initialize();
@@ -71,24 +71,24 @@ public class TablesSelectEditor extends BaseEditor {
 		editingView.getOkButton().setAction(okAction);
 		editingView.getCancelButton().setAction(cancelAction);
 
-		DefaultAction theSelectAllAction = new DefaultAction(this,
+		final DefaultAction theSelectAllAction = new DefaultAction(this,
 				ERDesignerBundle.SELECTALL);
 		theSelectAllAction.addActionListener(e -> {
-            SelectableTableModel theModel = (SelectableTableModel) editingView
+            final SelectableTableModel theModel = (SelectableTableModel) editingView
                     .getTableList().getModel();
             theModel.selectAll();
         });
-		DefaultAction theDeselectAllAction = new DefaultAction(this,
+		final DefaultAction theDeselectAllAction = new DefaultAction(this,
 				ERDesignerBundle.DESELECTALL);
 		theDeselectAllAction.addActionListener(e -> {
-            SelectableTableModel theModel = (SelectableTableModel) editingView
+            final SelectableTableModel theModel = (SelectableTableModel) editingView
                     .getTableList().getModel();
             theModel.deselectAll();
         });
-		DefaultAction theInvertSelectionAction = new DefaultAction(this,
+		final DefaultAction theInvertSelectionAction = new DefaultAction(this,
 				ERDesignerBundle.INVERTSELECTION);
 		theInvertSelectionAction.addActionListener(e -> {
-            SelectableTableModel theModel = (SelectableTableModel) editingView
+            final SelectableTableModel theModel = (SelectableTableModel) editingView
                     .getTableList().getModel();
             theModel.invertSelection();
         });
@@ -114,6 +114,6 @@ public class TablesSelectEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 	}
 }

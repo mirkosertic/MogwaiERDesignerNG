@@ -23,7 +23,7 @@ package de.erdesignerng.model.utils;
  */
 public class RedefinedIndexInfo extends RedefinedInfo {
 
-	public RedefinedIndexInfo(String aWhat) {
+	public RedefinedIndexInfo(final String aWhat) {
 		super(aWhat);
 	}
 }

@@ -40,7 +40,7 @@ public class LayoutHelper {
 
     private static final int MAXWIDTH = 6000;
 
-    private class Cluster {
+    private static class Cluster {
         Table root;
         final Set<ModelItem> nodes = new HashSet<>();
         final Map<ModelItem, Integer> hierarchyLevel = new HashMap<>();
@@ -48,16 +48,16 @@ public class LayoutHelper {
 
         List<Set<Table>> computeHierarchy() {
 
-            List<ModelItem> theAllNodes = new ArrayList<>();
+            final List<ModelItem> theAllNodes = new ArrayList<>();
             if (root != null) {
                 theAllNodes.add(root);
             }
             theAllNodes.addAll(nodes);
 
-            List<Set<Table>> theResult = new ArrayList<>();
+            final List<Set<Table>> theResult = new ArrayList<>();
             for (int i = 0; i <= maxLevel; i++) {
-                Set<Table> theLevel = new HashSet<>();
-                for (ModelItem theItem : theAllNodes) {
+                final Set<Table> theLevel = new HashSet<>();
+                for (final ModelItem theItem : theAllNodes) {
                     if (hierarchyLevel.get(theItem) == i) {
                         theLevel.add((Table) theItem);
                     }
@@ -73,9 +73,9 @@ public class LayoutHelper {
     public LayoutHelper() {
     }
 
-    private void buildTree(Model aModel, Table aNode, Cluster aCluster, int aLevel) {
-        for (Relation theRelation : aModel.getRelations().getForeignKeysFor(aNode)) {
-            Table theExp = theRelation.getExportingTable();
+    private void buildTree(final Model aModel, final Table aNode, final Cluster aCluster, final int aLevel) {
+        for (final Relation theRelation : aModel.getRelations().getForeignKeysFor(aNode)) {
+            final Table theExp = theRelation.getExportingTable();
             if (!aNode.equals(theExp) && !aCluster.nodes.contains(theExp) && !alreadyProcessed.contains(theExp)) {
                 aCluster.nodes.add(theExp);
                 aCluster.hierarchyLevel.put(theExp, aLevel);
@@ -85,7 +85,7 @@ public class LayoutHelper {
         }
     }
 
-    public void performClusterLayout(Model aModel) {
+    public void performClusterLayout(final Model aModel) {
 
         LOGGER.info("Destroying all subject areas");
 
@@ -96,8 +96,8 @@ public class LayoutHelper {
 
         boolean continueRun = true;
 
-        Point theStart = new Point(OFFSETX, OFFSETY);
-        List<Table> theAllTables = new ArrayList<>();
+        final Point theStart = new Point(OFFSETX, OFFSETY);
+        final List<Table> theAllTables = new ArrayList<>();
         theAllTables.addAll(aModel.getTables());
         int maxHeight = 0;
 
@@ -108,18 +108,18 @@ public class LayoutHelper {
             continueRun = false;
 
             // Step 1. Identify the Root Nodes
-            List<Cluster> theRoots = new ArrayList<>();
-            for (Table theTable : aModel.getTables()) {
+            final List<Cluster> theRoots = new ArrayList<>();
+            for (final Table theTable : aModel.getTables()) {
                 if (!alreadyProcessed.contains(theTable)) {
                     boolean isRoot = true;
-                    for (Relation theRelation : aModel.getRelations().getExportedKeysFor(theTable)) {
+                    for (final Relation theRelation : aModel.getRelations().getExportedKeysFor(theTable)) {
                         // Check for self references
                         if (!theRelation.getImportingTable().equals(theTable)) {
                             isRoot = false;
                         }
                     }
                     if (isRoot) {
-                        Cluster theCluster = new Cluster();
+                        final Cluster theCluster = new Cluster();
                         theCluster.root = theTable;
                         theRoots.add(theCluster);
                     }
@@ -129,17 +129,17 @@ public class LayoutHelper {
             LOGGER.info("Found " + theRoots.size() + " root nodes : " + theRoots);
 
             // Step 2. Build the tree for every root node
-            for (Cluster theCluster : theRoots) {
+            for (final Cluster theCluster : theRoots) {
                 theCluster.hierarchyLevel.put(theCluster.root, 0);
                 theCluster.maxLevel = 0;
                 buildTree(aModel, theCluster.root, theCluster, 1);
             }
 
-            Set<ModelItem> theClusteredTables = new HashSet<>();
+            final Set<ModelItem> theClusteredTables = new HashSet<>();
 
             // Step 3. Remove nodes that are assigned to more than one cluster
-            for (Cluster theCluster : theRoots) {
-                for (Cluster theCluster2 : theRoots) {
+            for (final Cluster theCluster : theRoots) {
+                for (final Cluster theCluster2 : theRoots) {
                     if (theCluster != theCluster2) {
                         theCluster.nodes.remove(theCluster2.root);
                         theCluster2.nodes.remove(theCluster.root);
@@ -153,18 +153,18 @@ public class LayoutHelper {
             }
 
             // Check for clustes with only one root
-            for (Cluster theCluster : theRoots) {
-                if (theCluster.nodes.size() == 0) {
-                    Set<Table> theDependentTables = new HashSet<>();
-                    for (Relation theRelation : aModel.getRelations().getForeignKeysFor(theCluster.root)) {
+            for (final Cluster theCluster : theRoots) {
+                if (theCluster.nodes.isEmpty()) {
+                    final Set<Table> theDependentTables = new HashSet<>();
+                    for (final Relation theRelation : aModel.getRelations().getForeignKeysFor(theCluster.root)) {
                         if (!theRelation.isSelfReference()) {
                             theDependentTables.add(theRelation.getExportingTable());
                         }
                     }
-                    if (theDependentTables.size() > 0) {
+                    if (!theDependentTables.isEmpty()) {
                         // Map the root node of the cluster to the cluster that contains all the referenced
                         // tables
-                        for (Cluster theCluster2 : theRoots) {
+                        for (final Cluster theCluster2 : theRoots) {
                             if (theCluster2.nodes.containsAll(theDependentTables)) {
                                 theCluster2.nodes.add(theCluster.root);
                                 theCluster2.hierarchyLevel.put(theCluster.root, theCluster2.maxLevel);
@@ -176,12 +176,12 @@ public class LayoutHelper {
 
             // Now, we have the top level clusters
             // Every cluster might result in a new subject area
-            for (Cluster theCluster : theRoots) {
+            for (final Cluster theCluster : theRoots) {
                 // A cluster should have more than 1 element including the root
-                if (theCluster.nodes.size() > 0) {
+                if (!theCluster.nodes.isEmpty()) {
                     LOGGER.info("Creating new subject area for cluster " + theCluster.root + " with " + theCluster.nodes.size() + " nodes : " + theCluster.nodes);
 
-                    SubjectArea theArea = new SubjectArea();
+                    final SubjectArea theArea = new SubjectArea();
                     theArea.setExpanded(true);
                     theArea.setName(theCluster.root.getName());
                     if (theCluster.root != null) {
@@ -189,7 +189,7 @@ public class LayoutHelper {
                         alreadyProcessed.add(theCluster.root);
                         theAllTables.remove(theCluster.root);
                     }
-                    for (ModelItem theItem : theCluster.nodes) {
+                    for (final ModelItem theItem : theCluster.nodes) {
                         alreadyProcessed.add(theItem);
                         if (theItem instanceof Table) {
                             theArea.getTables().add((Table) theItem);
@@ -201,7 +201,7 @@ public class LayoutHelper {
                     }
 
                     // We layout every subject area initially as a tree
-                    Dimension theSize = performTreeLayout(theStart, theCluster.computeHierarchy(), theArea.getViews());
+                    final Dimension theSize = performTreeLayout(theStart, theCluster.computeHierarchy(), theArea.getViews());
                     theStart.x += theSize.width + DISTANCEX;
                     maxHeight = Math.max(maxHeight, theSize.height);
 
@@ -226,13 +226,13 @@ public class LayoutHelper {
             maxHeight = 0;
         }
 
-        TableCellView.MyRenderer theTableRenderer = new TableCellView.MyRenderer();
+        final TableCellView.MyRenderer theTableRenderer = new TableCellView.MyRenderer();
 
-        for (Table theTable : theAllTables) {
+        for (final Table theTable : theAllTables) {
             theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, theStart.x, theStart.y);
 
-            JComponent theRendererComponent = theTableRenderer.getRendererComponent(theTable);
-            Dimension theSize = theRendererComponent.getPreferredSize();
+            final JComponent theRendererComponent = theTableRenderer.getRendererComponent(theTable);
+            final Dimension theSize = theRendererComponent.getPreferredSize();
 
             theStart.x += theSize.width + DISTANCEX;
             maxHeight = Math.max(maxHeight, theSize.height);
@@ -250,14 +250,14 @@ public class LayoutHelper {
             maxHeight = 0;
         }
 
-        ViewCellView.MyRenderer theViewRenderer = new ViewCellView.MyRenderer();
+        final ViewCellView.MyRenderer theViewRenderer = new ViewCellView.MyRenderer();
 
-        for (View theView : aModel.getViews()) {
+        for (final View theView : aModel.getViews()) {
 
             theView.getProperties().setPointProperty(Table.PROPERTY_LOCATION, theStart.x, theStart.y);
 
-            JComponent theRendererComponent = theViewRenderer.getRendererComponent(theView);
-            Dimension theSize = theRendererComponent.getPreferredSize();
+            final JComponent theRendererComponent = theViewRenderer.getRendererComponent(theView);
+            final Dimension theSize = theRendererComponent.getPreferredSize();
 
             theStart.x += theSize.width + DISTANCEX;
             maxHeight = Math.max(maxHeight, theSize.height);
@@ -274,21 +274,21 @@ public class LayoutHelper {
         LOGGER.info("Cluster run finished in " + theDuration + "ms");
     }
 
-    public Dimension performTreeLayout(Point aStartLocation, List<Set<Table>> aHierarchy, List<View> aViews) {
+    public Dimension performTreeLayout(final Point aStartLocation, final List<Set<Table>> aHierarchy, final List<View> aViews) {
         int yp = aStartLocation.y;
         int maxx = 0;
         int maxy = 0;
-        for (Set<Table> theEntry : aHierarchy) {
+        for (final Set<Table> theEntry : aHierarchy) {
 
-            TableCellView.MyRenderer theRenderer = new TableCellView.MyRenderer();
+            final TableCellView.MyRenderer theRenderer = new TableCellView.MyRenderer();
             int xp = aStartLocation.x;
             int maxHeight = 0;
-            for (Table theTable : theEntry) {
+            for (final Table theTable : theEntry) {
 
                 theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, xp, yp);
 
-                JComponent theRenderComponent = theRenderer.getRendererComponent(theTable);
-                Dimension theSize = theRenderComponent.getPreferredSize();
+                final JComponent theRenderComponent = theRenderer.getRendererComponent(theTable);
+                final Dimension theSize = theRenderComponent.getPreferredSize();
 
                 maxHeight = Math.max(maxHeight, (int) theSize.getHeight());
 
@@ -298,20 +298,20 @@ public class LayoutHelper {
                 maxy = Math.max(yp + maxHeight, maxy);
             }
 
-            if (theEntry.size() > 0) {
+            if (!theEntry.isEmpty()) {
                 yp += maxHeight + DISTANCEY;
             }
         }
 
-        ViewCellView.MyRenderer theRenderer = new ViewCellView.MyRenderer();
+        final ViewCellView.MyRenderer theRenderer = new ViewCellView.MyRenderer();
 
         int xp = aStartLocation.x;
-        for (View theView : aViews) {
+        for (final View theView : aViews) {
 
             theView.getProperties().setPointProperty(Table.PROPERTY_LOCATION, xp, yp);
 
-            JComponent theRenderComponent = theRenderer.getRendererComponent(theView);
-            Dimension theSize = theRenderComponent.getPreferredSize();
+            final JComponent theRenderComponent = theRenderer.getRendererComponent(theView);
+            final Dimension theSize = theRenderComponent.getPreferredSize();
 
             xp += theSize.getWidth() + DISTANCEX;
 

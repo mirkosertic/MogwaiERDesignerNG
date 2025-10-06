@@ -50,122 +50,109 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
 
 	public void testReverseEngineerPostgreSQL() throws Exception {
 
-		Connection theConnection = null;
-		try {
-			theConnection = createConnection();
+        try (Connection theConnection = createConnection()) {
 
-			loadSQL(theConnection, "db.sql");
+            loadSQL(theConnection, "db.sql");
 
-			Dialect theDialect = new PostgresDialect();
-			JDBCReverseEngineeringStrategy<PostgresDialect> theST = theDialect.getReverseEngineeringStrategy();
+            Dialect theDialect = new PostgresDialect();
+            JDBCReverseEngineeringStrategy<PostgresDialect> theST = theDialect.getReverseEngineeringStrategy();
 
-			Model theModel = new Model();
-			theModel.setDialect(theDialect);
-			theModel.setModificationTracker(new HistoryModificationTracker(theModel));
+            Model theModel = new Model();
+            theModel.setDialect(theDialect);
+            theModel.setModificationTracker(new HistoryModificationTracker(theModel));
 
-			ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
-			theOptions.setTableNaming(TableNamingEnum.INCLUDE_SCHEMA);
-			theOptions.getSchemaEntries().add(new SchemaEntry("", "public"));
-			theOptions.getSchemaEntries().add(new SchemaEntry("", "schemaa"));
-			theOptions.getSchemaEntries().add(new SchemaEntry("", "schemab"));
-			theOptions.getTableEntries().addAll(
-					theST.getTablesForSchemas(theConnection, theST.getSchemaEntries(theConnection)));
+            ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
+            theOptions.setTableNaming(TableNamingEnum.INCLUDE_SCHEMA);
+            theOptions.getSchemaEntries().add(new SchemaEntry("", "public"));
+            theOptions.getSchemaEntries().add(new SchemaEntry("", "schemaa"));
+            theOptions.getSchemaEntries().add(new SchemaEntry("", "schemab"));
+            theOptions.getTableEntries().addAll(
+                    theST.getTablesForSchemas(theConnection, theST.getSchemaEntries(theConnection)));
 
-			theST.updateModelFromConnection(theModel, new EmptyWorldConnector(), theConnection, theOptions,
-					new EmptyReverseEngineeringNotifier());
+            theST.updateModelFromConnection(theModel, new EmptyWorldConnector(), theConnection, theOptions,
+                    new EmptyReverseEngineeringNotifier());
 
-			// Implement Unit Tests here
-			Table theTable = theModel.getTables().findByNameAndSchema("table1", "schemaa");
-			assertTrue(theTable != null);
-			assertTrue("Tablecomment".equals(theTable.getComment()));
-			Attribute<Table> theAttribute = theTable.getAttributes().findByName("tb1_1");
-			assertTrue(theAttribute != null);
-			assertTrue(!theAttribute.isNullable());
-			assertTrue(theAttribute.getDatatype().getName().equals("testdomain"));
-			assertTrue("Columncomment".equals(theAttribute.getComment()));
-			theAttribute = theTable.getAttributes().findByName("tb1_2");
-			assertTrue(theAttribute != null);
-			assertTrue(theAttribute.isNullable());
-			assertTrue(theAttribute.getDatatype().getName().equals("varchar"));
-			assertTrue(theAttribute.getSize() == 100);
-			theAttribute = theTable.getAttributes().findByName("tb1_3");
-			assertTrue(theAttribute != null);
-			assertTrue(!theAttribute.isNullable());
-			assertTrue(theAttribute.getDatatype().getName().equals("numeric"));
-			assertTrue(theAttribute.getSize() == 20);
-			assertTrue(theAttribute.getFraction() == 5);
+            // Implement Unit Tests here
+            Table theTable = theModel.getTables().findByNameAndSchema("table1", "schemaa");
+            assertTrue(theTable != null);
+            assertTrue("Tablecomment".equals(theTable.getComment()));
+            Attribute<Table> theAttribute = theTable.getAttributes().findByName("tb1_1");
+            assertTrue(theAttribute != null);
+            assertTrue(!theAttribute.isNullable());
+            assertTrue(theAttribute.getDatatype().getName().equals("testdomain"));
+            assertTrue("Columncomment".equals(theAttribute.getComment()));
+            theAttribute = theTable.getAttributes().findByName("tb1_2");
+            assertTrue(theAttribute != null);
+            assertTrue(theAttribute.isNullable());
+            assertTrue(theAttribute.getDatatype().getName().equals("varchar"));
+            assertTrue(theAttribute.getSize() == 100);
+            theAttribute = theTable.getAttributes().findByName("tb1_3");
+            assertTrue(theAttribute != null);
+            assertTrue(!theAttribute.isNullable());
+            assertTrue(theAttribute.getDatatype().getName().equals("numeric"));
+            assertTrue(theAttribute.getSize() == 20);
+            assertTrue(theAttribute.getFraction() == 5);
 
-			Index thePK = theTable.getPrimarykey();
-			assertTrue(thePK != null);
-			assertTrue("pk1".equals(thePK.getName()));
-			assertTrue(thePK.getExpressions().findByAttributeName("tb1_1") != null);
+            Index thePK = theTable.getPrimarykey();
+            assertTrue(thePK != null);
+            assertTrue("pk1".equals(thePK.getName()));
+            assertTrue(thePK.getExpressions().findByAttributeName("tb1_1") != null);
 
-			theTable = theModel.getTables().findByNameAndSchema("table1", "schemab");
-			assertTrue(theTable != null);
-			theAttribute = theTable.getAttributes().findByName("tb2_1");
-			assertTrue(theAttribute != null);
-			theAttribute = theTable.getAttributes().findByName("tb2_2");
-			assertTrue(theAttribute != null);
-			theAttribute = theTable.getAttributes().findByName("tb2_3");
-			assertTrue(theAttribute != null);
+            theTable = theModel.getTables().findByNameAndSchema("table1", "schemab");
+            assertTrue(theTable != null);
+            theAttribute = theTable.getAttributes().findByName("tb2_1");
+            assertTrue(theAttribute != null);
+            theAttribute = theTable.getAttributes().findByName("tb2_2");
+            assertTrue(theAttribute != null);
+            theAttribute = theTable.getAttributes().findByName("tb2_3");
+            assertTrue(theAttribute != null);
 
-			View theView = theModel.getViews().findByNameAndSchema("view1", "schemab");
-			assertTrue(theView != null);
+            View theView = theModel.getViews().findByNameAndSchema("view1", "schemab");
+            assertTrue(theView != null);
 
-			theView = theModel.getViews().findByNameAndSchema("view1", "schemaa");
-			assertTrue(theView == null);
+            theView = theModel.getViews().findByNameAndSchema("view1", "schemaa");
+            assertTrue(theView == null);
 
-			theTable = theModel.getTables().findByNameAndSchema("table2", "schemab");
-			Index theIndex = theTable.getIndexes().findByName("tabl22_idx3");
-			assertTrue(theIndex != null);
-			assertTrue(theIndex.getExpressions().size() == 1);
-			assertTrue(theIndex.getExpressions().findByAttributeName("tb3_2") == null);
-			assertTrue("upper((tb3_2)::text)".equals(theIndex.getExpressions().get(0).getExpression()));
+            theTable = theModel.getTables().findByNameAndSchema("table2", "schemab");
+            Index theIndex = theTable.getIndexes().findByName("tabl22_idx3");
+            assertTrue(theIndex != null);
+            assertTrue(theIndex.getExpressions().size() == 1);
+            assertTrue(theIndex.getExpressions().findByAttributeName("tb3_2") == null);
+            assertTrue("upper((tb3_2)::text)".equals(theIndex.getExpressions().getFirst().getExpression()));
 
-			assertTrue(theModel.getRelations().size() == 2);
+            assertTrue(theModel.getRelations().size() == 2);
 
-			Relation theRelation = theModel.getRelations().findByName("fk1");
-			assertTrue(theRelation != null);
-			assertTrue("table1".equals(theRelation.getImportingTable().getName()));
-			assertTrue("schemab".equals(theRelation.getImportingTable().getSchema()));
+            Relation theRelation = theModel.getRelations().findByName("fk1");
+            assertTrue(theRelation != null);
+            assertTrue("table1".equals(theRelation.getImportingTable().getName()));
+            assertTrue("schemab".equals(theRelation.getImportingTable().getSchema()));
 
-			assertTrue("table1".equals(theRelation.getExportingTable().getName()));
-			assertTrue("schemaa".equals(theRelation.getExportingTable().getSchema()));
+            assertTrue("table1".equals(theRelation.getExportingTable().getName()));
+            assertTrue("schemaa".equals(theRelation.getExportingTable().getSchema()));
 
-			assertTrue(theRelation.getMapping().size() == 1);
-			Map.Entry<IndexExpression, Attribute<Table>> theEntry = theRelation.getMapping().entrySet().iterator().next();
-			assertTrue("tb2_1".equals(theEntry.getValue().getName()));
-			assertTrue("tb1_1".equals(theEntry.getKey().getAttributeRef().getName()));
+            assertTrue(theRelation.getMapping().size() == 1);
+            Map.Entry<IndexExpression, Attribute<Table>> theEntry = theRelation.getMapping().entrySet().iterator().next();
+            assertTrue("tb2_1".equals(theEntry.getValue().getName()));
+            assertTrue("tb1_1".equals(theEntry.getKey().getAttributeRef().getName()));
 
-			SQLGenerator theGenerator = theDialect.createSQLGenerator();
-			String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
+            SQLGenerator theGenerator = theDialect.createSQLGenerator();
+            String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
-			System.out.println("Res==");
-			System.out.println(theResult);
-			System.out.println("RES==");
+            System.out.println("Res==");
+            System.out.println(theResult);
+            System.out.println("RES==");
 
-			String theReference = readResourceFile("result.sql");
+            String theReference = readResourceFile("result.sql");
 
-			assertTrue(compareStrings(theResult, theReference));
-		} finally {
-			if (theConnection != null) {
-				theConnection.close();
-			}
-		}
+            assertTrue(compareStrings(theResult, theReference));
+        }
 	}
 
-	public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException,
-			ClassNotFoundException, SQLException, IOException {
-		Connection theConnection = null;
-		try {
-			theConnection = createConnection();
+	public void testReverseEngineeredSQL() throws
+            SQLException, IOException {
+        try (Connection theConnection = createConnection()) {
 
-			loadSingleSQL(theConnection, "result.sql");
-		} finally {
-			if (theConnection != null) {
-
-				theConnection.close();
-			}
-		}
+            loadSingleSQL(theConnection, "result.sql");
+        }
 	}
 }

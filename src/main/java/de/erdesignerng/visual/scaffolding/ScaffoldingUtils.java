@@ -33,18 +33,18 @@ public final class ScaffoldingUtils {
 	}
 
 	public static ScaffoldingWrapper createScaffoldingPanelFor(
-			Model aModel, Object aObject) {
+            final Model aModel, final Object aObject) {
 
-		SwingMetawidget theMetaWidget = new SwingMetawidget() {
+		final SwingMetawidget theMetaWidget = new SwingMetawidget() {
 
 			private final ResourceHelper helper = ResourceHelper
 					.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
 			@Override
-			public String getLocalizedKey(String key) {
+			public String getLocalizedKey(final String key) {
 				try {
 					return helper.getText(key.toUpperCase());
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					return StringUtils.RESOURCE_KEY_NOT_FOUND_PREFIX + key + StringUtils.RESOURCE_KEY_NOT_FOUND_SUFFIX;
 				}
 			}
@@ -54,15 +54,14 @@ public final class ScaffoldingUtils {
 				.getBundle(ERDesignerBundle.BUNDLE_NAME));
 
 
-        BeanUtilsBindingProcessor theProcessor = new BeanUtilsBindingProcessor() {
+        final BeanUtilsBindingProcessor theProcessor = new BeanUtilsBindingProcessor() {
             @Override
-            public Object convertFromString(String aValue, Class<?> aExpectedType) {
+            public Object convertFromString(final String aValue, final Class<?> aExpectedType) {
                 if (aValue == null) {
                     return null;
                 }
                 if (aExpectedType.isEnum()) {
-                    Class theType = aExpectedType;
-                    return Enum.valueOf(theType, aValue);
+                    return Enum.valueOf((Class) aExpectedType, aValue);
                 }
                 return super.convertFromString(aValue, aExpectedType);
             }

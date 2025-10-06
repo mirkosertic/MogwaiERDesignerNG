@@ -40,7 +40,7 @@ public class SubjectAreaEditor extends BaseEditor {
      *
      * @param aParent the parent container
      */
-    public SubjectAreaEditor(Component aParent) {
+    public SubjectAreaEditor(final Component aParent) {
         super(aParent, ERDesignerBundle.SUBJECTAREAEDITOR);
 
         initialize();
@@ -67,7 +67,7 @@ public class SubjectAreaEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
-    public void initializeFor(SubjectArea aArea) {
+    public void initializeFor(final SubjectArea aArea) {
 
         editingView.getColorPanel().setBackground(aArea.getColor());
 
@@ -79,14 +79,14 @@ public class SubjectAreaEditor extends BaseEditor {
     protected void commandOk() {
         if (bindingInfo.validate().isEmpty()) {
 
-            SubjectArea theArea = bindingInfo.getDefaultModel();
+            final SubjectArea theArea = bindingInfo.getDefaultModel();
             theArea.setColor(editingView.getColorPanel().getBackground());
             setModalResult(MODAL_RESULT_OK);
         }
     }
 
     @Override
-    public void applyValues() throws Exception {
+    public void applyValues() {
         bindingInfo.view2model();
     }
 }

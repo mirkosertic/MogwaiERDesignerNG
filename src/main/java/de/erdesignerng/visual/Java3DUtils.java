@@ -27,22 +27,22 @@ public final class Java3DUtils {
 
     private static final boolean VM_32_BIT = System.getProperty("sun.arch.data.model").equals("32");
 
-    private static void addLibraryPath(String pathToAdd) throws Exception{
-        Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
+    private static void addLibraryPath(final String pathToAdd) throws Exception{
+        final Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
         usrPathsField.setAccessible(true);
 
         //get array of paths
-        String[] paths = (String[])usrPathsField.get(null);
+        final String[] paths = (String[])usrPathsField.get(null);
 
         //check if the path to add is already present
-        for(String path : paths) {
+        for(final String path : paths) {
             if(path.equals(pathToAdd)) {
                 return;
             }
         }
 
         //add the new path
-        String[] newPaths = Arrays.copyOf(paths, paths.length + 1);
+        final String[] newPaths = Arrays.copyOf(paths, paths.length + 1);
         newPaths[newPaths.length-1] = pathToAdd;
         usrPathsField.set(null, newPaths);
     }
@@ -51,7 +51,7 @@ public final class Java3DUtils {
     }
 
     public static void initializeLibraryPath() throws Exception {
-        File theJava3DFile = new File("java3d");
+        final File theJava3DFile = new File("java3d");
         File theJava3DLibraryFile = null;
         if (SystemUtils.IS_OS_WINDOWS) {
             if (VM_32_BIT) {

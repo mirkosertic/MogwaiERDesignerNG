@@ -28,46 +28,46 @@ import org.w3c.dom.NodeList;
 
 public abstract class CommonAbstractXMLSerializer<T extends OwnedModelItem> implements CommonXMLElementsAndAttributes {
 
-	protected Element addElement(Document aDocument, Node aNode, String aElementName) {
-		Element theElement = aDocument.createElement(aElementName);
+	protected Element addElement(final Document aDocument, final Node aNode, final String aElementName) {
+		final Element theElement = aDocument.createElement(aElementName);
 		aNode.appendChild(theElement);
 		return theElement;
 	}
 
-	protected void setBooleanAttribute(Element aElement, String aAttributeName, boolean aValue) {
+	protected void setBooleanAttribute(final Element aElement, final String aAttributeName, final boolean aValue) {
 		aElement.setAttribute(aAttributeName, aValue ? TRUE : FALSE);
 	}
 
-	protected void serializeProperties(Document aDocument, Element aNode, ModelItem aItem) {
+	protected void serializeProperties(final Document aDocument, final Element aNode, final ModelItem aItem) {
 
 		aNode.setAttribute(ID, aItem.getSystemId());
 		aNode.setAttribute(NAME, aItem.getName());
 
-		for (String theKey : aItem.getProperties().getProperties().keySet()) {
-			String theValue = aItem.getProperties().getProperties().get(theKey);
+		for (final String theKey : aItem.getProperties().getProperties().keySet()) {
+			final String theValue = aItem.getProperties().getProperties().get(theKey);
 			if (theValue != null) {
-				Element theProperty = addElement(aDocument, aNode, PROPERTY);
+				final Element theProperty = addElement(aDocument, aNode, PROPERTY);
 				theProperty.setAttribute(NAME, theKey);
 				theProperty.setAttribute(VALUE, theValue);
 			}
 		}
 	}
 
-	protected void serializeCommentElement(Document aDocument, Element aElement, ModelItem aItem) {
+	protected void serializeCommentElement(final Document aDocument, final Element aElement, final ModelItem aItem) {
 		if (!StringUtils.isEmpty(aItem.getComment())) {
-			Element theCommentElement = aDocument.createElement(COMMENT);
+			final Element theCommentElement = aDocument.createElement(COMMENT);
 			theCommentElement.appendChild(aDocument.createTextNode(aItem.getComment()));
 
 			aElement.appendChild(theCommentElement);
 		}
 	}
 
-	protected void deserializeCommentElement(Element aElement, ModelItem aItem) {
-		NodeList theChildren = aElement.getChildNodes();
+	protected void deserializeCommentElement(final Element aElement, final ModelItem aItem) {
+		final NodeList theChildren = aElement.getChildNodes();
 		for (int i = 0; i < theChildren.getLength(); i++) {
-			Node theChild = theChildren.item(i);
+			final Node theChild = theChildren.item(i);
 			if (COMMENT.equals(theChild.getNodeName())) {
-				Element theElement = (Element) theChild;
+				final Element theElement = (Element) theChild;
 				if (theElement.getChildNodes().getLength() > 0) {
 					aItem.setComment(theElement.getChildNodes().item(0).getNodeValue());
 				}
@@ -75,14 +75,14 @@ public abstract class CommonAbstractXMLSerializer<T extends OwnedModelItem> impl
 		}
 	}
 
-	protected void deserializeProperties(Element aElement, ModelItem aModelItem) {
+	protected void deserializeProperties(final Element aElement, final ModelItem aModelItem) {
 
 		aModelItem.setSystemId(aElement.getAttribute(ID));
 		aModelItem.setName(aElement.getAttribute(NAME));
 
-		NodeList theProperties = aElement.getElementsByTagName(PROPERTY);
+		final NodeList theProperties = aElement.getElementsByTagName(PROPERTY);
 		for (int i = 0; i < theProperties.getLength(); i++) {
-			Element theElement = (Element) theProperties.item(i);
+			final Element theElement = (Element) theProperties.item(i);
 
 			aModelItem.getProperties().setProperty(theElement.getAttribute(NAME), theElement.getAttribute(VALUE));
 		}

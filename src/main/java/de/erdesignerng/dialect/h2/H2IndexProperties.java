@@ -27,7 +27,7 @@ public class H2IndexProperties extends IndexProperties {
 		return hash;
 	}
 
-	public void setHash(Boolean hash) {
+	public void setHash(final Boolean hash) {
 		this.hash = hash;
 	}
 }

@@ -34,8 +34,6 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 import javax.swing.JFileChooser;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.Component;
 import java.io.File;
 import java.io.FileWriter;
@@ -76,9 +74,9 @@ public class SQLEditor extends BaseEditor {
 
     private final ERDesignerWorldConnector worldConnector;
 
-    public SQLEditor(Component aParent, ConnectionProvider aConnectionAdapter,
-                     StatementList aStatements, File aLastEditedFile, String aFileName,
-                     ERDesignerWorldConnector aConnector) {
+    public SQLEditor(final Component aParent, final ConnectionProvider aConnectionAdapter,
+                     final StatementList aStatements, final File aLastEditedFile, final String aFileName,
+                     final ERDesignerWorldConnector aConnector) {
         super(aParent, ERDesignerBundle.SQLWINDOW);
 
         connectionAdapter = aConnectionAdapter;
@@ -90,14 +88,8 @@ public class SQLEditor extends BaseEditor {
         initialize();
 
         view.getSqlList().setCellRenderer(new StatementRenderer());
-        view.getSqlList().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                deleteAction
-                        .setEnabled(view.getSqlList().getSelectedIndex() >= 0);
-            }
-        });
+        view.getSqlList().addListSelectionListener(e -> deleteAction
+                .setEnabled(view.getSqlList().getSelectedIndex() >= 0));
 
         view.getCloseButton().setAction(closeAction);
         view.getExecuteButton().setAction(executeAction);
@@ -105,7 +97,7 @@ public class SQLEditor extends BaseEditor {
         view.getDeleteButton().setAction(deleteAction);
         deleteAction.setEnabled(false);
 
-        DefaultListModel theModel = view.getSqlList().getModel();
+        final DefaultListModel theModel = view.getSqlList().getModel();
         aStatements.forEach(theModel::add);
     }
 
@@ -124,11 +116,11 @@ public class SQLEditor extends BaseEditor {
     }
 
     @Override
-    public void applyValues() throws Exception {
+    public void applyValues() {
 
-        DefaultListModel theModel = view.getSqlList().getModel();
+        final DefaultListModel theModel = view.getSqlList().getModel();
 
-        StatementList theDeleted = statements.stream().filter(theStatement -> !theModel.contains(theStatement)).collect(Collectors.toCollection(() -> new StatementList()));
+        final StatementList theDeleted = statements.stream().filter(theStatement -> !theModel.contains(theStatement)).collect(Collectors.toCollection(StatementList::new));
 
         statements.removeAll(theDeleted);
 
@@ -146,12 +138,12 @@ public class SQLEditor extends BaseEditor {
         saveToFileAction.setEnabled(false);
         deleteAction.setEnabled(false);
 
-        LongRunningTask<String> theTask = new LongRunningTask<String>(
+        final LongRunningTask<String> theTask = new LongRunningTask<>(
                 worldConnector) {
             @Override
-            public String doWork(MessagePublisher aPublisher) throws Exception {
+            public String doWork(final MessagePublisher aPublisher) {
 
-                DefaultListModel theModel = view.getSqlList().getModel();
+                final DefaultListModel theModel = view.getSqlList().getModel();
 
                 Connection theConnection = null;
                 try {
@@ -159,35 +151,27 @@ public class SQLEditor extends BaseEditor {
                     theConnection = connectionAdapter.createConnection();
 
                     for (int i = 0; i < theModel.getSize(); i++) {
-                        Statement theStatement = (Statement) theModel.get(i);
+                        final Statement theStatement = (Statement) theModel.get(i);
                         if (!theStatement.isExecuted()) {
 
                             view.getSqlList().setSelectedIndex(i);
                             view.getSqlList().ensureIndexIsVisible(i);
 
-                            java.sql.Statement theJDBCStatement = null;
-                            try {
-                                theJDBCStatement = theConnection
-                                        .createStatement();
+                            try (final java.sql.Statement theJDBCStatement = theConnection
+                                    .createStatement()) {
                                 theJDBCStatement.execute(theStatement.getSql());
 
                                 theStatement.setExecuted(true);
-                            } catch (Exception e) {
+                            } catch (final Exception e) {
                                 logFatalError(e);
                                 return null;
                             } finally {
-                                if (theJDBCStatement != null) {
-                                    try {
-                                        theJDBCStatement.close();
-                                    } catch (Exception e) {
-                                        // Do nothing here
-                                    }
-                                }
+                                // Do nothing here
                                 aPublisher.publishMessage("OK");
                             }
                         }
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     worldConnector.notifyAboutException(e);
                 } finally {
                     if (!connectionAdapter.generatesManagedConnection()) {
@@ -199,13 +183,13 @@ public class SQLEditor extends BaseEditor {
             }
 
             @Override
-            public void handleProcess(List<String> aValue) {
+            public void handleProcess(final List<String> aValue) {
                 view.getSqlList().invalidate();
                 view.getSqlList().repaint();
             }
 
             @Override
-            public void handleResult(String aResult) {
+            public void handleResult(final String aResult) {
                 closeAction.setEnabled(true);
                 executeAction.setEnabled(true);
                 saveToFileAction.setEnabled(true);
@@ -215,9 +199,9 @@ public class SQLEditor extends BaseEditor {
     }
 
     private void commandSaveToFile() {
-        SQLFileFilter theFiler = new SQLFileFilter();
+        final SQLFileFilter theFiler = new SQLFileFilter();
 
-        JFileChooser theChooser = new JFileChooser();
+        final JFileChooser theChooser = new JFileChooser();
         theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         theChooser.setFileFilter(theFiler);
         if (lastEditedFile != null) {
@@ -228,15 +212,15 @@ public class SQLEditor extends BaseEditor {
         }
         if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 
-            DefaultListModel theModel = view.getSqlList().getModel();
+            final DefaultListModel theModel = view.getSqlList().getModel();
             try {
-                File theFile = theFiler.getCompletedFile(theChooser
+                final File theFile = theFiler.getCompletedFile(theChooser
                         .getSelectedFile());
-                FileWriter theWriter = new FileWriter(theFile);
-                PrintWriter thePW = new PrintWriter(theWriter);
+                final FileWriter theWriter = new FileWriter(theFile);
+                final PrintWriter thePW = new PrintWriter(theWriter);
 
                 for (int i = 0; i < theModel.getSize(); i++) {
-                    Statement theStatement = (Statement) theModel.get(i);
+                    final Statement theStatement = (Statement) theModel.get(i);
 
                     thePW.print(theStatement.getSql());
                     thePW.println(connectionAdapter
@@ -249,7 +233,7 @@ public class SQLEditor extends BaseEditor {
                 MessagesHelper.displayInfoMessage(this, getResourceHelper()
                         .getText(ERDesignerBundle.FILESAVED));
 
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 logFatalError(e);
             }
         }
@@ -259,9 +243,9 @@ public class SQLEditor extends BaseEditor {
 
         if (MessagesHelper.displayQuestionMessage(this,
                 ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
-            Object theSelectedElement = view.getSqlList().getSelectedValue();
+            final Object theSelectedElement = view.getSqlList().getSelectedValue();
 
-            DefaultListModel theModel = view.getSqlList().getModel();
+            final DefaultListModel theModel = view.getSqlList().getModel();
             theModel.remove(theSelectedElement);
         }
     }

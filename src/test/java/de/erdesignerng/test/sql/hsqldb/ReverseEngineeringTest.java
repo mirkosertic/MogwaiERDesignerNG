@@ -36,7 +36,7 @@ import java.sql.SQLException;
  */
 public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 
-	public void testReverseEngineerH2() throws Exception {
+	public void testReverseEngineerHSQLDB() throws Exception {
 
 		Class.forName("org.hsqldb.jdbc.JDBCDriver").newInstance();
 		Connection theConnection = null;

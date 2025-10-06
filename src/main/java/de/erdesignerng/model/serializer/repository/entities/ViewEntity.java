@@ -32,7 +32,7 @@ public class ViewEntity extends ModelEntity {
 		return sqlstatement;
 	}
 
-	public void setSqlstatement(String sqlstatement) {
+	public void setSqlstatement(final String sqlstatement) {
 		this.sqlstatement = sqlstatement;
 	}
 
@@ -47,7 +47,7 @@ public class ViewEntity extends ModelEntity {
 	 * @param schema
 	 *			the schema to set
 	 */
-	public void setSchema(String schema) {
+	public void setSchema(final String schema) {
 		this.schema = schema;
 	}
 }

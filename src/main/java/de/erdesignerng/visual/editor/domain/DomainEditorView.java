@@ -59,7 +59,7 @@ public class DomainEditorView extends DefaultPanel {
 		public void removeEditor() {
 			super.removeEditor();
 
-			Domain theAttribute = domainTableModel.getRow(getSelectedRow());
+			final Domain theAttribute = domainTableModel.getRow(getSelectedRow());
 			domainEditorRemoved(theAttribute);
 
 			invalidate();
@@ -83,7 +83,7 @@ public class DomainEditorView extends DefaultPanel {
 		return domainTable;
 	}
 
-	protected void domainEditorRemoved(Domain aDomain) {
+	protected void domainEditorRemoved(final Domain aDomain) {
 	}
 
 	/**
@@ -91,15 +91,15 @@ public class DomainEditorView extends DefaultPanel {
 	 */
 	private void initialize() {
 
-		String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
-		String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
+		final String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
+		final String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
 
 		domainTable.setCellSelectionEnabled(true);
 
-		FormLayout layout = new FormLayout(colDef, rowDef);
+		final FormLayout layout = new FormLayout(colDef, rowDef);
 		setLayout(layout);
 
-		CellConstraints cons = new CellConstraints();
+		final CellConstraints cons = new CellConstraints();
 
 		add(getComponent15(), cons.xywh(2, 4, 6, 2));
 		add(getOkButton(), cons.xywh(5, 8, 1, 1));
@@ -145,10 +145,10 @@ public class DomainEditorView extends DefaultPanel {
 		if (component15 == null) {
 			component15 = new JPanel();
 
-			FormLayout theLayout = new FormLayout("fill:10dlu:grow,2dlu,60dlu,2dlu,60dlu", "fill:10dlu:grow,2dlu,p");
+			final FormLayout theLayout = new FormLayout("fill:10dlu:grow,2dlu,60dlu,2dlu,60dlu", "fill:10dlu:grow,2dlu,p");
 			component15.setLayout(theLayout);
 
-			CellConstraints cons = new CellConstraints();
+			final CellConstraints cons = new CellConstraints();
 			domainTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 			domainTable.setModel(domainTableModel);
 			domainTable.getColumnModel().getColumn(0).setPreferredWidth(200);
@@ -163,7 +163,7 @@ public class DomainEditorView extends DefaultPanel {
 			domainTable.setAutoResizeMode(DefaultTable.AUTO_RESIZE_OFF);
 			domainTable.setRowHeight(22);
 
-			DefaultComboBox theBox = new DefaultComboBox();
+			final DefaultComboBox theBox = new DefaultComboBox();
 			theBox.setBorder(BorderFactory.createEmptyBorder());
 			theBox.setModel(dataTypesModel);
 			domainTable.setDefaultEditor(DataType.class, new DefaultCellEditor(theBox));

@@ -39,43 +39,43 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute<Table>> {
 	}
 
 	@Override
-	public Class<?> getColumnClass(int columnIndex) {
-		switch (columnIndex) {
-			case 0:
-				// name
-				return String.class;
-			case 1:
-				// type
-				return DataType.class;
-			case 2:
-				// size
-				return Integer.class;
-			case 3:
-				// fraction
-				return Integer.class;
-			case 4:
-				// scale
-				return Integer.class;
-			case 5:
-				// nullable
-				return Boolean.class;
-			case 6:
-				// default
-				return String.class;
-			case 7:
-				// extra
-				return String.class;
-			case 8:
-				// comment
-				return String.class;
-		}
-		throw new IllegalArgumentException("Wrong columnIndex : " + columnIndex);
-	}
+	public Class<?> getColumnClass(final int columnIndex) {
+        return switch (columnIndex) {
+            case 0 ->
+                // name
+                    String.class;
+            case 1 ->
+                // type
+                    DataType.class;
+            case 2 ->
+                // size
+                    Integer.class;
+            case 3 ->
+                // fraction
+                    Integer.class;
+            case 4 ->
+                // scale
+                    Integer.class;
+            case 5 ->
+                // nullable
+                    Boolean.class;
+            case 6 ->
+                // default
+                    String.class;
+            case 7 ->
+                // extra
+                    String.class;
+            case 8 ->
+                // comment
+                    String.class;
+            default -> throw new IllegalArgumentException("Wrong columnIndex : " + columnIndex);
+        };
+    }
 
 	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		Attribute<Table> theAttribute = rowData.get(rowIndex);
-		DataType theDataType = theAttribute.getDatatype();
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+		final Attribute<Table> theAttribute = rowData.get(rowIndex);
+		final DataType theDataType = theAttribute.getDatatype();
 		switch (columnIndex) {
 			case 0:
 				// name
@@ -142,9 +142,9 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute<Table>> {
 	}
 
 	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		Attribute<Table> theAttribute = rowData.get(rowIndex);
-		DataType theDataType = theAttribute.getDatatype();
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
+		final Attribute<Table> theAttribute = rowData.get(rowIndex);
+		final DataType theDataType = theAttribute.getDatatype();
 		switch (columnIndex) {
 			case 0:
 				// name
@@ -214,8 +214,8 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute<Table>> {
 	}
 
 	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		Attribute<Table> theAttribute = rowData.get(rowIndex);
+	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+		final Attribute<Table> theAttribute = rowData.get(rowIndex);
 		switch (columnIndex) {
 			case 0:
 				// name
@@ -223,7 +223,7 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute<Table>> {
 				break;
 			case 1:
 				// type
-				DataType theType = (DataType) aValue;
+				final DataType theType = (DataType) aValue;
 				theAttribute.setDatatype(theType);
 				if (theType != null && theType.isDomain()) {
 					// If the new datatype is a domain, set the nullable flag according to the domain

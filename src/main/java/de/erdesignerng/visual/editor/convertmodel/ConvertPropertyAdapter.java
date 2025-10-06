@@ -30,7 +30,6 @@ import org.apache.commons.beanutils.BeanComparator;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ConvertPropertyAdapter extends PropertyAdapter {
@@ -39,35 +38,35 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
 
     private final ResourceHelper helper;
 
-    public ConvertPropertyAdapter(JComponent aComponent, String aPropertyName, ResourceHelper aHelper) {
+    public ConvertPropertyAdapter(final JComponent aComponent, final String aPropertyName, final ResourceHelper aHelper) {
         super(aComponent, aPropertyName);
         helper = aHelper;
     }
 
     @Override
-    public void model2view(Object aModel, String aPropertyName) {
+    public void model2view(final Object aModel, final String aPropertyName) {
 
-        ConversionInfos theInfos = (ConversionInfos) aModel;
+        final ConversionInfos theInfos = (ConversionInfos) aModel;
 
-        String theCurrentTypeName = helper.getText(ERDesignerBundle.CURRENTDATATYPE);
-        String theTargetTypeName = helper.getText(ERDesignerBundle.TARGETDATATYPE);
+        final String theCurrentTypeName = helper.getText(ERDesignerBundle.CURRENTDATATYPE);
+        final String theTargetTypeName = helper.getText(ERDesignerBundle.TARGETDATATYPE);
 
-        DataType[] theTargetTypes = new DataType[theInfos.getTypeMapping().keySet().size()];
+        final DataType[] theTargetTypes = new DataType[theInfos.getTypeMapping().keySet().size()];
 
-        List<DataType> theCurrentTypes = new ArrayList<>();
+        final List<DataType> theCurrentTypes = new ArrayList<>();
         theCurrentTypes.addAll(theInfos.getTypeMapping().keySet());
 
-        Collections.sort(theCurrentTypes, new BeanComparator("name"));
+        theCurrentTypes.sort(new BeanComparator("name"));
         for (int i = 0; i < theCurrentTypes.size(); i++) {
             theTargetTypes[i] = theInfos.getTypeMapping().get(theCurrentTypes.get(i));
         }
 
-        DefaultTable theTable = (DefaultTable) getComponent()[0];
-        ConversionTableModel theModel = new ConversionTableModel(theCurrentTypeName, theTargetTypeName,
+        final DefaultTable theTable = (DefaultTable) getComponent()[0];
+        final ConversionTableModel theModel = new ConversionTableModel(theCurrentTypeName, theTargetTypeName,
                 theCurrentTypes, theTargetTypes);
         theTable.setModel(theModel);
 
-        DefaultComboBox theTargetTypesEditor = new DefaultComboBox();
+        final DefaultComboBox theTargetTypesEditor = new DefaultComboBox();
         theTargetTypesEditor.setBorder(BorderFactory.createEmptyBorder());
         theTargetTypesEditor.setModel(new DefaultComboBoxModel(theInfos.getTargetDialect().getDataTypes().toArray(
                 new DataType[theInfos.getTargetDialect().getDataTypes().size()])));
@@ -76,15 +75,15 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
     }
 
     @Override
-    public void view2model(Object aModel, String aPropertyName) {
-        ConversionInfos theConversionInfos = (ConversionInfos) aModel;
-        DefaultTable theTable = (DefaultTable) getComponent()[0];
-        ConversionTableModel theTableModel = (ConversionTableModel) theTable.getModel();
+    public void view2model(final Object aModel, final String aPropertyName) {
+        final ConversionInfos theConversionInfos = (ConversionInfos) aModel;
+        final DefaultTable theTable = (DefaultTable) getComponent()[0];
+        final ConversionTableModel theTableModel = (ConversionTableModel) theTable.getModel();
 
         theConversionInfos.getTypeMapping().clear();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
-            DataType theSourceType = (DataType) theTableModel.getValueAt(i, 0);
-            DataType theTargetType = (DataType) theTableModel.getValueAt(i, 1);
+            final DataType theSourceType = (DataType) theTableModel.getValueAt(i, 0);
+            final DataType theTargetType = (DataType) theTableModel.getValueAt(i, 1);
 
             theConversionInfos.getTypeMapping().put(theSourceType, theTargetType);
         }
@@ -92,11 +91,11 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
 
     @Override
     public List<ValidationError> validate() {
-        DefaultTable theTable = (DefaultTable) getComponent()[0];
-        List<ValidationError> theErrors = new ArrayList<>();
-        ConversionTableModel theTableModel = (ConversionTableModel) theTable.getModel();
+        final DefaultTable theTable = (DefaultTable) getComponent()[0];
+        final List<ValidationError> theErrors = new ArrayList<>();
+        final ConversionTableModel theTableModel = (ConversionTableModel) theTable.getModel();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
-            DataType theAssignedAttribute = (DataType) theTableModel.getValueAt(i, 1);
+            final DataType theAssignedAttribute = (DataType) theTableModel.getValueAt(i, 1);
             if (theAssignedAttribute == null) {
                 theErrors.add(new ValidationError(this, BINDINGHELPER.getText(BindingBundle.MISSINGREQUIREDFIELD)));
             }

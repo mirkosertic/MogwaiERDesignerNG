@@ -55,7 +55,7 @@ public class RepositoryConnectionEditorView extends DefaultPanel {
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);
         setLayout(theLayout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(new DefaultLabel(ERDesignerBundle.DIALECT), cons.xy(2, 2));
         add(dialect, cons.xy(4, 2));
@@ -72,7 +72,7 @@ public class RepositoryConnectionEditorView extends DefaultPanel {
         add(new DefaultLabel(ERDesignerBundle.PASSWORD), cons.xy(2, 10));
         add(password, cons.xy(4, 10));
 
-        JPanel thePanel = new JPanel();
+        final JPanel thePanel = new JPanel();
 
         theColDef = "60dlu,2dlu:grow,60dlu,2dlu,60dlu,2dlu";
         theRowDef = "p";
@@ -114,7 +114,7 @@ public class RepositoryConnectionEditorView extends DefaultPanel {
         return user;
     }
 
-    public void handleDialectChange(Dialect aDialect) {
+    public void handleDialectChange(final Dialect aDialect) {
     }
 
     /**

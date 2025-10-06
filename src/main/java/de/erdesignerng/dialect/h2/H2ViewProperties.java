@@ -27,7 +27,7 @@ public class H2ViewProperties extends ViewProperties {
 		return force;
 	}
 
-	public void setForce(Boolean force) {
+	public void setForce(final Boolean force) {
 		this.force = force;
 	}
 }

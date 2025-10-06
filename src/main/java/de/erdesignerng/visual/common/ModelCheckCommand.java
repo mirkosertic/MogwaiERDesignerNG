@@ -27,13 +27,13 @@ public class ModelCheckCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (!component.checkForValidConnection()) {
             return;
         }
 
-        ModelCheckEditor theEditor = new ModelCheckEditor(getDetailComponent(), component.getModel());
+        final ModelCheckEditor theEditor = new ModelCheckEditor(getDetailComponent(), component.getModel());
         theEditor.showModal();
     }
 }

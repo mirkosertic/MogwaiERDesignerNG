@@ -40,9 +40,9 @@ public class SaveToRepositoryCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
-        ConnectionDescriptor theRepositoryConnection = ApplicationPreferences
+        final ConnectionDescriptor theRepositoryConnection = ApplicationPreferences
                 .getInstance().getRepositoryConnection();
         if (theRepositoryConnection == null) {
             MessagesHelper.displayErrorMessage(getDetailComponent(), component
@@ -51,7 +51,7 @@ public class SaveToRepositoryCommand extends UICommand {
             return;
         }
         Connection theConnection = null;
-        Dialect theDialect = DialectFactory.getInstance().getDialect(
+        final Dialect theDialect = DialectFactory.getInstance().getDialect(
                 theRepositoryConnection.getDialect());
         try {
             theConnection = theDialect.createConnection(ApplicationPreferences
@@ -61,11 +61,11 @@ public class SaveToRepositoryCommand extends UICommand {
                     .getUsername(), theRepositoryConnection
                     .getPassword(), false);
 
-            List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities
+            final List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities
                     .getInstance().getRepositoryEntries(theDialect,
                             theConnection);
 
-            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(
+            final SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(
                     getDetailComponent(), theEntries,
                     component.currentRepositoryEntry);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
@@ -83,7 +83,7 @@ public class SaveToRepositoryCommand extends UICommand {
                                 ERDesignerBundle.FILESAVED));
 
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             getWorldConnector().notifyAboutException(e);
         } finally {
             if (theConnection != null

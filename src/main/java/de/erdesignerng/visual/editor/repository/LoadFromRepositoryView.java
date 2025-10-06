@@ -51,12 +51,12 @@ public class LoadFromRepositoryView extends JPanel {
 		FormLayout theLayout = new FormLayout(theColDef, theRowDef);
 		setLayout(theLayout);
 
-		CellConstraints cons = new CellConstraints();
+		final CellConstraints cons = new CellConstraints();
 
 		add(new DefaultLabel(ERDesignerBundle.NAME), cons.xy(2, 2));
 		add(existingNameBox, cons.xy(4, 2));
 
-		JPanel thePanel = new JPanel();
+		final JPanel thePanel = new JPanel();
 
 		theColDef = "60dlu,fill:2dlu:grow,60dlu";
 		theRowDef = "p";

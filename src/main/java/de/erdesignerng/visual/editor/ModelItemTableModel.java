@@ -34,14 +34,14 @@ public abstract class ModelItemTableModel<T extends ModelItem> implements TableM
     protected final List<String> columnNames = new ArrayList<>();
     protected final List<TableModelListener> listener = new ArrayList<>();
 
-    public void add(T aAttribute) {
+    public void add(final T aAttribute) {
         if (!rowData.contains(aAttribute)) {
             rowData.add(aAttribute);
             fireTableChanged(new TableModelEvent(this));
         }
     }
 
-    public void remove(T aAttribute) {
+    public void remove(final T aAttribute) {
         if (rowData.remove(aAttribute)) {
             fireTableChanged(new TableModelEvent(this));
         }
@@ -57,36 +57,36 @@ public abstract class ModelItemTableModel<T extends ModelItem> implements TableM
         return columnNames.size();
     }
 
-    public T getRow(int aRowIndex) {
+    public T getRow(final int aRowIndex) {
         return rowData.get(aRowIndex);
     }
 
     @Override
-    public String getColumnName(int columnIndex) {
+    public String getColumnName(final int columnIndex) {
         return columnNames.get(columnIndex);
     }
 
     @Override
-    public void addTableModelListener(TableModelListener l) {
+    public void addTableModelListener(final TableModelListener l) {
         listener.add(l);
     }
 
     @Override
-    public void removeTableModelListener(TableModelListener l) {
+    public void removeTableModelListener(final TableModelListener l) {
         listener.remove(l);
     }
 
-    private void fireTableChanged(TableModelEvent e) {
-        for (TableModelListener theListeber : listener) {
+    private void fireTableChanged(final TableModelEvent e) {
+        for (final TableModelListener theListeber : listener) {
             theListeber.tableChanged(e);
         }
     }
 
-    public boolean contains(T aAttribute) {
+    public boolean contains(final T aAttribute) {
         return rowData.contains(aAttribute);
     }
 
-    public int getRowIndex(T aAttribute) {
+    public int getRowIndex(final T aAttribute) {
         return rowData.indexOf(aAttribute);
     }
 }

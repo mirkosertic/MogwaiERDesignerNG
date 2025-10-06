@@ -14,7 +14,7 @@ public class TableEntry extends SchemaEntry {
 
 	private final TableType tableType;
 
-	public TableEntry(String aCatalogName, String aSchemaName, String aTableName, TableType aTableType) {
+	public TableEntry(final String aCatalogName, final String aSchemaName, final String aTableName, final TableType aTableType) {
 		super(aCatalogName, aSchemaName);
 		tableName = aTableName;
 		tableType = aTableType;
@@ -30,7 +30,7 @@ public class TableEntry extends SchemaEntry {
 
 	@Override
 	public String toString() {
-		String theResult = super.toString();
+		final String theResult = super.toString();
 		if (theResult != null) {
 			return theResult + "." + tableName;
 		}

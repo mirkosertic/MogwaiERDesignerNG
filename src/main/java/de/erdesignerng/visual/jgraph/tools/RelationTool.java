@@ -54,12 +54,12 @@ public class RelationTool extends BaseTool {
 
     protected PortView firstPort;
 
-    public RelationTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
+    public RelationTool(final GenericModelEditor aEditor, final ERDesignerGraph aGraph) {
         super(aEditor, aGraph);
     }
 
     @Override
-    public boolean isForceMarqueeEvent(MouseEvent e) {
+    public boolean isForceMarqueeEvent(final MouseEvent e) {
         if (e.isShiftDown()) {
             return false;
         }
@@ -77,7 +77,7 @@ public class RelationTool extends BaseTool {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(final MouseEvent e) {
 
         if (SwingUtilities.isRightMouseButton(e)) {
             // Do nothing here
@@ -90,10 +90,10 @@ public class RelationTool extends BaseTool {
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(final MouseEvent e) {
         if (start != null) {
-            Graphics g = graph.getGraphics();
-            PortView newPort = getTargetPortAt(e.getPoint());
+            final Graphics g = graph.getGraphics();
+            final PortView newPort = getTargetPortAt(e.getPoint());
             if (newPort == null || newPort != port) {
                 paintConnector(Color.black, graph.getBackground(), g);
                 port = newPort;
@@ -108,7 +108,7 @@ public class RelationTool extends BaseTool {
         super.mouseDragged(e);
     }
 
-    public PortView getSourcePortAt(Point2D point) {
+    public PortView getSourcePortAt(final Point2D point) {
         graph.setJumpToDefaultPort(false);
         PortView result;
         try {
@@ -119,21 +119,21 @@ public class RelationTool extends BaseTool {
         return result;
     }
 
-    protected PortView getTargetPortAt(Point2D point) {
+    protected PortView getTargetPortAt(final Point2D point) {
         return graph.getPortViewAt(point.getX(), point.getY());
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(final MouseEvent e) {
         if (e != null && port != null && firstPort != null) {
             connect((Port) firstPort.getCell(), (Port) port.getCell());
             e.consume();
         } else {
             if (firstPort != null) {
-                DefaultPort thePort = (DefaultPort) firstPort.getCell();
-                GraphCell theCell = (GraphCell) thePort.getParent();
+                final DefaultPort thePort = (DefaultPort) firstPort.getCell();
+                final GraphCell theCell = (GraphCell) thePort.getParent();
                 if (theCell instanceof TableCell) {
-                    DefaultPopupMenu menu = createPopupMenu(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())),
+                    final DefaultPopupMenu menu = createPopupMenu(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())),
                             (TableCell) theCell);
                     menu.show(graph, e.getX(), e.getY());
                 }
@@ -150,18 +150,18 @@ public class RelationTool extends BaseTool {
 
     private DefaultPopupMenu createPopupMenu(final Point2D aLocation, final TableCell aParentCell) {
 
-        DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
+        final DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-        DefaultAction theAddChildTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
+        final DefaultAction theAddChildTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
                 ERDesignerBundle.CREATECHILDTABLEHERE);
-        DefaultMenuItem theAddChildTableMenu = new DefaultMenuItem(theAddChildTableAction);
+        final DefaultMenuItem theAddChildTableMenu = new DefaultMenuItem(theAddChildTableAction);
         theAddChildTableAction.addActionListener(e -> graph.commandNewTableAndRelation(aLocation, aParentCell, true));
 
         theMenu.add(theAddChildTableMenu);
 
-        DefaultAction theAddParentTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
+        final DefaultAction theAddParentTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
                 ERDesignerBundle.CREATEPARENTTABLEHERE);
-        DefaultMenuItem theAddParentTableMenu = new DefaultMenuItem(theAddParentTableAction);
+        final DefaultMenuItem theAddParentTableMenu = new DefaultMenuItem(theAddParentTableAction);
         theAddParentTableMenu.addActionListener(e -> graph.commandNewTableAndRelation(aLocation, aParentCell, false));
 
         theMenu.add(theAddParentTableMenu);
@@ -172,7 +172,7 @@ public class RelationTool extends BaseTool {
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(final MouseEvent e) {
         if (e != null && getSourcePortAt(e.getPoint()) != null) {
             graph.setCursor(new Cursor(Cursor.HAND_CURSOR));
             e.consume();
@@ -181,7 +181,7 @@ public class RelationTool extends BaseTool {
         }
     }
 
-    protected void paintConnector(Color fg, Color bg, Graphics g) {
+    protected void paintConnector(final Color fg, final Color bg, final Graphics g) {
         g.setColor(fg);
         g.setXORMode(bg);
         paintPort(graph.getGraphics());
@@ -190,9 +190,9 @@ public class RelationTool extends BaseTool {
         }
     }
 
-    protected void paintPort(Graphics g) {
+    protected void paintPort(final Graphics g) {
         if (port != null) {
-            boolean o = (GraphConstants.getOffset(port.getAllAttributes()) != null);
+            final boolean o = (GraphConstants.getOffset(port.getAllAttributes()) != null);
             Rectangle2D r = (o) ? port.getBounds() : port.getParentView().getBounds();
             r = graph.toScreen((Rectangle2D) r.clone());
             r.setFrame(r.getX() - 3, r.getY() - 3, r.getWidth() + 6, r.getHeight() + 6);
@@ -200,13 +200,13 @@ public class RelationTool extends BaseTool {
         }
     }
 
-    public void connect(Port aSource, Port aTarget) {
+    public void connect(final Port aSource, final Port aTarget) {
         // Construct Edge with no label
-        GraphCell theSourceCell = (GraphCell) ((DefaultPort) aSource).getParent();
-        GraphCell theTargetCell = (GraphCell) ((DefaultPort) aTarget).getParent();
+        final GraphCell theSourceCell = (GraphCell) ((DefaultPort) aSource).getParent();
+        final GraphCell theTargetCell = (GraphCell) ((DefaultPort) aTarget).getParent();
         if ((theSourceCell instanceof TableCell) && (theTargetCell instanceof TableCell)) {
 
-            Table theTargetTable = (Table) ((TableCell) theTargetCell).getUserObject();
+            final Table theTargetTable = (Table) ((TableCell) theTargetCell).getUserObject();
             if (theTargetTable.hasPrimaryKey()) {
                 graph.commandNewRelation((TableCell) theSourceCell, (TableCell) theTargetCell);
                 graph.repaint();

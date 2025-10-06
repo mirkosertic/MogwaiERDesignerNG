@@ -32,7 +32,7 @@ public class ViewAttribute extends ModelItem {
 	 */
 	@Override
 	public ViewAttribute clone() {
-		ViewAttribute theAttribute = new ViewAttribute();
+		final ViewAttribute theAttribute = new ViewAttribute();
 		theAttribute.setSystemId(getSystemId());
 		theAttribute.setComment(getComment());
 		theAttribute.setName(getName());

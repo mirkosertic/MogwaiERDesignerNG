@@ -27,7 +27,6 @@ import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
-import de.erdesignerng.modificationtracker.VetoException;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -42,14 +41,14 @@ import java.sql.SQLException;
 public class MSSQLReverseEngineeringStrategy extends
         JDBCReverseEngineeringStrategy<MSSQLDialect> {
 
-    public MSSQLReverseEngineeringStrategy(MSSQLDialect aDialect) {
+    public MSSQLReverseEngineeringStrategy(final MSSQLDialect aDialect) {
         super(aDialect);
     }
 
     @Override
-    protected String reverseEngineerViewSQL(TableEntry aViewEntry,
-                                            Connection aConnection, View aView) throws SQLException {
-        PreparedStatement theStatement = aConnection
+    protected String reverseEngineerViewSQL(final TableEntry aViewEntry,
+                                            final Connection aConnection, final View aView) throws SQLException {
+        final PreparedStatement theStatement = aConnection
                 .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ?");
         theStatement.setString(1, aViewEntry.getTableName());
         ResultSet theResult = null;
@@ -82,23 +81,21 @@ public class MSSQLReverseEngineeringStrategy extends
     }
 
     @Override
-    protected void reverseEngineerCustomType(Model aModel,
-                                             CustomType aCustomType, ReverseEngineeringOptions aOptions,
-                                             ReverseEngineeringNotifier aNotifier, Connection aConnection) {
+    protected void reverseEngineerCustomType(final Model aModel,
+                                             final CustomType aCustomType, final ReverseEngineeringOptions aOptions,
+                                             final ReverseEngineeringNotifier aNotifier, final Connection aConnection) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    protected void reverseEngineerCustomTypes(Model aModel,
-                                              ReverseEngineeringOptions aOptions,
-                                              ReverseEngineeringNotifier aNotifier, Connection aConnection)
+    protected void reverseEngineerCustomTypes(final Model aModel,
+                                              final ReverseEngineeringOptions aOptions,
+                                              final ReverseEngineeringNotifier aNotifier, final Connection aConnection)
             throws SQLException, ReverseEngineeringException {
-        String theQuery = "select b.principal_id,b.name,a.* from sys.types a,sys.schemas b where a.schema_id = b.schema_id and a.is_table_type = 0 and a.is_user_defined = 1";
-        ResultSet theResult = null;
-        try (PreparedStatement theStatement = aConnection.prepareStatement(theQuery)) {
-            theResult = theStatement.executeQuery();
+        final String theQuery = "select b.principal_id,b.name,a.* from sys.types a,sys.schemas b where a.schema_id = b.schema_id and a.is_table_type = 0 and a.is_user_defined = 1";
+        try (final PreparedStatement theStatement = aConnection.prepareStatement(theQuery); final ResultSet theResult = theStatement.executeQuery()) {
             while (theResult.next()) {
-                String theCustomTypeName = theResult.getString("name");
+                final String theCustomTypeName = theResult.getString("name");
 
                 aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGCUSTOMTYPE,
                         theCustomTypeName);
@@ -114,20 +111,11 @@ public class MSSQLReverseEngineeringStrategy extends
                 theCustomType = new CustomType();
                 theCustomType.setName(theCustomTypeName);
 
-                try {
-                    aModel.addCustomType(theCustomType);
-                } catch (VetoException e) {
-                    throw new ReverseEngineeringException(e.getMessage(), e);
-                }
+                aModel.addCustomType(theCustomType);
 
                 reverseEngineerCustomType(aModel, theCustomType, aOptions,
                         aNotifier, aConnection);
             }
-        } finally {
-            if (theResult != null) {
-                theResult.close();
-            }
-
         }
     }
 }

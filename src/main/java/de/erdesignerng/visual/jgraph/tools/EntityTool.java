@@ -29,17 +29,17 @@ import java.awt.geom.Point2D;
  */
 public class EntityTool extends BaseTool {
 
-    public EntityTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
+    public EntityTool(final GenericModelEditor aEditor, final ERDesignerGraph aGraph) {
         super(aEditor, aGraph);
     }
 
     @Override
-    public boolean isForceMarqueeEvent(MouseEvent event) {
+    public boolean isForceMarqueeEvent(final MouseEvent event) {
         return true;
     }
 
     @Override
-    public boolean startCreateNew(MouseEvent e) {
+    public boolean startCreateNew(final MouseEvent e) {
         graph.commandNewTable(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())));
         return true;
     }

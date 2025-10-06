@@ -46,15 +46,15 @@ public class TableEntity extends ModelEntity implements AttributeEntityProvider 
         return schema;
     }
 
-    public void setSchema(String schema) {
+    public void setSchema(final String schema) {
         this.schema = schema;
     }
 
-    public void setAttributes(List<AttributeEntity> attributes) {
+    public void setAttributes(final List<AttributeEntity> attributes) {
         this.attributes = attributes;
     }
 
-    public void setIndexes(List<IndexEntity> indexes) {
+    public void setIndexes(final List<IndexEntity> indexes) {
         this.indexes = indexes;
     }
 }

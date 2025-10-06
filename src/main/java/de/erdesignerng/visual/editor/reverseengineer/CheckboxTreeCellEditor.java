@@ -39,21 +39,21 @@ public class CheckboxTreeCellEditor extends AbstractCellEditor implements
     private final UIInitializer initializer = UIInitializer.getInstance();
     private DefaultMutableTreeNode editingNode;
 
-    public CheckboxTreeCellEditor(JTree tree) {
+    public CheckboxTreeCellEditor(final JTree tree) {
         this.tree = tree;
     }
 
     @Override
-    public boolean isCellEditable(EventObject event) {
+    public boolean isCellEditable(final EventObject event) {
         boolean returnValue = false;
         if (event instanceof MouseEvent) {
-            MouseEvent mouseEvent = (MouseEvent) event;
-            TreePath path = tree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
+            final MouseEvent mouseEvent = (MouseEvent) event;
+            final TreePath path = tree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
             if (path != null) {
-                Object node = path.getLastPathComponent();
+                final Object node = path.getLastPathComponent();
                 if ((node != null) && (node instanceof DefaultMutableTreeNode)) {
-                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
-                    Object userObject = treeNode.getUserObject();
+                    final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
+                    final Object userObject = treeNode.getUserObject();
                     returnValue = (userObject instanceof SelectableWrapper);
                 }
             }
@@ -62,15 +62,15 @@ public class CheckboxTreeCellEditor extends AbstractCellEditor implements
     }
 
     @Override
-    public Component getTreeCellEditorComponent(JTree aTree, Object aValue,
-                                                boolean isSelected, boolean isExpanded, boolean isLeaf, int isRow) {
+    public Component getTreeCellEditorComponent(final JTree aTree, final Object aValue,
+                                                final boolean isSelected, final boolean isExpanded, final boolean isLeaf, final int isRow) {
 
         final JCheckBox theEditor = new JCheckBox();
         UIInitializer.getInstance().initializeComponent(theEditor);
 
         editingNode = (DefaultMutableTreeNode) aValue;
         if (editingNode.getUserObject() instanceof SelectableWrapper) {
-            SelectableWrapper theWrapper = (SelectableWrapper) editingNode
+            final SelectableWrapper theWrapper = (SelectableWrapper) editingNode
                     .getUserObject();
 
             theEditor.setEnabled(true);
@@ -89,9 +89,9 @@ public class CheckboxTreeCellEditor extends AbstractCellEditor implements
                         .getDefaultListNonSelectionForeground());
             }
 
-            ItemListener theItemListener = itemEvent -> {
+            final ItemListener theItemListener = itemEvent -> {
                 if (stopCellEditing()) {
-                    SelectableTableModel theModel = (SelectableTableModel) tree.getModel();
+                    final SelectableTableModel theModel = (SelectableTableModel) tree.getModel();
                     theModel.setSelected(editingNode, theEditor.isSelected());
                     fireEditingStopped();
                 }
@@ -103,7 +103,7 @@ public class CheckboxTreeCellEditor extends AbstractCellEditor implements
         throw new IllegalArgumentException("Wrong object type");
     }
 
-    protected String objectToString(Object aObject) {
+    protected String objectToString(final Object aObject) {
         return StringRendererHelper.objectToString(aObject);
     }
 

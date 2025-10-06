@@ -10,7 +10,7 @@ public class ShowHideTableRelationsCommand extends UICommand {
     private final Table table;
     private final boolean show;
 
-    public ShowHideTableRelationsCommand(Table aTable, boolean aShow) {
+    public ShowHideTableRelationsCommand(final Table aTable, final boolean aShow) {
         table = aTable;
         show = aShow;
     }

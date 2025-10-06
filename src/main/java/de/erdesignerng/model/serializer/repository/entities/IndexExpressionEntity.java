@@ -32,7 +32,7 @@ public class IndexExpressionEntity extends ModelEntity {
 		return expression;
 	}
 
-	public void setExpression(String expression) {
+	public void setExpression(final String expression) {
 		this.expression = expression;
 	}
 
@@ -40,7 +40,7 @@ public class IndexExpressionEntity extends ModelEntity {
 		return attributeId;
 	}
 
-	public void setAttributeId(String attributeId) {
+	public void setAttributeId(final String attributeId) {
 		this.attributeId = attributeId;
 	}
 }

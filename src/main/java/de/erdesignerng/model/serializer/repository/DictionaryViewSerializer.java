@@ -34,11 +34,11 @@ public class DictionaryViewSerializer extends DictionaryBaseSerializer {
 
 	public static final DictionaryViewSerializer SERIALIZER = new DictionaryViewSerializer();
 
-	public void serialize(Model aModel, RepositoryEntity aDictionary) {
+	public void serialize(final Model aModel, final RepositoryEntity aDictionary) {
 
-		Map<String, ModelEntity> theViews = deletedRemovedInstances(aModel.getViews(), aDictionary.getViews());
+		final Map<String, ModelEntity> theViews = deletedRemovedInstances(aModel.getViews(), aDictionary.getViews());
 
-		for (View theView : aModel.getViews()) {
+		for (final View theView : aModel.getViews()) {
 			boolean existing = true;
 			ViewEntity theExisting = (ViewEntity) theViews.get(theView.getSystemId());
 			if (theExisting == null) {
@@ -57,10 +57,10 @@ public class DictionaryViewSerializer extends DictionaryBaseSerializer {
 		}
 	}
 
-	public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-		for (ViewEntity theViewEntity : aRepositoryEntity.getViews()) {
+	public void deserialize(final Model aModel, final RepositoryEntity aRepositoryEntity) {
+		for (final ViewEntity theViewEntity : aRepositoryEntity.getViews()) {
 
-			View theView = new View();
+			final View theView = new View();
 			theView.setOwner(aModel);
 
 			copyBaseAttributes(theViewEntity, theView);

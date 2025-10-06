@@ -35,14 +35,14 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryAttributeSerializer SERIALIZER = new DictionaryAttributeSerializer();
 
-    private <T extends ModelItem> void copyExtendedAttributes(Attribute<T> aSource, AttributeEntity aDestination) {
+    private <T extends ModelItem> void copyExtendedAttributes(final Attribute<T> aSource, final AttributeEntity aDestination) {
         aDestination.setDatatype(null);
         aDestination.setDomainId(null);
         if (aSource.getDatatype() != null) {
             if (!(aSource.getDatatype().isDomain())) {
                 aDestination.setDatatype(aSource.getDatatype().getName());
             } else {
-                Domain theDomain = (Domain) aSource.getDatatype();
+                final Domain theDomain = (Domain) aSource.getDatatype();
                 aDestination.setDomainId(theDomain.getSystemId());
             }
         } else {
@@ -56,7 +56,7 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
         aDestination.setExtra(aSource.getExtra());
     }
 
-    private <T extends ModelItem> void copyExtendedAttributes(AttributeEntity aSource, Attribute<T> aDestination, Model aModel) {
+    private <T extends ModelItem> void copyExtendedAttributes(final AttributeEntity aSource, final Attribute<T> aDestination, final Model aModel) {
         if (!StringUtils.isEmpty(aSource.getDomainId())) {
             aDestination.setDatatype(aModel.getDomains().findBySystemId(aSource.getDomainId()));
         } else {
@@ -75,12 +75,12 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
         aDestination.setExtra(aSource.getExtra());
     }
 
-    public <T extends ModelItem> void serialize(AttributeProvider<T> aTable, AttributeEntityProvider aTableEntity) {
-        Set<AttributeEntity> theRemovedAttributes = new HashSet<>();
+    public <T extends ModelItem> void serialize(final AttributeProvider<T> aTable, final AttributeEntityProvider aTableEntity) {
+        final Set<AttributeEntity> theRemovedAttributes = new HashSet<>();
 
-        Map<String, AttributeEntity> theAttributes = new HashMap<>();
-        for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
-            Attribute<T> theAttribute = aTable.getAttributes().findBySystemId(theAttributeEntity.getSystemId());
+        final Map<String, AttributeEntity> theAttributes = new HashMap<>();
+        for (final AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
+            final Attribute<T> theAttribute = aTable.getAttributes().findBySystemId(theAttributeEntity.getSystemId());
             if (theAttribute == null) {
                 theRemovedAttributes.add(theAttributeEntity);
             } else {
@@ -90,7 +90,7 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
 
         aTableEntity.getAttributes().removeAll(theRemovedAttributes);
 
-        for (Attribute<T> theAttribute : aTable.getAttributes()) {
+        for (final Attribute<T> theAttribute : aTable.getAttributes()) {
             boolean existing = true;
             AttributeEntity theEntity = theAttributes.get(theAttribute.getSystemId());
             if (theEntity == null) {
@@ -108,9 +108,9 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
 
     }
 
-    public <T extends ModelItem> void deserialize(Model aModel, AttributeProvider<T> aTable, AttributeEntityProvider aTableEntity) {
-        for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
-            Attribute<T> theAttribute = aTable.createNewAttribute();
+    public <T extends ModelItem> void deserialize(final Model aModel, final AttributeProvider<T> aTable, final AttributeEntityProvider aTableEntity) {
+        for (final AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
+            final Attribute<T> theAttribute = aTable.createNewAttribute();
 
             copyBaseAttributes(theAttributeEntity, theAttribute);
             copyExtendedAttributes(theAttributeEntity, theAttribute, aModel);

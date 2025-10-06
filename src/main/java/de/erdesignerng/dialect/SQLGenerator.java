@@ -36,7 +36,7 @@ public abstract class SQLGenerator<T extends Dialect> {
 
 	private final T dialect;
 
-	public SQLGenerator(T aDialect) {
+	public SQLGenerator(final T aDialect) {
 		dialect = aDialect;
 	}
 
@@ -53,31 +53,31 @@ public abstract class SQLGenerator<T extends Dialect> {
 		return ".";
 	}
 
-	protected String createUniqueTableName(Table aTable) {
-		String theSchema = aTable.getSchema();
+	protected String createUniqueTableName(final Table aTable) {
+		final String theSchema = aTable.getSchema();
 		if (!StringUtils.isEmpty(theSchema)) {
 			return theSchema + getSchemaSeparator() + aTable.getName();
 		}
 		return aTable.getName();
 	}
 
-	protected String createUniqueViewName(View aView) {
-		String theSchema = aView.getSchema();
+	protected String createUniqueViewName(final View aView) {
+		final String theSchema = aView.getSchema();
 		if (!StringUtils.isEmpty(theSchema)) {
 			return theSchema + getSchemaSeparator() + aView.getName();
 		}
 		return aView.getName();
 	}
 
-	protected String createUniqueSchemaName(String aSchema) {
+	protected String createUniqueSchemaName(final String aSchema) {
 		return aSchema;
 	}
 
-	protected String createUniqueColumnName(Attribute<Table> aAttribute) {
+	protected String createUniqueColumnName(final Attribute<Table> aAttribute) {
 		return aAttribute.getName();
 	}
 
-	protected String createUniqueRelationName(Relation aRelation) {
+	protected String createUniqueRelationName(final Relation aRelation) {
 		return aRelation.getName();
 	}
 
@@ -127,32 +127,30 @@ public abstract class SQLGenerator<T extends Dialect> {
 	 * @param aModel the model
 	 * @return the lists of statements
 	 */
-	public StatementList createCreateAllObjects(Model aModel) {
+	public StatementList createCreateAllObjects(final Model aModel) {
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 
-		List<String> theSystemSchemas = new ArrayList<>();
-		List<String> theSchemasFromDialect = dialect.getSystemSchemas();
+		final List<String> theSystemSchemas = new ArrayList<>();
+		final List<String> theSchemasFromDialect = dialect.getSystemSchemas();
 		if (theSchemasFromDialect != null) {
 			theSystemSchemas.addAll(theSchemasFromDialect);
 		}
         // We will not create the statements for system schemas.
-        aModel.getUsedSchemas().stream().filter(theSchema -> !theSystemSchemas.contains(theSchema)).forEach(theSchema -> {
-            theResult.addAll(createAddSchemaStatement(theSchema));
-        });
-		for (Domain theDomain : aModel.getDomains()) {
+        aModel.getUsedSchemas().stream().filter(theSchema -> !theSystemSchemas.contains(theSchema)).forEach(theSchema -> theResult.addAll(createAddSchemaStatement(theSchema)));
+		for (final Domain theDomain : aModel.getDomains()) {
 			theResult.addAll(createAddDomainStatement(theDomain));
 		}
-		for (CustomType theCustomType : aModel.getCustomTypes()) {
+		for (final CustomType theCustomType : aModel.getCustomTypes()) {
 			theResult.addAll(createAddCustomTypeStatement(theCustomType));
 		}
-		for (Table theTable : aModel.getTables()) {
+		for (final Table theTable : aModel.getTables()) {
 			theResult.addAll(createAddTableStatement(theTable));
 		}
-		for (View theView : aModel.getViews()) {
+		for (final View theView : aModel.getViews()) {
 			theResult.addAll(createAddViewStatement(theView));
 		}
-		for (Relation theRelation : aModel.getRelations()) {
+		for (final Relation theRelation : aModel.getRelations()) {
 			theResult.addAll(createAddRelationStatement(theRelation));
 		}
 

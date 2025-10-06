@@ -31,8 +31,8 @@ import org.w3c.dom.NodeList;
 public class XMLRelationSerializer extends de.erdesignerng.model.serializer.xml10.XMLRelationSerializer {
 
 	@Override
-	public void serialize(Relation aRelation, Document aDocument, Element aRootElement) {
-		Element theRelationElement = addElement(aDocument, aRootElement, RELATION);
+	public void serialize(final Relation aRelation, final Document aDocument, final Element aRootElement) {
+		final Element theRelationElement = addElement(aDocument, aRootElement, RELATION);
 
 		// Basisdaten des Modelelementes speichern
 		serializeProperties(aDocument, theRelationElement, aRelation);
@@ -47,10 +47,10 @@ public class XMLRelationSerializer extends de.erdesignerng.model.serializer.xml1
 		serializeCommentElement(aDocument, theRelationElement, aRelation);
 
 		// Mapping
-		for (IndexExpression theKey : aRelation.getMapping().keySet()) {
-			Attribute<Table> theValue = aRelation.getMapping().get(theKey);
+		for (final IndexExpression theKey : aRelation.getMapping().keySet()) {
+			final Attribute<Table> theValue = aRelation.getMapping().get(theKey);
 
-			Element theMapping = addElement(aDocument, theRelationElement, MAPPING);
+			final Element theMapping = addElement(aDocument, theRelationElement, MAPPING);
 			theMapping.setAttribute(EXPORTINGEXPRESSIONREFID, theKey.getSystemId());
 			theMapping.setAttribute(IMPORTINGATTRIBUTEREFID, theValue.getSystemId());
 		}
@@ -58,14 +58,14 @@ public class XMLRelationSerializer extends de.erdesignerng.model.serializer.xml1
 	}
 
 	@Override
-	public void deserialize(Model aModel, Document aDocument) {
+	public void deserialize(final Model aModel, final Document aDocument) {
 
 		// And finally, parse the relations
-		NodeList theElements = aDocument.getElementsByTagName(RELATION);
+		final NodeList theElements = aDocument.getElementsByTagName(RELATION);
 		for (int i = 0; i < theElements.getLength(); i++) {
-			Element theElement = (Element) theElements.item(i);
+			final Element theElement = (Element) theElements.item(i);
 
-			Relation theRelation = new Relation();
+			final Relation theRelation = new Relation();
 			theRelation.setOwner(aModel);
 			deserializeProperties(theElement, theRelation);
 			deserializeCommentElement(theElement, theRelation);
@@ -73,8 +73,8 @@ public class XMLRelationSerializer extends de.erdesignerng.model.serializer.xml1
 			theRelation.setOnDelete(CascadeType.fromString(theElement.getAttribute(ONDELETE)));
 			theRelation.setOnUpdate(CascadeType.fromString(theElement.getAttribute(ONUPDATE)));
 
-			String theStartTableID = theElement.getAttribute(IMPORTINGTABLEREFID);
-			String theEndTableID = theElement.getAttribute(EXPORTINGTABLEREFID);
+			final String theStartTableID = theElement.getAttribute(IMPORTINGTABLEREFID);
+			final String theEndTableID = theElement.getAttribute(EXPORTINGTABLEREFID);
 
 			Table theTempTable = aModel.getTables().findBySystemId(theStartTableID);
 			if (theTempTable == null) {
@@ -88,22 +88,22 @@ public class XMLRelationSerializer extends de.erdesignerng.model.serializer.xml1
 
 			theRelation.setExportingTable(theTempTable);
 
-			Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
+			final Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
 
 			// Parse the mapping
-			NodeList theMappings = theElement.getElementsByTagName(MAPPING);
+			final NodeList theMappings = theElement.getElementsByTagName(MAPPING);
 			for (int j = 0; j < theMappings.getLength(); j++) {
-				Element theAttributeElement = (Element) theMappings.item(j);
+				final Element theAttributeElement = (Element) theMappings.item(j);
 
-				String theImportingAttributeId = theAttributeElement.getAttribute(IMPORTINGATTRIBUTEREFID);
-				String theExportingExpressionId = theAttributeElement.getAttribute(EXPORTINGEXPRESSIONREFID);
+				final String theImportingAttributeId = theAttributeElement.getAttribute(IMPORTINGATTRIBUTEREFID);
+				final String theExportingExpressionId = theAttributeElement.getAttribute(EXPORTINGEXPRESSIONREFID);
 
-				Attribute<Table> theImportingAttribute = aModel.getTables().findAttributeBySystemId(theImportingAttributeId);
+				final Attribute<Table> theImportingAttribute = aModel.getTables().findAttributeBySystemId(theImportingAttributeId);
 				if (theImportingAttribute == null) {
 					throw new IllegalArgumentException("Cannot find attribute with id " + theImportingAttributeId);
 				}
 
-				IndexExpression theExpression = thePrimaryKey.getExpressions().findBySystemId(theExportingExpressionId);
+				final IndexExpression theExpression = thePrimaryKey.getExpressions().findBySystemId(theExportingExpressionId);
 				if (theExpression == null) {
 					throw new IllegalArgumentException("Cannot find expression with id " + theExportingExpressionId);
 				}

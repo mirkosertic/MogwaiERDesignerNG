@@ -25,22 +25,22 @@ public class EditRelationCommand extends UICommand {
 
     private final Relation relation;
 
-    public EditRelationCommand(Relation aTable) {
+    public EditRelationCommand(final Relation aTable) {
         relation = aTable;
     }
 
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        RelationEditor theEditor = new RelationEditor(component.getModel(), component.getDetailComponent());
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final RelationEditor theEditor = new RelationEditor(component.getModel(), component.getDetailComponent());
         theEditor.initializeFor(relation);
         if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
 
                 refreshDisplayAndOutline();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

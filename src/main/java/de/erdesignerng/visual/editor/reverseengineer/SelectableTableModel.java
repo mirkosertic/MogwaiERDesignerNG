@@ -32,11 +32,11 @@ public class SelectableTableModel extends DefaultTreeModel {
         boolean visit(Object aValue, DefaultMutableTreeNode aNode);
     }
 
-    public SelectableTableModel(DefaultMutableTreeNode aRoot) {
+    public SelectableTableModel(final DefaultMutableTreeNode aRoot) {
         super(aRoot);
     }
 
-    protected void visitAll(DefaultMutableTreeNode aNode, TreeVisitor aVisitor) {
+    protected void visitAll(final DefaultMutableTreeNode aNode, final TreeVisitor aVisitor) {
         if (aVisitor.visit(aNode.getUserObject(), aNode)) {
             nodeChanged(aNode);
         }
@@ -46,7 +46,7 @@ public class SelectableTableModel extends DefaultTreeModel {
     }
 
     // Implemented FR 3317539 [ERDesignerNG] TableSelectEditor: (De)select whole subtrees
-    public void setSelected(DefaultMutableTreeNode aRootNode, Boolean isSelected) {
+    public void setSelected(final DefaultMutableTreeNode aRootNode, final Boolean isSelected) {
         setSelected(aRootNode, isSelected, true);
     }
 
@@ -55,7 +55,7 @@ public class SelectableTableModel extends DefaultTreeModel {
         visitAll(aRootNode, (aValue, aNode) -> {
             if (aRecursiveSelection || aValue.equals(aRootNode.getUserObject())) {
                 if (aValue instanceof SelectableWrapper) {
-                    SelectableWrapper theWrapper = (SelectableWrapper) aValue;
+                    final SelectableWrapper theWrapper = (SelectableWrapper) aValue;
 
                     if (isSelected == null) {
                         theWrapper.invertSelection();
@@ -76,13 +76,13 @@ public class SelectableTableModel extends DefaultTreeModel {
         //changing selection state of leaf nodes
         if (aRootNode.isLeaf() && aRootNode.getUserObject() instanceof SelectableWrapper && ((SelectableWrapper) aRootNode.getUserObject()).getValue() instanceof TableEntry) {
             boolean allSelected = true;
-            DefaultMutableTreeNode theMainNode = (DefaultMutableTreeNode) aRootNode.getParent();
+            final DefaultMutableTreeNode theMainNode = (DefaultMutableTreeNode) aRootNode.getParent();
 
             for (int i = 0; (allSelected && (i < theMainNode.getChildCount())); i++) {
                 allSelected &= (((SelectableWrapper) (((DefaultMutableTreeNode) theMainNode.getChildAt(i)).getUserObject())).isSelected());
             }
 
-            SelectableWrapper theMainWrapper = (SelectableWrapper) theMainNode.getUserObject();
+            final SelectableWrapper theMainWrapper = (SelectableWrapper) theMainNode.getUserObject();
             if (theMainWrapper.isSelected() != allSelected) {
                 setSelected(theMainNode, allSelected, false);
             }
@@ -106,7 +106,7 @@ public class SelectableTableModel extends DefaultTreeModel {
 
         visitAll((DefaultMutableTreeNode) getRoot(), (aValue, aNode) -> {
             if (aValue instanceof SelectableWrapper) {
-                SelectableWrapper theWrapper = (SelectableWrapper) aValue;
+                final SelectableWrapper theWrapper = (SelectableWrapper) aValue;
                 if (theWrapper.isSelected() && (theWrapper.getValue() instanceof TableEntry)) {
                     theResult.add(theWrapper.getValue());
                 }

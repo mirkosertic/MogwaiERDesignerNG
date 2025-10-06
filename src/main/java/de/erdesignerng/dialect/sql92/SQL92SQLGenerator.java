@@ -35,36 +35,36 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 
 	private static final StatementList EMPTY_STATEMENTLIST = new StatementList();
 
-	protected SQL92SQLGenerator(T aDialect) {
+	protected SQL92SQLGenerator(final T aDialect) {
 		super(aDialect);
 	}
 
-	protected String createAttributeDataDefinition(Attribute<Table> aAttribute) {
+	protected String createAttributeDataDefinition(final Attribute<Table> aAttribute) {
 		return createAttributeDataDefinition(aAttribute, false);
 	}
 
-	protected String createAttributeDataDefinition(Attribute<Table> aAttribute, boolean aIgnoreDefault) {
-		StringBuilder theBuilder = new StringBuilder();
+	protected String createAttributeDataDefinition(final Attribute<Table> aAttribute, final boolean aIgnoreDefault) {
+		final StringBuilder theBuilder = new StringBuilder();
 		if (aAttribute.getDatatype().isDomain() && getDialect().isSupportsDomains()) {
 			theBuilder.append(aAttribute.getDatatype().getName());
 		} else {
 			theBuilder.append(aAttribute.getPhysicalDeclaration());
 		}
-		boolean isNullable = aAttribute.isNullable();
+		final boolean isNullable = aAttribute.isNullable();
 
 		if (!isNullable) {
 			theBuilder.append(" NOT NULL");
 		}
 
 		if (!aIgnoreDefault) {
-			String theDefault = aAttribute.getDefaultValue();
+			final String theDefault = aAttribute.getDefaultValue();
 			if (!StringUtils.isEmpty(theDefault)) {
 				theBuilder.append(" DEFAULT ");
 				theBuilder.append(theDefault);
 			}
 		}
 
-		String theExtra = aAttribute.getExtra();
+		final String theExtra = aAttribute.getExtra();
 		if (!StringUtils.isEmpty(theExtra) && !aAttribute.getDatatype().supportsExtra()) {
 			theBuilder.append(" ");
 			theBuilder.append(theExtra);
@@ -73,8 +73,8 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 		return theBuilder.toString();
 	}
 
-	protected String createCompleteAttributeDefinition(Attribute<Table> aAttribute) {
-		StringBuilder theBuilder = new StringBuilder();
+	protected String createCompleteAttributeDefinition(final Attribute<Table> aAttribute) {
+		final StringBuilder theBuilder = new StringBuilder();
 		theBuilder.append(createUniqueColumnName(aAttribute));
 		theBuilder.append(" ");
 		theBuilder.append(createAttributeDataDefinition(aAttribute));
@@ -82,9 +82,9 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createAddAttributeToTableStatement(Table aTable, Attribute<Table> aAttribute) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddAttributeToTableStatement(final Table aTable, final Attribute<Table> aAttribute) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(aTable));
@@ -97,9 +97,9 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createAddIndexToTableStatement(Table aTable, Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddIndexToTableStatement(final Table aTable, final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("CREATE ");
 
@@ -118,7 +118,7 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 		theStatement.append(" (");
 
 		for (int i = 0; i < aIndex.getExpressions().size(); i++) {
-			IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
+			final IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
 
 			if (i > 0) {
 				theStatement.append(",");
@@ -141,19 +141,19 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createAddRelationStatement(Relation aRelation) {
-		Table theImportingTable = aRelation.getImportingTable();
-		Table theExportingTable = aRelation.getExportingTable();
+	public StatementList createAddRelationStatement(final Relation aRelation) {
+		final Table theImportingTable = aRelation.getImportingTable();
+		final Table theExportingTable = aRelation.getExportingTable();
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder("ALTER TABLE ");
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theImportingTable));
 		theStatement.append(" ADD CONSTRAINT ");
 		theStatement.append(createUniqueRelationName(aRelation));
 		theStatement.append(" FOREIGN KEY (");
 
 		boolean first = true;
-		for (Attribute<Table> theAttribute : aRelation.getMapping().values()) {
+		for (final Attribute<Table> theAttribute : aRelation.getMapping().values()) {
 			if (!first) {
 				theStatement.append(",");
 			}
@@ -166,7 +166,7 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 		theStatement.append("(");
 
 		first = true;
-		for (IndexExpression theExpression : aRelation.getMapping().keySet()) {
+		for (final IndexExpression theExpression : aRelation.getMapping().keySet()) {
 			if (!first) {
 				theStatement.append(",");
 			}
@@ -226,9 +226,9 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createChangeIndexStatement(Index anExistingIndex, Index aNewIndex) {
-		StatementList theList = new StatementList();
-		Table theTable = anExistingIndex.getOwner();
+	public StatementList createChangeIndexStatement(final Index anExistingIndex, final Index aNewIndex) {
+		final StatementList theList = new StatementList();
+		final Table theTable = anExistingIndex.getOwner();
 
 		if (anExistingIndex.getIndexType() == IndexType.PRIMARYKEY) {
 			theList.addAll(createRemovePrimaryKeyStatement(theTable, anExistingIndex));
@@ -246,8 +246,8 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createChangeRelationStatement(Relation aRelation, Relation aTempRelation) {
-		StatementList theList = new StatementList();
+	public StatementList createChangeRelationStatement(final Relation aRelation, final Relation aTempRelation) {
+		final StatementList theList = new StatementList();
 		theList.addAll(createRemoveRelationStatement(aRelation));
 		theList.addAll(createAddRelationStatement(aTempRelation));
 
@@ -255,13 +255,13 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createChangeTableCommentStatement(Table aTable, String aNewComment) {
+	public StatementList createChangeTableCommentStatement(final Table aTable, final String aNewComment) {
 		return EMPTY_STATEMENTLIST;
 	}
 
 	@Override
-	public StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute<Table> aAttribute) {
-		StatementList theResult = new StatementList();
+	public StatementList createRemoveAttributeFromTableStatement(final Table aTable, final Attribute<Table> aAttribute) {
+		final StatementList theResult = new StatementList();
 		theResult.add(new Statement("ALTER TABLE "
 				+ createUniqueTableName(aTable) + " DROP COLUMN "
 				+ aAttribute.getName()));
@@ -269,9 +269,9 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createRemoveIndexFromTableStatement(final Table aTable, final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("DROP INDEX ");
 		theStatement.append(aIndex.getName());
@@ -284,10 +284,10 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createRemoveRelationStatement(Relation aRelation) {
-		Table theImportingTable = aRelation.getImportingTable();
+	public StatementList createRemoveRelationStatement(final Relation aRelation) {
+		final Table theImportingTable = aRelation.getImportingTable();
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 		theResult.add(new Statement("ALTER TABLE "
 				+ createUniqueTableName(theImportingTable)
 				+ " DROP CONSTRAINT " + createUniqueRelationName(aRelation)));
@@ -295,25 +295,25 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createRemoveTableStatement(Table aTable) {
-		StatementList theResult = new StatementList();
+	public StatementList createRemoveTableStatement(final Table aTable) {
+		final StatementList theResult = new StatementList();
 		theResult.add(new Statement("DROP TABLE "
 				+ createUniqueTableName(aTable)));
 		return theResult;
 	}
 
 	@Override
-	public StatementList createRenameTableStatement(Table aTable, String aNewName) {
+	public StatementList createRenameTableStatement(final Table aTable, final String aNewName) {
 		return EMPTY_STATEMENTLIST;
 	}
 
-	protected void addAdditionalInformationToPreCreateTableStatement(Table aTable, StringBuilder aStatement) {
+	protected void addAdditionalInformationToPreCreateTableStatement(final Table aTable, final StringBuilder aStatement) {
 	}
 
 	@Override
-	public StatementList createAddTableStatement(Table aTable) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddTableStatement(final Table aTable) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("CREATE ");
 		addAdditionalInformationToPreCreateTableStatement(aTable, theStatement);
@@ -324,7 +324,7 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 		theStatement.append(SystemUtils.LINE_SEPARATOR);
 
 		for (int i = 0; i < aTable.getAttributes().size(); i++) {
-			Attribute<Table> theAttribute = aTable.getAttributes().get(i);
+			final Attribute<Table> theAttribute = aTable.getAttributes().get(i);
 
 			theStatement.append(TAB);
 			theStatement
@@ -340,7 +340,7 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 		theStatement.append(createCreateTableSuffix(aTable));
 		theResult.add(new Statement(theStatement.toString()));
 
-		for (Index theIndex : aTable.getIndexes()) {
+		for (final Index theIndex : aTable.getIndexes()) {
 			if (IndexType.PRIMARYKEY == theIndex.getIndexType()) {
 				theResult.addAll(createAddPrimaryKeyToTable(aTable, theIndex));
 			} else {
@@ -352,28 +352,28 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 		return theResult;
 	}
 
-	protected String createCreatePrimaryKeySuffix(Index aIndex) {
+	protected String createCreatePrimaryKeySuffix(final Index aIndex) {
 		return "";
 	}
 
 
-	protected String createCreateIndexSuffix(Index aIndex) {
+	protected String createCreateIndexSuffix(final Index aIndex) {
 		return "";
 	}
 
-	protected String createCreateTableSuffix(Table aTable) {
+	protected String createCreateTableSuffix(final Table aTable) {
 		return "";
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
+	public StatementList createChangeAttributeStatement(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
 		return EMPTY_STATEMENTLIST;
 	}
 
 	@Override
-	public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createRemovePrimaryKeyStatement(final Table aTable, final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(aTable));
@@ -386,9 +386,9 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder("ALTER TABLE ");
+	public StatementList createAddPrimaryKeyToTable(final Table aTable, final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder("ALTER TABLE ");
 
 		theStatement.append(createUniqueTableName(aTable));
 		theStatement.append(" ADD CONSTRAINT ");
@@ -399,7 +399,7 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 			if (i > 0) {
 				theStatement.append(",");
 			}
-			IndexExpression theExpression = aIndex.getExpressions().get(i);
+			final IndexExpression theExpression = aIndex.getExpressions().get(i);
 			if (!StringUtils.isEmpty(theExpression.getExpression())) {
 				theStatement.append(theExpression.getExpression());
 			} else {
@@ -414,14 +414,14 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
+	public StatementList createRenameAttributeStatement(final Attribute<Table> anExistingAttribute, final String aNewName) {
 		return EMPTY_STATEMENTLIST;
 	}
 
 	@Override
-	public StatementList createAddViewStatement(View aView) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddViewStatement(final View aView) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 		theStatement.append("CREATE VIEW ");
 		theStatement.append(createUniqueViewName(aView));
 		theStatement.append(" AS ");
@@ -431,17 +431,17 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createChangeViewStatement(View aView) {
-		StatementList theResult = new StatementList();
+	public StatementList createChangeViewStatement(final View aView) {
+		final StatementList theResult = new StatementList();
 		theResult.addAll(createDropViewStatement(aView));
 		theResult.addAll(createAddViewStatement(aView));
 		return theResult;
 	}
 
 	@Override
-	public StatementList createDropViewStatement(View aView) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createDropViewStatement(final View aView) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 		theStatement.append("DROP VIEW ");
 		theStatement.append(createUniqueViewName(aView));
 		theResult.add(new Statement(theStatement.toString()));
@@ -449,9 +449,9 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createAddSchemaStatement(String aSchema) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddSchemaStatement(final String aSchema) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 		theStatement.append("CREATE SCHEMA ");
 		theStatement.append(createUniqueSchemaName(aSchema));
 		theResult.add(new Statement(theStatement.toString()));
@@ -459,10 +459,10 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createAddDomainStatement(Domain aDomain) {
+	public StatementList createAddDomainStatement(final Domain aDomain) {
 		if (getDialect().isSupportsDomains()) {
-			StatementList theList = new StatementList();
-			StringBuilder theBuilder = new StringBuilder();
+			final StatementList theList = new StatementList();
+			final StringBuilder theBuilder = new StringBuilder();
 			theBuilder.append("CREATE DOMAIN ");
 			theBuilder.append(aDomain.getName());
 			theBuilder.append(" ");
@@ -477,10 +477,10 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createDropDomainStatement(Domain aDomain) {
+	public StatementList createDropDomainStatement(final Domain aDomain) {
 		if (getDialect().isSupportsDomains()) {
-			StatementList theList = new StatementList();
-			StringBuilder theBuilder = new StringBuilder();
+			final StatementList theList = new StatementList();
+			final StringBuilder theBuilder = new StringBuilder();
 			theBuilder.append("DROP DOMAIN ");
 			theBuilder.append(aDomain.getName());
 			theList.add(new Statement(theBuilder.toString()));
@@ -490,10 +490,10 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createAddCustomTypeStatement(CustomType aCustomType) {
+	public StatementList createAddCustomTypeStatement(final CustomType aCustomType) {
 		if (getDialect().isSupportsCustomTypes()) {
-			StatementList theList = new StatementList();
-			StringBuilder theBuilder = new StringBuilder();
+			final StatementList theList = new StatementList();
+			final StringBuilder theBuilder = new StringBuilder();
 			theBuilder.append("CREATE TYPE ");
 			if (aCustomType.getAlias() != null) {
 				theBuilder.append(aCustomType.getAlias());
@@ -511,10 +511,10 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public StatementList createDropCustomTypeStatement(CustomType aCustomType) {
+	public StatementList createDropCustomTypeStatement(final CustomType aCustomType) {
 		if (getDialect().isSupportsCustomTypes()) {
-			StatementList theList = new StatementList();
-			StringBuilder theBuilder = new StringBuilder();
+			final StatementList theList = new StatementList();
+			final StringBuilder theBuilder = new StringBuilder();
 			theBuilder.append("DROP TYPE ");
 			if (aCustomType.getAlias() != null) {
 				theBuilder.append(aCustomType.getAlias());
@@ -529,14 +529,14 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public String createSelectAllScriptFor(Table aTable, Map<Attribute<Table>, Object> aWhereValues) {
+	public String createSelectAllScriptFor(final Table aTable, final Map<Attribute<Table>, Object> aWhereValues) {
 		StringBuilder theBuilder = new StringBuilder("SELECT * FROM ");
 		theBuilder = theBuilder.append(createUniqueTableName(aTable));
 
-		if (aWhereValues.size() > 0) {
+		if (!aWhereValues.isEmpty()) {
 			theBuilder.append(" WHERE ");
 			boolean first = true;
-			for (Map.Entry<Attribute<Table>, Object> theEntry : aWhereValues
+			for (final Map.Entry<Attribute<Table>, Object> theEntry : aWhereValues
 					.entrySet()) {
 				if (!first) {
 					theBuilder.append(" AND ");
@@ -564,7 +564,7 @@ public class SQL92SQLGenerator<T extends Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public String createSelectAllScriptFor(View aView) {
+	public String createSelectAllScriptFor(final View aView) {
 		return "SELECT * FROM " + createUniqueViewName(aView);
 	}
 }

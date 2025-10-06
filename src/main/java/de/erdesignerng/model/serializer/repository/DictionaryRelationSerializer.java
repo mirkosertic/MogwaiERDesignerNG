@@ -40,37 +40,37 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
 
 	public static final DictionaryRelationSerializer SERIALIZER = new DictionaryRelationSerializer();
 
-	private void copyExtendedAttributes(Relation aSource, RelationEntity aDestination) {
+	private void copyExtendedAttributes(final Relation aSource, final RelationEntity aDestination) {
 		aDestination.setImportingTable(aSource.getImportingTable().getSystemId());
 		aDestination.setExportingTable(aSource.getExportingTable().getSystemId());
 		aDestination.setOnUpdate(aSource.getOnUpdate().getId());
 		aDestination.setOnDelete(aSource.getOnDelete().getId());
 
 		aDestination.getMapping().clear();
-		for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : aSource.getMapping().entrySet()) {
-			StringKeyValuePair theMappingEntry = new StringKeyValuePair();
+		for (final Map.Entry<IndexExpression, Attribute<Table>> theEntry : aSource.getMapping().entrySet()) {
+			final StringKeyValuePair theMappingEntry = new StringKeyValuePair();
 			theMappingEntry.setKey(theEntry.getKey().getSystemId());
 			theMappingEntry.setValue(theEntry.getValue().getSystemId());
 			aDestination.getMapping().add(theMappingEntry);
 		}
 	}
 
-	private void copyExtendedAttributes(RelationEntity aSource, Relation aDestination, Model aModel) {
+	private void copyExtendedAttributes(final RelationEntity aSource, final Relation aDestination, final Model aModel) {
 		aDestination.setImportingTable(aModel.getTables().findBySystemId(aSource.getImportingTable()));
 		aDestination.setExportingTable(aModel.getTables().findBySystemId(aSource.getExportingTable()));
 		aDestination.setOnUpdate(CascadeType.fromId(aSource.getOnUpdate()));
 		aDestination.setOnDelete(CascadeType.fromId(aSource.getOnDelete()));
 
 		aDestination.getMapping().clear();
-		Index thePrimaryKey = aDestination.getExportingTable().getPrimarykey();
+		final Index thePrimaryKey = aDestination.getExportingTable().getPrimarykey();
 
-		for (StringKeyValuePair theEntry : aSource.getMapping()) {
-			IndexExpression theExpression = thePrimaryKey.getExpressions().findBySystemId(theEntry.getKey());
+		for (final StringKeyValuePair theEntry : aSource.getMapping()) {
+			final IndexExpression theExpression = thePrimaryKey.getExpressions().findBySystemId(theEntry.getKey());
 			if (theExpression == null) {
 				throw new RuntimeException("Cannot find index expression" + theEntry.getKey());
 			}
 
-			Attribute<Table> theImportingAttribute = aDestination.getImportingTable().getAttributes().findBySystemId(
+			final Attribute<Table> theImportingAttribute = aDestination.getImportingTable().getAttributes().findBySystemId(
 					theEntry.getValue());
 
 			if (theImportingAttribute == null) {
@@ -81,12 +81,12 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
 		}
 	}
 
-	public void serialize(Model aModel, RepositoryEntity aDictionary) {
+	public void serialize(final Model aModel, final RepositoryEntity aDictionary) {
 
-		Map<String, ModelEntity> theRelations = deletedRemovedInstances(aModel.getRelations(), aDictionary
+		final Map<String, ModelEntity> theRelations = deletedRemovedInstances(aModel.getRelations(), aDictionary
 				.getRelations());
 
-		for (Relation theRelation : aModel.getRelations()) {
+		for (final Relation theRelation : aModel.getRelations()) {
 			boolean existing = true;
 			RelationEntity theExisting = (RelationEntity) theRelations.get(theRelation.getSystemId());
 			if (theExisting == null) {
@@ -103,10 +103,10 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
 		}
 	}
 
-	public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-		for (RelationEntity theRelationEntity : aRepositoryEntity.getRelations()) {
+	public void deserialize(final Model aModel, final RepositoryEntity aRepositoryEntity) {
+		for (final RelationEntity theRelationEntity : aRepositoryEntity.getRelations()) {
 
-			Relation theRelation = new Relation();
+			final Relation theRelation = new Relation();
 			theRelation.setOwner(aModel);
 
 			copyBaseAttributes(theRelationEntity, theRelation);

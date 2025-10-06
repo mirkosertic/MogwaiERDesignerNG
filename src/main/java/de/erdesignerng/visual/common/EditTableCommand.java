@@ -30,16 +30,16 @@ public class EditTableCommand extends UICommand {
 
     private Index index;
 
-    public EditTableCommand(Table aTable) {
+    public EditTableCommand(final Table aTable) {
         table = aTable;
     }
 
-    public EditTableCommand(Table aTable, Attribute<Table> aAttribute) {
+    public EditTableCommand(final Table aTable, final Attribute<Table> aAttribute) {
         table = aTable;
         attribute = aAttribute;
     }
 
-    public EditTableCommand(Table aTable, Index aIndex) {
+    public EditTableCommand(final Table aTable, final Index aIndex) {
         table = aTable;
         index = aIndex;
     }
@@ -50,8 +50,8 @@ public class EditTableCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        TableEditor theEditor = new TableEditor(component.getModel(), component.getDetailComponent());
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final TableEditor theEditor = new TableEditor(component.getModel(), component.getDetailComponent());
         theEditor.initializeFor(table);
         if (attribute != null) {
             theEditor.setSelectedAttribute(attribute);
@@ -66,7 +66,7 @@ public class EditTableCommand extends UICommand {
                 beforeRefresh();
 
                 refreshDisplayAndOutline();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

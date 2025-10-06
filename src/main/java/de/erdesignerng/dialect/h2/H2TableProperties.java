@@ -31,7 +31,7 @@ public class H2TableProperties extends TableProperties {
 		return tableType;
 	}
 
-	public void setTableType(TableTypeEnum tableType) {
+	public void setTableType(final TableTypeEnum tableType) {
 		this.tableType = tableType;
 	}
 }

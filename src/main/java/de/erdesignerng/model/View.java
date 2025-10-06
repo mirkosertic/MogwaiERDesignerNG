@@ -35,7 +35,7 @@ public class View extends OwnedModelItem<Model> {
         return sql;
     }
 
-    public void setSql(String sql) {
+    public void setSql(final String sql) {
         this.sql = sql;
     }
 
@@ -49,7 +49,7 @@ public class View extends OwnedModelItem<Model> {
      * @param aView the view to test against with
      * @return true if it was modified, else false
      */
-    public boolean isModified(View aView) {
+    public boolean isModified(final View aView) {
         return !StringUtils.equals(sql, aView.getSql());
     }
 
@@ -63,7 +63,7 @@ public class View extends OwnedModelItem<Model> {
     /**
      * @param schema the schema to set
      */
-    public void setSchema(String schema) {
+    public void setSchema(final String schema) {
         this.schema = schema;
     }
 
@@ -76,14 +76,14 @@ public class View extends OwnedModelItem<Model> {
     }
 
     public View createCopy() {
-        View theCopy = new View();
+        final View theCopy = new View();
         theCopy.setSchema(getSchema());
         theCopy.setSql(getSql());
         theCopy.setName(getName());
         theCopy.setOriginalName(getOriginalName());
         theCopy.getProperties().copyFrom(getProperties());
-        for (ViewAttribute theAttribute : attributes) {
-            ViewAttribute theClone = theAttribute.clone();
+        for (final ViewAttribute theAttribute : attributes) {
+            final ViewAttribute theClone = theAttribute.clone();
             theClone.setSystemId(ModelUtilities.createSystemIdFor());
             theCopy.getAttributes().add(theClone);
         }

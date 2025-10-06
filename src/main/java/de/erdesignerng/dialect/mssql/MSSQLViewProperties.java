@@ -33,7 +33,7 @@ public class MSSQLViewProperties extends ViewProperties {
 		return checkOption;
 	}
 
-	public void setCheckOption(Boolean checkOption) {
+	public void setCheckOption(final Boolean checkOption) {
 		this.checkOption = checkOption;
 	}
 
@@ -41,7 +41,7 @@ public class MSSQLViewProperties extends ViewProperties {
 		return encryption;
 	}
 
-	public void setEncryption(Boolean encryption) {
+	public void setEncryption(final Boolean encryption) {
 		this.encryption = encryption;
 	}
 
@@ -49,7 +49,7 @@ public class MSSQLViewProperties extends ViewProperties {
 		return schemaBinding;
 	}
 
-	public void setSchemaBinding(Boolean schemaBinding) {
+	public void setSchemaBinding(final Boolean schemaBinding) {
 		this.schemaBinding = schemaBinding;
 	}
 
@@ -57,7 +57,7 @@ public class MSSQLViewProperties extends ViewProperties {
 		return viewMetaData;
 	}
 
-	public void setViewMetaData(Boolean viewMetaData) {
+	public void setViewMetaData(final Boolean viewMetaData) {
 		this.viewMetaData = viewMetaData;
 	}
 }

@@ -48,7 +48,7 @@ public class CommentEditor extends BaseEditor {
 	 * @param aParent
 	 *			the parent container
 	 */
-	public CommentEditor(Model aModel, Component aParent) {
+	public CommentEditor(final Model aModel, final Component aParent) {
 		super(aParent, ERDesignerBundle.COMMENTEDITOR);
 
 		initialize();
@@ -76,7 +76,7 @@ public class CommentEditor extends BaseEditor {
 		UIInitializer.getInstance().initialize(this);
 	}
 
-	public void initializeFor(Comment aArea) {
+	public void initializeFor(final Comment aArea) {
 
 		bindingInfo.setDefaultModel(aArea);
 		bindingInfo.model2view();
@@ -90,9 +90,9 @@ public class CommentEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 
-		Comment theComment = bindingInfo.getDefaultModel();
+		final Comment theComment = bindingInfo.getDefaultModel();
 
 		bindingInfo.view2model();
 		if (!model.getComments().contains(theComment)) {

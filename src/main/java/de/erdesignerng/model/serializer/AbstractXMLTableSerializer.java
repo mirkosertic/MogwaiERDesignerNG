@@ -31,7 +31,7 @@ public abstract class AbstractXMLTableSerializer extends CommonAbstractXMLSerial
 
 	private AbstractXMLModelSerializer xmlModelSerializer = null;
 
-	public AbstractXMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+	public AbstractXMLTableSerializer(final AbstractXMLModelSerializer xmlModelSerializer) {
 		this.xmlModelSerializer = xmlModelSerializer;
 	}
 

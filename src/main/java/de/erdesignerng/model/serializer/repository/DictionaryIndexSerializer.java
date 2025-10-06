@@ -42,14 +42,14 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 
 	public static final DictionaryIndexSerializer SERIALIZER = new DictionaryIndexSerializer();
 
-	private void copyExtendedAttributes(Index aSource, IndexEntity aDestination) {
+	private void copyExtendedAttributes(final Index aSource, final IndexEntity aDestination) {
 		aDestination.setType(aSource.getIndexType().getId());
 		aDestination.getExpressions().clear();
-		for (IndexExpression theIndexExpression : aSource.getExpressions()) {
-			IndexExpressionEntity theEntity = new IndexExpressionEntity();
+		for (final IndexExpression theIndexExpression : aSource.getExpressions()) {
+			final IndexExpressionEntity theEntity = new IndexExpressionEntity();
 			theEntity.setExpression(theIndexExpression.getExpression());
 			theEntity.setSystemId(theIndexExpression.getSystemId());
-			Attribute<Table> theRefAttribute = theIndexExpression.getAttributeRef();
+			final Attribute<Table> theRefAttribute = theIndexExpression.getAttributeRef();
 			if (theRefAttribute != null) {
 				theEntity.setAttributeId(theRefAttribute.getSystemId());
 			}
@@ -57,14 +57,14 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 		}
 	}
 
-	private void copyExtendedAttributes(IndexEntity aSource, Index aDestination, Table aTable) {
+	private void copyExtendedAttributes(final IndexEntity aSource, final Index aDestination, final Table aTable) {
 		aDestination.setIndexType(IndexType.fromId(aSource.getType()));
 		aDestination.getExpressions().clear();
-		for (IndexExpressionEntity theExpressionEntity : aSource.getExpressions()) {
-			IndexExpression theExpression = new IndexExpression();
+		for (final IndexExpressionEntity theExpressionEntity : aSource.getExpressions()) {
+			final IndexExpression theExpression = new IndexExpression();
 			theExpression.setExpression(theExpressionEntity.getExpression());
 			theExpression.setSystemId(theExpressionEntity.getSystemId());
-			String theAttributeId = theExpressionEntity.getAttributeId();
+			final String theAttributeId = theExpressionEntity.getAttributeId();
 			if (!StringUtils.isEmpty(theAttributeId)) {
 				theExpression.setAttributeRef(aTable.getAttributes().findBySystemId(theAttributeId));
 			}
@@ -72,13 +72,13 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 		}
 	}
 
-	public void serialize(Table aTable, TableEntity aTableEntity) {
+	public void serialize(final Table aTable, final TableEntity aTableEntity) {
 
-		Set<IndexEntity> theRemovedIndexes = new HashSet<>();
-		Map<String, IndexEntity> theIndexes = new HashMap<>();
+		final Set<IndexEntity> theRemovedIndexes = new HashSet<>();
+		final Map<String, IndexEntity> theIndexes = new HashMap<>();
 
-		for (IndexEntity theIndexEntity : aTableEntity.getIndexes()) {
-			Index theAttribute = aTable.getIndexes().findBySystemId(theIndexEntity.getSystemId());
+		for (final IndexEntity theIndexEntity : aTableEntity.getIndexes()) {
+			final Index theAttribute = aTable.getIndexes().findBySystemId(theIndexEntity.getSystemId());
 			if (theAttribute == null) {
 				theRemovedIndexes.add(theIndexEntity);
 			} else {
@@ -88,7 +88,7 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 
 		aTableEntity.getIndexes().remove(theRemovedIndexes);
 
-		for (Index theIndex : aTable.getIndexes()) {
+		for (final Index theIndex : aTable.getIndexes()) {
 			boolean existing = true;
 			IndexEntity theEntity = theIndexes.get(theIndex.getSystemId());
 			if (theEntity == null) {
@@ -105,9 +105,9 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 		}
 	}
 
-	public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity) {
-		for (IndexEntity theIndexEntity : aTableEntity.getIndexes()) {
-			Index theIndex = new Index();
+	public void deserialize(final Model aModel, final Table aTable, final TableEntity aTableEntity) {
+		for (final IndexEntity theIndexEntity : aTableEntity.getIndexes()) {
+			final Index theIndex = new Index();
 
 			copyBaseAttributes(theIndexEntity, theIndex);
 			copyExtendedAttributes(theIndexEntity, theIndex, aTable);

@@ -41,8 +41,8 @@ public class OpenXavaExportTableModel implements TableModel {
 
 	private final String stereoTypeName;
 
-	public OpenXavaExportTableModel(String aSourceName, String aTargetName, String aStereoTypeName,
-			List<DataType> aDataTypes, String[] aTargetTypes, String[] aStereoTypes) {
+	public OpenXavaExportTableModel(final String aSourceName, final String aTargetName, final String aStereoTypeName,
+                                    final List<DataType> aDataTypes, final String[] aTargetTypes, final String[] aStereoTypes) {
 		sourceName = aSourceName;
 		targetName = aTargetName;
 		dataTypes = aDataTypes;
@@ -52,7 +52,7 @@ public class OpenXavaExportTableModel implements TableModel {
 	}
 
 	@Override
-	public Class<Object> getColumnClass(int aColumn) {
+	public Class<Object> getColumnClass(final int aColumn) {
 		return Object.class;
 	}
 
@@ -62,15 +62,12 @@ public class OpenXavaExportTableModel implements TableModel {
 	}
 
 	@Override
-	public String getColumnName(int aColumn) {
-		switch (aColumn) {
-		case 0:
-			return sourceName;
-		case 1:
-			return targetName;
-		default:
-			return stereoTypeName;
-		}
+	public String getColumnName(final int aColumn) {
+        return switch (aColumn) {
+            case 0 -> sourceName;
+            case 1 -> targetName;
+            default -> stereoTypeName;
+        };
 	}
 
 	@Override
@@ -79,24 +76,21 @@ public class OpenXavaExportTableModel implements TableModel {
 	}
 
 	@Override
-	public Object getValueAt(int aRow, int aColumn) {
-		switch (aColumn) {
-		case 0:
-			return dataTypes.get(aRow);
-		case 1:
-			return targetTypes[aRow];
-		default:
-			return stereoTypes[aRow];
-		}
+	public Object getValueAt(final int aRow, final int aColumn) {
+        return switch (aColumn) {
+            case 0 -> dataTypes.get(aRow);
+            case 1 -> targetTypes[aRow];
+            default -> stereoTypes[aRow];
+        };
 	}
 
 	@Override
-	public boolean isCellEditable(int aRow, int aColumn) {
+	public boolean isCellEditable(final int aRow, final int aColumn) {
 		return aColumn != 0;
 	}
 
 	@Override
-	public void setValueAt(Object aValue, int aRow, int aColumn) {
+	public void setValueAt(final Object aValue, final int aRow, final int aColumn) {
 		switch (aColumn) {
 		case 1:
 			targetTypes[aRow] = (String) aValue;
@@ -108,10 +102,10 @@ public class OpenXavaExportTableModel implements TableModel {
 	}
 
 	@Override
-	public void addTableModelListener(TableModelListener l) {
+	public void addTableModelListener(final TableModelListener l) {
 	}
 
 	@Override
-	public void removeTableModelListener(TableModelListener l) {
+	public void removeTableModelListener(final TableModelListener l) {
 	}
 }

@@ -27,31 +27,31 @@ import org.w3c.dom.NodeList;
 public class XMLViewSerializer extends AbstractXMLViewSerializer {
 
 	@Override
-	public void serialize(View aView, Document aDocument, Element aRootElement) {
-		Element theRelationElement = addElement(aDocument, aRootElement, VIEW);
+	public void serialize(final View aView, final Document aDocument, final Element aRootElement) {
+		final Element theRelationElement = addElement(aDocument, aRootElement, VIEW);
 
 		serializeProperties(aDocument, theRelationElement, aView);
 		serializeCommentElement(aDocument, theRelationElement, aView);
 
-		Element theSQLElement = addElement(aDocument, theRelationElement, SQL);
+		final Element theSQLElement = addElement(aDocument, theRelationElement, SQL);
 		theSQLElement.appendChild(aDocument.createTextNode(aView.getSql()));
 	}
 
 	@Override
-	public void deserialize(Model aModel, Document aDocument) {
+	public void deserialize(final Model aModel, final Document aDocument) {
 
-		NodeList theElements = aDocument.getElementsByTagName(VIEW);
+		final NodeList theElements = aDocument.getElementsByTagName(VIEW);
 		for (int i = 0; i < theElements.getLength(); i++) {
-			Element theElement = (Element) theElements.item(i);
+			final Element theElement = (Element) theElements.item(i);
 
-			View theView = new View();
+			final View theView = new View();
 			theView.setOwner(aModel);
 			deserializeProperties(theElement, theView);
 			deserializeCommentElement(theElement, theView);
 
-			NodeList theSQL = theElement.getElementsByTagName(SQL);
+			final NodeList theSQL = theElement.getElementsByTagName(SQL);
 			for (int j = 0; j < theSQL.getLength(); j++) {
-				Element theSQLElement = (Element) theSQL.item(j);
+				final Element theSQLElement = (Element) theSQL.item(j);
 				theView.setSql(theSQLElement.getChildNodes().item(0).getNodeValue());
 			}
 

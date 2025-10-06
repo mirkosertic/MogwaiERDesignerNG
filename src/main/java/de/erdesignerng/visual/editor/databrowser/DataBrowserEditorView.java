@@ -44,13 +44,13 @@ public class DataBrowserEditorView extends JPanel {
 	 */
 	private void initialize() {
 
-		String rowDef = "2dlu,p,2dlu,fill:100dlu,2dlu,fill:200dlu:grow,10dlu,p,2dlu";
-		String colDef = "2dlu,fill:300dlu:grow,2dlu";
+		final String rowDef = "2dlu,p,2dlu,fill:100dlu,2dlu,fill:200dlu:grow,10dlu,p,2dlu";
+		final String colDef = "2dlu,fill:300dlu:grow,2dlu";
 
-		FormLayout layout = new FormLayout(colDef, rowDef);
+		final FormLayout layout = new FormLayout(colDef, rowDef);
 		setLayout(layout);
 
-		CellConstraints cons = new CellConstraints();
+		final CellConstraints cons = new CellConstraints();
 
 		add(getBreadCrumb(), cons.xywh(2, 2, 1, 1));
 		add(getSql().getScrollPane(), cons.xywh(2, 4, 1, 1));
@@ -63,13 +63,13 @@ public class DataBrowserEditorView extends JPanel {
 		if (buttonPanel == null) {
 			buttonPanel = new JPanel();
 
-			String rowDef = "10dlu,p";
-			String colDef = "fill:80dlu,2dlu:grow,fill:80dlu";
+			final String rowDef = "10dlu,p";
+			final String colDef = "fill:80dlu,2dlu:grow,fill:80dlu";
 
-			FormLayout layout = new FormLayout(colDef, rowDef);
+			final FormLayout layout = new FormLayout(colDef, rowDef);
 			buttonPanel.setLayout(layout);
 
-			CellConstraints cons = new CellConstraints();
+			final CellConstraints cons = new CellConstraints();
 
 			buttonPanel.add(getCloseButton(), cons.xywh(3, 2, 1, 1));
 			buttonPanel.add(getQueryButton(), cons.xywh(1, 2, 1, 1));
@@ -102,7 +102,7 @@ public class DataBrowserEditorView extends JPanel {
 		if (sql == null) {
 			sql = new DefaultTextPane();
 
-			EditorKit editorKit = new SQLEditorKit();
+			final EditorKit editorKit = new SQLEditorKit();
 			sql.setEditorKitForContentType("text/sql", editorKit);
 			sql.setContentType("text/sql");
 		}
@@ -127,13 +127,13 @@ public class DataBrowserEditorView extends JPanel {
 		return breadCrumb;
 	}
 
-	public JButton addBreadCrumb(String aDescription,
-								 ActionListener aActionListener) {
+	public JButton addBreadCrumb(final String aDescription,
+                                 final ActionListener aActionListener) {
 		final JButton theButton = new JButton();
 		theButton.setText(aDescription);
 		theButton.addActionListener(aActionListener);
 		theButton.addActionListener(e -> {
-            int p = ArrayUtils.indexOf(breadCrumb.getComponents(),
+            final int p = ArrayUtils.indexOf(breadCrumb.getComponents(),
                     theButton);
             while (breadCrumb.getComponentCount() > p + 1) {
                 breadCrumb.remove(breadCrumb.getComponentCount() - 1);

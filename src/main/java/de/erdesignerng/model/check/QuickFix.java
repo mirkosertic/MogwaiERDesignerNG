@@ -20,7 +20,6 @@ package de.erdesignerng.model.check;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * Common interface for all model quick fixes.
@@ -32,6 +31,6 @@ public interface QuickFix {
      *
      * Returns a list of the affected model objects.
      */
-    Object[] applyTo(Model aModel) throws VetoException, ElementAlreadyExistsException,
+    Object[] applyTo(Model aModel) throws ElementAlreadyExistsException,
             ElementInvalidNameException;
 }

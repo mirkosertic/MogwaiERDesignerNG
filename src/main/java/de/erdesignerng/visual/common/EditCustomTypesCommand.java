@@ -33,15 +33,15 @@ public class EditCustomTypesCommand extends UICommand {
         this(null);
     }
 
-    public EditCustomTypesCommand(CustomType aCustomType) {
+    public EditCustomTypesCommand(final CustomType aCustomType) {
         customType = aCustomType;
     }
 
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        CustomTypeEditor theEditor = new CustomTypeEditor(component.getModel(), getDetailComponent());
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final CustomTypeEditor theEditor = new CustomTypeEditor(component.getModel(), getDetailComponent());
         if (customType != null) {
             theEditor.setSelectedType(customType);
         }
@@ -50,7 +50,7 @@ public class EditCustomTypesCommand extends UICommand {
                 theEditor.applyValues();
 
                 refreshDisplayAndOutline();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

@@ -29,41 +29,41 @@ import org.w3c.dom.NodeList;
 public class XMLIndexSerializer extends AbstractXMLIndexSerializer {
 
 	@Override
-	public void serialize(Index aIndex, Document aDocument, Element aRootElement) {
-		Element theIndexElement = addElement(aDocument, aRootElement, INDEX);
+	public void serialize(final Index aIndex, final Document aDocument, final Element aRootElement) {
+		final Element theIndexElement = addElement(aDocument, aRootElement, INDEX);
 
 		theIndexElement.setAttribute(INDEXTYPE, aIndex.getIndexType().toString());
 
 		serializeProperties(aDocument, theIndexElement, aIndex);
 
 		// Attribute
-		for (IndexExpression theAttribute : aIndex.getExpressions()) {
-			Element theAttributeElement = addElement(aDocument, theIndexElement, INDEXATTRIBUTE);
+		for (final IndexExpression theAttribute : aIndex.getExpressions()) {
+			final Element theAttributeElement = addElement(aDocument, theIndexElement, INDEXATTRIBUTE);
 			theAttributeElement.setAttribute(ATTRIBUTEREFID, theAttribute.getAttributeRef().getSystemId());
 		}
 
 	}
 
 	@Override
-	public void deserialize(Table aTable, Element aElement) {
+	public void deserialize(final Table aTable, final Element aElement) {
 		// Parse the indexes
-		NodeList theIndexes = aElement.getElementsByTagName(INDEX);
+		final NodeList theIndexes = aElement.getElementsByTagName(INDEX);
 		for (int j = 0; j < theIndexes.getLength(); j++) {
 
-			Element theIndexElement = (Element) theIndexes.item(j);
-			Index theIndex = new Index();
+			final Element theIndexElement = (Element) theIndexes.item(j);
+			final Index theIndex = new Index();
 			theIndex.setOwner(aTable);
 			deserializeProperties(theIndexElement, theIndex);
 
 			theIndex.setIndexType(IndexType.fromString(theIndexElement.getAttribute(INDEXTYPE)));
 
-			NodeList theAttributes = theIndexElement.getElementsByTagName(INDEXATTRIBUTE);
+			final NodeList theAttributes = theIndexElement.getElementsByTagName(INDEXATTRIBUTE);
 			for (int k = 0; k < theAttributes.getLength(); k++) {
 
-				Element theAttributeElement = (Element) theAttributes.item(k);
+				final Element theAttributeElement = (Element) theAttributes.item(k);
 
-				String theAttributeRefId = theAttributeElement.getAttribute(ATTRIBUTEREFID);
-				IndexExpression theExpression = new IndexExpression();
+				final String theAttributeRefId = theAttributeElement.getAttribute(ATTRIBUTEREFID);
+				final IndexExpression theExpression = new IndexExpression();
 				theExpression.setAttributeRef(aTable.getAttributes().findBySystemId(theAttributeRefId));
 				theIndex.getExpressions().add(theExpression);
 			}

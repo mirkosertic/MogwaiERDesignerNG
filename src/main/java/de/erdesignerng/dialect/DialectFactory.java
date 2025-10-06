@@ -30,7 +30,6 @@ import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.lang.SystemUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,18 +69,18 @@ public final class DialectFactory {
         return me;
     }
 
-    private void registerDialect(Dialect aDialect) {
+    private void registerDialect(final Dialect aDialect) {
         knownDialects.put(aDialect.getUniqueName(), aDialect);
     }
 
-    public Dialect getDialect(String aUniqueName) {
+    public Dialect getDialect(final String aUniqueName) {
         return knownDialects.get(aUniqueName);
     }
 
     public List<Dialect> getSupportedDialects() {
-        List<Dialect> theDialects = new ArrayList<>();
+        final List<Dialect> theDialects = new ArrayList<>();
         theDialects.addAll(knownDialects.values());
-        Collections.sort(theDialects, new BeanComparator("uniqueName", String.CASE_INSENSITIVE_ORDER));
+        theDialects.sort(new BeanComparator("uniqueName", String.CASE_INSENSITIVE_ORDER));
         return theDialects;
     }
 }

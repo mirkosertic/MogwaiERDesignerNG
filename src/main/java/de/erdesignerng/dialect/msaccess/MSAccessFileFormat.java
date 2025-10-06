@@ -59,9 +59,9 @@ public final class MSAccessFileFormat {
 
     private final String theIdentifyingTable;
 
-    public MSAccessFileFormat(String anEngineName, int aHeaderSize,
-                              int anEngineFlagOffset, int anEngineFlagValue,
-                              int anEngineNameOffset, String anIdentifyingTable) {
+    public MSAccessFileFormat(final String anEngineName, final int aHeaderSize,
+                              final int anEngineFlagOffset, final int anEngineFlagValue,
+                              final int anEngineNameOffset, final String anIdentifyingTable) {
         if ((anEngineFlagOffset < aHeaderSize)
                 && (anEngineNameOffset + anEngineName.length() < aHeaderSize)) {
             theName = anEngineName;
@@ -75,21 +75,21 @@ public final class MSAccessFileFormat {
         }
     }
 
-    public MSAccessFileFormat(String anEngineName, int anEngineFlagOffset,
-                              int anEngineFlagValue, int anEngineNameOffset,
-                              String anIdentifyingTable) {
+    public MSAccessFileFormat(final String anEngineName, final int anEngineFlagOffset,
+                              final int anEngineFlagValue, final int anEngineNameOffset,
+                              final String anIdentifyingTable) {
         this(anEngineName, DEFAULT_HEADER_SIZE, anEngineFlagOffset,
                 anEngineFlagValue, anEngineNameOffset, anIdentifyingTable);
     }
 
-    public MSAccessFileFormat(String anEngineName, int anEngineFlagOffset,
-                              int anEngineFlagValue, String anIdentifyingTable) {
+    public MSAccessFileFormat(final String anEngineName, final int anEngineFlagOffset,
+                              final int anEngineFlagValue, final String anIdentifyingTable) {
         this(anEngineName, anEngineFlagOffset, anEngineFlagValue,
                 DEFAULT_ENGINE_NAME_OFFSET, anIdentifyingTable);
     }
 
-    public MSAccessFileFormat(String anEngineName, int anEngineFlagOffset,
-                              int anEngineFlagValue) {
+    public MSAccessFileFormat(final String anEngineName, final int anEngineFlagOffset,
+                              final int anEngineFlagValue) {
         this(anEngineName, anEngineFlagOffset, anEngineFlagValue,
                 DEFAULT_ENGINE_NAME_OFFSET, null);
     }
@@ -104,7 +104,7 @@ public final class MSAccessFileFormat {
      * @return true if the the file matches the defined version
      * @see http://msdn.microsoft.com/en-us/library/aa139959%28office.10%29.aspx
      */
-    public final boolean matches(String aFileName, boolean aComareWholeFile) {
+    public boolean matches(final String aFileName, final boolean aComareWholeFile) {
         String theHeader = null;
         boolean theResult = false;
 
@@ -113,20 +113,20 @@ public final class MSAccessFileFormat {
             FileInputStream f = null;
             try {
 
-                byte[] buffer = new byte[theHeaderSize];
+                final byte[] buffer = new byte[theHeaderSize];
                 f = new FileInputStream(aFileName);
                 f.read(buffer);
                 theHeader = new String(buffer);
 
-            } catch (FileNotFoundException ex) {
+            } catch (final FileNotFoundException ex) {
                 LOGGER.error("Cannot find database file " + aFileName, ex);
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 LOGGER.error("Cannot read database file " + aFileName, ex);
             } finally {
                 if (f != null) {
                     try {
                         f.close();
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         // Ignore this
                     }
                 }
@@ -161,7 +161,7 @@ public final class MSAccessFileFormat {
      *
      * @see http://msdn.microsoft.com/en-us/library/aa139959%28office.10%29.aspx
      */
-    public final boolean matches(Connection aConnection) {
+    public boolean matches(final Connection aConnection) {
 
         String theFile = null;
         boolean theResult = false;
@@ -187,26 +187,26 @@ public final class MSAccessFileFormat {
                     theResult = (getTableCount(aConnection, theIdentifyingTable) == 1);
                 }
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
         }
 
         return theResult;
 
     }
 
-    private static int getTableCount(Connection aConnection,
-                                     String aTableName) throws SQLException {
+    private static int getTableCount(final Connection aConnection,
+                                     final String aTableName) throws SQLException {
 
-        String theColumnName = "theCount";
+        final String theColumnName = "theCount";
         short theResult = 0;
-        String theSQL = "SELECT Count(MSysObjects.Id) AS " + theColumnName
+        final String theSQL = "SELECT Count(MSysObjects.Id) AS " + theColumnName
                 + " " + "FROM MSysObjects "
                 + "WHERE (MSysObjects.Name LIKE ?);";
 
-        PreparedStatement theStatement = aConnection.prepareStatement(theSQL);
+        final PreparedStatement theStatement = aConnection.prepareStatement(theSQL);
         theStatement.setString(1, aTableName);
 
-        ResultSet theIdentificationResult = theStatement.executeQuery();
+        final ResultSet theIdentificationResult = theStatement.executeQuery();
 
         if (theIdentificationResult != null) {
             if (theIdentificationResult.next()) {
@@ -220,21 +220,21 @@ public final class MSAccessFileFormat {
 
     }
 
-    private static int findInFile(String aFileName, String aSearchFor) {
-        int theBufferSize = 5242880; // 5MB
+    private static int findInFile(final String aFileName, final String aSearchFor) {
+        final int theBufferSize = 5242880; // 5MB
         boolean theSearchOn = true;
         String theStringBuffer;
         int theOffset = 0;
         int theRead = theBufferSize;
         int thePosition;
-        int theOverhead = aSearchFor.length() - 1;
+        final int theOverhead = aSearchFor.length() - 1;
         int theResult = -1;
 
         if (theBufferSize >= aSearchFor.length()) {
             try {
-                File file = new File(aFileName);
-                RandomAccessFile ra = new RandomAccessFile(aFileName, "r");
-                byte[] theByteBuffer = new byte[theBufferSize];
+                final File file = new File(aFileName);
+                final RandomAccessFile ra = new RandomAccessFile(aFileName, "r");
+                final byte[] theByteBuffer = new byte[theBufferSize];
 
                 while ((theOffset < file.length()) && (theSearchOn)
                         && (theRead == theBufferSize)) {
@@ -260,9 +260,9 @@ public final class MSAccessFileFormat {
                 }
 
                 ra.close();
-            } catch (FileNotFoundException ex) {
+            } catch (final FileNotFoundException ex) {
                 LOGGER.error("Cannot find database file " + aFileName, ex);
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 LOGGER.error("Cannot read database file " + aFileName, ex);
             }
         } else {
@@ -282,8 +282,8 @@ public final class MSAccessFileFormat {
      * @param aDividingCharCode - the character code to use for expanding
      * @return An expanded string
      */
-    private static String expand(String aString, Integer aDividingCharCode) {
-        StringBuilder buffer = new StringBuilder(aString);
+    private static String expand(final String aString, final Integer aDividingCharCode) {
+        final StringBuilder buffer = new StringBuilder(aString);
 
         for (int i = 0; i < aString.length() - 1; i++) {
             buffer.insert((i * 2) + 1, (char) (int) aDividingCharCode);

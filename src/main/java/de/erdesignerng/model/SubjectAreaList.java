@@ -34,11 +34,11 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
 	 * @param aTable
 	 *			the table
 	 */
-	public void removeTable(Table aTable) {
+	public void removeTable(final Table aTable) {
 
-		List<SubjectArea> theRemovedAreas = new ArrayList<>();
+		final List<SubjectArea> theRemovedAreas = new ArrayList<>();
 
-		for (SubjectArea theArea : this) {
+		for (final SubjectArea theArea : this) {
 			theArea.getTables().remove(aTable);
 			if (theArea.isEmpty()) {
 				theRemovedAreas.add(theArea);
@@ -56,10 +56,10 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
 	 * @param aComment
 	 *			the comment
 	 */
-	public void removeComment(Comment aComment) {
-		List<SubjectArea> theRemovedAreas = new ArrayList<>();
+	public void removeComment(final Comment aComment) {
+		final List<SubjectArea> theRemovedAreas = new ArrayList<>();
 
-		for (SubjectArea theArea : this) {
+		for (final SubjectArea theArea : this) {
 			theArea.getComments().remove(aComment);
 			if (theArea.isEmpty()) {
 				theRemovedAreas.add(theArea);
@@ -77,10 +77,10 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
 	 * @param aView
 	 *			the view
 	 */
-	public void removeView(View aView) {
-		List<SubjectArea> theRemovedAreas = new ArrayList<>();
+	public void removeView(final View aView) {
+		final List<SubjectArea> theRemovedAreas = new ArrayList<>();
 
-		for (SubjectArea theArea : this) {
+		for (final SubjectArea theArea : this) {
 			theArea.getViews().remove(aView);
 			if (theArea.isEmpty()) {
 				theRemovedAreas.add(theArea);

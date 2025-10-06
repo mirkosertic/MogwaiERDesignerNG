@@ -31,15 +31,15 @@ import de.erdesignerng.model.Table;
 public class SpatialIndexWithoutSpatialType implements ModelCheck {
 
     @Override
-    public void check(Model aModel, ModelChecker aChecker) {
-        for (Table theEntity : aModel.getTables()) {
-            Index theIndex = theEntity.getPrimarykey();
+    public void check(final Model aModel, final ModelChecker aChecker) {
+        for (final Table theEntity : aModel.getTables()) {
+            final Index theIndex = theEntity.getPrimarykey();
             if (theIndex != null) {
                 if (theIndex.getIndexType() == IndexType.SPATIAL) {
                     boolean hasSpatialType = false;
-                    IndexExpressionList theExpressions = theIndex.getExpressions();
-                    for (IndexExpression theExpression : theExpressions) {
-                        Attribute<Table> theAttribute = theExpression.getAttributeRef();
+                    final IndexExpressionList theExpressions = theIndex.getExpressions();
+                    for (final IndexExpression theExpression : theExpressions) {
+                        final Attribute<Table> theAttribute = theExpression.getAttributeRef();
                         if (theAttribute != null) {
                             if (theAttribute.getDatatype().isSpatial()) {
                                 hasSpatialType = true;

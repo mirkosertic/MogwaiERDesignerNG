@@ -32,7 +32,7 @@ public class MigrationScriptDataModel {
 		return sourceChange;
 	}
 
-	public void setSourceChange(ChangeDescriptor sourceChange) {
+	public void setSourceChange(final ChangeDescriptor sourceChange) {
 		this.sourceChange = sourceChange;
 	}
 
@@ -40,7 +40,7 @@ public class MigrationScriptDataModel {
 		return destinationChange;
 	}
 
-	public void setDestinationChange(ChangeDescriptor destinationChange) {
+	public void setDestinationChange(final ChangeDescriptor destinationChange) {
 		this.destinationChange = destinationChange;
 	}
 }

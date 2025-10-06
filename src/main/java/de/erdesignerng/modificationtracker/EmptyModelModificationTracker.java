@@ -28,94 +28,94 @@ import de.erdesignerng.model.View;
 public class EmptyModelModificationTracker implements ModelModificationTracker {
 
 	@Override
-	public void removeRelation(Relation aRelation) throws VetoException {
+	public void removeRelation(final Relation aRelation) {
 	}
 
 	@Override
-	public void removeTable(Table aTable) throws VetoException {
+	public void removeTable(final Table aTable) {
 	}
 
 	@Override
-	public void addAttributeToTable(Table aTable, Attribute<Table> aAttribute) throws VetoException {
+	public void addAttributeToTable(final Table aTable, final Attribute<Table> aAttribute) {
 	}
 
 	@Override
-	public void addIndexToTable(Table aTable, Index aIndex) throws VetoException {
+	public void addIndexToTable(final Table aTable, final Index aIndex) {
 	}
 
 	@Override
-	public void addRelation(Relation aRelation) throws VetoException {
+	public void addRelation(final Relation aRelation) {
 	}
 
 	@Override
-	public void addTable(Table aTable) throws VetoException {
+	public void addTable(final Table aTable) {
 	}
 
 	@Override
-	public void changeAttribute(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) throws VetoException {
+	public void changeAttribute(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
 	}
 
 	@Override
-	public void changeIndex(Index anExistingIndex, Index aNewIndex) throws VetoException {
+	public void changeIndex(final Index anExistingIndex, final Index aNewIndex) {
 	}
 
 	@Override
-	public void changeRelation(Relation aRelation, Relation aTempRelation) throws VetoException {
+	public void changeRelation(final Relation aRelation, final Relation aTempRelation) {
 	}
 
 	@Override
-	public void changeTableComment(Table aTable, String aNewComment) throws VetoException {
+	public void changeTableComment(final Table aTable, final String aNewComment) {
 	}
 
 	@Override
-	public void removeAttributeFromTable(Table aTable, Attribute<Table> aAttribute) throws VetoException {
+	public void removeAttributeFromTable(final Table aTable, final Attribute<Table> aAttribute) {
 	}
 
 	@Override
-	public void removeIndexFromTable(Table aTable, Index aIndex) throws VetoException {
+	public void removeIndexFromTable(final Table aTable, final Index aIndex) {
 	}
 
 	@Override
-	public void renameAttribute(Attribute<Table> anExistingAttribute, String aNewName) throws VetoException {
+	public void renameAttribute(final Attribute<Table> anExistingAttribute, final String aNewName) {
 	}
 
 	@Override
-	public void renameTable(Table aTable, String aNewName) throws VetoException {
+	public void renameTable(final Table aTable, final String aNewName) {
 	}
 
 	@Override
-	public void removePrimaryKeyFromTable(Table aTable, Index aIndex) throws VetoException {
+	public void removePrimaryKeyFromTable(final Table aTable, final Index aIndex) {
 	}
 
 	@Override
-	public void addPrimaryKeyToTable(Table aTable, Index aIndex) throws VetoException {
+	public void addPrimaryKeyToTable(final Table aTable, final Index aIndex) {
 	}
 
 	@Override
-	public void addView(View aView) throws VetoException {
+	public void addView(final View aView) {
 	}
 
 	@Override
-	public void changeView(View aView) throws VetoException {
+	public void changeView(final View aView) {
 	}
 
 	@Override
-	public void removeView(View aView) throws VetoException {
+	public void removeView(final View aView) {
 	}
 
 	@Override
-	public void addDomain(Domain domain) throws VetoException {
+	public void addDomain(final Domain domain) {
 	}
 
 	@Override
-	public void removeDomain(Domain domain) throws VetoException {
+	public void removeDomain(final Domain domain) {
 	}
 
 	@Override
-	public void addCustomType(CustomType aCustomType) throws VetoException {
+	public void addCustomType(final CustomType aCustomType) {
 	}
 
 	@Override
-	public void removeCustomType(CustomType aCustomType) throws VetoException {
+	public void removeCustomType(final CustomType aCustomType) {
 	}
 }

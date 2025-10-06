@@ -26,20 +26,20 @@ import javax.vecmath.Vector3f;
 /**
  * Helper Class.
  */
-public class Helper {
+public final class Helper {
 
     private Helper() {
     }
 
-    public static BranchGroup addElementAt(Node aShape, Vector3f aTranslation, float aScale) {
+    public static BranchGroup addElementAt(final Node aShape, final Vector3f aTranslation, final float aScale) {
 
-        BranchGroup theGroup = new BranchGroup();
+        final BranchGroup theGroup = new BranchGroup();
         theGroup.setCapability(BranchGroup.ALLOW_DETACH);
 
-        Transform3D theTransform = new Transform3D();
+        final Transform3D theTransform = new Transform3D();
         theTransform.setTranslation(aTranslation);
         theTransform.setScale(aScale);
-        TransformGroup theTransformGroup = new TransformGroup(theTransform);
+        final TransformGroup theTransformGroup = new TransformGroup(theTransform);
         theTransformGroup.addChild(aShape);
 
         theGroup.addChild(theTransformGroup);

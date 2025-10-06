@@ -38,7 +38,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class ViewCellView extends VertexView {
 
 	private static final MyRenderer RENDERER = new MyRenderer();
 
-	public ViewCellView(ViewCell aCell) {
+	public ViewCellView(final ViewCell aCell) {
 		super(aCell);
 	}
 
@@ -77,17 +76,17 @@ public class ViewCellView extends VertexView {
 			setBackground(Color.white);
 		}
 
-		private void fillRect(Graphics aGraphics, int aX1, int aY1, int aWidth, int aHeight) {
+		private void fillRect(final Graphics aGraphics, final int aX1, final int aY1, final int aWidth, final int aHeight) {
 
 			aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
 		}
 
-		private void drawRect(Graphics aGraphics, int aY1, int aWidth, int aHeight) {
+		private void drawRect(final Graphics aGraphics, final int aY1, final int aWidth, final int aHeight) {
 
 			aGraphics.drawRect(0, aY1, aWidth, aHeight);
 		}
 
-		protected String getConvertedName(ModelItem aItem) {
+		protected String getConvertedName(final ModelItem aItem) {
 			String theText = aItem.getUniqueName();
 			if (includeComments) {
 				if (StringUtils.isNotEmpty(aItem.getComment())) {
@@ -98,16 +97,16 @@ public class ViewCellView extends VertexView {
 		}
 
 		@Override
-		public void paint(Graphics aGraphics) {
+		public void paint(final Graphics aGraphics) {
 
-			Dimension theSize = getSize();
-			int theWidth = theSize.width;
-			int theHeight = theSize.height;
+			final Dimension theSize = getSize();
+			final int theWidth = theSize.width;
+			final int theHeight = theSize.height;
 
 			aGraphics.setFont(getFont());
 			aGraphics.setColor(getBackground());
 
-			FontMetrics theMetrics = aGraphics.getFontMetrics();
+			final FontMetrics theMetrics = aGraphics.getFontMetrics();
 
 			aGraphics.setColor(Color.black);
 			String theString = getConvertedName(view);
@@ -128,33 +127,33 @@ public class ViewCellView extends VertexView {
 
 			drawRect(aGraphics, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
 
-			int theTextXOffset = 15;
+			final int theTextXOffset = 15;
 
-			List<ViewAttribute> theTempList = new ArrayList<>();
+			final List<ViewAttribute> theTempList = new ArrayList<>();
 			theTempList.addAll(view.getAttributes());
 
 			switch (displayOrder) {
 				case NATURAL:
 					break;
 				case ASCENDING:
-					Collections.sort(theTempList, NAME_COMPARATOR);
+					theTempList.sort(NAME_COMPARATOR);
 					break;
 				case DESCENDING:
-					Collections.sort(theTempList, REVERSE_NAME_COMPARATOR);
+					theTempList.sort(REVERSE_NAME_COMPARATOR);
 					break;
 				default:
 					throw new IllegalStateException("Unknown display order");
 			}
 
-			List<ViewAttribute> theAllAttributes = new ArrayList<>();
+			final List<ViewAttribute> theAllAttributes = new ArrayList<>();
 			theAllAttributes.addAll(theTempList);
 
 			// Only do the following if there are any not primary key
 			// attributes
-			if (theAllAttributes.size() > 0) {
+			if (!theAllAttributes.isEmpty()) {
 
 				// Draw the attributes
-				for (ViewAttribute theAttribute : theAllAttributes) {
+				for (final ViewAttribute theAttribute : theAllAttributes) {
 
 					theString = getConvertedName(theAttribute);
 
@@ -172,24 +171,24 @@ public class ViewCellView extends VertexView {
 			int theMaxX = 150;
 			int theMaxY = 8;
 
-			FontMetrics theMetrics = getFontMetrics(getFont());
+			final FontMetrics theMetrics = getFontMetrics(getFont());
 
 			int theYOffset = theMetrics.getHeight();
-			int theXTextOffset = 30;
+			final int theXTextOffset = 30;
 
-			String theString = getConvertedName(view);
+			final String theString = getConvertedName(view);
 
 			int theLength = theMetrics.stringWidth(theString);
 			if (theLength > theMaxX) {
 				theMaxX = theLength + 5;
 			}
 
-			List<ViewAttribute> theAllAttributes = new ArrayList<>();
+			final List<ViewAttribute> theAllAttributes = new ArrayList<>();
 			theAllAttributes.addAll(view.getAttributes());
 
-			for (ViewAttribute theAttribute : theAllAttributes) {
+			for (final ViewAttribute theAttribute : theAllAttributes) {
 
-				String theText = getConvertedName(theAttribute);
+				final String theText = getConvertedName(theAttribute);
 
 				theLength = theMetrics.stringWidth(theText);
 				if (theLength + theXTextOffset > theMaxX) {
@@ -202,7 +201,7 @@ public class ViewCellView extends VertexView {
 			theYOffset += 8;
 			theMaxX += 8;
 
-			Insets theInsets = getInsets();
+			final Insets theInsets = getInsets();
 			theMaxX += theInsets.left + theInsets.right;
 			theMaxY += theInsets.top + theInsets.bottom;
 
@@ -214,21 +213,21 @@ public class ViewCellView extends VertexView {
 		}
 
 		@Override
-		public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
-											  boolean aPreview) {
+		public Component getRendererComponent(final JGraph aGraph, final CellView aView, final boolean aSelected, final boolean aHasFocus,
+                                              final boolean aPreview) {
 
-			ViewCellView theView = (ViewCellView) aView;
+			final ViewCellView theView = (ViewCellView) aView;
 			view = (View) ((ViewCell) theView.getCell()).getUserObject();
 			selected = aSelected;
 
-			ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
+			final ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
 			displayOrder = theGraph.getDisplayOrder();
 			includeComments = theGraph.isDisplayComments();
 
 			return this;
 		}
 
-		public JComponent getRendererComponent(View aView) {
+		public JComponent getRendererComponent(final View aView) {
 			view = aView;
 			selected = false;
 

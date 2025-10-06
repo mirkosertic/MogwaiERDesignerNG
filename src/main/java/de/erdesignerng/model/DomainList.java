@@ -35,8 +35,8 @@ public class DomainList extends Vector<Domain> implements ModelList<Domain> {
 	 * @return the domain or null if domain does not exist
 	 */
 	@Override
-	public Domain findBySystemId(String aSystemId) {
-		for (Domain theDomain : this) {
+	public Domain findBySystemId(final String aSystemId) {
+		for (final Domain theDomain : this) {
 			if (aSystemId.equals(theDomain.getSystemId())) {
 				return theDomain;
 			}
@@ -52,8 +52,8 @@ public class DomainList extends Vector<Domain> implements ModelList<Domain> {
 	 *			the name
 	 * @return the found element
 	 */
-	public Domain findByName(String aName) {
-		for (Domain theDomain : this) {
+	public Domain findByName(final String aName) {
+		for (final Domain theDomain : this) {
 			if (aName.equals(theDomain.getName())) {
 				return theDomain;
 			}

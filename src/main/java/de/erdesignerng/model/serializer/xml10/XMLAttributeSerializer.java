@@ -31,9 +31,9 @@ import org.w3c.dom.NodeList;
 public class XMLAttributeSerializer extends AbstractXMLAttributeSerializer {
 
 	@Override
-	public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
+	public void serialize(final Attribute aAttribute, final Document aDocument, final Element aRootElement) {
 
-		Element theAttributeElement = addElement(aDocument, aRootElement, ATTRIBUTE);
+		final Element theAttributeElement = addElement(aDocument, aRootElement, ATTRIBUTE);
 
 		// Basisdaten des Modelelementes speichern
 		serializeProperties(aDocument, theAttributeElement, aAttribute);
@@ -51,13 +51,13 @@ public class XMLAttributeSerializer extends AbstractXMLAttributeSerializer {
 	}
 
 	@Override
-	public void deserialize(Model aModel, ModelItem aTableOrCustomType, Element aElement) {
+	public void deserialize(final Model aModel, final ModelItem aTableOrCustomType, final Element aElement) {
 		// Parse the Attributes
-		NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);
+		final NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);
 		for (int j = 0; j < theAttributes.getLength(); j++) {
-			Element theAttributeElement = (Element) theAttributes.item(j);
-			boolean isCustomType = "CustomType".equalsIgnoreCase(theAttributeElement.getParentNode().getNodeName());
-			boolean isTable = "Table".equalsIgnoreCase(theAttributeElement.getParentNode().getNodeName());
+			final Element theAttributeElement = (Element) theAttributes.item(j);
+			final boolean isCustomType = "CustomType".equalsIgnoreCase(theAttributeElement.getParentNode().getNodeName());
+			final boolean isTable = "Table".equalsIgnoreCase(theAttributeElement.getParentNode().getNodeName());
 
 			Attribute theAttribute = null;
 
@@ -72,11 +72,11 @@ public class XMLAttributeSerializer extends AbstractXMLAttributeSerializer {
 			deserializeProperties(theAttributeElement, theAttribute);
 			deserializeCommentElement(theAttributeElement, theAttribute);
 
-			String theDatatypeName = theAttributeElement.getAttribute(DATATYPE);
+			final String theDatatypeName = theAttributeElement.getAttribute(DATATYPE);
 			theAttribute.setDatatype((StringUtils.isEmpty(theDatatypeName)? null : aModel.getAvailableDataTypes().findByName(theDatatypeName)));
 			theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
 			theAttribute.setSize(Integer.parseInt(theAttributeElement.getAttribute(SIZE)));
-			String theFraction = theAttributeElement.getAttribute(FRACTION);
+			final String theFraction = theAttributeElement.getAttribute(FRACTION);
 			if (!StringUtils.isEmpty(theFraction) && !"null".equals(theFraction)) {
 				theAttribute.setFraction(Integer.parseInt(theFraction));
 			}

@@ -34,7 +34,7 @@ public class XMLModel50Serializer extends XMLModel40Serializer {
 
 	private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_5.0.xsd";
 
-	public XMLModel50Serializer(XMLUtils utils) {
+	public XMLModel50Serializer(final XMLUtils utils) {
 		super(utils);
 		setXMLCustomTypeSerializer(new XMLCustomTypeSerializer(this));
 		setXMLDomainSerializer(new XMLDomainSerializer());
@@ -52,7 +52,7 @@ public class XMLModel50Serializer extends XMLModel40Serializer {
 	}
 
 	@Override
-	public AbstractXMLCustomTypeSerializer getXMLCustomTypeSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+	public AbstractXMLCustomTypeSerializer getXMLCustomTypeSerializer(final AbstractXMLModelSerializer xmlModelSerializer) {
 		if (super.getXMLCustomTypeSerializer(xmlModelSerializer) == null) {
 			setXMLCustomTypeSerializer(new XMLCustomTypeSerializer(xmlModelSerializer));
 		}

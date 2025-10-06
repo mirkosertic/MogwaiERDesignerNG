@@ -34,15 +34,15 @@ public class GenerateChangeLogSQLCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (!component.checkForValidConnection()) {
             return;
         }
 
-        StatementList theStatements = ((HistoryModificationTracker) component
+        final StatementList theStatements = ((HistoryModificationTracker) component
                 .getModel().getModificationTracker()).getStatements();
-        SQLEditor theEditor = new SQLEditor(getDetailComponent(),
+        final SQLEditor theEditor = new SQLEditor(getDetailComponent(),
                 new ModelBasedConnectionProvider(component.getModel()),
                 theStatements, component.currentEditingFile,
                 generateChangelogSQLFileName(), getWorldConnector());

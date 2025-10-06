@@ -18,6 +18,7 @@
 package de.erdesignerng.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author $Author: mirkosertic $
@@ -51,7 +52,7 @@ public abstract class ModelItem implements Serializable {
 	 *
 	 * @param aName the name to set
 	 */
-	public void setName(String aName) {
+	public void setName(final String aName) {
 		name = aName;
 	}
 
@@ -65,7 +66,7 @@ public abstract class ModelItem implements Serializable {
 	/**
 	 * @param aSystemId the systemId to set
 	 */
-	public void setSystemId(String aSystemId) {
+	public void setSystemId(final String aSystemId) {
 		systemId = aSystemId;
 	}
 
@@ -73,7 +74,7 @@ public abstract class ModelItem implements Serializable {
 		return properties;
 	}
 
-	public void setProperties(ModelProperties properties) {
+	public void setProperties(final ModelProperties properties) {
 		this.properties = properties;
 	}
 
@@ -86,29 +87,29 @@ public abstract class ModelItem implements Serializable {
 		return comment;
 	}
 
-	public void setComment(String comment) {
+	public void setComment(final String comment) {
 		this.comment = comment;
 	}
 
-	public boolean isRenamed(String aName) {
+	public boolean isRenamed(final String aName) {
 		if (name == null) {
 			return aName != null;
 		}
 		return !name.equals(aName);
 	}
 
-	public boolean isCommentChanged(String aComment) {
+	public boolean isCommentChanged(final String aComment) {
 		return isStringModified(comment, aComment);
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o) return true;
 		if (!(o instanceof ModelItem)) return false;
 
-		ModelItem modelItem = (ModelItem) o;
+		final ModelItem modelItem = (ModelItem) o;
 
-		if (systemId != null ? !systemId.equals(modelItem.systemId) : modelItem.systemId != null) return false;
+		if (!Objects.equals(systemId, modelItem.systemId)) return false;
 
 		return true;
 	}
@@ -132,7 +133,7 @@ public abstract class ModelItem implements Serializable {
 		return originalName;
 	}
 
-	public void setOriginalName(String originalName) {
+	public void setOriginalName(final String originalName) {
 		this.originalName = originalName;
 	}
 

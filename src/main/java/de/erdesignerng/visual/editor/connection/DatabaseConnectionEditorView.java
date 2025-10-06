@@ -66,7 +66,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);
         setLayout(theLayout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(new DefaultLabel(ERDesignerBundle.DIALECT), cons.xy(2, 2));
         add(dialect, cons.xy(4, 2));
@@ -88,7 +88,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
         add(promptForPassword, cons.xywh(2, 14, 3, 1));
 
-        JPanel thePanel = new JPanel();
+        final JPanel thePanel = new JPanel();
 
         theColDef = "60dlu,2dlu:grow,60dlu,2dlu,60dlu,2dlu";
         theRowDef = "p";
@@ -131,7 +131,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
         return user;
     }
 
-    public void handleDialectChange(Dialect aDialect) {
+    public void handleDialectChange(final Dialect aDialect) {
     }
 
     /**

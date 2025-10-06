@@ -27,31 +27,31 @@ public final class JDBCUtils {
 	private JDBCUtils() {
 	}
 
-	public static void closeQuietly(Connection aConnection) {
+	public static void closeQuietly(final Connection aConnection) {
 		if (aConnection != null) {
 			try {
 				aConnection.close();
-			} catch (SQLException e) {
+			} catch (final SQLException e) {
 				// Ignore this
 			}
 		}
 	}
 
-	public static void closeQuietly(Statement aStatement) {
+	public static void closeQuietly(final Statement aStatement) {
 		if (aStatement != null) {
 			try {
 				aStatement.close();
-			} catch (SQLException e) {
+			} catch (final SQLException e) {
 				// Ignore this
 			}
 		}
 	}
 
-	public static void closeQuietly(ResultSet aResultSet) {
+	public static void closeQuietly(final ResultSet aResultSet) {
 		if (aResultSet != null) {
 			try {
 				aResultSet.close();
-			} catch (SQLException e) {
+			} catch (final SQLException e) {
 				// Ignore this
 			}
 		}

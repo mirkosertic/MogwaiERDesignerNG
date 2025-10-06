@@ -47,18 +47,18 @@ public class CheckboxTreeCellRenderer extends JCheckBox implements
 		initializer.initializeComponent(this);
 	}
 
-	protected String objectToString(Object aObject) {
+	protected String objectToString(final Object aObject) {
 		return StringRendererHelper.objectToString(aObject);
 	}
 
 	@Override
-	public Component getTreeCellRendererComponent(JTree aTree, Object aValue,
-			boolean isSelected, boolean isExpanded, boolean isLeaf, int isRow,
-			boolean hasFocus) {
+	public Component getTreeCellRendererComponent(final JTree aTree, final Object aValue,
+                                                  final boolean isSelected, final boolean isExpanded, final boolean isLeaf, final int isRow,
+                                                  final boolean hasFocus) {
 
-		DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) aValue;
+		final DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) aValue;
 		if (theNode.getUserObject() instanceof SelectableWrapper) {
-			SelectableWrapper theWrapper = (SelectableWrapper) theNode
+			final SelectableWrapper theWrapper = (SelectableWrapper) theNode
 					.getUserObject();
 
 			setEnabled(true);

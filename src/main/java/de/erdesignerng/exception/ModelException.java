@@ -26,7 +26,7 @@ public abstract class ModelException extends Exception {
 	public ModelException() {
 	}
 
-	public ModelException(String aMessage) {
+	public ModelException(final String aMessage) {
 		super(aMessage);
 	}
 }

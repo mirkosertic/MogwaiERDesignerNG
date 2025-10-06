@@ -61,7 +61,7 @@ public class SaveToRepositoryView extends JPanel {
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);
         setLayout(theLayout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(newEntryButton, cons.xywh(2, 2, 5, 1));
         add(new DefaultLabel(ERDesignerBundle.NAME), cons.xy(4, 4));
@@ -74,7 +74,7 @@ public class SaveToRepositoryView extends JPanel {
         add(new DefaultLabel(ERDesignerBundle.NEWNAME), cons.xy(4, 10));
         add(existingNameField, cons.xy(6, 10));
 
-        JPanel thePanel = new JPanel();
+        final JPanel thePanel = new JPanel();
 
         theColDef = "60dlu,fill:2dlu:grow,60dlu";
         theRowDef = "p";

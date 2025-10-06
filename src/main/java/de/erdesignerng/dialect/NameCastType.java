@@ -51,9 +51,9 @@ public enum NameCastType {
 	 * @return the enum constant with the specified id
 	 * @throws IllegalArgumentException if this enum type has no constant with the specified id
 	 */
-	public static NameCastType fromId(int id) {
+	public static NameCastType fromId(final int id) {
 
-		for(NameCastType aNameCastType : NameCastType.values()) { 
+		for(final NameCastType aNameCastType : NameCastType.values()) {
 			if (aNameCastType.getId() == id) {
 				return aNameCastType;
 			}
@@ -62,7 +62,7 @@ public enum NameCastType {
 		throw new IllegalArgumentException("Unknown type \"" + id + "\"!");
 	}
 
-	public static NameCastType fromString(String aConstantName) {
+	public static NameCastType fromString(final String aConstantName) {
 		return NameCastType.valueOf(aConstantName.toUpperCase());
 	}
 
@@ -71,17 +71,13 @@ public enum NameCastType {
 		return super.toString().toUpperCase();
 	}
 
-	public final String cast(String aValue) {
-		switch (id) {
-			case 1:
-				return aValue;
-			case 2:
-				return aValue.toUpperCase();
-			case 3:
-				return aValue.toLowerCase();
-			default:
-				throw new IllegalStateException();
-		}
+	public final String cast(final String aValue) {
+        return switch (id) {
+            case 1 -> aValue;
+            case 2 -> aValue.toUpperCase();
+            case 3 -> aValue.toLowerCase();
+            default -> throw new IllegalStateException();
+        };
 	}
 
 }

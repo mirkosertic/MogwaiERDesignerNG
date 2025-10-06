@@ -38,7 +38,7 @@ public class VertexCellElement extends Element {
 
     private Rectangle2D boundaries;
 
-    public VertexCellElement(CellView aView) {
+    public VertexCellElement(final CellView aView) {
         view = aView;
     }
 
@@ -49,8 +49,8 @@ public class VertexCellElement extends Element {
     @Override
     public Point getLocation() {
 
-        GraphCell theCell = getCell();
-        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
+        final GraphCell theCell = getCell();
+        final Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
         return new Point((int) theBounds.getX(), (int) theBounds.getY());
     }
 
@@ -58,8 +58,8 @@ public class VertexCellElement extends Element {
     public Dimension getSize() {
 
         if (size == null) {
-            GraphCell theCell = getCell();
-            Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
+            final GraphCell theCell = getCell();
+            final Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
             size = new Dimension((int) theBounds.getWidth(), (int) theBounds.getHeight());
         }
         return size;

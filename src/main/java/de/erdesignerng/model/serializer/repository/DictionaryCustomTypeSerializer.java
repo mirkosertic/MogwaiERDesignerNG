@@ -34,7 +34,7 @@ public class DictionaryCustomTypeSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryCustomTypeSerializer SERIALIZER = new DictionaryCustomTypeSerializer();
 
-    private void copyExtendedAttributes(CustomType aSource, CustomTypeEntity aDestination) {
+    private void copyExtendedAttributes(final CustomType aSource, final CustomTypeEntity aDestination) {
         aDestination.setSystemId(aSource.getSystemId());
         aDestination.setName(aSource.getName());
         aDestination.setSchema(aSource.getSchema());
@@ -44,7 +44,7 @@ public class DictionaryCustomTypeSerializer extends DictionaryBaseSerializer {
         DictionaryAttributeSerializer.SERIALIZER.serialize(aSource, aDestination);
     }
 
-    private void copyExtendedAttributes(Model aModel, CustomTypeEntity aSource, CustomType aDestination) {
+    private void copyExtendedAttributes(final Model aModel, final CustomTypeEntity aSource, final CustomType aDestination) {
         aDestination.setSystemId(aSource.getSystemId());
         aDestination.setName(aSource.getName());
         aDestination.setSchema(aSource.getSchema());
@@ -54,11 +54,11 @@ public class DictionaryCustomTypeSerializer extends DictionaryBaseSerializer {
         DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, aDestination, aSource);
     }
 
-    public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionaryEntity) {
+    public void serialize(final Model aModel, final Session aSession, final RepositoryEntity aDictionaryEntity) {
 
-        Map<String, ModelEntity> theCustomTypes = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity.getCustomType());
+        final Map<String, ModelEntity> theCustomTypes = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity.getCustomType());
 
-        for (CustomType theType : aModel.getCustomTypes()) {
+        for (final CustomType theType : aModel.getCustomTypes()) {
             boolean existing = true;
             CustomTypeEntity theExisting = (CustomTypeEntity) theCustomTypes.get(theType.getSystemId());
             if (theExisting == null) {
@@ -75,10 +75,10 @@ public class DictionaryCustomTypeSerializer extends DictionaryBaseSerializer {
         }
     }
 
-    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-        for (CustomTypeEntity theEntity : aRepositoryEntity.getCustomType()) {
+    public void deserialize(final Model aModel, final RepositoryEntity aRepositoryEntity) {
+        for (final CustomTypeEntity theEntity : aRepositoryEntity.getCustomType()) {
 
-            CustomType theType = new CustomType();
+            final CustomType theType = new CustomType();
             copyBaseAttributes(theEntity, theType);
             copyExtendedAttributes(aModel, theEntity, theType);
 

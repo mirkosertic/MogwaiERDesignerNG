@@ -29,27 +29,27 @@ import org.xml.sax.SAXException;
 
 public class TestFrame extends JFrame {
 
-    private Model model;
-    private Java2DEditor editor;
+    private final Model model;
+    private final Java2DEditor editor;
 
     public TestFrame() throws ParserConfigurationException, IOException, SAXException {
         //InputStream theStream = new FileInputStream("U:\\Eigene Dateien\\Capitastra_6_5_0.mxm");
-        InputStream theStream = new FileInputStream("D:\\Temp\\Capitastra_6_5_0.mxm");
+        final InputStream theStream = new FileInputStream("D:\\Temp\\Capitastra_6_5_0.mxm");
         model = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
         editor = new Java2DEditor();
         editor.setModel(model);
 
         setContentPane(editor.getDetailComponent());
 
-        Table theTable = model.getTables().findByName("CAPITIMEPOINT");
+        final Table theTable = model.getTables().findByName("CAPITIMEPOINT");
         //theTable = model.getTables().findByName("GRUNDSTUECK");
         //theTable = model.getTables().findByName("DIENSTBARKEIT_M_M_GEBAEUDE");
 
         editor.setSelectedObject(theTable);
     }
 
-    public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException {
-        TestFrame theFrame = new TestFrame();
+    static void main(final String[] args) throws IOException, SAXException, ParserConfigurationException {
+        final TestFrame theFrame = new TestFrame();
         theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         theFrame.setSize(800, 600);
         theFrame.setVisible(true);

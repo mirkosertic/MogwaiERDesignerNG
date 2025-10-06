@@ -48,13 +48,13 @@ public abstract class HibernateTemplate {
 
     private final Connection connection;
 
-    public HibernateTemplate(Class aDialectClass, Connection aConnection) {
+    public HibernateTemplate(final Class aDialectClass, final Connection aConnection) {
         dialectClass = aDialectClass;
         connection = aConnection;
     }
 
-    protected Configuration createConfiguration(Class aHibernateDialectClass) {
-        Configuration theConfiguration = new Configuration();
+    protected Configuration createConfiguration(final Class aHibernateDialectClass) {
+        final Configuration theConfiguration = new Configuration();
         theConfiguration.addClass(DomainEntity.class);
         theConfiguration.addClass(CustomTypeEntity.class);
         theConfiguration.addClass(TableEntity.class);
@@ -72,24 +72,24 @@ public abstract class HibernateTemplate {
         return theConfiguration;
     }
 
-    protected Session createSession(Connection aConnection, Class aHibernateDialectClass) {
+    protected Session createSession(final Connection aConnection, final Class aHibernateDialectClass) {
 
-        Configuration theConfiguration = createConfiguration(aHibernateDialectClass);
-        SessionFactory theSessionFactory = theConfiguration.buildSessionFactory();
+        final Configuration theConfiguration = createConfiguration(aHibernateDialectClass);
+        final SessionFactory theSessionFactory = theConfiguration.buildSessionFactory();
 
         return theSessionFactory.openSession(aConnection, AuditInterceptor.INSTANCE);
     }
 
     public abstract Object doInSession(Session aSession);
 
-    public Object execute() throws Exception {
+    public Object execute() {
         ThreadbasedConnectionProvider.initializeForThread(connection);
         Session theSession = null;
         Transaction theTx = null;
 
-        Thread theCurrentThread = Thread.currentThread();
+        final Thread theCurrentThread = Thread.currentThread();
 
-        ClassLoader theLoader = HibernateTemplate.class.getClassLoader();
+        final ClassLoader theLoader = HibernateTemplate.class.getClassLoader();
         theCurrentThread.setContextClassLoader(theLoader);
 
         try {
@@ -98,13 +98,13 @@ public abstract class HibernateTemplate {
 
             theTx = theSession.beginTransaction();
 
-            Object theResult = doInSession(theSession);
+            final Object theResult = doInSession(theSession);
 
             theTx.commit();
 
             return theResult;
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             if (theTx != null) {
                 theTx.rollback();
             }

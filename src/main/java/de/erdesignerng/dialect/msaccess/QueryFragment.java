@@ -30,15 +30,15 @@ public class QueryFragment {
 
     private String trailingSQL = "";
 
-    public QueryFragment(String leadingSQL) {
+    public QueryFragment(final String leadingSQL) {
         this(leadingSQL, null);
     }
 
-    public QueryFragment(String leadingSQL, Integer properties) {
+    public QueryFragment(final String leadingSQL, final Integer properties) {
         this(leadingSQL, properties, "");
     }
 
-    public QueryFragment(String leadingSQL, Integer properties, String trailingSQL) {
+    public QueryFragment(final String leadingSQL, final Integer properties, final String trailingSQL) {
         this.leadingSQL = (StringUtils.isEmpty(leadingSQL))?"":leadingSQL;
         this.properties = properties;
         this.trailingSQL = (StringUtils.isEmpty(trailingSQL))?"":trailingSQL;

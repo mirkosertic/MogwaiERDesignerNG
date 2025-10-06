@@ -26,15 +26,15 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
  */
 public class DB2DataType extends GenericDataTypeImpl {
 
-	public DB2DataType(String aName, String aDefinition, int... aJdbcType) {
+	public DB2DataType(final String aName, final String aDefinition, final int... aJdbcType) {
 		super(aName, aDefinition, aJdbcType);
 	}
 
-	public DB2DataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+	public DB2DataType(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcType) {
 		super(aName, aDefinition, anIdentity, aJdbcType);
 	}
 
-	public DB2DataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+	public DB2DataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcType) {
 		super(aName, aDefinition, anIdentity, anArray, aJdbcType);
 	}
 

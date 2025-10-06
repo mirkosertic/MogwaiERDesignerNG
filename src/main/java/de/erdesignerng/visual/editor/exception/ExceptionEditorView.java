@@ -51,13 +51,13 @@ public class ExceptionEditorView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,fill:250dlu,10dlu,p,2dlu";
-        String colDef = "2dlu,250dlu,2dlu";
+        final String rowDef = "2dlu,fill:250dlu,10dlu,p,2dlu";
+        final String colDef = "2dlu,250dlu,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
+        final FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(getButtonPanel(), cons.xywh(2, 4, 1, 1));
         add(getExceptionText().getScrollPane(), cons.xywh(2, 2, 1, 1));
@@ -73,13 +73,13 @@ public class ExceptionEditorView extends JPanel {
         if (buttonPanel == null) {
             buttonPanel = new JPanel();
 
-            String rowDef = "p";
-            String colDef = "fill:60dlu,2dlu:grow,fill:60dlu,2dlu,fill:60dlu";
+            final String rowDef = "p";
+            final String colDef = "fill:60dlu,2dlu:grow,fill:60dlu,2dlu,fill:60dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             buttonPanel.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             buttonPanel.add(getCloseButton(), cons.xywh(1, 1, 1, 1));
             buttonPanel.setName("buttonpanel");

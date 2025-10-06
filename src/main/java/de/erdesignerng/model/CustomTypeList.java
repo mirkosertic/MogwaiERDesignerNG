@@ -25,8 +25,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class CustomTypeList extends ModelItemVector<CustomType> {
 
-	public CustomType findByNameAndSchema(String aTypeName, String aSchemaName) {
-		for (CustomType theType : this) {
+	public CustomType findByNameAndSchema(final String aTypeName, final String aSchemaName) {
+		for (final CustomType theType : this) {
 			if (StringUtils.equals(aTypeName, theType.getName())
 					&& StringUtils.equals(aSchemaName, theType.getSchema())) {
 				return theType;

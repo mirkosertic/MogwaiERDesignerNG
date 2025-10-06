@@ -29,21 +29,21 @@ public class DBConnectionCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
         execute(component.getModel().createConnectionHistoryEntry());
     }
 
-    public void execute(ConnectionDescriptor aConnection) {
+    public void execute(final ConnectionDescriptor aConnection) {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(
                 getDetailComponent(), component.getModel(), aConnection);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
                 component.addCurrentConnectionToConnectionHistory();
 
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

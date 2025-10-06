@@ -38,7 +38,7 @@ public class RepositoryEntryDescriptor {
     /**
      * @param id the id to set
      */
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -52,7 +52,7 @@ public class RepositoryEntryDescriptor {
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -63,14 +63,14 @@ public class RepositoryEntryDescriptor {
 
     @Override
     public int hashCode() {
-        int prime = 31;
+        final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -80,7 +80,7 @@ public class RepositoryEntryDescriptor {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        RepositoryEntryDescriptor other = (RepositoryEntryDescriptor) obj;
+        final RepositoryEntryDescriptor other = (RepositoryEntryDescriptor) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

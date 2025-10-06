@@ -59,7 +59,7 @@ public abstract class ModelEntity {
 	 * @param systemId
 	 *			the systemId to set
 	 */
-	public void setSystemId(String systemId) {
+	public void setSystemId(final String systemId) {
 		this.systemId = systemId;
 	}
 
@@ -74,7 +74,7 @@ public abstract class ModelEntity {
 	 * @param name
 	 *			the name to set
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -89,7 +89,7 @@ public abstract class ModelEntity {
 	 * @param comment
 	 *			the comment to set
 	 */
-	public void setComment(String comment) {
+	public void setComment(final String comment) {
 		this.comment = comment;
 	}
 
@@ -104,7 +104,7 @@ public abstract class ModelEntity {
 	 * @param version
 	 *			the version to set
 	 */
-	public void setVersion(Integer version) {
+	public void setVersion(final Integer version) {
 		this.version = version;
 	}
 
@@ -119,7 +119,7 @@ public abstract class ModelEntity {
 	 * @param creationUser
 	 *			the creationUser to set
 	 */
-	public void setCreationUser(String creationUser) {
+	public void setCreationUser(final String creationUser) {
 		this.creationUser = creationUser;
 	}
 
@@ -134,7 +134,7 @@ public abstract class ModelEntity {
 	 * @param creationDate
 	 *			the creationDate to set
 	 */
-	public void setCreationDate(Timestamp creationDate) {
+	public void setCreationDate(final Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -149,7 +149,7 @@ public abstract class ModelEntity {
 	 * @param lastModificationUser
 	 *			the lastModificationUser to set
 	 */
-	public void setLastModificationUser(String lastModificationUser) {
+	public void setLastModificationUser(final String lastModificationUser) {
 		this.lastModificationUser = lastModificationUser;
 	}
 
@@ -164,7 +164,7 @@ public abstract class ModelEntity {
 	 * @param lastModificationDate
 	 *			the lastModificationDate to set
 	 */
-	public void setLastModificationDate(Timestamp lastModificationDate) {
+	public void setLastModificationDate(final Timestamp lastModificationDate) {
 		this.lastModificationDate = lastModificationDate;
 	}
 
@@ -179,7 +179,7 @@ public abstract class ModelEntity {
 	 * @param properties
 	 *			the properties to set
 	 */
-	public void setProperties(List<StringKeyValuePair> properties) {
+	public void setProperties(final List<StringKeyValuePair> properties) {
 		this.properties = properties;
 	}
 
@@ -194,7 +194,7 @@ public abstract class ModelEntity {
 	 * @param id
 	 *			the id to set
 	 */
-	public void setId(Long id) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 }

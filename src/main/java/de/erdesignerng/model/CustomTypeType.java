@@ -52,9 +52,9 @@ public enum CustomTypeType {
 	 * @return the enum constant with the specified id
 	 * @throws IllegalArgumentException if this enum type has no constant with the specified id
 	 */
-	public static CustomTypeType fromId(int id) {
+	public static CustomTypeType fromId(final int id) {
 
-		for(CustomTypeType aCustomTypeType : CustomTypeType.values()) { 
+		for(final CustomTypeType aCustomTypeType : CustomTypeType.values()) {
 			if (aCustomTypeType.getId() == id) {
 				return aCustomTypeType;
 			}
@@ -63,7 +63,7 @@ public enum CustomTypeType {
 		throw new IllegalArgumentException("Unknown type \"" + id + "\"!");
 	}
 
-	public static CustomTypeType fromString(String aConstantName) {
+	public static CustomTypeType fromString(final String aConstantName) {
 		return CustomTypeType.valueOf(aConstantName.toUpperCase());
 	}
 

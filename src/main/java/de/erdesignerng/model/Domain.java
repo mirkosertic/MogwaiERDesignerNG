@@ -50,7 +50,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 	/**
 	* @param size the size to set
 	*/
-	public void setSize(Integer size) {
+	public void setSize(final Integer size) {
 		this.size = size;
 	}
 
@@ -64,7 +64,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 	/**
 	* @param fraction the fraction to set
 	*/
-	public void setFraction(Integer fraction) {
+	public void setFraction(final Integer fraction) {
 		this.fraction = fraction;
 	}
 
@@ -78,7 +78,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 	/**
 	* @param scale the scale to set
 	*/
-	public void setScale(int scale) {
+	public void setScale(final int scale) {
 		this.scale = scale;
 	}
 
@@ -92,7 +92,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 	/**
 	* @param concreteType the concreteType to set
 	*/
-	public void setConcreteType(DataType concreteType) {
+	public void setConcreteType(final DataType concreteType) {
 		this.concreteType = concreteType;
 	}
 
@@ -113,7 +113,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 
 	@Override
 	public Domain clone() {
-		Domain theDomain = new Domain();
+		final Domain theDomain = new Domain();
 		theDomain.setSystemId(getSystemId());
 		theDomain.setName(getName());
 		theDomain.setConcreteType(concreteType);
@@ -131,7 +131,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 	* @param aValue the clone
 	*/
 	@Override
-	public void restoreFrom(Domain aValue) {
+	public void restoreFrom(final Domain aValue) {
 		setName(aValue.getName());
 		setSystemId(aValue.getSystemId());
 		setConcreteType(aValue.getConcreteType());
@@ -143,8 +143,8 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 	}
 
 	@Override
-	public String createTypeDefinitionFor(Attribute aAttribute) {
-		Attribute theClone = aAttribute.clone();
+	public String createTypeDefinitionFor(final Attribute aAttribute) {
+		final Attribute theClone = aAttribute.clone();
 		theClone.setSize(size);
 		theClone.setFraction(fraction);
 		theClone.setScale(scale);
@@ -191,7 +191,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 		return nullable;
 	}
 
-	public void setNullable(boolean nullable) {
+	public void setNullable(final boolean nullable) {
 		this.nullable = nullable;
 	}
 

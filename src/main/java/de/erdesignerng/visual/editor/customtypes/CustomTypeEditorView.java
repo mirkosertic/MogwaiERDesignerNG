@@ -75,13 +75,13 @@ public class CustomTypeEditorView extends DefaultPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
-        String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
+        final String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
+        final String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
+        final FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
         add(getOkButton(), cons.xywh(5, 8, 1, 1));
@@ -117,13 +117,13 @@ public class CustomTypeEditorView extends DefaultPanel {
             attributesTab = new DefaultTabbedPaneTab(mainTabbedPane,
                     ERDesignerBundle.TYPES);
 
-            String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
-            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
+            final String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
+            final String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             attributesTab.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             // this.m_attributestab.add(this.getUpButton(), cons.xywh(7, 2, 1,
             // 1));
@@ -192,13 +192,13 @@ public class CustomTypeEditorView extends DefaultPanel {
             attributesGeneralTab = new DefaultTabbedPaneTab(component15,
                     ERDesignerBundle.GENERAL);
 
-            String rowDef = "2dlu,p,2dlu,p,2dlu,fill:50dlu:grow";
-            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
+            final String rowDef = "2dlu,p,2dlu,p,2dlu,fill:50dlu:grow";
+            final String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             attributesGeneralTab.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             attributesGeneralTab.add(getComponent20(), cons.xywh(2, 2, 1, 1));
             attributesGeneralTab.add(getTypeName(), cons.xywh(4, 2, 1, 1));

@@ -37,21 +37,24 @@ public final class JasperUtils {
 	private JasperUtils() {
 	}
 
-	private static void findReports(Map<File, String> aReportMap, File aDirectory) throws JRException {
+	private static void findReports(final Map<File, String> aReportMap, final File aDirectory) {
 		Thread.currentThread().setContextClassLoader(JasperUtils.class.getClassLoader());
 		if (aDirectory != null && aDirectory.exists() && aDirectory.canRead()) {
-			for (File theFile : aDirectory.listFiles()) {
-				String theName = theFile.getName();
+			for (final File theFile : aDirectory.listFiles()) {
+				final String theName = theFile.getName();
 				if (theName.endsWith(".jrxml") && (!theName.contains("_"))) {
 					try {
-						JasperDesign theDesign = JRXmlLoader.load(new FileInputStream(theFile));
-						String theReportName = theDesign.getName();
+						final JasperDesign theDesign = JRXmlLoader.load(new FileInputStream(theFile));
+						final String theReportName = theDesign.getName();
 						if (StringUtils.isNotEmpty(theReportName)) {
 							aReportMap.put(theFile, theReportName);
 						}
-					} catch (FileNotFoundException e) {
+					} catch (final FileNotFoundException e) {
 						// This cannot happen
-					}
+					} catch (final JRException e) {
+                        // This is not a valid report
+                        System.out.println("Invalid report, please migrate: " + theFile.getAbsolutePath());
+                    }
 
 				} else {
 					if ((theFile.isDirectory()) && (!".".equals(theName)) && (!"..".equals(theName))) {
@@ -62,23 +65,23 @@ public final class JasperUtils {
 		}
 	}
 
-	public static Map<File, String> findReportsInDirectory(File aDirectory) throws JRException {
-		Map<File, String> theResult = new HashMap<>();
+	public static Map<File, String> findReportsInDirectory(final File aDirectory) throws JRException {
+		final Map<File, String> theResult = new HashMap<>();
 		findReports(theResult, aDirectory);
 		return theResult;
 	}
 
-	public static JasperPrint runJasperReport(File aModelXMLFile, File aJRXMLFile) throws JRException,
+	public static JasperPrint runJasperReport(final File aModelXMLFile, final File aJRXMLFile) throws JRException,
 			FileNotFoundException {
 
-		String theFileName = aJRXMLFile.getAbsolutePath();
-		int p = theFileName.indexOf(".jrxml");
-		String theTemplateName = theFileName.substring(0, p) + ".jasper";
+		final String theFileName = aJRXMLFile.getAbsolutePath();
+		final int p = theFileName.indexOf(".jrxml");
+		final String theTemplateName = theFileName.substring(0, p) + ".jasper";
 
-		File theTemplateFile = new File(theTemplateName);
+		final File theTemplateFile = new File(theTemplateName);
 
-		JasperDesign theDesign = JRXmlLoader.load(new FileInputStream(aJRXMLFile));
-		JRQuery theQuery = theDesign.getQuery();
+		final JasperDesign theDesign = JRXmlLoader.load(new FileInputStream(aJRXMLFile));
+		final JRQuery theQuery = theDesign.getQuery();
 		String theQueryText = null;
 
 		if (theQuery != null) {
@@ -88,7 +91,7 @@ public final class JasperUtils {
 			throw new RuntimeException("Cannot extract query from Jasper template");
 		}
 
-		Map<String, Object> theParams = new HashMap<>();
+		final Map<String, Object> theParams = new HashMap<>();
 		theParams.put(JRParameter.REPORT_LOCALE, Locale.getDefault());
 
 		String theSubreportDir = theTemplateFile.getParent();
@@ -97,7 +100,7 @@ public final class JasperUtils {
 		}
 		theParams.put("SUBREPORT_DIR", theSubreportDir);
 
-		JRXmlDataSource theDataSource = new JRXmlDataSource(aModelXMLFile, theQueryText);
+		final JRXmlDataSource theDataSource = new JRXmlDataSource(aModelXMLFile, theQueryText);
 		return JasperFillManager.fillReport(new FileInputStream(theTemplateFile), theParams,
 				theDataSource);
 	}

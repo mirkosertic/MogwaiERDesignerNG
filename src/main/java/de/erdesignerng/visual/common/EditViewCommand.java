@@ -25,7 +25,7 @@ public class EditViewCommand extends UICommand {
 
     private final View view;
 
-    public EditViewCommand(View aTable) {
+    public EditViewCommand(final View aTable) {
         view = aTable;
     }
 
@@ -35,8 +35,8 @@ public class EditViewCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        ViewEditor theEditor = new ViewEditor(component.getModel(), component.getDetailComponent());
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ViewEditor theEditor = new ViewEditor(component.getModel(), component.getDetailComponent());
         theEditor.initializeFor(view);
         if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
             try {
@@ -45,7 +45,7 @@ public class EditViewCommand extends UICommand {
                 beforeRefresh();
 
                 refreshDisplayAndOutline();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

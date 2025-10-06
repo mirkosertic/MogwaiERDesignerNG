@@ -46,7 +46,7 @@ public class AttributeListAttributeCellRenderer implements TableCellRenderer {
 
 	private final TableEditor editor;
 
-	public AttributeListAttributeCellRenderer(TableEditor aEditor) {
+	public AttributeListAttributeCellRenderer(final TableEditor aEditor) {
 
 		editor = aEditor;
 
@@ -61,7 +61,7 @@ public class AttributeListAttributeCellRenderer implements TableCellRenderer {
 		panel.setOpaque(true);
 		labelPanel.setOpaque(true);
 
-		JPanel theLeft = new JPanel(new BorderLayout());
+		final JPanel theLeft = new JPanel(new BorderLayout());
 		keyLabel = new JLabel(KEYICON);
 		theLeft.add(keyLabel);
 		theLeft.setSize(20, 10);
@@ -74,15 +74,15 @@ public class AttributeListAttributeCellRenderer implements TableCellRenderer {
 	}
 
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
 
-		AttributeTableModel theModel = (AttributeTableModel) table.getModel();
-		Attribute<Table> theAttribute = theModel.getRow(row);
+		final AttributeTableModel theModel = (AttributeTableModel) table.getModel();
+		final Attribute<Table> theAttribute = theModel.getRow(row);
 
 		label.setText(theAttribute.getName());
 		label.setForeground(Color.black);
 
-		boolean isPrimaryKey = editor.isPrimaryKey(theAttribute);
+		final boolean isPrimaryKey = editor.isPrimaryKey(theAttribute);
 
 		if (isPrimaryKey || theAttribute.isForeignKey()) {
 			label.setForeground(Color.red);
@@ -90,7 +90,7 @@ public class AttributeListAttributeCellRenderer implements TableCellRenderer {
 
 		keyLabel.setVisible(isPrimaryKey);
 
-		UIInitializer initializer = UIInitializer.getInstance();
+		final UIInitializer initializer = UIInitializer.getInstance();
 
 		if (isSelected) {
 			labelPanel.setBackground(initializer.getConfiguration().getDefaultListSelectionBackground());

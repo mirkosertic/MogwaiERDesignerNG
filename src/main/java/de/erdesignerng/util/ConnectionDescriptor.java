@@ -41,8 +41,8 @@ public class ConnectionDescriptor {
 
 	private boolean promptForPassword;
 
-	public ConnectionDescriptor(String aAlias, String aDialect, String aURL, String aUserName, String aDriver,
-								String aPassword, boolean aPromptForPassword) {
+	public ConnectionDescriptor(final String aAlias, final String aDialect, final String aURL, final String aUserName, final String aDriver,
+                                final String aPassword, final boolean aPromptForPassword) {
 		alias = aAlias;
 		dialect = aDialect;
 		url = aURL;
@@ -98,13 +98,13 @@ public class ConnectionDescriptor {
 		return promptForPassword;
 	}
 
-	public void setPromptForPassword(boolean promptForPassword) {
+	public void setPromptForPassword(final boolean promptForPassword) {
 		this.promptForPassword = promptForPassword;
 	}
 
 	@Override
 	public int hashCode() {
-		int prime = 31;
+		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((alias == null) ? 0 : alias.hashCode());
 		result = prime * result + ((dialect == null) ? 0 : dialect.hashCode());
@@ -116,7 +116,7 @@ public class ConnectionDescriptor {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -126,7 +126,7 @@ public class ConnectionDescriptor {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		ConnectionDescriptor other = (ConnectionDescriptor) obj;
+		final ConnectionDescriptor other = (ConnectionDescriptor) obj;
 		if (alias == null) {
 			if (other.alias != null) {
 				return false;

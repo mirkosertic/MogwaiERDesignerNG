@@ -41,7 +41,7 @@ public class CommentCellView extends VertexView {
 
     private static final MyRenderer RENDERER = new MyRenderer();
 
-    public CommentCellView(CommentCell aCell) {
+    public CommentCellView(final CommentCell aCell) {
         super(aCell);
     }
 
@@ -68,7 +68,7 @@ public class CommentCellView extends VertexView {
         @Override
         public Dimension getPreferredSize() {
             if (visible) {
-                Dimension theSize = textarea.getPreferredSize();
+                final Dimension theSize = textarea.getPreferredSize();
 
                 return new Dimension(theSize.width + 20, theSize.height + 20);
             }
@@ -76,10 +76,10 @@ public class CommentCellView extends VertexView {
         }
 
         @Override
-        public void paint(Graphics aGraphics) {
+        public void paint(final Graphics aGraphics) {
 
             if (visible) {
-                Dimension theSize = getSize();
+                final Dimension theSize = getSize();
 
                 aGraphics.setColor(selected ? Color.blue : Color.gray);
                 aGraphics.drawRoundRect(0, 0, theSize.width - 1, theSize.height - 1, 10, 10);
@@ -91,11 +91,11 @@ public class CommentCellView extends VertexView {
         }
 
         @Override
-        public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
-                                              boolean aPreview) {
+        public Component getRendererComponent(final JGraph aGraph, final CellView aView, final boolean aSelected, final boolean aHasFocus,
+                                              final boolean aPreview) {
 
-            CommentCellView theView = (CommentCellView) aView;
-            Comment theComment = (Comment) ((CommentCell) theView.getCell()).getUserObject();
+            final CommentCellView theView = (CommentCellView) aView;
+            final Comment theComment = (Comment) ((CommentCell) theView.getCell()).getUserObject();
             textarea.setText(theComment.getComment());
             selected = aSelected;
             visible = true;

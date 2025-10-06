@@ -34,12 +34,12 @@ public class DictionaryCommentSerializer extends DictionaryBaseSerializer {
 
 	public static final DictionaryCommentSerializer SERIALIZER = new DictionaryCommentSerializer();
 
-	public void serialize(Model aModel, RepositoryEntity aDictionaryEntity) {
+	public void serialize(final Model aModel, final RepositoryEntity aDictionaryEntity) {
 
-		Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), aDictionaryEntity
+		final Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), aDictionaryEntity
 				.getComments());
 
-		for (Comment theComment : aModel.getComments()) {
+		for (final Comment theComment : aModel.getComments()) {
 			boolean existing = true;
 			CommentEntity theExisting = (CommentEntity) theComments.get(theComment.getSystemId());
 			if (theExisting == null) {
@@ -55,10 +55,10 @@ public class DictionaryCommentSerializer extends DictionaryBaseSerializer {
 		}
 	}
 
-	public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-		for (CommentEntity theCommentEntity : aRepositoryEntity.getComments()) {
+	public void deserialize(final Model aModel, final RepositoryEntity aRepositoryEntity) {
+		for (final CommentEntity theCommentEntity : aRepositoryEntity.getComments()) {
 
-			Comment theComment = new Comment();
+			final Comment theComment = new Comment();
 			theComment.setOwner(aModel);
 
 			copyBaseAttributes(theCommentEntity, theComment);

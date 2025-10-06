@@ -34,7 +34,7 @@ import org.jgraph.graph.GraphConstants;
 public class CommentCell extends DefaultGraphCell implements
         ModelCellWithPosition<Comment> {
 
-    public CommentCell(Comment aTable) {
+    public CommentCell(final Comment aTable) {
         super(aTable);
 
         GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20,
@@ -46,18 +46,18 @@ public class CommentCell extends DefaultGraphCell implements
     }
 
     @Override
-    public void transferAttributesToProperties(Map aAttributes) {
+    public void transferAttributesToProperties(final Map aAttributes) {
 
-        Comment theComment = (Comment) getUserObject();
-        Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
+        final Comment theComment = (Comment) getUserObject();
+        final Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
         theComment.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION,
                 (int) theBounds.getX(), (int) theBounds.getY());
     }
 
     @Override
-    public void transferPropertiesToAttributes(Comment aObject) {
+    public void transferPropertiesToAttributes(final Comment aObject) {
 
-        Point2D thePoint = aObject
+        final Point2D thePoint = aObject
                 .getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
         if (thePoint != null) {
             GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(
@@ -66,7 +66,7 @@ public class CommentCell extends DefaultGraphCell implements
     }
 
     @Override
-    public void setBounds(Rectangle2D aBounds) {
+    public void setBounds(final Rectangle2D aBounds) {
         GraphConstants.setBounds(getAttributes(), aBounds);
     }
 }

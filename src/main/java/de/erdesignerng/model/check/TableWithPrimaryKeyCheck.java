@@ -26,10 +26,10 @@ import de.erdesignerng.model.Table;
  */
 public class TableWithPrimaryKeyCheck implements ModelCheck {
     @Override
-    public void check(Model aModel, ModelChecker aChecker) {
-        for (Table theEntity : aModel.getTables()) {
-            Index theIndex = theEntity.getPrimarykey();
-            if (theIndex == null || theIndex.getExpressions().size() == 0) {
+    public void check(final Model aModel, final ModelChecker aChecker) {
+        for (final Table theEntity : aModel.getTables()) {
+            final Index theIndex = theEntity.getPrimarykey();
+            if (theIndex == null || theIndex.getExpressions().isEmpty()) {
                 aChecker.addError(new ModelError("Table "+theEntity.getName()+" does not have a primary key"));
             }
         }

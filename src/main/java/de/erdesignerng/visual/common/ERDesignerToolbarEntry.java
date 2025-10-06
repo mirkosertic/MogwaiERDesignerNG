@@ -21,8 +21,6 @@ import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author $Author: mirkosertic $
@@ -32,19 +30,13 @@ public class ERDesignerToolbarEntry extends DefaultButton {
 
 	private final DefaultPopupMenu menu = new DefaultPopupMenu();
 
-	public ERDesignerToolbarEntry(String aId) {
+	public ERDesignerToolbarEntry(final String aId) {
 		super(aId);
 
-		addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				menu.show(ERDesignerToolbarEntry.this, 0, getSize().height);
-			}
-		});
+		addActionListener(e -> menu.show(ERDesignerToolbarEntry.this, 0, getSize().height));
 	}
 
-	public void add(JMenuItem aItem) {
+	public void add(final JMenuItem aItem) {
 		menu.add(aItem);
 	}
 

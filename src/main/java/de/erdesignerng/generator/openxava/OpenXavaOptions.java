@@ -38,20 +38,20 @@ public class OpenXavaOptions {
 	public OpenXavaOptions() {
 	}
 
-	public String createTableName(String aName) {
+	public String createTableName(final String aName) {
 		return StringUtils.capitalize(aName.toLowerCase());
 	}
 
-	public String createFieldName(String aName) {
+	public String createFieldName(final String aName) {
 		return aName.toLowerCase();
 	}
 
-	public String createPropertyName(String aName) {
+	public String createPropertyName(final String aName) {
 		return StringUtils.capitalize(aName.toLowerCase());
 	}
 
-	public String getJavaType(DataType aDatatype, boolean aNullable, boolean aPrimarykey) {
-		OpenXavaTypeMap theType = typeMapping.get(aDatatype);
+	public String getJavaType(final DataType aDatatype, final boolean aNullable, final boolean aPrimarykey) {
+		final OpenXavaTypeMap theType = typeMapping.get(aDatatype);
 		String theJavaType = "String";
 		if (theType != null) {
 			theJavaType = theType.getJavaType();
@@ -80,7 +80,7 @@ public class OpenXavaOptions {
 		return typeMapping;
 	}
 
-	public void setTypeMapping(Map<DataType, OpenXavaTypeMap> typeMapping) {
+	public void setTypeMapping(final Map<DataType, OpenXavaTypeMap> typeMapping) {
 		this.typeMapping = typeMapping;
 	}
 
@@ -95,7 +95,7 @@ public class OpenXavaOptions {
 	 * @param srcDirectory
 	 *			the srcDirectory to set
 	 */
-	public void setSrcDirectory(String srcDirectory) {
+	public void setSrcDirectory(final String srcDirectory) {
 		this.srcDirectory = srcDirectory;
 	}
 
@@ -110,7 +110,7 @@ public class OpenXavaOptions {
 	 * @param packageName
 	 *			the packageName to set
 	 */
-	public void setPackageName(String packageName) {
+	public void setPackageName(final String packageName) {
 		this.packageName = packageName;
 	}
 }

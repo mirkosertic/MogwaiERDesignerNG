@@ -162,17 +162,17 @@ public final class PostgresDialect extends Dialect {
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final int... aJdbcType) {
 		return new PostgresDataType(aName, aDefinition, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean aIdentity, final int... aJdbcType) {
 		return new PostgresDataType(aName, aDefinition, aIdentity, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcType) {
 		return new PostgresDataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
 	}
 
@@ -182,9 +182,9 @@ public final class PostgresDialect extends Dialect {
 	}
 
 	@Override
-	protected void registerType(DataType aType) {
-		String anArrayDataTypeName = aType.getName() + ARRAY_INDICATOR;
-		String anArrayDataTypeNameAlias = "_" + aType.getName();
+	protected void registerType(final DataType aType) {
+		final String anArrayDataTypeName = aType.getName() + ARRAY_INDICATOR;
+		final String anArrayDataTypeNameAlias = "_" + aType.getName();
 
 		//register a common type, e.g. "integer"
 		super.registerType(aType);
@@ -195,10 +195,10 @@ public final class PostgresDialect extends Dialect {
 	}
 
 	@Override
-	public void addDataTypeAlias(String aDataTypeAlias, String aBaseDataTypeName) {
-		String aDataTypeAliasArrayName = aDataTypeAlias + ARRAY_INDICATOR;
-		String aDataTypeAliasArrayAliasName = "_" + aDataTypeAlias;
-		String aBaseDataTypeArrayName = aBaseDataTypeName + ARRAY_INDICATOR;
+	public void addDataTypeAlias(final String aDataTypeAlias, final String aBaseDataTypeName) {
+		final String aDataTypeAliasArrayName = aDataTypeAlias + ARRAY_INDICATOR;
+		final String aDataTypeAliasArrayAliasName = "_" + aDataTypeAlias;
+		final String aBaseDataTypeArrayName = aBaseDataTypeName + ARRAY_INDICATOR;
 
 		//register an alias of a real data type, e.g. "int4" for "integer"
 		super.addDataTypeAlias(aDataTypeAlias, aBaseDataTypeName);
@@ -209,8 +209,8 @@ public final class PostgresDialect extends Dialect {
 	}
 
 	@Override
-	protected String convertTypeNameToRealTypeName(String aTypeName) {
-		for (Map.Entry<String, String> theAliasEntry : getDataTypeAliases().entrySet()) {
+	protected String convertTypeNameToRealTypeName(final String aTypeName) {
+		for (final Map.Entry<String, String> theAliasEntry : getDataTypeAliases().entrySet()) {
 			if (theAliasEntry.getKey().equalsIgnoreCase(aTypeName)) {
 				return theAliasEntry.getValue();
 			}

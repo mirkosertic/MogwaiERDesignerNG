@@ -47,7 +47,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 		return schema;
 	}
 
-	public void setSchema(String schema) {
+	public void setSchema(final String schema) {
 		this.schema = schema;
 	}
 
@@ -55,19 +55,19 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 		return alias;
 	}
 
-	public void setAlias(String alias) {
+	public void setAlias(final String alias) {
 		this.alias = alias;
 	}
 
 	public String getSqlDefinition() {
-		StringBuilder theSQL = new StringBuilder();
+		final StringBuilder theSQL = new StringBuilder();
 
 		switch (type) {
 			case ENUMERATION:
-				if (attributes.size() > 0) {
+				if (!attributes.isEmpty()) {
 					theSQL.append("ENUM (");
 					for (int i = 0; i < attributes.size(); i++) {
-						Attribute<CustomType> theAttribute = attributes.elementAt(i);
+						final Attribute<CustomType> theAttribute = attributes.elementAt(i);
 
 						if (i > 0) {
 							theSQL.append(",");
@@ -81,10 +81,10 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 				break;
 
 			case COMPOSITE:
-				if (attributes.size() > 0) {
+				if (!attributes.isEmpty()) {
 					theSQL.append("(");
 					for (int i = 0; i < attributes.size(); i++) {
-						Attribute<CustomType> theAttribute = attributes.elementAt(i);
+						final Attribute<CustomType> theAttribute = attributes.elementAt(i);
 
 						if (i > 0) {
 							theSQL.append(",");
@@ -109,7 +109,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 		return theSQL.toString();
 	}
 
-	public void setType(CustomTypeType type) {
+	public void setType(final CustomTypeType type) {
 		this.type = type;
 	}
 
@@ -117,7 +117,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 		return type;
 	}
 
-	public void addAttribute(Model aModel, Attribute<CustomType> aAttribute) throws ElementAlreadyExistsException, ElementInvalidNameException {
+	public void addAttribute(final Model aModel, final Attribute<CustomType> aAttribute) throws ElementAlreadyExistsException, ElementInvalidNameException {
 		ModelUtilities.checkNameAndExistence(attributes, aAttribute, aModel.getDialect());
 
 		aAttribute.setOwner(this);
@@ -131,19 +131,19 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 
 	@Override
 	public Attribute<CustomType> createNewAttribute() {
-		Attribute<CustomType> theNewAttribute = new Attribute<>();
+		final Attribute<CustomType> theNewAttribute = new Attribute<>();
 		theNewAttribute.setOwner(this);
 		attributes.add(theNewAttribute);
 		return theNewAttribute;
 	}
 
-	public void setAttributes(AttributeList attributes) {
+	public void setAttributes(final AttributeList attributes) {
 		this.attributes = attributes;
 	}
 
 	@Override
 	public CustomType clone() {
-		CustomType theCustomType = new CustomType();
+		final CustomType theCustomType = new CustomType();
 		theCustomType.setSystemId(getSystemId());
 		theCustomType.setName(getName());
 		theCustomType.setAttributes(getAttributes());
@@ -154,7 +154,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 	}
 
 	@Override
-	public void restoreFrom(CustomType aCustomType) {
+	public void restoreFrom(final CustomType aCustomType) {
 		setSystemId(aCustomType.getSystemId());
 		setName(aCustomType.getName());
 		setAttributes(aCustomType.getAttributes());
@@ -193,7 +193,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 	}
 
 	@Override
-	public String createTypeDefinitionFor(Attribute aAttribute) {
+	public String createTypeDefinitionFor(final Attribute aAttribute) {
 		return getName();
 	}
 

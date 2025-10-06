@@ -38,11 +38,11 @@ public final class OpenXavaASTHelper {
     private OpenXavaASTHelper() {
     }
 
-    public static MethodDeclaration findMethodDeclaration(String aName, ClassOrInterfaceDeclaration aType) {
+    public static MethodDeclaration findMethodDeclaration(final String aName, final ClassOrInterfaceDeclaration aType) {
         if (aType.getMembers() != null) {
-            for (BodyDeclaration theBody : aType.getMembers()) {
+            for (final BodyDeclaration theBody : aType.getMembers()) {
                 if (theBody instanceof MethodDeclaration) {
-                    MethodDeclaration theMethod = (MethodDeclaration) theBody;
+                    final MethodDeclaration theMethod = (MethodDeclaration) theBody;
                     if (theMethod.getName().equals(aName)) {
                         return theMethod;
                     }
@@ -52,35 +52,35 @@ public final class OpenXavaASTHelper {
         return null;
     }
 
-    public static void addAnnotationTo(BodyDeclaration aDeclaration, AnnotationExpr aAnnotation) {
+    public static void addAnnotationTo(final BodyDeclaration aDeclaration, final AnnotationExpr aAnnotation) {
         if (aDeclaration.getAnnotations() != null) {
             aDeclaration.getAnnotations().add(aAnnotation);
         } else {
-            List<AnnotationExpr> theExpressions = new ArrayList<>();
+            final List<AnnotationExpr> theExpressions = new ArrayList<>();
             theExpressions.add(aAnnotation);
             aDeclaration.setAnnotations(theExpressions);
         }
     }
 
-    public static void removeAnnotationFrom(String aName, BodyDeclaration aDeclaration) {
+    public static void removeAnnotationFrom(final String aName, final BodyDeclaration aDeclaration) {
         if (aDeclaration.getAnnotations() != null) {
-            for (AnnotationExpr theExpression : aDeclaration.getAnnotations()) {
+            for (final AnnotationExpr theExpression : aDeclaration.getAnnotations()) {
                 if (theExpression instanceof MarkerAnnotationExpr) {
-                    MarkerAnnotationExpr theMarker = (MarkerAnnotationExpr) theExpression;
+                    final MarkerAnnotationExpr theMarker = (MarkerAnnotationExpr) theExpression;
                     if (theMarker.getName().getName().equals(aName)) {
                         aDeclaration.getAnnotations().remove(theMarker);
                         return;
                     }
                 }
                 if (theExpression instanceof NormalAnnotationExpr) {
-                    NormalAnnotationExpr theAnnotation = (NormalAnnotationExpr) theExpression;
+                    final NormalAnnotationExpr theAnnotation = (NormalAnnotationExpr) theExpression;
                     if (theAnnotation.getName().getName().equals(aName)) {
                         aDeclaration.getAnnotations().remove(theAnnotation);
                         return;
                     }
                 }
                 if (theExpression instanceof SingleMemberAnnotationExpr) {
-                    SingleMemberAnnotationExpr theAnnotation = (SingleMemberAnnotationExpr) theExpression;
+                    final SingleMemberAnnotationExpr theAnnotation = (SingleMemberAnnotationExpr) theExpression;
                     if (theAnnotation.getName().getName().equals(aName)) {
                         aDeclaration.getAnnotations().remove(theAnnotation);
                         return;
@@ -90,23 +90,23 @@ public final class OpenXavaASTHelper {
         }
     }
 
-    public static boolean hasAnnotation(String aName, BodyDeclaration aDeclaration) {
+    public static boolean hasAnnotation(final String aName, final BodyDeclaration aDeclaration) {
         if (aDeclaration.getAnnotations() != null) {
-            for (AnnotationExpr theExpression : aDeclaration.getAnnotations()) {
+            for (final AnnotationExpr theExpression : aDeclaration.getAnnotations()) {
                 if (theExpression instanceof MarkerAnnotationExpr) {
-                    MarkerAnnotationExpr theMarker = (MarkerAnnotationExpr) theExpression;
+                    final MarkerAnnotationExpr theMarker = (MarkerAnnotationExpr) theExpression;
                     if (theMarker.getName().getName().equals(aName)) {
                         return true;
                     }
                 }
                 if (theExpression instanceof NormalAnnotationExpr) {
-                    NormalAnnotationExpr theAnnotation = (NormalAnnotationExpr) theExpression;
+                    final NormalAnnotationExpr theAnnotation = (NormalAnnotationExpr) theExpression;
                     if (theAnnotation.getName().getName().equals(aName)) {
                         return true;
                     }
                 }
                 if (theExpression instanceof SingleMemberAnnotationExpr) {
-                    SingleMemberAnnotationExpr theAnnotation = (SingleMemberAnnotationExpr) theExpression;
+                    final SingleMemberAnnotationExpr theAnnotation = (SingleMemberAnnotationExpr) theExpression;
                     if (theAnnotation.getName().getName().equals(aName)) {
                         return true;
                     }
@@ -116,13 +116,13 @@ public final class OpenXavaASTHelper {
         return false;
     }
 
-    public static MarkerAnnotationExpr addMarkerAnnotationTo(String aName, BodyDeclaration aDeclaration) {
+    public static MarkerAnnotationExpr addMarkerAnnotationTo(final String aName, final BodyDeclaration aDeclaration) {
 
         MarkerAnnotationExpr theAnnotation = null;
         if (aDeclaration.getAnnotations() != null) {
-            for (AnnotationExpr theExpression : aDeclaration.getAnnotations()) {
+            for (final AnnotationExpr theExpression : aDeclaration.getAnnotations()) {
                 if (theExpression instanceof MarkerAnnotationExpr) {
-                    MarkerAnnotationExpr theMarker = (MarkerAnnotationExpr) theExpression;
+                    final MarkerAnnotationExpr theMarker = (MarkerAnnotationExpr) theExpression;
                     if (theMarker.getName().getName().equals(aName)) {
                         theAnnotation = theMarker;
                     }
@@ -137,14 +137,14 @@ public final class OpenXavaASTHelper {
         return theAnnotation;
     }
 
-    public static SingleMemberAnnotationExpr addSingleMemberAnnotationTo(String aName, Expression aExpression,
-                                                                         BodyDeclaration aDeclaration) {
+    public static SingleMemberAnnotationExpr addSingleMemberAnnotationTo(final String aName, final Expression aExpression,
+                                                                         final BodyDeclaration aDeclaration) {
 
         SingleMemberAnnotationExpr theAnnotation = null;
         if (aDeclaration.getAnnotations() != null) {
-            for (AnnotationExpr theExpression : aDeclaration.getAnnotations()) {
+            for (final AnnotationExpr theExpression : aDeclaration.getAnnotations()) {
                 if (theExpression instanceof SingleMemberAnnotationExpr) {
-                    SingleMemberAnnotationExpr theMarker = (SingleMemberAnnotationExpr) theExpression;
+                    final SingleMemberAnnotationExpr theMarker = (SingleMemberAnnotationExpr) theExpression;
                     if (theMarker.getName().getName().equals(aName)) {
                         theAnnotation = theMarker;
                     }
@@ -161,20 +161,20 @@ public final class OpenXavaASTHelper {
         return theAnnotation;
     }
 
-    public static NormalAnnotationExpr overwriteNormalAnnotation(String aName, List<MemberValuePair> aValues,
-                                                                 BodyDeclaration aDeclaration) {
+    public static NormalAnnotationExpr overwriteNormalAnnotation(final String aName, final List<MemberValuePair> aValues,
+                                                                 final BodyDeclaration aDeclaration) {
         removeAnnotationFrom(aName, aDeclaration);
         return addNormalAnnotationTo(aName, aValues, aDeclaration);
     }
 
-    public static NormalAnnotationExpr addNormalAnnotationTo(String aName, List<MemberValuePair> aValues,
-                                                             BodyDeclaration aDeclaration) {
+    public static NormalAnnotationExpr addNormalAnnotationTo(final String aName, final List<MemberValuePair> aValues,
+                                                             final BodyDeclaration aDeclaration) {
 
         NormalAnnotationExpr theAnnotation = null;
         if (aDeclaration.getAnnotations() != null) {
-            for (AnnotationExpr theExpression : aDeclaration.getAnnotations()) {
+            for (final AnnotationExpr theExpression : aDeclaration.getAnnotations()) {
                 if (theExpression instanceof NormalAnnotationExpr) {
-                    NormalAnnotationExpr theMarker = (NormalAnnotationExpr) theExpression;
+                    final NormalAnnotationExpr theMarker = (NormalAnnotationExpr) theExpression;
                     if (theMarker.getName().getName().equals(aName)) {
                         theAnnotation = theMarker;
                     }
@@ -191,12 +191,12 @@ public final class OpenXavaASTHelper {
         return theAnnotation;
     }
 
-    public static FieldDeclaration findFieldDeclaration(String aFieldName, ClassOrInterfaceDeclaration aType) {
+    public static FieldDeclaration findFieldDeclaration(final String aFieldName, final ClassOrInterfaceDeclaration aType) {
         if (aType.getMembers() != null) {
-            for (BodyDeclaration theBody : aType.getMembers()) {
+            for (final BodyDeclaration theBody : aType.getMembers()) {
                 if (theBody instanceof FieldDeclaration) {
-                    FieldDeclaration theField = (FieldDeclaration) theBody;
-                    for (VariableDeclarator theDeclaration : theField.getVariables()) {
+                    final FieldDeclaration theField = (FieldDeclaration) theBody;
+                    for (final VariableDeclarator theDeclaration : theField.getVariables()) {
                         if (aFieldName.equals(theDeclaration.getId().getName())) {
                             return theField;
                         }

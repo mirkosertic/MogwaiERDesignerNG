@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
  */
 public class MSAccessSQLGenerator extends SQL92SQLGenerator<MSAccessDialect> {
 
-    public MSAccessSQLGenerator(MSAccessDialect aDialect) {
+    public MSAccessSQLGenerator(final MSAccessDialect aDialect) {
         super(aDialect);
     }
 

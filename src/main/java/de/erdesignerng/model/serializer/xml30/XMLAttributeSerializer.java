@@ -30,9 +30,9 @@ import org.w3c.dom.NodeList;
 public class XMLAttributeSerializer extends de.erdesignerng.model.serializer.xml10.XMLAttributeSerializer {
 
 	@Override
-	public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
+	public void serialize(final Attribute aAttribute, final Document aDocument, final Element aRootElement) {
 
-		Element theAttributeElement = addElement(aDocument, aRootElement, ATTRIBUTE);
+		final Element theAttributeElement = addElement(aDocument, aRootElement, ATTRIBUTE);
 
 		// Basisdaten des Modelelementes speichern
 		serializeProperties(aDocument, theAttributeElement, aAttribute);
@@ -53,13 +53,13 @@ public class XMLAttributeSerializer extends de.erdesignerng.model.serializer.xml
 	}
 
 	@Override
-	public void deserialize(Model aModel, ModelItem aTableOrCustomType, Element aElement) {
+	public void deserialize(final Model aModel, final ModelItem aTableOrCustomType, final Element aElement) {
 		// Parse the Attributes
-		NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);
+		final NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);
 		for (int j = 0; j < theAttributes.getLength(); j++) {
-			Element theAttributeElement = (Element) theAttributes.item(j);
-			boolean isCustomType = "CustomType".equalsIgnoreCase(theAttributeElement.getParentNode().getNodeName());
-			boolean isTable = "Table".equalsIgnoreCase(theAttributeElement.getParentNode().getNodeName());
+			final Element theAttributeElement = (Element) theAttributes.item(j);
+			final boolean isCustomType = "CustomType".equalsIgnoreCase(theAttributeElement.getParentNode().getNodeName());
+			final boolean isTable = "Table".equalsIgnoreCase(theAttributeElement.getParentNode().getNodeName());
 
 			Attribute theAttribute = null;
 
@@ -74,15 +74,15 @@ public class XMLAttributeSerializer extends de.erdesignerng.model.serializer.xml
 			deserializeProperties(theAttributeElement, theAttribute);
 			deserializeCommentElement(theAttributeElement, theAttribute);
 
-			String theDatatypeName = theAttributeElement.getAttribute(DATATYPE);
+			final String theDatatypeName = theAttributeElement.getAttribute(DATATYPE);
 			theAttribute.setDatatype((StringUtils.isEmpty(theDatatypeName)? null : aModel.getAvailableDataTypes().findByName(theDatatypeName)));
 			theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
 
 			// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
-			String theAttributeString = theAttributeElement.getAttribute(SIZE);
+			final String theAttributeString = theAttributeElement.getAttribute(SIZE);
 			theAttribute.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString))) ? null : Integer.parseInt(theAttributeString));
 
-			String theFraction = theAttributeElement.getAttribute(FRACTION);
+			final String theFraction = theAttributeElement.getAttribute(FRACTION);
 			if (!StringUtils.isEmpty(theFraction) && !"null".equals(theFraction)) {
 				theAttribute.setFraction(Integer.parseInt(theFraction));
 			}

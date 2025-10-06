@@ -25,17 +25,17 @@ public class VersionString implements Comparable<VersionString> {
 
 	private final String version;
 
-	public VersionString(String version) {
-		if (version.length() == 0) {
+	public VersionString(final String version) {
+		if (version.isEmpty()) {
 			throw new IllegalArgumentException("\"version\" may not be zero length");
 		}
 
-		String temp[] = version.split("\\.");
-		for (String s : temp) {
+		final String[] temp = version.split("\\.");
+		for (final String s : temp) {
 			if (s == null) {
 				throw new IllegalArgumentException("\"version\" contains a null version sub-string");
 			}
-			if (s.length() == 0) {
+			if (s.isEmpty()) {
 				throw new IllegalArgumentException("\"version\" contains a zero lenght version sub-string");
 			}
 			Integer.parseInt(s);
@@ -49,22 +49,22 @@ public class VersionString implements Comparable<VersionString> {
 		return this.version;
 	}
 
-	public int compareTo(String otherVersion) {
+	public int compareTo(final String otherVersion) {
 		if (otherVersion.equals(this.version)) {
 			return 0;
 		}
 
-		String otherVersionList[] = otherVersion.split("\\.");
-		String thisVersionList[] = this.version.split("\\.");
+		final String[] otherVersionList = otherVersion.split("\\.");
+		final String[] thisVersionList = this.version.split("\\.");
 		int thisIndex = 0;
 
-		for (String otherVersionFragment : otherVersionList) {
+		for (final String otherVersionFragment : otherVersionList) {
 			if (thisIndex >= thisVersionList.length) {
 				break;
 			}
 
-			int thisVersionNum = Integer.parseInt(thisVersionList[thisIndex]);
-			int otherVersionNum = Integer.parseInt(otherVersionFragment);
+			final int thisVersionNum = Integer.parseInt(thisVersionList[thisIndex]);
+			final int otherVersionNum = Integer.parseInt(otherVersionFragment);
 			if (thisVersionNum != otherVersionNum) {
 				return (thisVersionNum < otherVersionNum) ? -1 : 1;
 			}
@@ -80,7 +80,7 @@ public class VersionString implements Comparable<VersionString> {
 	}
 
 	@Override
-	public int compareTo(VersionString other) {
+	public int compareTo(final VersionString other) {
 		if (other == this) {
 			return 0;
 		} else if(other == null) {
@@ -90,23 +90,23 @@ public class VersionString implements Comparable<VersionString> {
 		return compareTo(other.version);
 	}
 
-	public boolean isEqual(String other) {
+	public boolean isEqual(final String other) {
 		return (compareTo(other) == 0);
 	}
 
-	public boolean isHigherThan(String other) {
+	public boolean isHigherThan(final String other) {
 		return (compareTo(other) > 0);
 	}
 
-	public boolean isHigherThanOrEqual(String other) {
+	public boolean isHigherThanOrEqual(final String other) {
 		return (compareTo(other) >= 0);
 	}
 
-	public boolean isLowerThan(String other) {
+	public boolean isLowerThan(final String other) {
 		return (compareTo(other) < 0);
 	}
 
-	public boolean isLowerThanOrEqual(String other) {
+	public boolean isLowerThanOrEqual(final String other) {
 		return (compareTo(other) <= 0);
 	}
 

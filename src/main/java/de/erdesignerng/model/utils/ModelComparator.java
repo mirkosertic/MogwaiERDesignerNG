@@ -49,23 +49,23 @@ public class ModelComparator {
 	 * @param aDatabaseModel the database model
 	 * @return the compare result
 	 */
-	public ModelCompareResult compareModels(Model aCurrentModel, Model aDatabaseModel) {
-		DefaultMutableTreeNode theModelSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.CURRENTMODEL));
-		DefaultMutableTreeNode theDBSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.OTHERMODEL));
+	public ModelCompareResult compareModels(final Model aCurrentModel, final Model aDatabaseModel) {
+		final DefaultMutableTreeNode theModelSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.CURRENTMODEL));
+		final DefaultMutableTreeNode theDBSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.OTHERMODEL));
 
-		TableList theAllTables = new TableList();
+		final TableList theAllTables = new TableList();
 		theAllTables.addAll(aCurrentModel.getTables());
 
         aDatabaseModel.getTables().stream().filter(theTable -> theAllTables.findByName(theTable.getName()) == null).forEach(theAllTables::add);
 
-		for (Table theTable : theAllTables) {
+		for (final Table theTable : theAllTables) {
 
-			String theTableName = theTable.getName();
+			final String theTableName = theTable.getName();
 
-			DefaultMutableTreeNode theModelSideTableNode;
-			DefaultMutableTreeNode theDBSideTableNode;
+			final DefaultMutableTreeNode theModelSideTableNode;
+			final DefaultMutableTreeNode theDBSideTableNode;
 
-			Table theTableFromModel = aCurrentModel.getTables().findByName(theTableName);
+			final Table theTableFromModel = aCurrentModel.getTables().findByName(theTableName);
 			Table theTableFromDB = null;
 
 			// Add it to both sides
@@ -99,9 +99,9 @@ public class ModelComparator {
 
 			}
 
-			AttributeList theAllAttributes = new AttributeList();
-			IndexList theAllIndexes = new IndexList();
-			RelationList theAllRelations = new RelationList();
+			final AttributeList theAllAttributes = new AttributeList();
+			final IndexList theAllIndexes = new IndexList();
+			final RelationList theAllRelations = new RelationList();
 
 			if (theTableFromModel != null) {
 				theAllAttributes.addAll(theTableFromModel.getAttributes());
@@ -118,9 +118,9 @@ public class ModelComparator {
 			generateAttributesForTable(theModelSideTableNode, theDBSideTableNode, theTableFromModel, theTableFromDB,
 					theAllAttributes);
 
-			DefaultMutableTreeNode theIndexModelSideNode = new DefaultMutableTreeNode(HELPER
+			final DefaultMutableTreeNode theIndexModelSideNode = new DefaultMutableTreeNode(HELPER
 					.getText(ERDesignerBundle.INDEXES));
-			DefaultMutableTreeNode theIndexDBSideNode = new DefaultMutableTreeNode(HELPER
+			final DefaultMutableTreeNode theIndexDBSideNode = new DefaultMutableTreeNode(HELPER
 					.getText(ERDesignerBundle.INDEXES));
 
 			theModelSideTableNode.add(theIndexModelSideNode);
@@ -129,9 +129,9 @@ public class ModelComparator {
 			generateIndexesForTable(theIndexModelSideNode, theIndexDBSideNode, theTableFromModel, theTableFromDB,
 					theAllIndexes);
 
-			DefaultMutableTreeNode theRelationsModelSideNode = new DefaultMutableTreeNode(HELPER
+			final DefaultMutableTreeNode theRelationsModelSideNode = new DefaultMutableTreeNode(HELPER
 					.getText(ERDesignerBundle.RELATIONS));
-			DefaultMutableTreeNode theRelationsDBSideNode = new DefaultMutableTreeNode(HELPER
+			final DefaultMutableTreeNode theRelationsDBSideNode = new DefaultMutableTreeNode(HELPER
 					.getText(ERDesignerBundle.RELATIONS));
 
 			theModelSideTableNode.add(theRelationsModelSideNode);
@@ -142,20 +142,20 @@ public class ModelComparator {
 
 		}
 
-		ViewList theAllViews = new ViewList();
+		final ViewList theAllViews = new ViewList();
 		theAllViews.addAll(aCurrentModel.getViews());
 
         aDatabaseModel.getViews().stream().filter(theView -> theAllViews.findByName(theView.getName()) == null).forEach(theAllViews::add);
 
-		for (View theView : theAllViews) {
+		for (final View theView : theAllViews) {
 
-			String theViewName = theView.getName();
+			final String theViewName = theView.getName();
 
-			DefaultMutableTreeNode theModelSideTableNode;
-			DefaultMutableTreeNode theDBSideTableNode;
+			final DefaultMutableTreeNode theModelSideTableNode;
+			final DefaultMutableTreeNode theDBSideTableNode;
 
-			View theViewFromModel = aCurrentModel.getViews().findByName(theViewName);
-			View theViewFromDB = aDatabaseModel.getViews().findByName(theViewName);
+			final View theViewFromModel = aCurrentModel.getViews().findByName(theViewName);
+			final View theViewFromDB = aDatabaseModel.getViews().findByName(theViewName);
 
 			// Add it to both sides
 			if (theViewFromModel != null) {
@@ -202,17 +202,17 @@ public class ModelComparator {
 		return new ModelCompareResult(theModelSideRootNode, theDBSideRootNode);
 	}
 
-	private void generateAttributesForTable(DefaultMutableTreeNode aModelSideTableNode,
-											DefaultMutableTreeNode aDBSideTableNode, Table aTableFromModel, Table aTableFromDB,
-											AttributeList<Table> aAllAttributes) {
+	private void generateAttributesForTable(final DefaultMutableTreeNode aModelSideTableNode,
+                                            final DefaultMutableTreeNode aDBSideTableNode, final Table aTableFromModel, final Table aTableFromDB,
+                                            final AttributeList<Table> aAllAttributes) {
 
 		// Now, do it for each attribute
-		for (Attribute<Table> theAttribute : aAllAttributes) {
-			String theAttributeName = theAttribute.getName();
+		for (final Attribute<Table> theAttribute : aAllAttributes) {
+			final String theAttributeName = theAttribute.getName();
 
 			// First, handle the model side
 			if (aTableFromModel != null) {
-				Attribute<Table> theAttributeFromModel = aTableFromModel.getAttributes().findByName(theAttributeName);
+				final Attribute<Table> theAttributeFromModel = aTableFromModel.getAttributes().findByName(theAttributeName);
 
 				if (theAttributeFromModel != null) {
 					Attribute<Table> theAttributeFromDB = null;
@@ -225,15 +225,15 @@ public class ModelComparator {
 						if (theAttributeFromModel.isModified(theAttributeFromDB, true)) {
 							// Compute the difference
 
-							String theDiffInfo = theAttributeFromModel.getPhysicalDeclaration();
+							final String theDiffInfo = theAttributeFromModel.getPhysicalDeclaration();
 
 							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedAttributeInfo(
+							final DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedAttributeInfo(
 									theAttributeName + " " + theDiffInfo));
 							aModelSideTableNode.add(error);
 
 						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
+							final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
 							aModelSideTableNode.add(existing);
 						}
 
@@ -241,7 +241,7 @@ public class ModelComparator {
 
 					} else {
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
+						final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
 						aModelSideTableNode.add(existing);
 					}
 
@@ -249,7 +249,7 @@ public class ModelComparator {
 
 					// The entity is existing, but the attribute is
 					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
+					final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
 							theAttributeName));
 					aModelSideTableNode.add(missing);
 
@@ -259,7 +259,7 @@ public class ModelComparator {
 
 				// The entity is not existing in the model, so every
 				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(theAttributeName));
+				final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(theAttributeName));
 				aModelSideTableNode.add(missing);
 
 			}
@@ -267,7 +267,7 @@ public class ModelComparator {
 			// Now, the database side
 			if (aTableFromDB != null) {
 
-				Attribute<Table> theAttributeFromDB = aTableFromDB.getAttributes().findByName(theAttributeName);
+				final Attribute<Table> theAttributeFromDB = aTableFromDB.getAttributes().findByName(theAttributeName);
 
 				if (theAttributeFromDB != null) {
 
@@ -280,22 +280,22 @@ public class ModelComparator {
 
 						if (theAttributeFromModel.isModified(theAttributeFromDB, true)) {
 
-							String diffInfo = theAttributeFromDB.getPhysicalDeclaration();
+							final String diffInfo = theAttributeFromDB.getPhysicalDeclaration();
 
 							// Modified
 							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedAttributeInfo(
+							final DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedAttributeInfo(
 									theAttributeName + " " + diffInfo));
 							aDBSideTableNode.add(error);
 
 						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
+							final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
 							aDBSideTableNode.add(existing);
 						}
 
 					} else {
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
+						final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
 						aDBSideTableNode.add(existing);
 					}
 
@@ -303,7 +303,7 @@ public class ModelComparator {
 
 					// The entity is existing, but the attribute is
 					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
+					final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
 							theAttributeName));
 					aDBSideTableNode.add(missing);
 
@@ -313,24 +313,24 @@ public class ModelComparator {
 
 				// The entity is not existing in the model, so every
 				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(theAttributeName));
+				final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(theAttributeName));
 				aDBSideTableNode.add(missing);
 
 			}
 		}
 	}
 
-	private void generateIndexesForTable(DefaultMutableTreeNode aModelSideTableNode,
-										 DefaultMutableTreeNode aDBSideTableNode, Table aTableFromModel, Table aTableFromDB, IndexList aAllIndexes) {
+	private void generateIndexesForTable(final DefaultMutableTreeNode aModelSideTableNode,
+                                         final DefaultMutableTreeNode aDBSideTableNode, final Table aTableFromModel, final Table aTableFromDB, final IndexList aAllIndexes) {
 
 		// Now, do it for each attribute
-		for (Index theAttribute : aAllIndexes) {
-			String theIndexName = theAttribute.getName();
+		for (final Index theAttribute : aAllIndexes) {
+			final String theIndexName = theAttribute.getName();
 
 			// First, handle the model side
 			if (aTableFromModel != null) {
 
-				Index theIndexFromModel = aTableFromModel.getIndexes().findByName(theIndexName);
+				final Index theIndexFromModel = aTableFromModel.getIndexes().findByName(theIndexName);
 
 				if (theIndexFromModel != null) {
 
@@ -344,15 +344,15 @@ public class ModelComparator {
 						if (theIndexFromModel.isModified(theIndexFromDB, true)) {
 							// Compute the difference
 
-							String theDiffInfo = "";
+							final String theDiffInfo = "";
 
 							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedIndexInfo(
+							final DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedIndexInfo(
 									theIndexName + " " + theDiffInfo));
 							aModelSideTableNode.add(error);
 
 						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
+							final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
 							aModelSideTableNode.add(existing);
 						}
 
@@ -360,7 +360,7 @@ public class ModelComparator {
 
 					} else {
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
+						final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
 						aModelSideTableNode.add(existing);
 					}
 
@@ -368,7 +368,7 @@ public class ModelComparator {
 
 					// The entity is existing, but the attribute is
 					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
+					final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
 					aModelSideTableNode.add(missing);
 
 				}
@@ -377,7 +377,7 @@ public class ModelComparator {
 
 				// The entity is not existing in the model, so every
 				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
+				final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
 				aModelSideTableNode.add(missing);
 
 			}
@@ -385,7 +385,7 @@ public class ModelComparator {
 			// Now, the database side
 			if (aTableFromDB != null) {
 
-				Index theIndexFromDB = aTableFromDB.getIndexes().findByName(theIndexName);
+				final Index theIndexFromDB = aTableFromDB.getIndexes().findByName(theIndexName);
 
 				if (theIndexFromDB != null) {
 
@@ -398,22 +398,22 @@ public class ModelComparator {
 
 						if (theIndexFromModel.isModified(theIndexFromDB, true)) {
 
-							String diffInfo = "";
+							final String diffInfo = "";
 
 							// Modified
 							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedIndexInfo(
+							final DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedIndexInfo(
 									theIndexName + " " + diffInfo));
 							aDBSideTableNode.add(error);
 
 						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
+							final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
 							aDBSideTableNode.add(existing);
 						}
 
 					} else {
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
+						final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
 						aDBSideTableNode.add(existing);
 					}
 
@@ -421,7 +421,7 @@ public class ModelComparator {
 
 					// The entity is existing, but the attribute is
 					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
+					final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
 					aDBSideTableNode.add(missing);
 
 				}
@@ -430,25 +430,25 @@ public class ModelComparator {
 
 				// The entity is not existing in the model, so every
 				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
+				final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
 				aDBSideTableNode.add(missing);
 
 			}
 		}
 	}
 
-	private void generateRelationsForTable(DefaultMutableTreeNode aModelSideTableNode,
-										   DefaultMutableTreeNode aDBSideTableNode, Table aTableFromModel, Table aTableFromDB,
-										   RelationList aAllRelations, Model aDBModel, Model aCurrentModel) {
+	private void generateRelationsForTable(final DefaultMutableTreeNode aModelSideTableNode,
+                                           final DefaultMutableTreeNode aDBSideTableNode, final Table aTableFromModel, final Table aTableFromDB,
+                                           final RelationList aAllRelations, final Model aDBModel, final Model aCurrentModel) {
 
 		// Now, do it for each attribute
-		for (Relation theRelation : aAllRelations) {
-			String theRelationName = theRelation.getName();
+		for (final Relation theRelation : aAllRelations) {
+			final String theRelationName = theRelation.getName();
 
 			// First, handle the model side
 			if (aTableFromModel != null) {
 
-				Relation theRelationFromModel = aCurrentModel.getRelations().findByName(theRelationName);
+				final Relation theRelationFromModel = aCurrentModel.getRelations().findByName(theRelationName);
 
 				if (theRelationFromModel != null) {
 
@@ -462,15 +462,15 @@ public class ModelComparator {
 						if (theRelationFromModel.isModified(theRelationFromDB, true)) {
 							// Compute the difference
 
-							String theDiffInfo = "";
+							final String theDiffInfo = "";
 
 							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedRelationInfo(
+							final DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedRelationInfo(
 									theRelationName + " " + theDiffInfo));
 							aModelSideTableNode.add(error);
 
 						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
+							final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
 							aModelSideTableNode.add(existing);
 						}
 
@@ -478,7 +478,7 @@ public class ModelComparator {
 
 					} else {
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
+						final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
 						aModelSideTableNode.add(existing);
 					}
 
@@ -486,7 +486,7 @@ public class ModelComparator {
 
 					// The entity is existing, but the attribute is
 					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(
+					final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(
 							new MissingRelationInfo(theRelationName));
 					aModelSideTableNode.add(missing);
 
@@ -496,7 +496,7 @@ public class ModelComparator {
 
 				// The entity is not existing in the model, so every
 				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
+				final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
 				aModelSideTableNode.add(missing);
 
 			}
@@ -504,7 +504,7 @@ public class ModelComparator {
 			// Now, the database side
 			if (aTableFromDB != null) {
 
-				Relation theRelationFromDB = aDBModel.getRelations().findByName(theRelationName);
+				final Relation theRelationFromDB = aDBModel.getRelations().findByName(theRelationName);
 
 				if (theRelationFromDB != null) {
 
@@ -517,22 +517,22 @@ public class ModelComparator {
 
 						if (theRelationFromModel.isModified(theRelationFromDB, true)) {
 
-							String diffInfo = "";
+							final String diffInfo = "";
 
 							// Modified
 							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedRelationInfo(
+							final DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedRelationInfo(
 									theRelationName + " " + diffInfo));
 							aDBSideTableNode.add(error);
 
 						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
+							final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
 							aDBSideTableNode.add(existing);
 						}
 
 					} else {
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
+						final DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
 						aDBSideTableNode.add(existing);
 					}
 
@@ -540,7 +540,7 @@ public class ModelComparator {
 
 					// The entity is existing, but the attribute is
 					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(
+					final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(
 							new MissingRelationInfo(theRelationName));
 					aDBSideTableNode.add(missing);
 
@@ -550,7 +550,7 @@ public class ModelComparator {
 
 				// The entity is not existing in the model, so every
 				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
+				final DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
 				aDBSideTableNode.add(missing);
 
 			}

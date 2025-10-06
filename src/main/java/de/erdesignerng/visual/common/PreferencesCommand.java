@@ -27,13 +27,13 @@ public class PreferencesCommand extends UICommand {
 
     @Override
     public void execute() {
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        PreferencesEditor theEditor = new PreferencesEditor(
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final PreferencesEditor theEditor = new PreferencesEditor(
                 getDetailComponent(), component);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

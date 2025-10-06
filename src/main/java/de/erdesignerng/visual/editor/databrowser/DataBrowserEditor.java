@@ -43,7 +43,6 @@ import java.awt.Component;
 import java.awt.FontMetrics;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,15 +66,15 @@ public class DataBrowserEditor extends BaseEditor {
 
     private PaginationDataModel dataModel;
 
-    public DataBrowserEditor(Component aParent) {
+    public DataBrowserEditor(final Component aParent) {
         super(aParent, ERDesignerBundle.DATABROWSER);
 
-        DefaultAction closeAction = new DefaultAction(
+        final DefaultAction closeAction = new DefaultAction(
                 e -> commandClose(), this, ERDesignerBundle.CLOSE);
 
         view.getCloseButton().setAction(closeAction);
 
-        DefaultAction queryAction = new DefaultAction(
+        final DefaultAction queryAction = new DefaultAction(
                 e -> commandQuery(), this, ERDesignerBundle.QUERY);
         view.getQueryButton().setAction(queryAction);
         view.getData().setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -92,9 +91,9 @@ public class DataBrowserEditor extends BaseEditor {
         currentModel = aTable.getOwner();
         currentDialect = aTable.getOwner().getDialect();
 
-        Map<Attribute<Table>, Object> theWhereValues = new HashMap<>();
+        final Map<Attribute<Table>, Object> theWhereValues = new HashMap<>();
 
-        DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
+        final DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
         theModel.setSql(currentDialect.createSQLGenerator()
                 .createSelectAllScriptFor(aTable, theWhereValues));
         sqlBindingInfo.model2view();
@@ -116,23 +115,21 @@ public class DataBrowserEditor extends BaseEditor {
     }
 
     private void initializeContextMenu(final Table aTable) {
-        DefaultPopupMenu theMenu = new DefaultPopupMenu();
+        final DefaultPopupMenu theMenu = new DefaultPopupMenu();
 
-        Map<Table, JMenu> theMap = new HashMap<>();
+        final Map<Table, JMenu> theMap = new HashMap<>();
 
-        for (Relation theRelation : currentModel.getRelations()
+        for (final Relation theRelation : currentModel.getRelations()
                 .getForeignKeysFor(aTable)) {
 
-            final Relation theFinalRelation = theRelation;
+            final Table theNavigationTarget = theRelation.getExportingTable();
 
-            Table theNavigationTarget = theRelation.getExportingTable();
-
-            JMenuItem theItem = new JMenuItem();
+            final JMenuItem theItem = new JMenuItem();
             theItem.setText(getResourceHelper().getFormattedText(
                     ERDesignerBundle.SHOWDATAOFUSING,
-                    theNavigationTarget.getName(), theFinalRelation.getName()));
+                    theNavigationTarget.getName(), theRelation.getName()));
 
-            theItem.addActionListener(e -> navigateToWithForeignKey(theFinalRelation));
+            theItem.addActionListener(e -> navigateToWithForeignKey(theRelation));
 
             JMenu theMenuToAdd = theMap.get(theNavigationTarget);
             if (theMenuToAdd == null) {
@@ -142,18 +139,17 @@ public class DataBrowserEditor extends BaseEditor {
             theMenuToAdd.add(theItem);
         }
 
-        for (Relation theRelation : currentModel.getRelations()
+        for (final Relation theRelation : currentModel.getRelations()
                 .getExportedKeysFor(aTable)) {
 
-            final Relation theFinalRelation = theRelation;
-            Table theNavigationTarget = theRelation.getImportingTable();
+            final Table theNavigationTarget = theRelation.getImportingTable();
 
-            JMenuItem theItem = new JMenuItem();
+            final JMenuItem theItem = new JMenuItem();
             theItem.setText(getResourceHelper().getFormattedText(
                     ERDesignerBundle.SHOWDATAOFUSING,
-                    theNavigationTarget.getName(), theFinalRelation.getName()));
+                    theNavigationTarget.getName(), theRelation.getName()));
 
-            theItem.addActionListener(e -> navigateToWithImportingKey(theFinalRelation));
+            theItem.addActionListener(e -> navigateToWithImportingKey(theRelation));
 
             JMenu theMenuToAdd = theMap.get(theNavigationTarget);
             if (theMenuToAdd == null) {
@@ -164,19 +160,15 @@ public class DataBrowserEditor extends BaseEditor {
 
         }
 
-        if (theMap.size() > 0) {
-            for (Map.Entry<Table, JMenu> theEntry : theMap.entrySet()) {
+        if (!theMap.isEmpty()) {
+            for (final Map.Entry<Table, JMenu> theEntry : theMap.entrySet()) {
                 theMenu.add(theEntry.getValue());
             }
         }
         final JMenuItem theItem = new JMenuItem(getResourceHelper().getText(ERDesignerBundle.EDITROW));
         theItem.addActionListener(e -> {
-            try {
-                RowEditor theEditor = new RowEditor(theItem, dataModel, view.getData().getSelectedRow());
-                theEditor.setVisible(true);
-            } catch (SQLException ex) {
-                logFatalError(ex);
-            }
+            final RowEditor theEditor = new RowEditor(theItem, dataModel, view.getData().getSelectedRow());
+            theEditor.setVisible(true);
         });
 
 
@@ -189,12 +181,12 @@ public class DataBrowserEditor extends BaseEditor {
         view.getData().setContextMenu(theMenu);
     }
 
-    public void initializeFor(View aView) {
+    public void initializeFor(final View aView) {
 
         currentModel = aView.getOwner();
         currentDialect = aView.getOwner().getDialect();
 
-        DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
+        final DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
         theModel.setSql(currentDialect.createSQLGenerator()
                 .createSelectAllScriptFor(aView));
         sqlBindingInfo.model2view();
@@ -203,26 +195,26 @@ public class DataBrowserEditor extends BaseEditor {
     }
 
     private void navigateToWithForeignKey(final Relation aRelation) {
-        int theCurrentRow = view.getData().getSelectedRow();
+        final int theCurrentRow = view.getData().getSelectedRow();
         if (theCurrentRow >= 0) {
 
-            Map<Attribute<Table>, Object> theWhereValues = new HashMap<>();
-            for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : aRelation
+            final Map<Attribute<Table>, Object> theWhereValues = new HashMap<>();
+            for (final Map.Entry<IndexExpression, Attribute<Table>> theEntry : aRelation
                     .getMapping().entrySet()) {
 
-                Attribute<Table> theAttribute = theEntry.getValue();
-                int theIndex = theAttribute.getOwner().getAttributes().indexOf(
+                final Attribute<Table> theAttribute = theEntry.getValue();
+                final int theIndex = theAttribute.getOwner().getAttributes().indexOf(
                         theAttribute);
 
-                Object theValue = dataModel.getValueAt(theCurrentRow, theIndex);
+                final Object theValue = dataModel.getValueAt(theCurrentRow, theIndex);
 
-                Attribute<Table> theKey = theEntry.getKey().getAttributeRef();
+                final Attribute<Table> theKey = theEntry.getKey().getAttributeRef();
                 if (theKey != null) {
                     theWhereValues.put(theKey, theValue);
                 }
             }
 
-            DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
+            final DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
             theModel.setSql(currentDialect.createSQLGenerator()
                     .createSelectAllScriptFor(aRelation.getExportingTable(),
                             theWhereValues));
@@ -248,21 +240,21 @@ public class DataBrowserEditor extends BaseEditor {
     }
 
     private void navigateToWithImportingKey(final Relation aRelation) {
-        int theCurrentRow = view.getData().getSelectedRow();
+        final int theCurrentRow = view.getData().getSelectedRow();
         if (theCurrentRow >= 0) {
 
-            Map<Attribute<Table>, Object> theWhereValues = new HashMap<>();
-            for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : aRelation.getMapping().entrySet()) {
-                Attribute<Table> theAttribute = theEntry.getKey().getAttributeRef();
+            final Map<Attribute<Table>, Object> theWhereValues = new HashMap<>();
+            for (final Map.Entry<IndexExpression, Attribute<Table>> theEntry : aRelation.getMapping().entrySet()) {
+                final Attribute<Table> theAttribute = theEntry.getKey().getAttributeRef();
                 if (theAttribute != null) {
-                    int theIndex = theAttribute.getOwner().getAttributes().indexOf(theAttribute);
-                    Object theValue = dataModel.getValueAt(theCurrentRow, theIndex);
+                    final int theIndex = theAttribute.getOwner().getAttributes().indexOf(theAttribute);
+                    final Object theValue = dataModel.getValueAt(theCurrentRow, theIndex);
 
                     theWhereValues.put(theEntry.getValue(), theValue);
                 }
             }
 
-            DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
+            final DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
             theModel.setSql(currentDialect.createSQLGenerator()
                     .createSelectAllScriptFor(aRelation.getImportingTable(),
                             theWhereValues));
@@ -300,7 +292,7 @@ public class DataBrowserEditor extends BaseEditor {
     }
 
     @Override
-    public void applyValues() throws Exception {
+    public void applyValues() {
     }
 
     private void commandQuery() {
@@ -317,7 +309,7 @@ public class DataBrowserEditor extends BaseEditor {
                     statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 }
 
-                ResultSet theResult = statement.executeQuery(sqlBindingInfo
+                final ResultSet theResult = statement.executeQuery(sqlBindingInfo
                         .getDefaultModel().getSql());
 
                 if (dataModel != null) {
@@ -332,11 +324,11 @@ public class DataBrowserEditor extends BaseEditor {
                 view.getData().getTableHeader().setReorderingAllowed(false);
 
                 dataModel
-                        .addSeekListener(() -> updateTableColumnWIdth());
+                        .addSeekListener(this::updateTableColumnWIdth);
 
                 updateTableColumnWIdth();
 
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 logFatalError(e);
             }
         }
@@ -344,18 +336,18 @@ public class DataBrowserEditor extends BaseEditor {
     }
 
     private void updateTableColumnWIdth() {
-        FontMetrics theMetrics = getFontMetrics(getFont());
-        int theWWidth = theMetrics.stringWidth("W");
+        final FontMetrics theMetrics = getFontMetrics(getFont());
+        final int theWWidth = theMetrics.stringWidth("W");
 
         for (int i = 0; i < dataModel.getColumnCount(); i++) {
 
-            TableColumn theColumn = view.getData().getColumnModel()
+            final TableColumn theColumn = view.getData().getColumnModel()
                     .getColumn(i);
 
             theColumn.setCellRenderer(DefaultCellRenderer.getInstance());
 
-            int theTextWidth = dataModel.computeColumnWidth(i);
-            int theHeaderWidth = theColumn.getHeaderValue().toString().length();
+            final int theTextWidth = dataModel.computeColumnWidth(i);
+            final int theHeaderWidth = theColumn.getHeaderValue().toString().length();
 
             theColumn.setPreferredWidth(theWWidth
                     * Math.max(theTextWidth, theHeaderWidth));

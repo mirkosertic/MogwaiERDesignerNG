@@ -58,13 +58,13 @@ public class Java2DEditor implements GenericModelEditor {
 
         editorPanel = new EditorPanel() {
             @Override
-            public void componentClicked(EditorComponent aComponent, MouseEvent aEvent) {
+            public void componentClicked(final EditorComponent aComponent, final MouseEvent aEvent) {
                 Java2DEditor.this.componentClicked(aComponent, aEvent);
             }
 
             @Override
-            protected JComponent getHighlightComponentFor(EditorComponent aComponent) {
-                ModelItem theItem = (ModelItem) aComponent.userObject;
+            protected JComponent getHighlightComponentFor(final EditorComponent aComponent) {
+                final ModelItem theItem = (ModelItem) aComponent.userObject;
                 if (theItem instanceof Table) {
                     return new TableComponent((Table) theItem, true);
                 }
@@ -79,15 +79,15 @@ public class Java2DEditor implements GenericModelEditor {
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(editorPanel, BorderLayout.CENTER);
 
-        ResourceHelper theHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+        final ResourceHelper theHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
-        JPanel bottom = new JPanel();
+        final JPanel bottom = new JPanel();
         bottom.setLayout(new FlowLayout(FlowLayout.LEFT));
         includeIncoming = new JCheckBox(theHelper.getText(ERDesignerBundle.INCLUDEINCOMINGRELATIONS));
         includeOutgoing = new JCheckBox(theHelper.getText(ERDesignerBundle.INCLUDEOUTGOINGRELATIONS));
         currentElement = new JLabel();
 
-        ActionListener theUpdateActionListener = e -> setSelectedObject(currentModelItem);
+        final ActionListener theUpdateActionListener = e -> setSelectedObject(currentModelItem);
 
         includeIncoming.setSelected(true);
         includeIncoming.addActionListener(theUpdateActionListener);
@@ -106,7 +106,7 @@ public class Java2DEditor implements GenericModelEditor {
         UIInitializer.getInstance().initialize(mainPanel);
     }
 
-    protected void componentClicked(EditorPanel.EditorComponent aComponent, MouseEvent aEvent) {
+    protected void componentClicked(final EditorPanel.EditorComponent aComponent, final MouseEvent aEvent) {
         setSelectedObject((ModelItem) aComponent.userObject);
     }
 
@@ -119,31 +119,31 @@ public class Java2DEditor implements GenericModelEditor {
     }
 
     @Override
-    public void commandSetDisplayLevel(DisplayLevel aLevel) {
+    public void commandSetDisplayLevel(final DisplayLevel aLevel) {
     }
 
     @Override
-    public void commandSetDisplayOrder(DisplayOrder aOrder) {
+    public void commandSetDisplayOrder(final DisplayOrder aOrder) {
     }
 
     @Override
-    public void commandHideSubjectArea(SubjectArea aArea) {
+    public void commandHideSubjectArea(final SubjectArea aArea) {
     }
 
     @Override
-    public void commandShowSubjectArea(SubjectArea aArea) {
+    public void commandShowSubjectArea(final SubjectArea aArea) {
     }
 
     @Override
-    public void commandSetTool(ToolEnum aTool) {
+    public void commandSetTool(final ToolEnum aTool) {
     }
 
     @Override
-    public void commandSetZoom(ZoomInfo aZoomInfo) {
+    public void commandSetZoom(final ZoomInfo aZoomInfo) {
     }
 
     @Override
-    public void setModel(Model aModel) {
+    public void setModel(final Model aModel) {
         model = aModel;
         includeIncoming.setSelected(true);
         includeOutgoing.setSelected(false);
@@ -151,11 +151,11 @@ public class Java2DEditor implements GenericModelEditor {
     }
 
     @Override
-    public void commandSetDisplayCommentsState(boolean aState) {
+    public void commandSetDisplayCommentsState(final boolean aState) {
     }
 
     @Override
-    public void commandSetDisplayGridState(boolean aState) {
+    public void commandSetDisplayGridState(final boolean aState) {
     }
 
     @Override
@@ -176,7 +176,7 @@ public class Java2DEditor implements GenericModelEditor {
                 aItem = ((Index) aItem).getOwner();
             }
             if (aItem instanceof Attribute) {
-                ModelItem theOwner = ((Attribute) aItem).getOwner();
+                final ModelItem theOwner = ((Attribute) aItem).getOwner();
 
                 if (theOwner instanceof Table) {
                     aItem = theOwner;
@@ -210,31 +210,31 @@ public class Java2DEditor implements GenericModelEditor {
     }
 
     @Override
-    public void commandAddToNewSubjectArea(List<ModelItem> aItems) {
+    public void commandAddToNewSubjectArea(final List<ModelItem> aItems) {
     }
 
     @Override
-    public void commandDelete(List<ModelItem> aItems) {
+    public void commandDelete(final List<ModelItem> aItems) {
     }
 
     @Override
-    public void commandCreateComment(Comment aComment, Point2D aLocation) {
+    public void commandCreateComment(final Comment aComment, final Point2D aLocation) {
     }
 
     @Override
-    public void commandCreateRelation(Relation aRelation) {
+    public void commandCreateRelation(final Relation aRelation) {
     }
 
     @Override
-    public void commandCreateTable(Table aTable, Point2D aLocation) {
+    public void commandCreateTable(final Table aTable, final Point2D aLocation) {
     }
 
     @Override
-    public void commandCreateView(View aView, Point2D aLocation) {
+    public void commandCreateView(final View aView, final Point2D aLocation) {
     }
 
     @Override
-    public void commandShowOrHideRelationsFor(Table aTable, boolean aShow) {
+    public void commandShowOrHideRelationsFor(final Table aTable, final boolean aShow) {
     }
 
     @Override
@@ -243,7 +243,7 @@ public class Java2DEditor implements GenericModelEditor {
     }
 
     @Override
-    public void addExportEntries(DefaultMenu aMenu, Exporter aExporter) {
+    public void addExportEntries(final DefaultMenu aMenu, final Exporter aExporter) {
     }
 
     @Override
@@ -272,7 +272,7 @@ public class Java2DEditor implements GenericModelEditor {
     }
 
     @Override
-    public void initExportEntries(ResourceHelperProvider aProvider, DefaultMenu aExportMenu) {
+    public void initExportEntries(final ResourceHelperProvider aProvider, final DefaultMenu aExportMenu) {
         aExportMenu.setEnabled(false);
     }
 
@@ -311,31 +311,31 @@ public class Java2DEditor implements GenericModelEditor {
         return false;
     }
 
-    private void generateGraphFor(Table aTable) {
+    private void generateGraphFor(final Table aTable) {
 
-        Map<ModelItem, EditorPanel.EditorComponent> theComponentMap = new HashMap<>();
+        final Map<ModelItem, EditorPanel.EditorComponent> theComponentMap = new HashMap<>();
 
-        TableComponent theButton = new TableComponent(aTable);
-        EditorPanel.EditorComponent theRoot = new EditorPanel.EditorComponent(aTable, 0, 0, theButton, true);
+        final TableComponent theButton = new TableComponent(aTable);
+        final EditorPanel.EditorComponent theRoot = new EditorPanel.EditorComponent(aTable, 0, 0, theButton, true);
         editorPanel.add(theRoot);
 
         theComponentMap.put(aTable, theRoot);
 
-        int r1 = 250;
+        final int r1 = 250;
 
-        List<Table> theAlreadyKnown = new ArrayList<>();
+        final List<Table> theAlreadyKnown = new ArrayList<>();
         theAlreadyKnown.add(aTable);
 
         // Level 1
-        List<Relation> theIncomingRelationsLevel1 = new ArrayList<>();
+        final List<Relation> theIncomingRelationsLevel1 = new ArrayList<>();
         if (includeIncoming.isSelected()) {
             theIncomingRelationsLevel1.addAll(model.getRelations().getForeignKeysFor(aTable));
         }
         if (includeOutgoing.isSelected()) {
             theIncomingRelationsLevel1.addAll(model.getRelations().getExportedKeysFor(aTable));
         }
-        List<Table> theTablesLevel1 = new ArrayList<>();
-        for (Relation theRelation : theIncomingRelationsLevel1) {
+        final List<Table> theTablesLevel1 = new ArrayList<>();
+        for (final Relation theRelation : theIncomingRelationsLevel1) {
             if (!theTablesLevel1.contains(theRelation.getExportingTable()) && !theAlreadyKnown.contains(theRelation.getExportingTable())) {
                 theTablesLevel1.add(theRelation.getExportingTable());
                 theAlreadyKnown.add(theRelation.getExportingTable());
@@ -346,14 +346,14 @@ public class Java2DEditor implements GenericModelEditor {
             }
         }
 
-        if (theTablesLevel1.size() > 0) {
-            float theIncrement1 = 360 / theTablesLevel1.size();
+        if (!theTablesLevel1.isEmpty()) {
+            final float theIncrement1 = 360 / theTablesLevel1.size();
             float theAngleLevel1 = 0;
 
-            for (Table theTableLevel1 : theTablesLevel1) {
+            for (final Table theTableLevel1 : theTablesLevel1) {
 
-                TableComponent theButtonLevel1 = new TableComponent(theTableLevel1);
-                EditorPanel.EditorComponent theChildLevel1 = new EditorPanel.EditorComponent(theTableLevel1, theAngleLevel1, r1, theButtonLevel1);
+                final TableComponent theButtonLevel1 = new TableComponent(theTableLevel1);
+                final EditorPanel.EditorComponent theChildLevel1 = new EditorPanel.EditorComponent(theTableLevel1, theAngleLevel1, r1, theButtonLevel1);
                 editorPanel.add(theChildLevel1);
 
                 theComponentMap.put(theTableLevel1, theChildLevel1);
@@ -362,10 +362,10 @@ public class Java2DEditor implements GenericModelEditor {
             }
         }
 
-        for (Table theKnownTable : theAlreadyKnown) {
-            for (Relation theRelation : model.getRelations().getForeignKeysFor(theKnownTable)) {
-                EditorPanel.EditorComponent theFrom = theComponentMap.get(theRelation.getExportingTable());
-                EditorPanel.EditorComponent theTo = theComponentMap.get(theRelation.getImportingTable());
+        for (final Table theKnownTable : theAlreadyKnown) {
+            for (final Relation theRelation : model.getRelations().getForeignKeysFor(theKnownTable)) {
+                final EditorPanel.EditorComponent theFrom = theComponentMap.get(theRelation.getExportingTable());
+                final EditorPanel.EditorComponent theTo = theComponentMap.get(theRelation.getImportingTable());
                 if (theFrom != null && theTo != null && theFrom != theTo && !editorPanel.hasConnection(theFrom, theTo)) {
                     editorPanel.add(new EditorPanel.Connector(theFrom, theTo));
                 }
@@ -377,10 +377,10 @@ public class Java2DEditor implements GenericModelEditor {
         editorPanel.explodeAnimation();
     }
 
-    private void generateGraphFor(View aView) {
+    private void generateGraphFor(final View aView) {
 
-        ViewComponent theButton = new ViewComponent(aView);
-        EditorPanel.EditorComponent theRoot = new EditorPanel.EditorComponent(aView, 0, 0, theButton, true);
+        final ViewComponent theButton = new ViewComponent(aView);
+        final EditorPanel.EditorComponent theRoot = new EditorPanel.EditorComponent(aView, 0, 0, theButton, true);
         editorPanel.add(theRoot);
 
         editorPanel.invalidate();
@@ -389,12 +389,12 @@ public class Java2DEditor implements GenericModelEditor {
     }
 
     @Override
-    public void initLayoutMenu(ERDesignerComponent aComponent, DefaultMenu aLayoutMenu) {
+    public void initLayoutMenu(final ERDesignerComponent aComponent, final DefaultMenu aLayoutMenu) {
         aLayoutMenu.setEnabled(false);
     }
 
     @Override
-    public void setIntelligentLayoutEnabled(boolean aStatus) {
+    public void setIntelligentLayoutEnabled(final boolean aStatus) {
     }
 
     @Override

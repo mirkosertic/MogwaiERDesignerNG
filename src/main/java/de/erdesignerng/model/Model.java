@@ -27,7 +27,6 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.modificationtracker.EmptyModelModificationTracker;
 import de.erdesignerng.modificationtracker.ModelModificationTracker;
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.util.ERDesignerElementType;
@@ -37,7 +36,6 @@ import org.apache.commons.lang.StringUtils;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -82,10 +80,9 @@ public class Model extends ModelItem {
      * @param aTable the table
      * @throws ElementAlreadyExistsException is thrown in case of an error
      * @throws ElementInvalidNameException   is thrown in case of an error
-     * @throws VetoException                 if there is a veto for doing this
      */
     public void addTable(final Table aTable) throws ElementAlreadyExistsException,
-            ElementInvalidNameException, VetoException {
+            ElementInvalidNameException {
 
         modificationTracker.addTable(aTable);
 
@@ -108,11 +105,9 @@ public class Model extends ModelItem {
      * @param aRelation the table
      * @throws ElementAlreadyExistsException is thrown in case of an error
      * @throws ElementInvalidNameException   is thrown in case of an error
-     * @throws VetoException                 is thrown in case of an error
      */
     public void addRelation(final Relation aRelation)
-            throws ElementAlreadyExistsException, ElementInvalidNameException,
-            VetoException {
+            throws ElementAlreadyExistsException, ElementInvalidNameException {
 
         ModelUtilities.checkNameAndExistence(relations, aRelation, dialect);
 
@@ -176,10 +171,8 @@ public class Model extends ModelItem {
      * Remove a table from the model.
      *
      * @param aTable the table
-     * @throws VetoException will be thrown if the modification tracker has a veto for
-     *                       completing this operation
      */
-    public void removeTable(final Table aTable) throws VetoException {
+    public void removeTable(final Table aTable) {
 
         modificationTracker.removeTable(aTable);
 
@@ -193,17 +186,15 @@ public class Model extends ModelItem {
      * Remove a relation from the model.
      *
      * @param aRelation the relation
-     * @throws VetoException will be thrown if the modification tracker has a veto for
-     *                       completing this operation
      */
-    public void removeRelation(final Relation aRelation) throws VetoException {
+    public void removeRelation(final Relation aRelation) {
 
         modificationTracker.removeRelation(aRelation);
         relations.remove(aRelation);
     }
 
     public void removeAttributeFromTable(final Table aTable, final Attribute<Table> aAttribute)
-            throws VetoException, ElementAlreadyExistsException,
+            throws ElementAlreadyExistsException,
             ElementInvalidNameException {
 
         for (final Index theIndex : aTable.getIndexes()) {
@@ -226,7 +217,7 @@ public class Model extends ModelItem {
         aTable.getAttributes().removeById(aAttribute.getSystemId());
     }
 
-    public void removeIndex(final Table aTable, final Index aIndex) throws VetoException {
+    public void removeIndex(final Table aTable, final Index aIndex) {
 
         if (IndexType.PRIMARYKEY == aIndex.getIndexType()) {
             modificationTracker.removePrimaryKeyFromTable(aTable, aIndex);
@@ -237,21 +228,21 @@ public class Model extends ModelItem {
     }
 
     public void addAttributeToTable(final Table aTable, final Attribute<Table> aAttribute)
-            throws VetoException, ElementAlreadyExistsException,
+            throws ElementAlreadyExistsException,
             ElementInvalidNameException {
 
         modificationTracker.addAttributeToTable(aTable, aAttribute);
         aTable.addAttribute(this, aAttribute);
     }
 
-    public void changeAttribute(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) throws Exception {
+    public void changeAttribute(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
         modificationTracker.changeAttribute(anExistingAttribute, aNewAttribute);
 
         anExistingAttribute.restoreFrom(aNewAttribute);
     }
 
     public void addIndexToTable(final Table aTable, final Index aIndex)
-            throws VetoException, ElementAlreadyExistsException,
+            throws ElementAlreadyExistsException,
             ElementInvalidNameException {
 
         if (IndexType.PRIMARYKEY == aIndex.getIndexType()) {
@@ -263,38 +254,34 @@ public class Model extends ModelItem {
         aTable.addIndex(this, aIndex);
     }
 
-    public void changeIndex(final Index anExistingIndex, final Index aNewIndex)
-            throws Exception {
+    public void changeIndex(final Index anExistingIndex, final Index aNewIndex) {
 
         modificationTracker.changeIndex(anExistingIndex, aNewIndex);
 
         anExistingIndex.restoreFrom(aNewIndex);
     }
 
-    public void renameTable(final Table aTable, final String aNewName) throws VetoException {
+    public void renameTable(final Table aTable, final String aNewName) {
 
         modificationTracker.renameTable(aTable, aNewName);
 
         aTable.setName(aNewName);
     }
 
-    public void changeTableComment(final Table aTable, final String aNewComment)
-            throws VetoException {
+    public void changeTableComment(final Table aTable, final String aNewComment) {
 
         modificationTracker.changeTableComment(aTable, aNewComment);
 
         aTable.setComment(aNewComment);
     }
 
-    public void renameAttribute(final Attribute anExistingAttribute, final String aNewName)
-            throws VetoException {
+    public void renameAttribute(final Attribute anExistingAttribute, final String aNewName) {
         modificationTracker.renameAttribute(anExistingAttribute, aNewName);
 
         anExistingAttribute.setName(aNewName);
     }
 
-    public void changeRelation(final Relation aRelation, final Relation aTempRelation)
-            throws Exception {
+    public void changeRelation(final Relation aRelation, final Relation aTempRelation) {
 
         modificationTracker.changeRelation(aRelation, aTempRelation);
         aRelation.restoreFrom(aTempRelation);
@@ -442,9 +429,8 @@ public class Model extends ModelItem {
      * Add a domain to the model.
      *
      * @param aDomain - domain
-     * @throws VetoException - veto exception
      */
-    public void addDomain(final Domain aDomain) throws VetoException {
+    public void addDomain(final Domain aDomain) {
 
         modificationTracker.addDomain(aDomain);
 
@@ -456,9 +442,8 @@ public class Model extends ModelItem {
      * Remove a domain from the model.
      *
      * @param aDomain - a domain
-     * @throws VetoException - veto exception
      */
-    public void removeDomain(final Domain aDomain) throws VetoException {
+    public void removeDomain(final Domain aDomain) {
 
         modificationTracker.removeDomain(aDomain);
 
@@ -469,9 +454,8 @@ public class Model extends ModelItem {
      * Add a custom datatype to the model.
      *
      * @param aCustomType - the custom datatype
-     * @throws VetoException - veto exception
      */
-    public void addCustomType(final CustomType aCustomType) throws VetoException {
+    public void addCustomType(final CustomType aCustomType) {
 
         modificationTracker.addCustomType(aCustomType);
 
@@ -483,9 +467,8 @@ public class Model extends ModelItem {
      * Remove a custom datatype from the model.
      *
      * @param aCustomType - the custom datatype
-     * @throws VetoException - veto exception
      */
-    public void removeCustomType(final CustomType aCustomType) throws VetoException {
+    public void removeCustomType(final CustomType aCustomType) {
 
         modificationTracker.removeCustomType(aCustomType);
 
@@ -496,11 +479,10 @@ public class Model extends ModelItem {
      * Add a view to the model.
      *
      * @param aView the view
-     * @throws VetoException                 is thrown if someone has a veto to add the view
      * @throws ElementAlreadyExistsException is thrown if there is already
      * @throws ElementInvalidNameException   is thrown if the name is invalid
      */
-    public void addView(final View aView) throws VetoException,
+    public void addView(final View aView) throws
             ElementInvalidNameException, ElementAlreadyExistsException {
 
         modificationTracker.addView(aView);
@@ -518,9 +500,8 @@ public class Model extends ModelItem {
      * Remove a view from the model.
      *
      * @param aView a view
-     * @throws VetoException is thrown is someone has a veto to remove the view
      */
-    public void removeView(final View aView) throws VetoException {
+    public void removeView(final View aView) {
 
         modificationTracker.removeView(aView);
 
@@ -554,9 +535,8 @@ public class Model extends ModelItem {
      * Mark a view as changed.
      *
      * @param aView the view
-     * @throws VetoException is thrown if someone has a veto to change the view
      */
-    public void changeView(final View aView) throws VetoException {
+    public void changeView(final View aView) {
         modificationTracker.changeView(aView);
     }
 

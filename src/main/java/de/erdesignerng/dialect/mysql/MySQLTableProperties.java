@@ -57,7 +57,7 @@ public class MySQLTableProperties extends TableProperties {
 		return engine;
 	}
 
-	public void setEngine(EngineEnum engine) {
+	public void setEngine(final EngineEnum engine) {
 		this.engine = engine;
 	}
 
@@ -65,7 +65,7 @@ public class MySQLTableProperties extends TableProperties {
 		return avgRowLength;
 	}
 
-	public void setAvgRowLength(Integer avgRowLength) {
+	public void setAvgRowLength(final Integer avgRowLength) {
 		this.avgRowLength = avgRowLength;
 	}
 
@@ -73,7 +73,7 @@ public class MySQLTableProperties extends TableProperties {
 		return maxRows;
 	}
 
-	public void setMaxRows(Integer maxRows) {
+	public void setMaxRows(final Integer maxRows) {
 		this.maxRows = maxRows;
 	}
 
@@ -81,7 +81,7 @@ public class MySQLTableProperties extends TableProperties {
 		return minRows;
 	}
 
-	public void setMinRows(Integer minRows) {
+	public void setMinRows(final Integer minRows) {
 		this.minRows = minRows;
 	}
 
@@ -89,7 +89,7 @@ public class MySQLTableProperties extends TableProperties {
 		return checksum;
 	}
 
-	public void setChecksum(Boolean checksum) {
+	public void setChecksum(final Boolean checksum) {
 		this.checksum = checksum;
 	}
 
@@ -97,7 +97,7 @@ public class MySQLTableProperties extends TableProperties {
 		return packKeys;
 	}
 
-	public void setPackKeys(Boolean packKeys) {
+	public void setPackKeys(final Boolean packKeys) {
 		this.packKeys = packKeys;
 	}
 
@@ -105,7 +105,7 @@ public class MySQLTableProperties extends TableProperties {
 		return delayKeyWrite;
 	}
 
-	public void setDelayKeyWrite(Boolean delayKeyWrite) {
+	public void setDelayKeyWrite(final Boolean delayKeyWrite) {
 		this.delayKeyWrite = delayKeyWrite;
 	}
 
@@ -113,7 +113,7 @@ public class MySQLTableProperties extends TableProperties {
 		return rowFormat;
 	}
 
-	public void setRowFormat(RowFormatEnum rowFormat) {
+	public void setRowFormat(final RowFormatEnum rowFormat) {
 		this.rowFormat = rowFormat;
 	}
 
@@ -121,7 +121,7 @@ public class MySQLTableProperties extends TableProperties {
 		return insertMethod;
 	}
 
-	public void setInsertMethod(InsertMethodEnum insertMethod) {
+	public void setInsertMethod(final InsertMethodEnum insertMethod) {
 		this.insertMethod = insertMethod;
 	}
 
@@ -129,7 +129,7 @@ public class MySQLTableProperties extends TableProperties {
 		return characterSet;
 	}
 
-	public void setCharacterSet(String characterSet) {
+	public void setCharacterSet(final String characterSet) {
 		this.characterSet = characterSet;
 	}
 }

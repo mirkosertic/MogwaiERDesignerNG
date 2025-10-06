@@ -42,7 +42,7 @@ public class IndexEntity extends ModelEntity {
 	 * @param type
 	 *			the type to set
 	 */
-	public void setType(int type) {
+	public void setType(final int type) {
 		this.type = type;
 	}
 
@@ -50,7 +50,7 @@ public class IndexEntity extends ModelEntity {
 		return expressions;
 	}
 
-	public void setExpressions(List<IndexExpressionEntity> expressions) {
+	public void setExpressions(final List<IndexExpressionEntity> expressions) {
 		this.expressions = expressions;
 	}
 }

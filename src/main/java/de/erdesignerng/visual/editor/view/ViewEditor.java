@@ -23,7 +23,6 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.SQLUtils;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
@@ -53,7 +52,7 @@ public class ViewEditor extends BaseEditor {
 
     private ScaffoldingWrapper viewPropertiesWrapper;
 
-    public ViewEditor(Model aModel, Component aParent) {
+    public ViewEditor(final Model aModel, final Component aParent) {
         super(aParent, ERDesignerBundle.VIEWEDITOR);
 
         initialize();
@@ -84,10 +83,10 @@ public class ViewEditor extends BaseEditor {
         pack();
     }
 
-    public void initializeFor(View aView) {
+    public void initializeFor(final View aView) {
 
         viewProperties = model.getDialect().createViewPropertiesFor(aView);
-        DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
+        final DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
         viewPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(
                 model, viewProperties);
         theTab.add(viewPropertiesWrapper.getComponent(), BorderLayout.CENTER);
@@ -111,7 +110,7 @@ public class ViewEditor extends BaseEditor {
                         .getSqlText().getText());
 
                 setModalResult(MODAL_RESULT_OK);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 LOGGER.error("Error inspecting view : " + editingView.getSqlText().getText(), e);
             }
         }
@@ -119,9 +118,9 @@ public class ViewEditor extends BaseEditor {
 
     @Override
     public void applyValues() throws ElementAlreadyExistsException,
-            ElementInvalidNameException, VetoException {
+            ElementInvalidNameException {
 
-        View theView = viewBindingInfo.getDefaultModel();
+        final View theView = viewBindingInfo.getDefaultModel();
 
         viewPropertiesWrapper.save();
         viewProperties.copyTo(theView);
@@ -133,7 +132,7 @@ public class ViewEditor extends BaseEditor {
         try {
             SQLUtils.updateViewAttributesFromSQL(theView, editingView
                     .getSqlText().getText());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // This exception is checked in commandOk before
         }
 

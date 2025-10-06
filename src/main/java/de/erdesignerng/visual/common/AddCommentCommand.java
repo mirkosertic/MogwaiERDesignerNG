@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.model.Comment;
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
 
@@ -28,32 +27,28 @@ public class AddCommentCommand extends UICommand {
 
     private final Point2D location;
 
-    public AddCommentCommand(Point2D aLocation) {
+    public AddCommentCommand(final Point2D aLocation) {
         location = aLocation;
     }
 
     @Override
     public void execute() {
 
-        ERDesignerComponent theComponent = ERDesignerComponent.getDefault();
+        final ERDesignerComponent theComponent = ERDesignerComponent.getDefault();
 
-        Comment theComment = new Comment();
-        CommentEditor theEditor = new CommentEditor(theComponent.getModel(), getDetailComponent());
+        final Comment theComment = new Comment();
+        final CommentEditor theEditor = new CommentEditor(theComponent.getModel(), getDetailComponent());
         theEditor.initializeFor(theComment);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
 
-                try {
-                    theEditor.applyValues();
-                } catch (VetoException e) {
-                    getWorldConnector().notifyAboutException(e);
-                }
+                theEditor.applyValues();
 
                 theComponent.commandCreateComment(theComment, location);
 
                 refreshDisplayAndOutline();
 
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

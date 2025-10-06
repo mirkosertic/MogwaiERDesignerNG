@@ -62,12 +62,12 @@ public abstract class GenericDataTypeImpl implements DataType {
 
 	private boolean supportsExtra;
 
-	protected GenericDataTypeImpl(String aName, String aDefinition, int... aJdbcType) {
+	protected GenericDataTypeImpl(final String aName, final String aDefinition, final int... aJdbcType) {
 		name = aName;
 		definition = aDefinition;
 		jdbcType = aJdbcType;
 
-		for (StringTokenizer theST = new StringTokenizer(aDefinition.trim(), ","); theST.hasMoreTokens(); ) {
+		for (final StringTokenizer theST = new StringTokenizer(aDefinition.trim(), ","); theST.hasMoreTokens(); ) {
 			String theToken = theST.nextToken().trim();
 
 			// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
@@ -95,7 +95,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 		}
 	}
 
-	protected GenericDataTypeImpl(String aName, String aDefinition, boolean anIdentity, int... aJdbcDataType) {
+	protected GenericDataTypeImpl(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcDataType) {
 		this(aName, aDefinition, aJdbcDataType);
 
 		identity = anIdentity;
@@ -104,7 +104,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 		}
 	}
 
-	protected GenericDataTypeImpl(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcDataType) {
+	protected GenericDataTypeImpl(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcDataType) {
 		this(aName, aDefinition, anIdentity, aJdbcDataType);
 
 		array = anArray;
@@ -132,19 +132,19 @@ public abstract class GenericDataTypeImpl implements DataType {
 	/**
 	 * @param name the name to set
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	protected String patternToType(Attribute aAttribute) {
-		Map<String, String> theMapping = new HashMap<>();
+	protected String patternToType(final Attribute aAttribute) {
+		final Map<String, String> theMapping = new HashMap<>();
 		theMapping.put(SIZE_TOKEN, ((aAttribute.getSize() == null) ? null : "" + aAttribute.getSize()));
 		theMapping.put(FRACTION_TOKEN, ((aAttribute.getFraction() == null) ? null : "" + aAttribute.getFraction()));
 		theMapping.put(SCALE_TOKEN, "" + aAttribute.getScale());
 		theMapping.put(EXTRA_TOKEN, "" + aAttribute.getExtra());
 
 		String theResult = "";
-		StringTokenizer theSt = new StringTokenizer(definition, ",");
+		final StringTokenizer theSt = new StringTokenizer(definition, ",");
 
 		while (theSt.hasMoreTokens()) {
 			boolean isOptional = false;
@@ -154,13 +154,13 @@ public abstract class GenericDataTypeImpl implements DataType {
 				theToken = theToken.replace("[", "").replace("]", "");
 			}
 
-			String theValue = theMapping.get(theToken);
+			final String theValue = theMapping.get(theToken);
 			if (StringUtils.isEmpty(theValue)) {
 				if (!isOptional) {
 					throw new RuntimeException("No value for required token " + theToken);
 				}
 			} else {
-				theResult += ((theResult.length() > 0) ? ", " : "") + theValue;
+				theResult += ((!theResult.isEmpty()) ? ", " : "") + theValue;
 			}
 		}
 
@@ -168,17 +168,17 @@ public abstract class GenericDataTypeImpl implements DataType {
 	}
 
 	@Override
-	public String createTypeDefinitionFor(Attribute aAttribute) {
+	public String createTypeDefinitionFor(final Attribute aAttribute) {
 		if (definition == null) {
 			return name;
 		}
 
-		String theAppend = patternToType(aAttribute);
-		if (theAppend.length() == 0) {
+		final String theAppend = patternToType(aAttribute);
+		if (theAppend.isEmpty()) {
 			return name;
 		}
 
-		int p = name.indexOf("(");
+		final int p = name.indexOf("(");
 		if (p > 0) {
 			return new StringBuilder(name).insert(p + 1, theAppend).toString();
 		}
@@ -233,7 +233,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -243,7 +243,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		DataType other = (DataType) obj;
+		final DataType other = (DataType) obj;
 		if (name == null) {
 			if (other.getName() != null) {
 				return false;
@@ -261,7 +261,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 	 */
 	@Override
 	public boolean isJDBCStringType() {
-		for (int theType : jdbcType) {
+		for (final int theType : jdbcType) {
 			switch (theType) {
 				case Types.CHAR:
 				case Types.LONGVARCHAR:
@@ -289,7 +289,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 
 	@Override
 	public boolean isSpatial() {
-		for (int theType : jdbcType) {
+		for (final int theType : jdbcType) {
 			if (theType == Dialect.SPATIAL_COLUMN_TYPE) {
 				return true;
 			}

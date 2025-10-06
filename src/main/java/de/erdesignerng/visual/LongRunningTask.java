@@ -31,47 +31,47 @@ public abstract class LongRunningTask<T> extends Thread {
 		void publishMessage(String aMessage);
 	}
 
-	protected abstract class MySwingWorker<X> extends SwingWorker<X, String> implements MessagePublisher {
+	protected abstract static class MySwingWorker<X> extends SwingWorker<X, String> implements MessagePublisher {
 
 		@Override
-		public void publishMessage(String aMessage) {
+		public void publishMessage(final String aMessage) {
 			publish(aMessage );
 		}
 	}
 
-	public LongRunningTask(ERDesignerWorldConnector aConnector) {
+	public LongRunningTask(final ERDesignerWorldConnector aConnector) {
 		connector = aConnector;
 	}
 
 	@Override
 	public void run() {
-		SwingWorker<T, String> worker=new MySwingWorker<T>() {
+		final SwingWorker<T, String> worker= new MySwingWorker<>() {
 
-			@Override
-			protected T doInBackground() throws Exception {
-				return doWork(this);
-			}
+            @Override
+            protected T doInBackground() throws Exception {
+                return doWork(this);
+            }
 
-			@Override
-			protected void process(List<String> aChunks) {
-				handleProcess(aChunks);
-			}
-		};
+            @Override
+            protected void process(final List<String> aChunks) {
+                handleProcess(aChunks);
+            }
+        };
 		worker.execute();
 		try {
 			handleResult(worker.get());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			connector.notifyAboutException(e);
 		} finally {
 			try {
 				cleanup();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				connector.notifyAboutException(e);
 			}
 		}
 	}
 
-	public void handleProcess(List<String> aChunks) {
+	public void handleProcess(final List<String> aChunks) {
         aChunks.forEach(connector::setStatusText);
 	}
 

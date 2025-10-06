@@ -49,17 +49,17 @@ public class SaveToRepositoryEditor extends BaseEditor {
 
 	private final BindingInfo<SaveToRepositoryDataModel> bindingInfo2;
 
-	public SaveToRepositoryEditor(Component aParent, List<RepositoryEntryDescriptor> aEntries,
-			RepositoryEntryDescriptor aCurrentEntry) {
+	public SaveToRepositoryEditor(final Component aParent, final List<RepositoryEntryDescriptor> aEntries,
+                                  final RepositoryEntryDescriptor aCurrentEntry) {
 		super(aParent, ERDesignerBundle.SAVEMODELTODB);
 
 		initialize();
 
-		SaveToRepositoryDataModel theBindModel = new SaveToRepositoryDataModel();
+		final SaveToRepositoryDataModel theBindModel = new SaveToRepositoryDataModel();
 		bindingInfo1 = new BindingInfo<>(theBindModel);
 		bindingInfo2 = new BindingInfo<>(theBindModel);
 
-		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+		final DefaultComboBoxModel theModel = new DefaultComboBoxModel();
         aEntries.forEach(theModel::addElement);
 		view.getExistingNameBox().setModel(theModel);
 		if (theModel.getSize() > 0) {
@@ -87,7 +87,7 @@ public class SaveToRepositoryEditor extends BaseEditor {
 
 	private void initialize() {
 
-		ButtonGroup theGroup = new ButtonGroup();
+		final ButtonGroup theGroup = new ButtonGroup();
 		theGroup.add(view.getExistingEntryButton());
 		theGroup.add(view.getNewEntryButton());
 
@@ -105,13 +105,13 @@ public class SaveToRepositoryEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 	}
 
 	private void commandChangeRepositoryEntry() {
-		RepositoryEntryDescriptor theDesc = (RepositoryEntryDescriptor) view.getExistingNameBox().getSelectedItem();
+		final RepositoryEntryDescriptor theDesc = (RepositoryEntryDescriptor) view.getExistingNameBox().getSelectedItem();
 		if (theDesc != null) {
-			SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
+			final SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
 			theModel.setExistingEntry(theDesc);
 			theModel.setNameForExistingEntry(theDesc.getName());
 			bindingInfo2.model2view();
@@ -143,15 +143,15 @@ public class SaveToRepositoryEditor extends BaseEditor {
 	 */
 	public RepositoryEntryDescriptor getRepositoryDescriptor() {
 
-		SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
+		final SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
 
 		if (view.getNewEntryButton().isSelected()) {
-			RepositoryEntryDescriptor theDesc = new RepositoryEntryDescriptor();
+			final RepositoryEntryDescriptor theDesc = new RepositoryEntryDescriptor();
 			theDesc.setName(theModel.getNameForNewEntry());
 			return theDesc;
 		}
 
-		RepositoryEntryDescriptor theDesc = theModel.getExistingEntry();
+		final RepositoryEntryDescriptor theDesc = theModel.getExistingEntry();
 		theDesc.setName(theModel.getNameForExistingEntry());
 		return theDesc;
 	}

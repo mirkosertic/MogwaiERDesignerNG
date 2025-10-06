@@ -49,16 +49,16 @@ public class ClasspathEditor extends BaseEditor {
 
 	private File lastDir;
 
-	public ClasspathEditor(Component aParent) {
+	public ClasspathEditor(final Component aParent) {
 		super(aParent, ERDesignerBundle.CLASSPATHCONFIGURATION);
 
 		initialize();
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
+		final DefaultListModel theModel = (DefaultListModel) view.getClasspath()
 				.getModel();
 		view.getClasspath().setModel(theModel);
 
-		List<File> theFiles = ApplicationPreferences.getInstance()
+		final List<File> theFiles = ApplicationPreferences.getInstance()
 				.getClasspathFiles();
         theFiles.forEach(theModel::add);
 	}
@@ -83,12 +83,12 @@ public class ClasspathEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
+		final DefaultListModel theModel = (DefaultListModel) view.getClasspath()
 				.getModel();
 
-		List<File> theFiles = ApplicationPreferences.getInstance()
+		final List<File> theFiles = ApplicationPreferences.getInstance()
 				.getClasspathFiles();
 		theFiles.clear();
 
@@ -99,19 +99,19 @@ public class ClasspathEditor extends BaseEditor {
 
 	protected void commandFolderAdd() {
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
+		final DefaultListModel theModel = (DefaultListModel) view.getClasspath()
 				.getModel();
 
-		JFileChooser theChooser = new JFileChooser();
+		final JFileChooser theChooser = new JFileChooser();
 		if (lastDir != null) {
 			theChooser.setCurrentDirectory(lastDir);
 		}
 		theChooser.setMultiSelectionEnabled(true);
 		theChooser.setFileFilter(new GenericFileFilter(".jar", "Java archive"));
 		if (theChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			File[] theFiles = theChooser.getSelectedFiles();
+			final File[] theFiles = theChooser.getSelectedFiles();
 
-			for (File theFile : theFiles) {
+			for (final File theFile : theFiles) {
 				if (!theModel.contains(theFile)) {
 					theModel.add(theFile);
 				}
@@ -123,10 +123,10 @@ public class ClasspathEditor extends BaseEditor {
 
 	protected void commandFolderRemove() {
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
+		final DefaultListModel theModel = (DefaultListModel) view.getClasspath()
 				.getModel();
 
-		for (Object theValue : view.getClasspath().getSelectedValuesList()) {
+		for (final Object theValue : view.getClasspath().getSelectedValuesList()) {
 			theModel.remove(theValue);
 		}
 	}

@@ -38,8 +38,8 @@ public class AttributeTableModel implements TableModel {
 
 	private final String assignedTableName;
 
-	public AttributeTableModel(String aPrimaryEntityName, String aSecondaryEntityName, Index aPrimaryKey,
-			Attribute<Table>[] aSecondaryKey) {
+	public AttributeTableModel(final String aPrimaryEntityName, final String aSecondaryEntityName, final Index aPrimaryKey,
+                               final Attribute<Table>[] aSecondaryKey) {
 		primaryKey = aPrimaryKey;
 		assignedAttributes = aSecondaryKey;
 		primaryKeyTableName = aPrimaryEntityName;
@@ -47,7 +47,7 @@ public class AttributeTableModel implements TableModel {
 	}
 
 	@Override
-	public Class<Object> getColumnClass(int aColumn) {
+	public Class<Object> getColumnClass(final int aColumn) {
 		return Object.class;
 	}
 
@@ -57,7 +57,7 @@ public class AttributeTableModel implements TableModel {
 	}
 
 	@Override
-	public String getColumnName(int aColumn) {
+	public String getColumnName(final int aColumn) {
 		if (aColumn == 0) {
 			return primaryKeyTableName;
 		}
@@ -70,7 +70,7 @@ public class AttributeTableModel implements TableModel {
 	}
 
 	@Override
-	public Object getValueAt(int aRow, int aColumn) {
+	public Object getValueAt(final int aRow, final int aColumn) {
 		if (aColumn == 1) {
 			return assignedAttributes[aRow];
 		}
@@ -78,20 +78,20 @@ public class AttributeTableModel implements TableModel {
 	}
 
 	@Override
-	public boolean isCellEditable(int aRow, int aColumn) {
+	public boolean isCellEditable(final int aRow, final int aColumn) {
 		return aColumn != 0;
 	}
 
 	@Override
-	public void setValueAt(Object aValue, int aRow, int aColumn) {
+	public void setValueAt(final Object aValue, final int aRow, final int aColumn) {
 		assignedAttributes[aRow] = (Attribute<Table>) aValue;
 	}
 
 	@Override
-	public void addTableModelListener(TableModelListener l) {
+	public void addTableModelListener(final TableModelListener l) {
 	}
 
 	@Override
-	public void removeTableModelListener(TableModelListener l) {
+	public void removeTableModelListener(final TableModelListener l) {
 	}
 }

@@ -27,7 +27,7 @@ public abstract class BaseRendererComponent extends JPanel {
         return getSize();
     }
 
-    protected Dimension update(Dimension aDimension, int width, int height) {
+    protected Dimension update(final Dimension aDimension, final int width, final int height) {
         aDimension.width = Math.max(aDimension.width, width);
         aDimension.height += height;
         return aDimension;

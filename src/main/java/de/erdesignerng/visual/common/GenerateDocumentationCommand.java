@@ -35,7 +35,7 @@ public class GenerateDocumentationCommand extends UICommand {
 
     private final File JRXMLFile;
 
-    public GenerateDocumentationCommand(File aJRXMLFile) {
+    public GenerateDocumentationCommand(final File aJRXMLFile) {
         JRXMLFile = aJRXMLFile;
     }
 
@@ -48,20 +48,20 @@ public class GenerateDocumentationCommand extends UICommand {
             return;
         }
 
-        LongRunningTask<JasperPrint> theTask = new LongRunningTask<JasperPrint>(getWorldConnector()) {
+        final LongRunningTask<JasperPrint> theTask = new LongRunningTask<>(getWorldConnector()) {
 
             @Override
-            public JasperPrint doWork(MessagePublisher aMessagePublisher) throws Exception {
+            public JasperPrint doWork(final MessagePublisher aMessagePublisher) throws Exception {
 
                 aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP1));
 
-                ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
-                File theTempFile = File.createTempFile("mogwai", ".mxm");
+                final ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
+                final File theTempFile = File.createTempFile("mogwai", ".mxm");
                 theUtils.serializeModelToXML(component.getModel(), new OutputStreamWriter(new FileOutputStream(theTempFile), PlatformConfig.getXMLEncoding()));
 
                 aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
 
-                JasperPrint thePrint = JasperUtils.runJasperReport(theTempFile, JRXMLFile);
+                final JasperPrint thePrint = JasperUtils.runJasperReport(theTempFile, JRXMLFile);
 
                 aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP3));
 
@@ -69,11 +69,11 @@ public class GenerateDocumentationCommand extends UICommand {
             }
 
             @Override
-            public void handleResult(JasperPrint aResult) {
+            public void handleResult(final JasperPrint aResult) {
 
-                JRViewer theViewer = new JRViewer(aResult);
+                final JRViewer theViewer = new JRViewer(aResult);
 
-                DefaultDialog theResult = new DefaultDialog(getDetailComponent(), component.getResourceHelper(),
+                final DefaultDialog theResult = new DefaultDialog(getDetailComponent(), component.getResourceHelper(),
                         ERDesignerBundle.CREATEDBDOCUMENTATION);
                 theResult.setContentPane(theViewer);
                 theResult.setMinimumSize(new Dimension(640, 480));

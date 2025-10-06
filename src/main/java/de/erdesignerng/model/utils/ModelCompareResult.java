@@ -25,7 +25,7 @@ public class ModelCompareResult {
 
 	private final DefaultMutableTreeNode dbRootNode;
 
-	public ModelCompareResult(DefaultMutableTreeNode aModelRootNode, DefaultMutableTreeNode aDBRootNode) {
+	public ModelCompareResult(final DefaultMutableTreeNode aModelRootNode, final DefaultMutableTreeNode aDBRootNode) {
 		modelRootNode = aModelRootNode;
 		dbRootNode = aDBRootNode;
 	}

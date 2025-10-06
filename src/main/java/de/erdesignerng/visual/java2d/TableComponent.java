@@ -31,12 +31,12 @@ public class TableComponent extends BaseRendererComponent {
     private boolean fullMode;
     private boolean showSelfReference;
 
-    public TableComponent(Table aTable) {
+    public TableComponent(final Table aTable) {
         table = aTable;
         initFlags();
     }
 
-    public TableComponent(Table aTable, boolean aFullmode) {
+    public TableComponent(final Table aTable, final boolean aFullmode) {
         table = aTable;
         fullMode = aFullmode;
         initFlags();
@@ -44,7 +44,7 @@ public class TableComponent extends BaseRendererComponent {
 
     private void initFlags() {
         showSelfReference = false;
-        for (Relation theRelation : table.getOwner().getRelations().getForeignKeysFor(table)) {
+        for (final Relation theRelation : table.getOwner().getRelations().getForeignKeysFor(table)) {
             if (theRelation.isSelfReference()) {
                 showSelfReference = true;
             }
@@ -54,12 +54,12 @@ public class TableComponent extends BaseRendererComponent {
     @Override
     public Dimension getSize() {
         Dimension theSize = new Dimension(0, 0);
-        FontMetrics theMetrics = getFontMetrics(getFont());
+        final FontMetrics theMetrics = getFontMetrics(getFont());
 
         Rectangle2D theStringSize = theMetrics.getStringBounds(table.getName(), null);
         theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
 
-        for (Attribute<Table> theAttriute : table.getAttributes()) {
+        for (final Attribute<Table> theAttriute : table.getAttributes()) {
             boolean theInclude = true;
             if (!fullMode) {
                 theInclude = theAttriute.isForeignKey() || !theAttriute.isNullable();
@@ -74,13 +74,13 @@ public class TableComponent extends BaseRendererComponent {
                 theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
             }
         }
-        if (table.getIndexes().size() > 0 && fullMode) {
-            for (Index theIndex : table.getIndexes()) {
+        if (!table.getIndexes().isEmpty() && fullMode) {
+            for (final Index theIndex : table.getIndexes()) {
                 if (theIndex.getIndexType() != IndexType.PRIMARYKEY) {
                     String theName = theIndex.getName();
                     theStringSize = theMetrics.getStringBounds(theName, null);
                     theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
-                    for (IndexExpression theExpression : theIndex.getExpressions()) {
+                    for (final IndexExpression theExpression : theIndex.getExpressions()) {
                         theName = theExpression.toString();
                         theStringSize = theMetrics.getStringBounds(theName, null);
                         theSize = update(theSize, (int) theStringSize.getWidth() + 20, theMetrics.getAscent());
@@ -101,12 +101,12 @@ public class TableComponent extends BaseRendererComponent {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(final Graphics g) {
         super.paint(g);
 
-        Graphics2D theGraphics = (Graphics2D) g;
-        Dimension theSize = getSize();
-        FontMetrics theMetrics = getFontMetrics(getFont());
+        final Graphics2D theGraphics = (Graphics2D) g;
+        final Dimension theSize = getSize();
+        final FontMetrics theMetrics = getFontMetrics(getFont());
 
         theGraphics.setColor(Color.blue);
 
@@ -129,7 +129,7 @@ public class TableComponent extends BaseRendererComponent {
 
         int y = 18 + theMetrics.getAscent();
 
-        for (Attribute<Table> theAttriute : table.getAttributes()) {
+        for (final Attribute<Table> theAttriute : table.getAttributes()) {
 
             g.setColor(Color.white);
 
@@ -153,7 +153,7 @@ public class TableComponent extends BaseRendererComponent {
 
                 if (theAttriute.isPrimaryKey()) {
                     // Primarx key has underline
-                    AttributedString as = new AttributedString(theText);
+                    final AttributedString as = new AttributedString(theText);
                     as.addAttribute(TextAttribute.FONT, theGraphics.getFont());
                     as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON, 0,
                             theText.length());
@@ -166,16 +166,16 @@ public class TableComponent extends BaseRendererComponent {
                 y += theMetrics.getAscent();
             }
             if (showSelfReference) {
-                ImageIcon theIcon = IconFactory.getSelfReferenceIcon();
-                int xp = theSize.width - theIcon.getIconWidth() - 4;
-                int yp = 14;
+                final ImageIcon theIcon = IconFactory.getSelfReferenceIcon();
+                final int xp = theSize.width - theIcon.getIconWidth() - 4;
+                final int yp = 14;
 
                 theIcon.paintIcon(this, theGraphics, xp, yp);
             }
         }
-        if (table.getIndexes().size() > 0 && fullMode) {
+        if (!table.getIndexes().isEmpty() && fullMode) {
             boolean lineDrawn = false;
-            for (Index theIndex : table.getIndexes()) {
+            for (final Index theIndex : table.getIndexes()) {
                 if (theIndex.getIndexType() != IndexType.PRIMARYKEY) {
                     if (!lineDrawn) {
                         y += 3;
@@ -187,7 +187,7 @@ public class TableComponent extends BaseRendererComponent {
                     theGraphics.setColor(Color.white);
                     theGraphics.drawString(theName, 15, y + theMetrics.getAscent());
                     y += theMetrics.getAscent();
-                    for (IndexExpression theExpression : theIndex.getExpressions()) {
+                    for (final IndexExpression theExpression : theIndex.getExpressions()) {
                         theName = theExpression.toString();
                         theGraphics.drawString(theName, 20, y + theMetrics.getAscent());
                         y += theMetrics.getAscent();

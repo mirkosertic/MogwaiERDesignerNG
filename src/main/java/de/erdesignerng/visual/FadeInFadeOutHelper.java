@@ -46,7 +46,7 @@ public abstract class FadeInFadeOutHelper {
                     componentToHighlightNext = null;
                 }
                 if (componentToHighlight != null) {
-                    Dimension theSize = componentToHighlight.getSize();
+                    final Dimension theSize = componentToHighlight.getSize();
                     if (componentToHighlightPosition < theSize.width + 10) {
                         int theStep = theSize.width + 10 - componentToHighlightPosition;
                         if (theStep > 40) {
@@ -77,11 +77,11 @@ public abstract class FadeInFadeOutHelper {
         return componentToHighlightPosition;
     }
 
-    public void setComponentToHighlightFadeOut(boolean componentToHighlightFadeOut) {
+    public void setComponentToHighlightFadeOut(final boolean componentToHighlightFadeOut) {
         this.componentToHighlightFadeOut = componentToHighlightFadeOut;
     }
 
-    public void setComponentToHighlightNext(JComponent componentToHighlightNext) {
+    public void setComponentToHighlightNext(final JComponent componentToHighlightNext) {
         this.componentToHighlightNext = componentToHighlightNext;
     }
 

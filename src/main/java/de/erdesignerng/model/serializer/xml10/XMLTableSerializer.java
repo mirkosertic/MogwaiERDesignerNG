@@ -29,37 +29,37 @@ import org.w3c.dom.NodeList;
 
 public class XMLTableSerializer extends AbstractXMLTableSerializer {
 
-	public XMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+	public XMLTableSerializer(final AbstractXMLModelSerializer xmlModelSerializer) {
 		super(xmlModelSerializer);
 	}
 
 	@Override
-	public void serialize(Table aTable, Document aDocument, Element aRootElement) {
-		Element theTableElement = addElement(aDocument, aRootElement, TABLE);
+	public void serialize(final Table aTable, final Document aDocument, final Element aRootElement) {
+		final Element theTableElement = addElement(aDocument, aRootElement, TABLE);
 
 		// Basisdaten des Modelelementes speichern
 		serializeProperties(aDocument, theTableElement, aTable);
 		serializeCommentElement(aDocument, theTableElement, aTable);
 
 		// Attribute serialisieren
-		for (Attribute<Table> theAttribute : aTable.getAttributes()) {
+		for (final Attribute<Table> theAttribute : aTable.getAttributes()) {
 			getXMLModelSerializer().getXMLAttributeSerializer().serialize(theAttribute, aDocument, theTableElement);
 		}
 
 		// Indexes serialisieren
-		for (Index theIndex : aTable.getIndexes()) {
+		for (final Index theIndex : aTable.getIndexes()) {
 			getXMLModelSerializer().getXMLIndexSerializer().serialize(theIndex, aDocument, theTableElement);
 		}
 	}
 
 	@Override
-	public void deserialize(Model aModel, Document aDocument) {
+	public void deserialize(final Model aModel, final Document aDocument) {
 		// Now, parse tables
-		NodeList theElements = aDocument.getElementsByTagName(TABLE);
+		final NodeList theElements = aDocument.getElementsByTagName(TABLE);
 		for (int i = 0; i < theElements.getLength(); i++) {
-			Element theElement = (Element) theElements.item(i);
+			final Element theElement = (Element) theElements.item(i);
 
-			Table theTable = new Table();
+			final Table theTable = new Table();
 			theTable.setOwner(aModel);
 			deserializeProperties(theElement, theTable);
 

@@ -33,30 +33,30 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
 
     public static final DictionarySubjectAreaSerializer SERIALIZER = new DictionarySubjectAreaSerializer();
 
-    private void copyExtendedAttributes(SubjectArea aSource, SubjectAreaEntity aDestination) {
+    private void copyExtendedAttributes(final SubjectArea aSource, final SubjectAreaEntity aDestination) {
 
         aDestination.setColor(aSource.getColor().getRGB());
         aDestination.setVisible(aSource.isVisible());
         aDestination.setExpanded(aSource.isExpanded());
 
         aDestination.getTables().clear();
-        for (Table theTable : aSource.getTables()) {
+        for (final Table theTable : aSource.getTables()) {
             aDestination.getTables().add(theTable.getSystemId());
         }
 
         aDestination.getComments().clear();
-        for (Comment theComment : aSource.getComments()) {
+        for (final Comment theComment : aSource.getComments()) {
             aDestination.getComments().add(theComment.getSystemId());
         }
 
         aDestination.getViews().clear();
-        for (View theView : aSource.getViews()) {
+        for (final View theView : aSource.getViews()) {
             aDestination.getViews().add(theView.getSystemId());
         }
 
     }
 
-    private void copyExtendedAttributes(SubjectAreaEntity aSource, SubjectArea aDestination, Model aModel) {
+    private void copyExtendedAttributes(final SubjectAreaEntity aSource, final SubjectArea aDestination, final Model aModel) {
 
         aDestination.setColor(new Color(aSource.getColor()));
         if (aSource.getVisible() != null) {
@@ -68,27 +68,27 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
         }
 
         aDestination.getTables().clear();
-        for (String theTable : aSource.getTables()) {
+        for (final String theTable : aSource.getTables()) {
             aDestination.getTables().add(aModel.getTables().findBySystemId(theTable));
         }
 
         aDestination.getComments().clear();
-        for (String theComment : aSource.getComments()) {
+        for (final String theComment : aSource.getComments()) {
             aDestination.getComments().add(aModel.getComments().findBySystemId(theComment));
         }
 
         aDestination.getViews().clear();
-        for (String theView : aSource.getViews()) {
+        for (final String theView : aSource.getViews()) {
             aDestination.getViews().add(aModel.getViews().findBySystemId(theView));
         }
     }
 
-    public void serialize(Model aModel, RepositoryEntity aDictionaryEntity) {
+    public void serialize(final Model aModel, final RepositoryEntity aDictionaryEntity) {
 
-        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getSubjectAreas(), aDictionaryEntity
+        final Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getSubjectAreas(), aDictionaryEntity
                 .getSubjectareas());
 
-        for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
+        for (final SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
             boolean existing = true;
             SubjectAreaEntity theExisting = (SubjectAreaEntity) theComments.get(theSubjectArea.getSystemId());
             if (theExisting == null) {
@@ -105,10 +105,10 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
         }
     }
 
-    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-        for (SubjectAreaEntity theEntity : aRepositoryEntity.getSubjectareas()) {
+    public void deserialize(final Model aModel, final RepositoryEntity aRepositoryEntity) {
+        for (final SubjectAreaEntity theEntity : aRepositoryEntity.getSubjectareas()) {
 
-            SubjectArea theSubjectArea = new SubjectArea();
+            final SubjectArea theSubjectArea = new SubjectArea();
 
             copyBaseAttributes(theEntity, theSubjectArea);
             copyExtendedAttributes(theEntity, theSubjectArea, aModel);

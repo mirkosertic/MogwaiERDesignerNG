@@ -51,7 +51,7 @@ public class RepositoryEntity extends ModelEntity {
         return domains;
     }
 
-    public void setDomains(List<DomainEntity> domains) {
+    public void setDomains(final List<DomainEntity> domains) {
         this.domains = domains;
     }
 
@@ -59,7 +59,7 @@ public class RepositoryEntity extends ModelEntity {
         return tables;
     }
 
-    public void setTables(List<TableEntity> tables) {
+    public void setTables(final List<TableEntity> tables) {
         this.tables = tables;
     }
 
@@ -67,7 +67,7 @@ public class RepositoryEntity extends ModelEntity {
         return relations;
     }
 
-    public void setRelations(List<RelationEntity> relations) {
+    public void setRelations(final List<RelationEntity> relations) {
         this.relations = relations;
     }
 
@@ -75,7 +75,7 @@ public class RepositoryEntity extends ModelEntity {
         return comments;
     }
 
-    public void setComments(List<CommentEntity> comments) {
+    public void setComments(final List<CommentEntity> comments) {
         this.comments = comments;
     }
 
@@ -83,7 +83,7 @@ public class RepositoryEntity extends ModelEntity {
         return subjectAreas;
     }
 
-    public void setSubjectareas(List<SubjectAreaEntity> aAreas) {
+    public void setSubjectareas(final List<SubjectAreaEntity> aAreas) {
         subjectAreas = aAreas;
     }
 
@@ -91,7 +91,7 @@ public class RepositoryEntity extends ModelEntity {
         return changes;
     }
 
-    public void setChanges(List<ChangeEntity> changes) {
+    public void setChanges(final List<ChangeEntity> changes) {
         this.changes = changes;
     }
 
@@ -99,7 +99,7 @@ public class RepositoryEntity extends ModelEntity {
         return dialect;
     }
 
-    public void setDialect(String dialect) {
+    public void setDialect(final String dialect) {
         this.dialect = dialect;
     }
 
@@ -107,7 +107,7 @@ public class RepositoryEntity extends ModelEntity {
         return views;
     }
 
-    public void setViews(List<ViewEntity> views) {
+    public void setViews(final List<ViewEntity> views) {
         this.views = views;
     }
 
@@ -115,7 +115,7 @@ public class RepositoryEntity extends ModelEntity {
         return customTypes;
     }
 
-    public void setCustomType(List<CustomTypeEntity> customType) {
+    public void setCustomType(final List<CustomTypeEntity> customType) {
         customTypes = customType;
     }
 
@@ -126,13 +126,13 @@ public class RepositoryEntity extends ModelEntity {
      * @param aDestination the destination change ( included )
      * @return the statements
      */
-    public StatementList createChangeLog(ChangeEntity aSource, ChangeEntity aDestination) {
-        StatementList theStatements = new StatementList();
+    public StatementList createChangeLog(final ChangeEntity aSource, final ChangeEntity aDestination) {
+        final StatementList theStatements = new StatementList();
 
-        int a = changes.indexOf(aSource);
-        int b = changes.indexOf(aDestination);
+        final int a = changes.indexOf(aSource);
+        final int b = changes.indexOf(aDestination);
         for (int i = a; i <= b; i++) {
-            ChangeEntity theChange = changes.get(i);
+            final ChangeEntity theChange = changes.get(i);
             theStatements.addAll(theChange.getStatements().stream().map(Statement::new).collect(Collectors.toList()));
         }
 

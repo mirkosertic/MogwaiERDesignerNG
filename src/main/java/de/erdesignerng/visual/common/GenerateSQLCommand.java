@@ -31,18 +31,18 @@ public class GenerateSQLCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (!component.checkForValidConnection()) {
             return;
         }
 
-        Model theModel = component.getModel();
+        final Model theModel = component.getModel();
 
-        SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
-        StatementList theStatements = theGenerator
+        final SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
+        final StatementList theStatements = theGenerator
                 .createCreateAllObjects(theModel);
-        SQLEditor theEditor = new SQLEditor(getDetailComponent(),
+        final SQLEditor theEditor = new SQLEditor(getDetailComponent(),
                 new ModelBasedConnectionProvider(theModel), theStatements,
                 component.currentEditingFile, "schema.sql", getWorldConnector());
         theEditor.showModal();

@@ -33,7 +33,7 @@ import java.util.Map;
 public class PaginationDataModel extends AbstractTableModel {
 
 	private final ResultSet resultSet;
-	private ResultSetMetaData metadata;
+	private final ResultSetMetaData metadata;
 	private int currentRow = -1;
 	private int rowCount = 1;
 	private final List<List<Object>> cache = new ArrayList<>();
@@ -43,11 +43,11 @@ public class PaginationDataModel extends AbstractTableModel {
 		return metadata;
 	}
 
-	public Map<String, Object> getRowData(int aRow) throws SQLException {
-		Map<String, Object> theRow = new HashMap<>();
-		List<Object> theRowData = cache.get(aRow);
+	public Map<String, Object> getRowData(final int aRow) throws SQLException {
+		final Map<String, Object> theRow = new HashMap<>();
+		final List<Object> theRowData = cache.get(aRow);
 		for (int i=0;i<theRowData.size();i++) {
-			String theName = metadata.getColumnName(i+1);
+			final String theName = metadata.getColumnName(i+1);
 			theRow.put(theName, theRowData.get(i));
 		}
 		return theRow;
@@ -59,10 +59,10 @@ public class PaginationDataModel extends AbstractTableModel {
 
 	private final List<SeekListener> seekListener = new ArrayList<>();
 	private final JTable owner;
-	private Dialect dialect;
+	private final Dialect dialect;
 
-	public PaginationDataModel(Dialect aDialect, JTable aTable,
-			ResultSet aResultSet) throws SQLException {
+	public PaginationDataModel(final Dialect aDialect, final JTable aTable,
+                               final ResultSet aResultSet) throws SQLException {
 		owner = aTable;
 		resultSet = aResultSet;
 		metadata = aResultSet.getMetaData();
@@ -72,7 +72,7 @@ public class PaginationDataModel extends AbstractTableModel {
 		}
 	}
 
-	public void addSeekListener(SeekListener aListener) {
+	public void addSeekListener(final SeekListener aListener) {
 		seekListener.add(aListener);
 	}
 
@@ -80,23 +80,23 @@ public class PaginationDataModel extends AbstractTableModel {
 	public int getColumnCount() {
 		try {
 			return metadata.getColumnCount();
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	@Override
-	public String getColumnName(int column) {
+	public String getColumnName(final int column) {
 		try {
 			return dialect.getCastType().cast(
 					metadata.getColumnName(column + 1));
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
 		return false;
 	}
 
@@ -105,12 +105,12 @@ public class PaginationDataModel extends AbstractTableModel {
 		return rowCount;
 	}
 
-	public void seekToRow(int aRowIndex) throws SQLException {
+	public void seekToRow(final int aRowIndex) throws SQLException {
 
 		boolean seeked = false;
 		while (currentRow < aRowIndex && resultSet.next()) {
 
-			List<Object> theRow = new ArrayList<>();
+			final List<Object> theRow = new ArrayList<>();
 			for (int i = 1; i <= metadata.getColumnCount(); i++) {
 				theRow.add(resultSet.getObject(i));
 			}
@@ -134,11 +134,11 @@ public class PaginationDataModel extends AbstractTableModel {
 
 		if (seeked) {
 
-			for (SeekListener theListener : seekListener) {
+			for (final SeekListener theListener : seekListener) {
 				theListener.seeked();
 			}
 
-			int selectedRow = owner.getSelectedRow();
+			final int selectedRow = owner.getSelectedRow();
 
 			fireTableDataChanged();
 
@@ -150,13 +150,13 @@ public class PaginationDataModel extends AbstractTableModel {
 	}
 
 	@Override
-	public Object getValueAt(int aRowIndex, int aColumnIndex) {
+	public Object getValueAt(final int aRowIndex, final int aColumnIndex) {
 		try {
 			seekToRow(aRowIndex);
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			throw new RuntimeException(e);
 		}
-		List<Object> theRow = cache.get(aRowIndex);
+		final List<Object> theRow = cache.get(aRowIndex);
 		return theRow.get(aColumnIndex);
 	}
 
@@ -164,12 +164,12 @@ public class PaginationDataModel extends AbstractTableModel {
 		JDBCUtils.closeQuietly(resultSet);
 	}
 
-	public int computeColumnWidth(int aColumnIndex) {
+	public int computeColumnWidth(final int aColumnIndex) {
 		int width = 0;
 		for (int i = 0; i < rowCount - 1; i++) {
-			Object theValue = getValueAt(i, aColumnIndex);
+			final Object theValue = getValueAt(i, aColumnIndex);
 			if (theValue != null) {
-				String theString = theValue.toString();
+				final String theString = theValue.toString();
 				if (theString.length() > width) {
 					width = theString.length();
 				}

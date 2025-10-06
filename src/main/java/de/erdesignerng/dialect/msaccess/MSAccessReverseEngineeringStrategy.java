@@ -23,13 +23,11 @@ import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.modificationtracker.VetoException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -69,7 +67,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     private static final String HAVING = "HAVING";
 
-    public MSAccessReverseEngineeringStrategy(MSAccessDialect aDialect) {
+    public MSAccessReverseEngineeringStrategy(final MSAccessDialect aDialect) {
         super(aDialect);
     }
 
@@ -119,18 +117,18 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 //    }
 
     @Override
-    protected void reverseEngineerPrimaryKey(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData, Table aTable) throws SQLException, ReverseEngineeringException {
+    protected void reverseEngineerPrimaryKey(final Model aModel, final TableEntry aTableEntry, final DatabaseMetaData aMetaData, final Table aTable) {
         // TODO [dr-death] IMPLEMENT RevEngPK
     }
 
     @Override
-    protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException, ReverseEngineeringException {
+    protected void reverseEngineerRelations(final Model aModel, final ReverseEngineeringOptions aOptions, final ReverseEngineeringNotifier aNotifier, final TableEntry aTableEntry, final Connection aConnection) throws SQLException {
         // TODO [dr-death] manage relations with multiple fields
-        String theQuery = "SELECT * " +
+        final String theQuery = "SELECT * " +
                 "FROM MSysRelationships " +
                 "WHERE (szObject = ?);";
 
-        PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
+        final PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
         theStatement.setString(1, aTableEntry.getTableName());
 
         ResultSet theRelations = null;
@@ -139,13 +137,13 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
             theRelations = theStatement.executeQuery();
 
             while (theRelations.next()) {
-                Relation theNewRelation = new Relation();
+                final Relation theNewRelation = new Relation();
 
                 theNewRelation.setName(theRelations.getString("szRelationship"));
                 theNewRelation.setExportingTable(aModel.getTables().findByName(theRelations.getString("szReferencedObject")));
                 theNewRelation.setImportingTable(aModel.getTables().findByName(theRelations.getString("szObject")));
 
-                Integer theNewRelationAttributes = theRelations.getInt("grbit");
+                final Integer theNewRelationAttributes = theRelations.getInt("grbit");
 
                 if (containsFlag(theNewRelationAttributes, RelationAttributeEnum.DB_RELATION_DELETE_CASCADE)) {
                     theNewRelation.setOnDelete(CascadeType.CASCADE);
@@ -159,11 +157,9 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
                 try {
                     aModel.addRelation(theNewRelation);
-                } catch (ElementAlreadyExistsException ex) {
+                } catch (final ElementAlreadyExistsException ex) {
                     LOGGER.fatal(ex.getMessage());
-                } catch (ElementInvalidNameException ex) {
-                    LOGGER.fatal(ex.getMessage());
-                } catch (VetoException ex) {
+                } catch (final ElementInvalidNameException ex) {
                     LOGGER.fatal(ex.getMessage());
                 }
             }
@@ -183,19 +179,19 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 //    }
 
     @Override
-    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException {
+    protected String reverseEngineerViewSQL(final TableEntry aViewEntry, final Connection aConnection, final View aView) throws SQLException {
         String theViewSQL;
 
-        QueryFragment theCommand = getSQLQuery(aConnection, aViewEntry.getTableName());
-        QueryFragment theFields = getSQLInputFields(aConnection, aViewEntry.getTableName());
-        QueryFragment theOptions = getSQLQueryOptions(aConnection, aViewEntry.getTableName());
+        final QueryFragment theCommand = getSQLQuery(aConnection, aViewEntry.getTableName());
+        final QueryFragment theFields = getSQLInputFields(aConnection, aViewEntry.getTableName());
+        final QueryFragment theOptions = getSQLQueryOptions(aConnection, aViewEntry.getTableName());
         QueryFragment theFrom = getSQLFromJoinExpression(aConnection, aViewEntry.getTableName());
         if (StringUtils.isEmpty(theFrom.getLeadingSQL())) {
             theFrom = getSQLFromTables(aConnection, aViewEntry.getTableName());
         }
 
-        QueryFragment theWhere = getSQLWhereExpression(aConnection, aViewEntry.getTableName());
-        QueryFragment theGroupBy = getSQLGroupByExpression(aConnection, aViewEntry.getTableName());
+        final QueryFragment theWhere = getSQLWhereExpression(aConnection, aViewEntry.getTableName());
+        final QueryFragment theGroupBy = getSQLGroupByExpression(aConnection, aViewEntry.getTableName());
         QueryFragment theHaving = new QueryFragment("");
         if (theGroupBy != null) {
             theHaving = getSQLHavingExpression(aConnection, aViewEntry.getTableName());
@@ -224,7 +220,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
      * @return true, if the combination contains the flag
      *         false, else
      */
-    private boolean containsFlag(int theFlags, int theFlag) {
+    private boolean containsFlag(final int theFlags, final int theFlag) {
         return ((theFlags & theFlag) == theFlag);
     }
 
@@ -238,7 +234,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
      * @param aSecondaryString
      * @return merged string
      */
-    private String mergeRight(String aPrimaryString, String aSeparator, String aSecondaryString) {
+    private String mergeRight(final String aPrimaryString, final String aSeparator, final String aSecondaryString) {
         String theResult = ((aPrimaryString == null) ? "" : aPrimaryString);
 
         if (!(StringUtils.isEmpty(aPrimaryString)) && !(theResult.endsWith(aSeparator))
@@ -260,9 +256,9 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
      * @param aSecondaryString
      * @return merged string
      */
-    private String mergeLeft(String aPrimaryString, String aSeparator, String aSecondaryString) {
-        String thePrimaryString = ((aPrimaryString == null) ? "" : aPrimaryString);
-        String theSecondaryString = ((aSecondaryString == null) ? "" : aSecondaryString);
+    private String mergeLeft(final String aPrimaryString, final String aSeparator, final String aSecondaryString) {
+        final String thePrimaryString = ((aPrimaryString == null) ? "" : aPrimaryString);
+        final String theSecondaryString = ((aSecondaryString == null) ? "" : aSecondaryString);
         String theResult = thePrimaryString;
 
         if (!(StringUtils.isEmpty(thePrimaryString)) && !(StringUtils.isEmpty(theSecondaryString))) {
@@ -287,13 +283,13 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
      * @return ResultSet containing all records that represent a specified attribute
      * @throws java.sql.SQLException
      */
-    private ResultSet getSQLProperties(Connection aConnection, String aViewName, Short theAttributeID) throws SQLException {
-        String theQuery = "SELECT MSysQueries.* " +
+    private ResultSet getSQLProperties(final Connection aConnection, final String aViewName, final Short theAttributeID) throws SQLException {
+        final String theQuery = "SELECT MSysQueries.* " +
                 "FROM MSysQueries LEFT JOIN MSysObjects ON MSysQueries.ObjectId = MSysObjects.Id " +
                 "WHERE ((MSysObjects.Name = ?) AND (MSysQueries.Attribute = ?));";
 
-        PreparedStatement theStatement;
-        ResultSet theQueryProperties;
+        final PreparedStatement theStatement;
+        final ResultSet theQueryProperties;
 
         theStatement = aConnection.prepareStatement(theQuery);
         theStatement.setString(1, aViewName);
@@ -304,12 +300,12 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         return theQueryProperties;
     }
 
-    private QueryFragment getSQLQuery(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLQuery(final Connection aConnection, final String aViewName) throws SQLException {
         int theType = QueryProperties.QueryType.SELECT;
         String theSQLStart = "";
         String theSQLEnd = "";
 
-        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.QueryType.ID);
+        final ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.QueryType.ID);
 
         if (theProperties != null && theProperties.next()) {
             theType = theProperties.getInt("Flag");
@@ -363,12 +359,12 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     }
 
-    private QueryFragment getSQLQueryOptions(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLQueryOptions(final Connection aConnection, final String aViewName) throws SQLException {
         int theType = QueryProperties.QueryOptions.DEFAULT;
         String theSQLStart = "";
         String theSQLEnd = "";
 
-        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.QueryOptions.ID);
+        final ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.QueryOptions.ID);
 
         if (theProperties != null && theProperties.next()) {
             theType = theProperties.getInt("Flag");
@@ -406,12 +402,12 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         return new QueryFragment(theSQLStart, theType, theSQLEnd);
     }
 
-    private QueryFragment getSQLInputFields(Connection aConnection, String aViewName) throws SQLException {
-        int theType = QueryProperties.InputFields.DEFAULT;
+    private QueryFragment getSQLInputFields(final Connection aConnection, final String aViewName) throws SQLException {
+        final int theType = QueryProperties.InputFields.DEFAULT;
         String theSQL = "";
         String theField;
 
-        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.InputFields.ID);
+        final ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.InputFields.ID);
 
         while (theProperties != null && theProperties.next()) {
             theField = mergeRight(theProperties.getString("Expression"), SPACE + AS + SPACE, theProperties.getString("Name1"));
@@ -425,7 +421,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         return new QueryFragment(theSQL, theType);
     }
 
-    private QueryFragment getSQLFromJoinExpression(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLFromJoinExpression(final Connection aConnection, final String aViewName) throws SQLException {
         String theSQL = "";
         String currentFirstTable = "";
         String currentSecondTable = "";
@@ -434,7 +430,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         String previousExpression = "";
         String previousConcatenation = null;
 
-        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.JoinTypes.ID);
+        final ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.JoinTypes.ID);
 
         while (theProperties != null && theProperties.next()) {
             previousFirstTable = currentFirstTable;
@@ -442,7 +438,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
             currentFirstTable = theProperties.getString("Name1");
             currentSecondTable = theProperties.getString("Name2");
 
-            if ((previousFirstTable.length() > 0 && previousSecondTable.length() > 0)
+            if ((!previousFirstTable.isEmpty() && !previousSecondTable.isEmpty())
                     && currentFirstTable.equalsIgnoreCase(previousFirstTable)
                     && currentSecondTable.equalsIgnoreCase(previousSecondTable)) {
 
@@ -462,23 +458,12 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
                 theSQL = currentFirstTable;
 
-                switch (theProperties.getInt("Flag")) {
-                    case QueryProperties.JoinTypes.INNER_JOIN:
-                        theSQL = mergeRight(theSQL, SPACE, "INNER JOIN");
-                        break;
-
-                    case QueryProperties.JoinTypes.LEFT_JOIN:
-                        theSQL = mergeRight(theSQL, SPACE, "LEFT JOIN");
-                        break;
-
-                    case QueryProperties.JoinTypes.RIGHT_JOIN:
-                        theSQL = mergeRight(theSQL, SPACE, "RIGHT JOIN");
-                        break;
-
-                    default:
-                        throw new UnsupportedOperationException("Unknown JOIN-Type!");
-
-                }
+                theSQL = switch (theProperties.getInt("Flag")) {
+                    case QueryProperties.JoinTypes.INNER_JOIN -> mergeRight(theSQL, SPACE, "INNER JOIN");
+                    case QueryProperties.JoinTypes.LEFT_JOIN -> mergeRight(theSQL, SPACE, "LEFT JOIN");
+                    case QueryProperties.JoinTypes.RIGHT_JOIN -> mergeRight(theSQL, SPACE, "RIGHT JOIN");
+                    default -> throw new UnsupportedOperationException("Unknown JOIN-Type!");
+                };
 
                 theSQL = mergeRight(theSQL, SPACE, currentSecondTable);
 
@@ -501,12 +486,12 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         return new QueryFragment(theSQL, null);
     }
 
-    private QueryFragment getSQLFromTables(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLFromTables(final Connection aConnection, final String aViewName) throws SQLException {
         String theSQL = "";
-        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.InputTables.ID);
+        final ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.InputTables.ID);
 
         while (theProperties != null && theProperties.next()) {
-            String theFieldWithAlias = mergeRight(theProperties.getString("Name1"), SPACE + AS + SPACE, theProperties.getString("Name2"));
+            final String theFieldWithAlias = mergeRight(theProperties.getString("Name1"), SPACE + AS + SPACE, theProperties.getString("Name2"));
             theSQL = mergeRight(theSQL, COMMA, theFieldWithAlias);
         }
 
@@ -519,11 +504,11 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         return new QueryFragment(theSQL, null);
     }
 
-    private QueryFragment getSQLWhereExpression(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLWhereExpression(final Connection aConnection, final String aViewName) throws SQLException {
 
         Integer theType = null;
         String theWhere = "";
-        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.WhereExpression.ID);
+        final ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.WhereExpression.ID);
 
         if (theProperties != null && theProperties.next()) {
             theWhere = theProperties.getString("Expression");
@@ -540,10 +525,10 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     }
 
-    private QueryFragment getSQLGroupByExpression(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLGroupByExpression(final Connection aConnection, final String aViewName) throws SQLException {
         String theSQL = "";
 
-        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.GroupByExpression.ID);
+        final ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.GroupByExpression.ID);
 
         while (theProperties != null && theProperties.next()) {
             theSQL = mergeRight(theSQL, COMMA, theProperties.getString("Expression"));
@@ -558,10 +543,10 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         return new QueryFragment(theSQL);
     }
 
-    private QueryFragment getSQLHavingExpression(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLHavingExpression(final Connection aConnection, final String aViewName) throws SQLException {
         String theSQL = "";
 
-        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.HavingExpression.ID);
+        final ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.HavingExpression.ID);
 
         if (theProperties != null && theProperties.next()) {
             theSQL = theProperties.getString("Expression");

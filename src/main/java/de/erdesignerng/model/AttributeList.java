@@ -36,9 +36,9 @@ public class AttributeList<T extends ModelItem> extends ModelItemVector<Attribut
 	 *			the domain
 	 * @return true if yes, else false
 	 */
-	public boolean isDomainInUse(Domain aDomain) {
-		for (Attribute<T> theAttribute : this) {
-			DataType theType = theAttribute.getDatatype();
+	public boolean isDomainInUse(final Domain aDomain) {
+		for (final Attribute<T> theAttribute : this) {
+			final DataType theType = theAttribute.getDatatype();
 			if (theType.isDomain()) {
 				if (aDomain.getSystemId().equals(((Domain) theType).getSystemId())) {
 					return true;

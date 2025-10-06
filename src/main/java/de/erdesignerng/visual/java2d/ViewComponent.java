@@ -27,19 +27,19 @@ public class ViewComponent extends BaseRendererComponent {
 
     private final View view;
 
-    public ViewComponent(View aView) {
+    public ViewComponent(final View aView) {
         view = aView;
     }
 
     @Override
     public Dimension getSize() {
         Dimension theSize = new Dimension(0, 0);
-        FontMetrics theMetrics = getFontMetrics(getFont());
+        final FontMetrics theMetrics = getFontMetrics(getFont());
 
         Rectangle2D theStringSize = theMetrics.getStringBounds(view.getName(), null);
         theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
 
-        for (ViewAttribute theAttriute : view.getAttributes()) {
+        for (final ViewAttribute theAttriute : view.getAttributes()) {
             theStringSize = theMetrics.getStringBounds(theAttriute.getName(), null);
             theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
         }
@@ -51,12 +51,12 @@ public class ViewComponent extends BaseRendererComponent {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(final Graphics g) {
         super.paint(g);
 
-        Graphics2D theGraphics = (Graphics2D) g;
-        Dimension theSize = getSize();
-        FontMetrics theMetrics = getFontMetrics(getFont());
+        final Graphics2D theGraphics = (Graphics2D) g;
+        final Dimension theSize = getSize();
+        final FontMetrics theMetrics = getFontMetrics(getFont());
 
         theGraphics.setColor(Color.blue);
 
@@ -79,7 +79,7 @@ public class ViewComponent extends BaseRendererComponent {
 
         int y = 18 + theMetrics.getAscent();
 
-        for (ViewAttribute theAttriute : view.getAttributes()) {
+        for (final ViewAttribute theAttriute : view.getAttributes()) {
             theGraphics.drawString(theAttriute.getName(), 15, y + theMetrics.getAscent());
             y += theMetrics.getAscent();
         }

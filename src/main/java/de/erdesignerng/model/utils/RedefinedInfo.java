@@ -19,7 +19,7 @@ package de.erdesignerng.model.utils;
 
 public class RedefinedInfo extends Info {
 
-	protected RedefinedInfo(String aWhat) {
+	protected RedefinedInfo(final String aWhat) {
 		super(de.erdesignerng.ERDesignerBundle.REDEFINED, aWhat);
 	}
 }

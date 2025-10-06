@@ -58,13 +58,13 @@ public class ConvertModelEditorView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:300dlu,8dlu,p,2dlu";
-        String colDef = "2dlu,60dlu,2dlu,fill:250dlu:grow,2dlu";
+        final String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:300dlu,8dlu,p,2dlu";
+        final String colDef = "2dlu,60dlu,2dlu,fill:250dlu:grow,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
+        final FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(getComponent1(), cons.xywh(2, 4, 1, 1));
         add(new DefaultSeparator(ERDesignerBundle.TARGETDIALECT), cons.xywh(2, 2, 3, 1));
@@ -128,13 +128,13 @@ public class ConvertModelEditorView extends JPanel {
         if (component8 == null) {
             component8 = new JPanel();
 
-            String rowDef = "p";
-            String colDef = "60dlu,2dlu:grow,60dlu";
+            final String rowDef = "p";
+            final String colDef = "60dlu,2dlu:grow,60dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             component8.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             component8.add(getOKButton(), cons.xywh(1, 1, 1, 1));
             component8.add(getCancelButton(), cons.xywh(3, 1, 1, 1));

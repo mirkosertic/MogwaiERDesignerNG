@@ -29,14 +29,14 @@ public class ModelItemProperties<T extends ModelItem> {
 	protected ModelItemProperties() {
 	}
 
-	public void copyTo(T aObject) {
+	public void copyTo(final T aObject) {
 
-		ModelProperties theProperties = aObject.getProperties();
+		final ModelProperties theProperties = aObject.getProperties();
 
 		try {
-			for (PropertyDescriptor theDescriptor : PropertyUtils.getPropertyDescriptors(this)) {
+			for (final PropertyDescriptor theDescriptor : PropertyUtils.getPropertyDescriptors(this)) {
 				if (theDescriptor.getReadMethod() != null && theDescriptor.getWriteMethod() != null) {
-					Object theValue = PropertyUtils.getProperty(this, theDescriptor.getName());
+					final Object theValue = PropertyUtils.getProperty(this, theDescriptor.getName());
 					if (theValue != null) {
 						theProperties.setProperty(theDescriptor.getName(), theValue.toString());
 					} else {
@@ -44,20 +44,20 @@ public class ModelItemProperties<T extends ModelItem> {
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public void initializeFrom(T aObject) {
-		ModelProperties theProperties = aObject.getProperties();
+	public void initializeFrom(final T aObject) {
+		final ModelProperties theProperties = aObject.getProperties();
 
 		try {
-			for (PropertyDescriptor theDescriptor : PropertyUtils.getPropertyDescriptors(this)) {
+			for (final PropertyDescriptor theDescriptor : PropertyUtils.getPropertyDescriptors(this)) {
 				if (theDescriptor.getReadMethod() != null && theDescriptor.getWriteMethod() != null) {
-					String theValue = theProperties.getProperty(theDescriptor.getName());
+					final String theValue = theProperties.getProperty(theDescriptor.getName());
 					if (!StringUtils.isEmpty(theValue)) {
-						Class theType = theDescriptor.getPropertyType();
+						final Class theType = theDescriptor.getPropertyType();
 
 						if (theType.isEnum()) {
 							PropertyUtils.setProperty(this, theDescriptor.getName(), Enum.valueOf(theType, theValue));
@@ -77,7 +77,7 @@ public class ModelItemProperties<T extends ModelItem> {
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
 

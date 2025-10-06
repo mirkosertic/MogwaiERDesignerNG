@@ -30,14 +30,14 @@ import java.awt.geom.Rectangle2D;
  */
 public class DefaultPortView extends PortView {
 
-    public DefaultPortView(Object aObject) {
+    public DefaultPortView(final Object aObject) {
         super(aObject);
     }
 
     @Override
-    public boolean intersects(JGraph aGraph, Rectangle2D aRect) {
-        GraphCell theCell = (GraphCell) getParentView().getCell();
-        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
+    public boolean intersects(final JGraph aGraph, final Rectangle2D aRect) {
+        final GraphCell theCell = (GraphCell) getParentView().getCell();
+        final Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
 
         return theBounds.contains(aRect.getX(), aRect.getY());
     }

@@ -34,8 +34,8 @@ public class DataTypeList extends Vector<DataType> {
 	 *			the name of the datatype
 	 * @return the datatype or null if nothing was found
 	 */
-	public DataType findByName(String aName) {
-		for (DataType theType : this) {
+	public DataType findByName(final String aName) {
+		for (final DataType theType : this) {
 			if (theType.getName().equalsIgnoreCase(aName)) {
 				return theType;
 			}

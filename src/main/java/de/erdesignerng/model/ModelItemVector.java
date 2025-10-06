@@ -37,8 +37,8 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> implements M
 	 * @return the found element
 	 */
 	@Override
-	public T findBySystemId(String aSystemId) {
-		for (T theItem : this) {
+	public T findBySystemId(final String aSystemId) {
+		for (final T theItem : this) {
 			if (aSystemId.equals(theItem.getSystemId())) {
 				return theItem;
 			}
@@ -56,8 +56,8 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> implements M
 	 * 
 	 * @return true if it exists, else false.
 	 */
-	public boolean elementExists(String aUniqueName, boolean aCaseSensitive) {
-		for (T theElement : this) {
+	public boolean elementExists(final String aUniqueName, final boolean aCaseSensitive) {
+		for (final T theElement : this) {
 			if (aCaseSensitive) {
 				if (aUniqueName.equals(theElement.getUniqueName())) {
 					return true;
@@ -79,8 +79,8 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> implements M
 	 *			the name
 	 * @return the found element
 	 */
-	public T findByName(String aName) {
-		for (T theElement : this) {
+	public T findByName(final String aName) {
+		for (final T theElement : this) {
 			if (aName.equals(theElement.getName())) {
 				return theElement;
 			}
@@ -94,7 +94,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> implements M
 	 * @param aSystemId
 	 *			the id
 	 */
-	public void removeById(String aSystemId) {
+	public void removeById(final String aSystemId) {
 		remove(findBySystemId(aSystemId));
 	}
 }

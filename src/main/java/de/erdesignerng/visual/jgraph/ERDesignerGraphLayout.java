@@ -42,7 +42,7 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
 
     private final JGraphEditor component;
 
-    public ERDesignerGraphLayout(JGraphEditor aComponent) {
+    public ERDesignerGraphLayout(final JGraphEditor aComponent) {
         component = aComponent;
     }
 
@@ -68,33 +68,33 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
 
         elementsToIgnore.clear();
         if (component.getGraph().isDragging()) {
-            for (Object theCell : component.getGraph().getSelectionCells()) {
+            for (final Object theCell : component.getGraph().getSelectionCells()) {
                 if (theCell instanceof ModelCellWithPosition) {
-                    ModelCellWithPosition<ModelItem> theTableCell = (ModelCellWithPosition<ModelItem>) theCell;
+                    final ModelCellWithPosition<ModelItem> theTableCell = (ModelCellWithPosition<ModelItem>) theCell;
                     elementsToIgnore.add((ModelItem) theTableCell.getUserObject());
                 }
                 if (theCell instanceof SubjectAreaCell) {
                     ((SubjectAreaCell) theCell).getChildren().stream().filter(theChildCell -> theChildCell instanceof ModelCellWithPosition).forEach(theChildCell -> {
-                        DefaultGraphCell theGraphCell = (DefaultGraphCell) theChildCell;
+                        final DefaultGraphCell theGraphCell = (DefaultGraphCell) theChildCell;
                         elementsToIgnore.add((ModelItem) theGraphCell.getUserObject());
                     });
                 }
             }
         }
 
-        Map<ModelItem, VertexCellElement> theTables = new HashMap<>();
-        Set<RelationEdgeView> theRelations = new HashSet<>();
+        final Map<ModelItem, VertexCellElement> theTables = new HashMap<>();
+        final Set<RelationEdgeView> theRelations = new HashSet<>();
 
-        for (CellView theView : component.getGraph().getGraphLayoutCache().getAllViews()) {
+        for (final CellView theView : component.getGraph().getGraphLayoutCache().getAllViews()) {
 
             if (theView.getCell() instanceof ModelCellWithPosition) {
 
-                DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
+                final DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
 
-                ModelItem theModelItem = (ModelItem) theCell.getUserObject();
+                final ModelItem theModelItem = (ModelItem) theCell.getUserObject();
                 if (!elementsToIgnore.contains(theModelItem)) {
 
-                    VertexCellElement theElement = new VertexCellElement(theView);
+                    final VertexCellElement theElement = new VertexCellElement(theView);
 
                     theTables.put(theModelItem, theElement);
                     elements.add(theElement);
@@ -106,14 +106,14 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
             }
         }
 
-        for (RelationEdgeView theRelationView : theRelations) {
+        for (final RelationEdgeView theRelationView : theRelations) {
 
-            RelationEdge theCell = (RelationEdge) theRelationView.getCell();
-            Relation theRelation = (Relation) theCell.getUserObject();
+            final RelationEdge theCell = (RelationEdge) theRelationView.getCell();
+            final Relation theRelation = (Relation) theCell.getUserObject();
 
             if (!elementsToIgnore.contains(theRelation.getExportingTable())
                     && (!elementsToIgnore.contains(theRelation.getImportingTable()))) {
-                Spring<CellView, VertexCellElement> theSpring = new Spring<>(theTables
+                final Spring<CellView, VertexCellElement> theSpring = new Spring<>(theTables
                         .get(theRelation.getExportingTable()), theTables.get(theRelation.getImportingTable()),
                         theRelationView);
                 springs.add(theSpring);
@@ -131,21 +131,21 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
         int minX = Integer.MAX_VALUE;
         int minY = Integer.MAX_VALUE;
 
-        List<DefaultGraphCell> theCells = new ArrayList<>();
+        final List<DefaultGraphCell> theCells = new ArrayList<>();
 
-        for (CellView theView : component.getGraph().getGraphLayoutCache().getAllViews()) {
+        for (final CellView theView : component.getGraph().getGraphLayoutCache().getAllViews()) {
 
-            Object theObjectCell = theView.getCell();
+            final Object theObjectCell = theView.getCell();
 
             if (theObjectCell instanceof ModelCellWithPosition) {
-                DefaultGraphCell theCell = (DefaultGraphCell) theObjectCell;
+                final DefaultGraphCell theCell = (DefaultGraphCell) theObjectCell;
 
                 Map theAttributes = modelModifications.get(theCell);
                 if (theAttributes == null) {
                     theAttributes = theCell.getAttributes();
                 }
 
-                Rectangle2D theBounds = GraphConstants.getBounds(theAttributes);
+                final Rectangle2D theBounds = GraphConstants.getBounds(theAttributes);
                 minX = (int) Math.min(minX, theBounds.getX());
                 minY = (int) Math.min(minY, theBounds.getY());
 
@@ -153,17 +153,17 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
             }
 
             if (theObjectCell instanceof SubjectAreaCell) {
-                for (Object theChildCell : ((SubjectAreaCell) theObjectCell).getChildren()) {
+                for (final Object theChildCell : ((SubjectAreaCell) theObjectCell).getChildren()) {
                     if (theChildCell instanceof ModelCellWithPosition) {
 
-                        DefaultGraphCell theCell = (DefaultGraphCell) theChildCell;
+                        final DefaultGraphCell theCell = (DefaultGraphCell) theChildCell;
 
                         Map theAttributes = modelModifications.get(theCell);
                         if (theAttributes == null) {
                             theAttributes = theCell.getAttributes();
                         }
 
-                        Rectangle2D theBounds = GraphConstants.getBounds(theAttributes);
+                        final Rectangle2D theBounds = GraphConstants.getBounds(theAttributes);
                         minX = (int) Math.min(minX, theBounds.getX());
                         minY = (int) Math.min(minY, theBounds.getY());
 
@@ -174,14 +174,14 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
         }
 
         if (minX < 20 || minY < 20) {
-            int mx = minX < 20 ? 20 - minX : 0;
-            int my = minY < 20 ? 20 - minY : 0;
-            for (DefaultGraphCell theCell : theCells) {
+            final int mx = minX < 20 ? 20 - minX : 0;
+            final int my = minY < 20 ? 20 - minY : 0;
+            for (final DefaultGraphCell theCell : theCells) {
                 evolvePosition(theCell, mx, my);
             }
         }
 
-        if (modelModifications.size() > 0) {
+        if (!modelModifications.isEmpty()) {
             component.getGraph().getGraphLayoutCache().edit(modelModifications);
         }
     }
@@ -196,10 +196,10 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
         return springs;
     }
 
-    private void evolvePosition(GraphCell aCell, int movementX, int movementY) {
+    private void evolvePosition(final GraphCell aCell, final int movementX, final int movementY) {
 
         if (movementX != 0 || movementY != 0) {
-            Rectangle2D theBounds;
+            final Rectangle2D theBounds;
             Map theAttributes = modelModifications.get(aCell);
             if (theAttributes != null) {
                 theBounds = GraphConstants.getBounds(theAttributes);
@@ -217,7 +217,7 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
     }
 
     @Override
-    public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
+    public void evolvePosition(final VertexCellElement aElement, final int movementX, final int movementY) {
         evolvePosition(aElement.getCell(), movementX, movementY);
     }
 }

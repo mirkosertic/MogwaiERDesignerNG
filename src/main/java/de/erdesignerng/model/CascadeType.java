@@ -53,9 +53,9 @@ public enum CascadeType {
      * @return the enum constant with the specified id
      * @throws IllegalArgumentException if this enum type has no constant with the specified id
      */
-    public static CascadeType fromId(int id) {
+    public static CascadeType fromId(final int id) {
 
-        for (CascadeType aCascadeType : CascadeType.values()) {
+        for (final CascadeType aCascadeType : CascadeType.values()) {
             if (aCascadeType.getId() == id) {
                 return aCascadeType;
             }
@@ -64,7 +64,7 @@ public enum CascadeType {
         throw new IllegalArgumentException("Unknown type \"" + id + "\"!");
     }
 
-    public static CascadeType fromString(String aConstantName) {
+    public static CascadeType fromString(final String aConstantName) {
         return CascadeType.valueOf(aConstantName.toUpperCase().trim());
     }
 

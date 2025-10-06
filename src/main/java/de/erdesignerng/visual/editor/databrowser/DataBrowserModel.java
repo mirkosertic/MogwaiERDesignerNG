@@ -25,7 +25,7 @@ public class DataBrowserModel {
 		return sql;
 	}
 
-	public void setSql(String sql) {
+	public void setSql(final String sql) {
 		this.sql = sql;
 	}
 }

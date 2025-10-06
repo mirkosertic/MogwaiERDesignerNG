@@ -41,8 +41,8 @@ public class CompleteCompareEditor extends BaseEditor {
 
 	private final Model databaseModel;
 
-	public CompleteCompareEditor(Component aParent, Model aCurrentModel,
-			Model aDatabaseModel, String aCaption) {
+	public CompleteCompareEditor(final Component aParent, final Model aCurrentModel,
+                                 final Model aDatabaseModel, final String aCaption) {
 		super(aParent, aCaption);
 
 		currentModel = aCurrentModel;
@@ -50,7 +50,7 @@ public class CompleteCompareEditor extends BaseEditor {
 
 		initialize();
 
-		TreeCellRenderer theRenderer = new CompareTreeCellRenderer();
+		final TreeCellRenderer theRenderer = new CompareTreeCellRenderer();
 
 		editingView.getCurrentModelView().setCellRenderer(theRenderer);
 		editingView.getDatabaseView().setCellRenderer(theRenderer);
@@ -63,8 +63,8 @@ public class CompleteCompareEditor extends BaseEditor {
 
 	private void refreshView() {
 
-		ModelComparator theComparator = new ModelComparator();
-		ModelCompareResult theResult = theComparator.compareModels(
+		final ModelComparator theComparator = new ModelComparator();
+		final ModelCompareResult theResult = theComparator.compareModels(
 				currentModel, databaseModel);
 
 		editingView.getCurrentModelView().setModel(
@@ -88,9 +88,9 @@ public class CompleteCompareEditor extends BaseEditor {
 		editingView = new CompleteCompareEditorView();
 		editingView.getOkButton().setAction(okAction);
 
-		JScrollPane modelScroll = editingView.getCurrentModelView()
+		final JScrollPane modelScroll = editingView.getCurrentModelView()
 				.getScrollPane();
-		JScrollPane dbScroll = editingView.getDatabaseView().getScrollPane();
+		final JScrollPane dbScroll = editingView.getDatabaseView().getScrollPane();
 
 		modelScroll.getVerticalScrollBar().setModel(
 				dbScroll.getVerticalScrollBar().getModel());
@@ -115,6 +115,6 @@ public class CompleteCompareEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 	}
 }

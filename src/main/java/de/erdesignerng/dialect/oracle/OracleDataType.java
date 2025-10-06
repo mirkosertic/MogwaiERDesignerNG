@@ -26,15 +26,15 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
  */
 public class OracleDataType extends GenericDataTypeImpl {
 
-	public OracleDataType(String aName, String aDefinition, int... aJdbcDataType) {
+	public OracleDataType(final String aName, final String aDefinition, final int... aJdbcDataType) {
 		super(aName, aDefinition, aJdbcDataType);
 	}
 
-	public OracleDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcDataType) {
+	public OracleDataType(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcDataType) {
 		super(aName, aDefinition, anIdentity, aJdbcDataType);
 	}
 
-	public OracleDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcDataType) {
+	public OracleDataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcDataType) {
 		super(aName, aDefinition, anIdentity, anArray, aJdbcDataType);
 	}
 

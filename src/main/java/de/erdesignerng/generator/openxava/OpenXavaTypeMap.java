@@ -27,7 +27,7 @@ public class OpenXavaTypeMap {
 		return javaType;
 	}
 
-	public void setJavaType(String javaType) {
+	public void setJavaType(final String javaType) {
 		this.javaType = javaType;
 	}
 
@@ -35,7 +35,7 @@ public class OpenXavaTypeMap {
 		return stereoType;
 	}
 
-	public void setStereoType(String stereoType) {
+	public void setStereoType(final String stereoType) {
 		this.stereoType = stereoType;
 	}
 }

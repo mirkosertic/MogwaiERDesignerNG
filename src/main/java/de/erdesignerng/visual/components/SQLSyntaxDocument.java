@@ -168,7 +168,7 @@ public final class SQLSyntaxDocument extends DefaultStyledDocument {
 			"VALUE", "VARIANCE", "VSIZE", "WEEK", "WEEKDAY", "XMLATTR", "XMLCDATA",
 			"XMLCOMMENT", "XMLNODE", "XMLSTARTDOC", "XMLTEXT", "YEAR", "ZERO"};
 
-	private void Highlight(SQLScanner.Token token) {
+	private void Highlight(final SQLScanner.Token token) {
 		setCharacterAttributes(token.start, token.end - token.start + 1, sas[token.id], true);
 	}
 
@@ -183,7 +183,7 @@ public final class SQLSyntaxDocument extends DefaultStyledDocument {
 	 *					   optimalization).
 	 * @param firstLine	  auxiliary information which can be dervied from scanBegin
 	 */
-	private void HighlightAffectedText(int scanBegin, int scanEnd, int highlightBegin, int firstLine) {
+	private void HighlightAffectedText(final int scanBegin, final int scanEnd, final int highlightBegin, final int firstLine) {
 
 		SQLScanner.Token token; // scanned token
 		SQLScanner.Token last_line_tok = null; // last line tok affected by scan
@@ -198,7 +198,7 @@ public final class SQLSyntaxDocument extends DefaultStyledDocument {
 
 		// loads state from line token associated to the end of line before first_line:
 		if (firstLine > 0 && lineToks.items[firstLine - 1] != null) {
-			SQLScanner.Token t = (SQLScanner.Token) lineToks.items[firstLine - 1];
+			final SQLScanner.Token t = (SQLScanner.Token) lineToks.items[firstLine - 1];
 			scanner.setState(t.id, t.start);
 		}
 
@@ -214,7 +214,7 @@ public final class SQLSyntaxDocument extends DefaultStyledDocument {
 
 				// update line toks for every eoln contained by scanned token:
 				if (token.isMultiline()) {
-					int fline = root.getElementIndex(token.start);
+					final int fline = root.getElementIndex(token.start);
 					int lline = root.getElementIndex(token.end) - 1;
 
 					// if the token is not terminated (we are at the end of the text):
@@ -257,19 +257,19 @@ public final class SQLSyntaxDocument extends DefaultStyledDocument {
 	 * @throws javax.swing.text.BadLocationException
 	 */
 	@Override
-	public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
-		Element line = root.getElement(root.getElementIndex(offset)); // line where insertion started
-		int length = str.length(); // length of inserted text
-		int former_line_count = root.getElementCount(); // the number of lines before the insertion
-		int scan_begin = line.getStartOffset(); // start scanning at the boln of first affected line
-		int scan_end = line.getEndOffset() + length - 1; // end scanning at the eoln of last affected line (after insertion)
+	public void insertString(final int offset, final String str, final AttributeSet a) throws BadLocationException {
+		final Element line = root.getElement(root.getElementIndex(offset)); // line where insertion started
+		final int length = str.length(); // length of inserted text
+		final int former_line_count = root.getElementCount(); // the number of lines before the insertion
+		final int scan_begin = line.getStartOffset(); // start scanning at the boln of first affected line
+		final int scan_end = line.getEndOffset() + length - 1; // end scanning at the eoln of last affected line (after insertion)
 
 		// insert attribute-free text:
 		super.insertString(offset, str, sas[SQLScanner.TOKEN_WHITESPACE]);
 
-		int line_count = root.getElementCount(); // the number of lines after the insertion
-		int first_line = root.getElementIndex(scan_begin); // the first affected line index
-		int lines_inserted = line_count - former_line_count; // the number of inserted eolns
+		final int line_count = root.getElementCount(); // the number of lines after the insertion
+		final int first_line = root.getElementIndex(scan_begin); // the first affected line index
+		final int lines_inserted = line_count - former_line_count; // the number of inserted eolns
 
 		// one or more eolns were added:
 		if (lines_inserted > 0)
@@ -280,18 +280,18 @@ public final class SQLSyntaxDocument extends DefaultStyledDocument {
 	}
 
 	@Override
-	public void remove(int offset, int length) throws BadLocationException {
-		int former_line_count = root.getElementCount(); // the number of lines before the insertion
+	public void remove(final int offset, final int length) throws BadLocationException {
+		final int former_line_count = root.getElementCount(); // the number of lines before the insertion
 
 		// delete:
 		super.remove(offset, length);
 
-		Element line = root.getElement(root.getElementIndex(offset)); // line where deletion started
-		int scan_begin = line.getStartOffset(); // start scanning at the boln of first affected line
-		int scan_end = line.getEndOffset() - 1; // end scanning at the eoln of last affected line (after deleteion)
-		int line_count = root.getElementCount(); // the number of lines after the insertion
-		int first_line = root.getElementIndex(scan_begin); // the first affected line index
-		int lines_deleted = former_line_count - line_count; // the number of inserted eolns
+		final Element line = root.getElement(root.getElementIndex(offset)); // line where deletion started
+		final int scan_begin = line.getStartOffset(); // start scanning at the boln of first affected line
+		final int scan_end = line.getEndOffset() - 1; // end scanning at the eoln of last affected line (after deleteion)
+		final int line_count = root.getElementCount(); // the number of lines after the insertion
+		final int first_line = root.getElementIndex(scan_begin); // the first affected line index
+		final int lines_deleted = former_line_count - line_count; // the number of inserted eolns
 
 		// one or more eolns were deleted:
 		if (lines_deleted > 0)

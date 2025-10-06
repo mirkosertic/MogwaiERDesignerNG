@@ -37,7 +37,7 @@ public class RelationEdgeView extends EdgeView {
 
     private static final MyRenderer RENDERER = new MyRenderer();
 
-    public RelationEdgeView(RelationEdge aRelation) {
+    public RelationEdgeView(final RelationEdge aRelation) {
         super(aRelation);
     }
 
@@ -49,7 +49,7 @@ public class RelationEdgeView extends EdgeView {
     public static class MyRenderer extends EdgeRenderer {
 
         @Override
-        protected Shape createLineEnd(int size, int style, Point2D src, Point2D dst) {
+        protected Shape createLineEnd(final int size, final int style, final Point2D src, final Point2D dst) {
 
             if (style == RelationEdge.LINE_BEGIN) {
                 return createLineBeginShape(dst, src);
@@ -61,17 +61,17 @@ public class RelationEdgeView extends EdgeView {
             return super.createLineEnd(size, style, src, dst);
         }
 
-        private Shape createLineEndShape(Point2D aSrc, Point2D aDst) {
-            RelationEdge theEdge = (RelationEdge) view.getCell();
-            Relation theRelation = (Relation) theEdge.getUserObject();
+        private Shape createLineEndShape(final Point2D aSrc, final Point2D aDst) {
+            final RelationEdge theEdge = (RelationEdge) view.getCell();
+            final Relation theRelation = (Relation) theEdge.getUserObject();
 
-            double angle = Math.atan2(aDst.getY() - aSrc.getY(), aDst.getX() - aSrc.getX());
+            final double angle = Math.atan2(aDst.getY() - aSrc.getY(), aDst.getX() - aSrc.getX());
 
-            Path2DRotatedHelper theHelper = new Path2DRotatedHelper(aSrc.getX(), aSrc.getY(), angle);
+            final Path2DRotatedHelper theHelper = new Path2DRotatedHelper(aSrc.getX(), aSrc.getY(), angle);
             theHelper.moveTo(10, -10);
             theHelper.lineTo(10, 10);
 
-            boolean isIdentifying = theRelation.isIdentifying();
+            final boolean isIdentifying = theRelation.isIdentifying();
             if (isIdentifying) {
                 theHelper.moveTo(15, -10);
                 theHelper.lineTo(15, 10);
@@ -82,15 +82,15 @@ public class RelationEdgeView extends EdgeView {
             return theHelper.getPath();
         }
 
-        private Shape createLineBeginShape(Point2D aSrc, Point2D aDst) {
-            RelationEdge theEdge = (RelationEdge) view.getCell();
-            Relation theRelation = (Relation) theEdge.getUserObject();
+        private Shape createLineBeginShape(final Point2D aSrc, final Point2D aDst) {
+            final RelationEdge theEdge = (RelationEdge) view.getCell();
+            final Relation theRelation = (Relation) theEdge.getUserObject();
 
-            double angle = Math.atan2(aDst.getY() - aSrc.getY(), aDst.getX() - aSrc.getX());
+            final double angle = Math.atan2(aDst.getY() - aSrc.getY(), aDst.getX() - aSrc.getX());
 
-            Path2DRotatedHelper theHelper = new Path2DRotatedHelper(aSrc.getX(), aSrc.getY(), angle);
+            final Path2DRotatedHelper theHelper = new Path2DRotatedHelper(aSrc.getX(), aSrc.getY(), angle);
 
-            boolean isOneToOne = theRelation.isOneToOne();
+            final boolean isOneToOne = theRelation.isOneToOne();
 
             if (isOneToOne) {
                 // Case 1: FK fields are also the primary key
@@ -120,7 +120,7 @@ public class RelationEdgeView extends EdgeView {
         private final double cosAngle;
         private final double sinAngle;
 
-        public Path2DRotatedHelper(double aOx, double aOy, double angle) {
+        public Path2DRotatedHelper(final double aOx, final double aOy, final double angle) {
             path = new Path2D.Double();
             ox = aOx;
             oy = aOy;
@@ -132,33 +132,33 @@ public class RelationEdgeView extends EdgeView {
             return path;
         }
 
-        public void moveTo(double mx, double my) {
+        public void moveTo(final double mx, final double my) {
 
-            double x1 = mx * cosAngle - my * sinAngle;
-            double y1 = my * cosAngle + mx * sinAngle;
+            final double x1 = mx * cosAngle - my * sinAngle;
+            final double y1 = my * cosAngle + mx * sinAngle;
 
             path.moveTo(ox + x1, oy + y1);
         }
 
-        public void lineTo(double mx, double my) {
+        public void lineTo(final double mx, final double my) {
 
-            double x1 = mx * cosAngle - my * sinAngle;
-            double y1 = my * cosAngle + mx * sinAngle;
+            final double x1 = mx * cosAngle - my * sinAngle;
+            final double y1 = my * cosAngle + mx * sinAngle;
 
             path.lineTo(ox + x1, oy + y1);
         }
 
-        public void circle(double mx, double my, double radius) {
+        public void circle(final double mx, final double my, final double radius) {
 
-            double x1 = mx * cosAngle - my * sinAngle;
-            double y1 = my * cosAngle + mx * sinAngle;
+            final double x1 = mx * cosAngle - my * sinAngle;
+            final double y1 = my * cosAngle + mx * sinAngle;
 
             for (int i = 0; i <= 360; i += 10) {
 
-                double theAngle = Math.toRadians(i);
+                final double theAngle = Math.toRadians(i);
 
-                double x = ox + x1 + Math.cos(theAngle) * radius;
-                double y = oy + y1 + Math.sin(theAngle) * radius;
+                final double x = ox + x1 + Math.cos(theAngle) * radius;
+                final double y = oy + y1 + Math.sin(theAngle) * radius;
                 if (i == 0) {
                     path.moveTo(x, y);
                 } else {

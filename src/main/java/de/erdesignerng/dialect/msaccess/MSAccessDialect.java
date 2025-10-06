@@ -62,20 +62,20 @@ public final class MSAccessDialect extends Dialect {
 	private static final int ERROR_FILE_TOO_NEW = -1028;
 
 	@Override
-	public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+	public Connection createConnection(final ClassLoader aClassLoader, final String aDriver, final String aUrl, final String aUser, final String aPassword, final boolean aPromptForPassword) throws SQLException {
 
-		File workgroupFile;
-		String systemDB;
+		final File workgroupFile;
+		final String systemDB;
 
 		try {
 			workgroupFile = new File(getClass().getResource("/de/erdesignerng/System.mdw").toURI());
 			systemDB = "SystemDB=" + workgroupFile.getAbsoluteFile() + ";";
-		} catch (URISyntaxException ex) {
+		} catch (final URISyntaxException ex) {
 			throw new RuntimeException("File '" + aUrl + "' not found!");
 		}
 
-		String database = "jdbc:odbc:Driver={" + aDriver + "};DBQ=" + aUrl + ";ExtendedAnsiSQL=1" + ";" + systemDB;
-		Connection connection;
+		final String database = "jdbc:odbc:Driver={" + aDriver + "};DBQ=" + aUrl + ";ExtendedAnsiSQL=1" + ";" + systemDB;
+		final Connection connection;
 
 		try {
 			connection = DriverManager.getConnection(database, aUser, aPassword);
@@ -85,15 +85,15 @@ public final class MSAccessDialect extends Dialect {
 			// Um die Einstellungen der "echten" System.mdw in
 			// %APPDATA%\Microsoft\Access\System.mdw
 			// nicht zu überschreiben wird eine "eigene" System.mdw benutzt.
-			Statement statement = connection.createStatement();
+			final Statement statement = connection.createStatement();
 			statement.execute("GRANT SELECT ON TABLE MSysObjects TO " + aUser);
 			statement.execute("GRANT SELECT ON TABLE MSysRelationships TO " + aUser);
 			statement.execute("GRANT SELECT ON TABLE MSysQueries TO " + aUser);
 
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			switch (e.getErrorCode()) {
 				case ERROR_FILE_TOO_NEW:
-					int theVersion = MSAccessFormats.getVersion(aUrl);
+					final int theVersion = MSAccessFormats.getVersion(aUrl);
 
 					if (theVersion == MSAccessFormats.VERSION_2007) {
 						throw new SQLException("Sie versuchen eine Access 2007 Datenbank zu Öffnen.\n" +
@@ -186,17 +186,17 @@ public final class MSAccessDialect extends Dialect {
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final int... aJdbcType) {
 		return new MSAccessDataType(aName, aDefinition, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcType) {
 		return new MSAccessDataType(aName, aDefinition, anIdentity, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcType) {
 		return new MSAccessDataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
 	}
 

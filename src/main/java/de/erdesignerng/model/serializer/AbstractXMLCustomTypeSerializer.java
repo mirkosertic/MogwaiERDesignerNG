@@ -35,7 +35,7 @@ public abstract class AbstractXMLCustomTypeSerializer extends CommonAbstractXMLS
 
 	private AbstractXMLModelSerializer xmlModelSerializer = null;
 
-	public AbstractXMLCustomTypeSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+	public AbstractXMLCustomTypeSerializer(final AbstractXMLModelSerializer xmlModelSerializer) {
 		this.xmlModelSerializer = xmlModelSerializer;
 	}
 

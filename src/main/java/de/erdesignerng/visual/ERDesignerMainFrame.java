@@ -61,7 +61,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements
         addWindowListener(new WindowAdapter() {
 
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void windowClosing(final WindowEvent e) {
                 exitApplication();
             }
         });
@@ -84,7 +84,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements
 
         try {
             dockingHelper.initialize();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -103,24 +103,24 @@ public class ERDesignerMainFrame extends DefaultFrame implements
     }
 
     @Override
-    public void initTitle(String aFile) {
+    public void initTitle(final String aFile) {
 
-        StringBuffer theTitle = new StringBuffer();
+        final StringBuilder theTitle = new StringBuilder();
         if (aFile != null) {
             theTitle.append(" - ").append(aFile);
         }
 
-        String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo();
+        final String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo();
         setTitle(getResourceHelper().getText(getResourceBundleID()) + " "
                 + theVersion + " " + theTitle);
     }
 
     @Override
-    public void setStatusText(String aMessage) {
+    public void setStatusText(final String aMessage) {
         getDefaultFrameContent().getStatusBar().setText(aMessage);
     }
 
-    public void setModel(Model aModel) {
+    public void setModel(final Model aModel) {
         component.setModel(aModel);
     }
 
@@ -141,7 +141,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements
 
     @Override
     public Model createNewModel() {
-        Model theModel = new Model();
+        final Model theModel = new Model();
         theModel
                 .setModificationTracker(new HistoryModificationTracker(theModel));
         return theModel;
@@ -153,13 +153,13 @@ public class ERDesignerMainFrame extends DefaultFrame implements
     }
 
     @Override
-    public void initializeLoadedModel(Model aModel) {
+    public void initializeLoadedModel(final Model aModel) {
         aModel.setModificationTracker(new HistoryModificationTracker(aModel));
     }
 
     @Override
-    public void notifyAboutException(Exception aException) {
-        ExceptionEditor theEditor = new ExceptionEditor(this, aException);
+    public void notifyAboutException(final Exception aException) {
+        final ExceptionEditor theEditor = new ExceptionEditor(this, aException);
         theEditor.showModal();
     }
 
@@ -173,7 +173,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements
     }
 
     @Override
-    public void setVisible(boolean aVisible) {
+    public void setVisible(final boolean aVisible) {
 
         super.setVisible(aVisible);
 
@@ -206,7 +206,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements
      *
      * @param aFile
      */
-    public void commandOpenFile(File aFile) {
+    public void commandOpenFile(final File aFile) {
         component.commandOpenFile(aFile);
     }
 }

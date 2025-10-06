@@ -26,7 +26,7 @@ public class Info {
 
 	private final String what;
 
-	protected Info(String aKey, String aWhat) {
+	protected Info(final String aKey, final String aWhat) {
 		what = HELPER.getFormattedText(aKey, aWhat);
 	}
 

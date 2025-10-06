@@ -29,17 +29,17 @@ public class OpenFromFileCommand extends UICommand {
     @Override
     public void execute() {
 
-        ModelFileFilter theFiler = new ModelFileFilter();
+        final ModelFileFilter theFiler = new ModelFileFilter();
 
-        JFileChooser theChooser = new JFileChooser();
+        final JFileChooser theChooser = new JFileChooser();
         theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         theChooser.setFileFilter(theFiler);
         if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-            File theFile = theFiler.getCompletedFile(theChooser
+            final File theFile = theFiler.getCompletedFile(theChooser
                     .getSelectedFile());
 
-            ERDesignerComponent component = ERDesignerComponent.getDefault();
+            final ERDesignerComponent component = ERDesignerComponent.getDefault();
             component.commandOpenFile(theFile);
         }
     }

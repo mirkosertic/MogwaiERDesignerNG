@@ -40,24 +40,24 @@ import java.io.Writer;
 public class SVGExporter implements Exporter {
 
     @Override
-    public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException {
-        Object[] cells = aGraph.getRoots();
-        Rectangle2D bounds = aGraph.toScreen(aGraph.getCellBounds(cells));
+    public void fullExportToStream(final ERDesignerGraph aGraph, final OutputStream aStream) throws IOException {
+        final Object[] cells = aGraph.getRoots();
+        final Rectangle2D bounds = aGraph.toScreen(aGraph.getCellBounds(cells));
         if (bounds != null) {
-            DOMImplementation theDomImpl = SVGDOMImplementation.getDOMImplementation();
-            String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
-            Document theDocument = theDomImpl.createDocument(svgNS, "svg", null);
-            SVGGraphics2D theSvgGenerator = new SVGGraphics2D(theDocument);
+            final DOMImplementation theDomImpl = SVGDOMImplementation.getDOMImplementation();
+            final String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
+            final Document theDocument = theDomImpl.createDocument(svgNS, "svg", null);
+            final SVGGraphics2D theSvgGenerator = new SVGGraphics2D(theDocument);
             theSvgGenerator.translate(-bounds.getX() + 10, -bounds.getY() + 0);
-            RepaintManager theRepaintManager = RepaintManager.currentManager(aGraph);
+            final RepaintManager theRepaintManager = RepaintManager.currentManager(aGraph);
             theRepaintManager.setDoubleBufferingEnabled(false);
-            boolean theDoubleBuffered = aGraph.isDoubleBuffered();
+            final boolean theDoubleBuffered = aGraph.isDoubleBuffered();
             // Disable double buffering to allow Batik to render svg elements
             // instead of images
             aGraph.setDoubleBuffered(false);
             aGraph.paint(theSvgGenerator);
             aGraph.setDoubleBuffered(theDoubleBuffered);
-            Writer theWriter = new OutputStreamWriter(aStream, PlatformConfig.getXMLEncoding());
+            final Writer theWriter = new OutputStreamWriter(aStream, PlatformConfig.getXMLEncoding());
             theSvgGenerator.stream(theWriter, false);
             theRepaintManager.setDoubleBufferingEnabled(true);
 
@@ -72,18 +72,18 @@ public class SVGExporter implements Exporter {
     }
 
     @Override
-    public void exportToStream(Component aComponent, OutputStream aStream) throws IOException {
-        DOMImplementation theDomImpl = GenericDOMImplementation.getDOMImplementation();
-        Document theDocument = theDomImpl.createDocument(null, "svg", null);
-        SVGGraphics2D theSvgGenerator = new SVGGraphics2D(theDocument);
-        RepaintManager theRepaintManager = RepaintManager.currentManager(aComponent);
+    public void exportToStream(final Component aComponent, final OutputStream aStream) throws IOException {
+        final DOMImplementation theDomImpl = GenericDOMImplementation.getDOMImplementation();
+        final Document theDocument = theDomImpl.createDocument(null, "svg", null);
+        final SVGGraphics2D theSvgGenerator = new SVGGraphics2D(theDocument);
+        final RepaintManager theRepaintManager = RepaintManager.currentManager(aComponent);
         theRepaintManager.setDoubleBufferingEnabled(false);
 
-        Dimension theSize = aComponent.getPreferredSize();
+        final Dimension theSize = aComponent.getPreferredSize();
         aComponent.setSize(theSize);
 
         aComponent.paint(theSvgGenerator);
-        Writer theWriter = new OutputStreamWriter(aStream, PlatformConfig.getXMLEncoding());
+        final Writer theWriter = new OutputStreamWriter(aStream, PlatformConfig.getXMLEncoding());
         theSvgGenerator.stream(theWriter, false);
         theRepaintManager.setDoubleBufferingEnabled(true);
 

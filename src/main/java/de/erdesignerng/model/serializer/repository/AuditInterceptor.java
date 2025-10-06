@@ -37,15 +37,15 @@ public class AuditInterceptor extends EmptyInterceptor {
 	}
 
 	@Override
-	public boolean onSave(Object aEntity, Serializable aID, Object[] aStates, String[] aPropertyNames, Type[] aTypes) {
+	public boolean onSave(final Object aEntity, final Serializable aID, final Object[] aStates, final String[] aPropertyNames, final Type[] aTypes) {
 
-		String theCurrentUser = getCurrentUserId();
+		final String theCurrentUser = getCurrentUserId();
 
 		if (theCurrentUser != null) {
 
 			for (int i = 0; i < aPropertyNames.length; i++) {
 
-				String thePropertyName = aPropertyNames[i];
+				final String thePropertyName = aPropertyNames[i];
 				if ("creationDate".equals(thePropertyName)) {
 					aStates[i] = new Timestamp(System.currentTimeMillis());
 				}
@@ -62,16 +62,16 @@ public class AuditInterceptor extends EmptyInterceptor {
 	}
 
 	@Override
-	public boolean onFlushDirty(Object aEntity, Serializable aID, Object[] aCurrentState, Object[] aPreviousState,
-			String[] aPropertyNames, Type[] aTypes) {
+	public boolean onFlushDirty(final Object aEntity, final Serializable aID, final Object[] aCurrentState, final Object[] aPreviousState,
+                                final String[] aPropertyNames, final Type[] aTypes) {
 
-		String theCurrentUser = getCurrentUserId();
+		final String theCurrentUser = getCurrentUserId();
 
 		if (theCurrentUser != null) {
 
 			for (int i = 0; i < aPropertyNames.length; i++) {
 
-				String thePropertyName = aPropertyNames[i];
+				final String thePropertyName = aPropertyNames[i];
 				if ("lastModificationDate".equals(thePropertyName)) {
 					aCurrentState[i] = new Timestamp(System.currentTimeMillis());
 				}

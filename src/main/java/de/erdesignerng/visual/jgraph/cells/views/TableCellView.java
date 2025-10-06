@@ -27,7 +27,6 @@ import de.erdesignerng.visual.jgraph.cells.TableCell;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -50,7 +49,7 @@ public class TableCellView extends VertexView {
 
 	private static final MyRenderer RENDERER = new MyRenderer();
 
-	public TableCellView(TableCell aCell) {
+	public TableCellView(final TableCell aCell) {
 		super(aCell);
 	}
 
@@ -77,15 +76,15 @@ public class TableCellView extends VertexView {
 			setBackground(Color.white);
 		}
 
-		private void fillRect(Graphics aGraphics, int aX1, int aY1, int aWidth, int aHeight) {
+		private void fillRect(final Graphics aGraphics, final int aX1, final int aY1, final int aWidth, final int aHeight) {
 			aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
 		}
 
-		private void drawRect(Graphics aGraphics, int aY1, int aWidth, int aHeight) {
+		private void drawRect(final Graphics aGraphics, final int aY1, final int aWidth, final int aHeight) {
 			aGraphics.drawRect(0, aY1, aWidth, aHeight);
 		}
 
-		protected String getConvertedName(ModelItem aItem) {
+		protected String getConvertedName(final ModelItem aItem) {
 			String theText = aItem.getUniqueName();
 			if (includeComments) {
 				if (StringUtils.isNotEmpty(aItem.getComment())) {
@@ -96,17 +95,17 @@ public class TableCellView extends VertexView {
 		}
 
 		@Override
-		public void paint(Graphics aGraphics) {
+		public void paint(final Graphics aGraphics) {
 
-			Dimension theSize = getSize();
-			int theWidth = theSize.width;
-			int theHeight = theSize.height;
+			final Dimension theSize = getSize();
+			final int theWidth = theSize.width;
+			final int theHeight = theSize.height;
 
 			aGraphics.setFont(getFont());
 			aGraphics.setColor(getBackground());
 			// aGraphics.fillRect(0, 0, theWidth, theHeight);
 
-			FontMetrics theMetrics = aGraphics.getFontMetrics();
+			final FontMetrics theMetrics = aGraphics.getFontMetrics();
 
 			aGraphics.setColor(Color.black);
 			String theString = getConvertedName(table);
@@ -127,31 +126,31 @@ public class TableCellView extends VertexView {
 
 			drawRect(aGraphics, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
 
-			int theTextXOffset = 15;
+			final int theTextXOffset = 15;
 
-			List<Attribute<Table>> theTempList = new ArrayList<>();
+			final List<Attribute<Table>> theTempList = new ArrayList<>();
 			theTempList.addAll(table.getAttributes());
 
 			switch (displayOrder) {
 				case NATURAL:
 					break;
 				case ASCENDING:
-					Collections.sort(theTempList, NAME_COMPARATOR);
+					theTempList.sort(NAME_COMPARATOR);
 					break;
 				case DESCENDING:
-					Collections.sort(theTempList, REVERSE_NAME_COMPARATOR);
+					theTempList.sort(REVERSE_NAME_COMPARATOR);
 					break;
 				default:
 					throw new IllegalStateException("Unknown display order");
 			}
 
-			List<Attribute<Table>> theAllAttributes = new ArrayList<>();
+			final List<Attribute<Table>> theAllAttributes = new ArrayList<>();
 			theAllAttributes.addAll(theTempList);
 
 			boolean hasPrimaryKey = false;
 
 			// Draw the attributes
-			for (Attribute<Table> theAttribute : theTempList) {
+			for (final Attribute<Table> theAttribute : theTempList) {
 
 				if (theAttribute.isPrimaryKey()) {
 
@@ -181,7 +180,7 @@ public class TableCellView extends VertexView {
 
 				// Only do the following if there are any not primary key
 				// attributes
-				if (theAllAttributes.size() > 0) {
+				if (!theAllAttributes.isEmpty()) {
 
 					// This line is only necessary in case that there are PK
 					// attributes
@@ -193,10 +192,10 @@ public class TableCellView extends VertexView {
 					}
 
 					// Draw the attributes
-					for (Attribute<Table> theAttribute : theAllAttributes) {
+					for (final Attribute<Table> theAttribute : theAllAttributes) {
 
 						if (DisplayLevel.ALL == displayLevel || (theAttribute.isForeignKey())) {
-							boolean isFK = theAttribute.isForeignKey();
+							final boolean isFK = theAttribute.isForeignKey();
 
 							theString = getConvertedName(theAttribute);
 
@@ -217,24 +216,24 @@ public class TableCellView extends VertexView {
 				}
 			}
 
-			if (table.getIndexes().size() > 0 && DisplayLevel.ALL == displayLevel) {
+			if (!table.getIndexes().isEmpty() && DisplayLevel.ALL == displayLevel) {
 				boolean lineDrawn = false;
-				for (Index theIndex : table.getIndexes()) {
+				for (final Index theIndex : table.getIndexes()) {
 					if (theIndex.getIndexType() != IndexType.PRIMARYKEY) {
 						if (!lineDrawn) {
 							aGraphics.setColor(Color.black);
 							aGraphics.drawLine(0, theYOffset, theWidth - 5, theYOffset);
 							lineDrawn = true;
 						}
-						String theName = getConvertedName(theIndex);
+						final String theName = getConvertedName(theIndex);
 
 						aGraphics.setColor(Color.black);
 						aGraphics.drawString(theName, theTextXOffset, theYOffset + theMetrics.getAscent());
 						aGraphics.setColor(Color.black);
 						theYOffset += theMetrics.getHeight();
 
-						for (IndexExpression theExpression : theIndex.getExpressions()) {
-							String theExpressionText = theExpression.toString();
+						for (final IndexExpression theExpression : theIndex.getExpressions()) {
+							final String theExpressionText = theExpression.toString();
 							aGraphics.drawString(theExpressionText, theTextXOffset + 5, theYOffset + theMetrics.getAscent());
 
 							theYOffset += theMetrics.getHeight();
@@ -250,22 +249,22 @@ public class TableCellView extends VertexView {
 			int theMaxX = 150;
 			int theMaxY = 8;
 
-			FontMetrics theMetrics = getFontMetrics(getFont());
+			final FontMetrics theMetrics = getFontMetrics(getFont());
 
 			int theYOffset = theMetrics.getHeight();
-			int theXTextOffset = 30;
+			final int theXTextOffset = 30;
 
-			String theString = getConvertedName(table);
+			final String theString = getConvertedName(table);
 
 			int theLength = theMetrics.stringWidth(theString);
 			if (theLength > theMaxX) {
 				theMaxX = theLength + 5;
 			}
 
-			List<Attribute<Table>> theAllAttributes = new ArrayList<>();
+			final List<Attribute<Table>> theAllAttributes = new ArrayList<>();
 			theAllAttributes.addAll(table.getAttributes());
 
-			for (Attribute<Table> theAttribute : table.getAttributes()) {
+			for (final Attribute<Table> theAttribute : table.getAttributes()) {
 
 				if (theAttribute.isPrimaryKey()) {
 
@@ -289,7 +288,7 @@ public class TableCellView extends VertexView {
 			}
 
 			if (DisplayLevel.ALL == displayLevel || (DisplayLevel.PRIMARYKEYSANDFOREIGNKEYS == displayLevel)) {
-				for (Attribute<Table> theAttribute : theAllAttributes) {
+				for (final Attribute<Table> theAttribute : theAllAttributes) {
 
 					if (DisplayLevel.ALL == displayLevel || (theAttribute.isForeignKey())) {
 
@@ -310,10 +309,10 @@ public class TableCellView extends VertexView {
 				}
 			}
 
-			if (table.getIndexes().size() > 0 && DisplayLevel.ALL == displayLevel) {
-				for (Index theIndex : table.getIndexes()) {
+			if (!table.getIndexes().isEmpty() && DisplayLevel.ALL == displayLevel) {
+				for (final Index theIndex : table.getIndexes()) {
 					if (theIndex.getIndexType() != IndexType.PRIMARYKEY) {
-						String theName = getConvertedName(theIndex);
+						final String theName = getConvertedName(theIndex);
 
 						theLength = theMetrics.stringWidth(theName);
 						if (theLength + theXTextOffset > theMaxX) {
@@ -322,8 +321,8 @@ public class TableCellView extends VertexView {
 
 						theYOffset += theMetrics.getHeight();
 
-						for (IndexExpression theExpression : theIndex.getExpressions()) {
-							String theExpressionText = theExpression.toString();
+						for (final IndexExpression theExpression : theIndex.getExpressions()) {
+							final String theExpressionText = theExpression.toString();
 
 							theLength = theMetrics.stringWidth(theExpressionText);
 							if (theLength + theXTextOffset + 5 > theMaxX) {
@@ -339,7 +338,7 @@ public class TableCellView extends VertexView {
 			theYOffset += 8;
 			theMaxX += 8;
 
-			Insets theInsets = getInsets();
+			final Insets theInsets = getInsets();
 			theMaxX += theInsets.left + theInsets.right;
 			theMaxY += theInsets.top + theInsets.bottom;
 
@@ -351,14 +350,14 @@ public class TableCellView extends VertexView {
 		}
 
 		@Override
-		public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
-											  boolean aPreview) {
+		public Component getRendererComponent(final JGraph aGraph, final CellView aView, final boolean aSelected, final boolean aHasFocus,
+                                              final boolean aPreview) {
 
-			TableCellView theView = (TableCellView) aView;
+			final TableCellView theView = (TableCellView) aView;
 			table = (Table) ((TableCell) theView.getCell()).getUserObject();
 			selected = aSelected;
 
-			ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
+			final ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
 			includeComments = theGraph.isDisplayComments();
 			displayLevel = theGraph.getDisplayLevel();
 			displayOrder = theGraph.getDisplayOrder();
@@ -366,7 +365,7 @@ public class TableCellView extends VertexView {
 			return this;
 		}
 
-		public JComponent getRendererComponent(Table aTable) {
+		public JComponent getRendererComponent(final Table aTable) {
 
 			table = aTable;
 			selected = false;

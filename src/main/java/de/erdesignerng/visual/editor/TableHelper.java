@@ -21,20 +21,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class TableHelper {
+public final class TableHelper {
 
     private static final KeyStroke TABKEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
 
     private TableHelper() {
     }
 
-    public static void processEditorRemovel(JTable aTable) {
-        AWTEvent currentEvent = EventQueue.getCurrentEvent();
+    public static void processEditorRemovel(final JTable aTable) {
+        final AWTEvent currentEvent = EventQueue.getCurrentEvent();
         if (currentEvent instanceof KeyEvent) {
-            KeyEvent ke = (KeyEvent) currentEvent;
+            final KeyEvent ke = (KeyEvent) currentEvent;
             if (KeyStroke.getKeyStrokeForEvent(ke).equals(TABKEYSTROKE)) {
                 // Tab key was pressed, so edit next cell
-                int selectedRow = aTable.getSelectedRow();
+                final int selectedRow = aTable.getSelectedRow();
                 if (ke.isShiftDown()) {
                     int selectedColumn = aTable.getSelectedColumn() - 1;
                     while (selectedColumn >= 0) {

@@ -31,13 +31,13 @@ public class GenericConnectionProvider implements ConnectionProvider {
 
 	private final String statementSeparator;
 
-	public GenericConnectionProvider(Connection aConnection,
-			String aStatementSeparator) {
+	public GenericConnectionProvider(final Connection aConnection,
+                                     final String aStatementSeparator) {
 		connection = aConnection;
 		statementSeparator = aStatementSeparator;
 	}
 
-	public Connection createConnection() throws Exception {
+	public Connection createConnection() {
 		return connection;
 	}
 

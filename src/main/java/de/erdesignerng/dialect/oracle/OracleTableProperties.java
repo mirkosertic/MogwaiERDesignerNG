@@ -27,7 +27,7 @@ public class OracleTableProperties extends TableProperties {
         return tableSpace;
     }
 
-    public void setTableSpace(String tableSpace) {
+    public void setTableSpace(final String tableSpace) {
         this.tableSpace = tableSpace;
     }
 }

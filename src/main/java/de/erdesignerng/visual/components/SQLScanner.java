@@ -33,7 +33,7 @@ class SQLScanner {
 		public Token() {
 		}
 
-		public Token(int id, int start, int end) {
+		public Token(final int id, final int start, final int end) {
 			this.id = id;
 			this.start = start;
 			this.end = end;
@@ -92,7 +92,7 @@ class SQLScanner {
 	 *
 	 * @param state The state.
 	 */
-	private boolean isStateActive(int state) {
+	private boolean isStateActive(final int state) {
 		return state >= 0 && state <= 5;
 	}
 
@@ -101,9 +101,9 @@ class SQLScanner {
 	 *
 	 * @param keywords The array of keywords.
 	 */
-	public void setKeywords(String[] keywords) {
+	public void setKeywords(final String[] keywords) {
 		keywordHashtable = new Hashtable(keywords.length);
-        for (String keyword : keywords) keywordHashtable.put(keyword, True);
+        for (final String keyword : keywords) keywordHashtable.put(keyword, True);
 	}
 
 	/**
@@ -111,9 +111,9 @@ class SQLScanner {
 	 *
 	 * @param functions The array of functions.
 	 */
-	public void setBuiltinFunctions(String[] functions) {
+	public void setBuiltinFunctions(final String[] functions) {
 		builtinFunctionsHashtable = new Hashtable(functions.length);
-        for (String function : functions) builtinFunctionsHashtable.put(function, True);
+        for (final String function : functions) builtinFunctionsHashtable.put(function, True);
 	}
 
 	/**
@@ -142,7 +142,7 @@ class SQLScanner {
 	 * Sets the interval to be scanned (from <code>start</code> to
 	 * <code>end</code> including).
 	 */
-	public void setInterval(int start, int end) {
+	public void setInterval(final int start, final int end) {
 		this.pos = start;
 		this.endPos = end;
 	}
@@ -150,11 +150,11 @@ class SQLScanner {
 	/**
 	 * Loads a content of the document <code>value</code>.
 	 */
-	public void setDocument(Document value) {
+	public void setDocument(final Document value) {
 		textLength = value.getLength();
 		try {
 			str = value.getText(0, textLength);
-		} catch (BadLocationException e) {
+		} catch (final BadLocationException e) {
 		}
 	}
 
@@ -164,7 +164,7 @@ class SQLScanner {
 	 * @param tokenId	The token currently being scanned.
 	 * @param tokenStart Offset of the first char of that token.
 	 */
-	public void setState(int tokenId, int tokenStart) {
+	public void setState(final int tokenId, final int tokenStart) {
 		this.state = tokenId;
 		this.token.id = isStateActive(tokenId) ? tokenId : TOKEN_NONE;
 		this.token.start = tokenStart;
@@ -212,11 +212,11 @@ class SQLScanner {
 	// current token being scanned:
 	private final Token token = new Token();
 
-	private boolean isKeyword(String word) {
+	private boolean isKeyword(final String word) {
 		return keywordHashtable.containsKey(word.toUpperCase());
 	}
 
-	private boolean isBuiltinFunction(String word) {
+	private boolean isBuiltinFunction(final String word) {
 		return builtinFunctionsHashtable.containsKey(word.toUpperCase());
 	}
 
@@ -313,7 +313,7 @@ class SQLScanner {
 							|| lookahead == '$' || lookahead == '#')
 						next();
 					else {
-						String word = str.substring(token.start, pos); // substring
+						final String word = str.substring(token.start, pos); // substring
 						// from
 						// start to
 						// pos-1

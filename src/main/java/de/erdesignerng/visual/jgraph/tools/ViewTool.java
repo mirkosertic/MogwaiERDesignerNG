@@ -29,17 +29,17 @@ import java.awt.geom.Point2D;
  */
 public class ViewTool extends BaseTool {
 
-    public ViewTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
+    public ViewTool(final GenericModelEditor aEditor, final ERDesignerGraph aGraph) {
         super(aEditor, aGraph);
     }
 
     @Override
-    public boolean isForceMarqueeEvent(MouseEvent event) {
+    public boolean isForceMarqueeEvent(final MouseEvent event) {
         return true;
     }
 
     @Override
-    public boolean startCreateNew(MouseEvent e) {
+    public boolean startCreateNew(final MouseEvent e) {
         graph.commandNewView(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())));
         return true;
     }

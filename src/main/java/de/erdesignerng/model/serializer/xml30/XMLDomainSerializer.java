@@ -31,8 +31,8 @@ import org.w3c.dom.NodeList;
 public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.XMLDomainSerializer {
 
 	@Override
-	public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
-		Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
+	public void serialize(final Domain aDomain, final Document aDocument, final Element aRootElement) {
+		final Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
 
 		// Basisdaten des Modelelementes speichern
 		serializeProperties(aDocument, theDomainElement, aDomain);
@@ -48,12 +48,12 @@ public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.
 	}
 
 	@Override
-	public void deserialize(Model aModel, Document aDocument) {
-		NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
+	public void deserialize(final Model aModel, final Document aDocument) {
+		final NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
 		for (int i = 0; i < theElements.getLength(); i++) {
-			Element theDomainElement = (Element) theElements.item(i);
+			final Element theDomainElement = (Element) theElements.item(i);
 
-			Domain theDomain = new Domain();
+			final Domain theDomain = new Domain();
 			deserializeProperties(theDomainElement, theDomain);
 			theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theDomainElement.getAttribute(DATATYPE)));
 
@@ -62,7 +62,7 @@ public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.
 			theDomain.setFraction(safeInteger(theDomainElement.getAttribute(FRACTION)));
 			theDomain.setScale(safeInteger(theDomainElement.getAttribute(SCALE)));
 
-			String theNullable = theDomainElement.getAttribute(NULLABLE);
+			final String theNullable = theDomainElement.getAttribute(NULLABLE);
 			if (!StringUtils.isEmpty(theNullable)) {
 				theDomain.setNullable(Boolean.parseBoolean(theNullable));
 			}

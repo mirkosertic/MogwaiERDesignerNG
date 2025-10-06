@@ -54,7 +54,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
      * @return true if yes, else false
      */
     public boolean isForeignKey() {
-        ModelItem theOwner = getOwner();
+        final ModelItem theOwner = getOwner();
 
         if ((theOwner != null) && (theOwner instanceof Table)) {
             return ((Table) theOwner).isForeignKey((Attribute<Table>) this);
@@ -69,7 +69,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
      * @return true if yes, else false
      */
     public boolean isPrimaryKey() {
-        ModelItem theOwner = getOwner();
+        final ModelItem theOwner = getOwner();
 
         if ((theOwner != null) && (theOwner instanceof Table)) {
             return ((Table) theOwner).isPrimaryKey((Attribute<Table>) this);
@@ -82,13 +82,13 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
         return defaultValue;
     }
 
-    public void setDefaultValue(String defaultValue) {
+    public void setDefaultValue(final String defaultValue) {
         synchronized (this) {
             this.defaultValue = defaultValue;
         }
     }
 
-    public void setNullable(boolean nullable) {
+    public void setNullable(final boolean nullable) {
         synchronized (this) {
             this.nullable = nullable;
         }
@@ -98,7 +98,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
         return datatype;
     }
 
-    public void setDatatype(DataType aDataType) {
+    public void setDatatype(final DataType aDataType) {
         synchronized (this) {
             if (aDataType != null && aDataType != datatype) {
                 // Set the default values
@@ -120,7 +120,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
         return fraction;
     }
 
-    public void setFraction(Integer fraction) {
+    public void setFraction(final Integer fraction) {
         synchronized (this) {
             this.fraction = fraction;
         }
@@ -146,7 +146,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(final Integer size) {
         synchronized (this) {
             this.size = size;
         }
@@ -154,7 +154,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
 
     @Override
     public Attribute<T> clone() {
-        Attribute<T> theAttribute = new Attribute<>();
+        final Attribute<T> theAttribute = new Attribute<>();
 
         theAttribute.setSystemId(getSystemId());
         theAttribute.setOwner(getOwner());
@@ -172,7 +172,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
     }
 
     @Override
-    public void restoreFrom(Attribute<T> aValue) {
+    public void restoreFrom(final Attribute<T> aValue) {
         setName(aValue.getName());
         setDatatype(aValue.getDatatype());
         setSize(aValue.getSize());
@@ -185,7 +185,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
         setOwner(aValue.getOwner());
     }
 
-    public boolean isModified(Attribute<T> aAttribute, boolean aUseConcreteDataType) {
+    public boolean isModified(final Attribute<T> aAttribute, final boolean aUseConcreteDataType) {
 
         if (!getName().equals(aAttribute.getName())) {
             return true;
@@ -250,7 +250,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
     /**
      * @param extra the extra to set
      */
-    public void setExtra(String extra) {
+    public void setExtra(final String extra) {
         synchronized (this) {
             this.extra = extra;
         }
@@ -262,7 +262,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
      * @param aAttribute the new attribute
      * @return true if it was renamed, else false
      */
-    public boolean isRenamed(Attribute<T> aAttribute) {
+    public boolean isRenamed(final Attribute<T> aAttribute) {
         return !getName().equals(aAttribute.getName());
     }
 

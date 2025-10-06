@@ -53,13 +53,13 @@ public class PreferencesPanel extends DefaultPanel implements
 
     private void initialize() {
 
-        String theColDef = "2dlu,p,2dlu,p:grow,2dlu,20dlu,2";
-        String theRowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,50dlu";
+        final String theColDef = "2dlu,p,2dlu,p:grow,2dlu,20dlu,2";
+        final String theRowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,50dlu";
 
-        FormLayout theLayout = new FormLayout(theColDef, theRowDef);
+        final FormLayout theLayout = new FormLayout(theColDef, theRowDef);
         setLayout(theLayout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(new DefaultLabel(ERDesignerBundle.EDITORGRIDSIZE), cons.xy(2, 2));
         add(gridSize, cons.xywh(4, 2, 3, 1));
@@ -70,9 +70,9 @@ public class PreferencesPanel extends DefaultPanel implements
                 cons.xy(2, 4));
         add(automaticRelationAttributePattern, cons.xywh(4, 4, 3, 1));
 
-        DefaultComboBoxModel theDefaultOnUpdateModel = new DefaultComboBoxModel();
-        DefaultComboBoxModel theDefaultOnDeleteModel = new DefaultComboBoxModel();
-        for (CascadeType theType : CascadeType.values()) {
+        final DefaultComboBoxModel theDefaultOnUpdateModel = new DefaultComboBoxModel();
+        final DefaultComboBoxModel theDefaultOnDeleteModel = new DefaultComboBoxModel();
+        for (final CascadeType theType : CascadeType.values()) {
             theDefaultOnUpdateModel.addElement(theType);
             theDefaultOnDeleteModel.addElement(theType);
         }

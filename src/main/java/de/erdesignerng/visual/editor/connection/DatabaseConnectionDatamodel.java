@@ -29,7 +29,7 @@ public class DatabaseConnectionDatamodel {
 		return dialect;
 	}
 
-	public void setDialect(Dialect aDialect) {
+	public void setDialect(final Dialect aDialect) {
 		dialect = aDialect;
 	}
 
@@ -37,7 +37,7 @@ public class DatabaseConnectionDatamodel {
 		return driver;
 	}
 
-	public void setDriver(String driver) {
+	public void setDriver(final String driver) {
 		this.driver = driver;
 	}
 
@@ -45,7 +45,7 @@ public class DatabaseConnectionDatamodel {
 		return url;
 	}
 
-	public void setUrl(String url) {
+	public void setUrl(final String url) {
 		this.url = url;
 	}
 
@@ -53,7 +53,7 @@ public class DatabaseConnectionDatamodel {
 		return user;
 	}
 
-	public void setUser(String user) {
+	public void setUser(final String user) {
 		this.user = user;
 	}
 
@@ -61,7 +61,7 @@ public class DatabaseConnectionDatamodel {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
@@ -69,7 +69,7 @@ public class DatabaseConnectionDatamodel {
 		return alias;
 	}
 
-	public void setAlias(String alias) {
+	public void setAlias(final String alias) {
 		this.alias = alias;
 	}
 
@@ -77,7 +77,7 @@ public class DatabaseConnectionDatamodel {
 		return promptForPassword;
 	}
 
-	public void setPromptForPassword(boolean promptForPassword) {
+	public void setPromptForPassword(final boolean promptForPassword) {
 		this.promptForPassword = promptForPassword;
 	}
 

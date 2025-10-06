@@ -35,7 +35,7 @@ public abstract class BaseTool extends BasicMarqueeHandler {
 
     protected final GenericModelEditor editor;
 
-    public BaseTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
+    public BaseTool(final GenericModelEditor aEditor, final ERDesignerGraph aGraph) {
         graph = aGraph;
         editor = aEditor;
     }
@@ -44,7 +44,7 @@ public abstract class BaseTool extends BasicMarqueeHandler {
         return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
     }
 
-    public boolean startCreateNew(MouseEvent e) {
+    public boolean startCreateNew(final MouseEvent e) {
         return true;
     }
 }

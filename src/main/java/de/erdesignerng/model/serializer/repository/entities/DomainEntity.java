@@ -45,7 +45,7 @@ public class DomainEntity extends ModelEntity {
 	 * @param datatype
 	 *			the datatype to set
 	 */
-	public void setDatatype(String datatype) {
+	public void setDatatype(final String datatype) {
 		this.datatype = datatype;
 	}
 
@@ -60,7 +60,7 @@ public class DomainEntity extends ModelEntity {
 	 * @param size
 	 *			the size to set
 	 */
-	public void setSize(int size) {
+	public void setSize(final int size) {
 		this.size = size;
 	}
 
@@ -75,7 +75,7 @@ public class DomainEntity extends ModelEntity {
 	 * @param fraction
 	 *			the fraction to set
 	 */
-	public void setFraction(int fraction) {
+	public void setFraction(final int fraction) {
 		this.fraction = fraction;
 	}
 
@@ -90,7 +90,7 @@ public class DomainEntity extends ModelEntity {
 	 * @param scale
 	 *			the scale to set
 	 */
-	public void setScale(int scale) {
+	public void setScale(final int scale) {
 		this.scale = scale;
 	}
 
@@ -98,7 +98,7 @@ public class DomainEntity extends ModelEntity {
 		return nullable;
 	}
 
-	public void setNullable(boolean nullable) {
+	public void setNullable(final boolean nullable) {
 		this.nullable = nullable;
 	}
 }

@@ -65,13 +65,13 @@ public class DockingHelper extends DockingWindowAdapter implements
         theViewMap.addView(1, theViews[1]);
         theViewMap.addView(2, theViews[2]);
 
-        Runnable theRunnable = () -> {
+        final Runnable theRunnable = () -> {
 
             Thread.currentThread().setContextClassLoader(
                     DockingHelper.class.getClassLoader());
 
             rootWindow = DockingUtil.createRootWindow(theViewMap, true);
-            byte[] windowLayout = ApplicationPreferences.getInstance()
+            final byte[] windowLayout = ApplicationPreferences.getInstance()
                     .getWindowLayout();
             boolean layoutRestored = false;
             if (windowLayout != null && windowLayout.length > 0) {
@@ -80,15 +80,15 @@ public class DockingHelper extends DockingWindowAdapter implements
                             new ByteArrayInputStream(windowLayout)));
                     layoutRestored = true;
                     LOGGER.info("Workbench layout restored");
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LOGGER.error("Failed to restore window state", e);
                 }
             }
 
             if (!layoutRestored) {
-                SplitWindow theRightWindow = new SplitWindow(false, 0.8f,
+                final SplitWindow theRightWindow = new SplitWindow(false, 0.8f,
                         theViews[1], theViews[2]);
-                SplitWindow theSplitWindow = new SplitWindow(true, 0.8f,
+                final SplitWindow theSplitWindow = new SplitWindow(true, 0.8f,
                         theViews[0], theRightWindow);
                 rootWindow.setWindow(theSplitWindow);
             }
@@ -117,8 +117,8 @@ public class DockingHelper extends DockingWindowAdapter implements
     }
 
     public void saveLayoutToPreferences() {
-        ByteArrayOutputStream theBos = new ByteArrayOutputStream();
-        ObjectOutputStream theOs;
+        final ByteArrayOutputStream theBos = new ByteArrayOutputStream();
+        final ObjectOutputStream theOs;
         try {
             theOs = new ObjectOutputStream(theBos);
             rootWindow.write(theOs);
@@ -128,7 +128,7 @@ public class DockingHelper extends DockingWindowAdapter implements
                     theBos.toByteArray());
 
             LOGGER.info("Workbench layout saved. ");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.error("Failed to store window state", e);
         }
     }
@@ -139,12 +139,12 @@ public class DockingHelper extends DockingWindowAdapter implements
     }
 
     @Override
-    public void windowRestored(DockingWindow aWindow) {
+    public void windowRestored(final DockingWindow aWindow) {
         UIInitializer.getInstance().initialize(rootWindow);
     }
 
     @Override
-    public void windowAdded(DockingWindow arg0, DockingWindow arg1) {
+    public void windowAdded(final DockingWindow arg0, final DockingWindow arg1) {
         UIInitializer.getInstance().initialize(rootWindow);
     }
 }

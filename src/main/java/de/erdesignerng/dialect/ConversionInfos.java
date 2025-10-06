@@ -35,7 +35,7 @@ public class ConversionInfos {
 		return targetDialect;
 	}
 
-	public void setTargetDialect(Dialect targetDialect) {
+	public void setTargetDialect(final Dialect targetDialect) {
 		this.targetDialect = targetDialect;
 	}
 

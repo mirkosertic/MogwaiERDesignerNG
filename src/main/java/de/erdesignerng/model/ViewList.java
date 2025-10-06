@@ -34,8 +34,8 @@ public class ViewList extends ModelItemVector<View> {
 	 *			the schema of the table
 	 * @return the table or null if nothing was found
 	 */
-	public View findByNameAndSchema(String aName, String aSchemaName) {
-		for (View theElement : this) {
+	public View findByNameAndSchema(final String aName, final String aSchemaName) {
+		for (final View theElement : this) {
 			if (aName.equals(theElement.getName()) && aSchemaName.equals(theElement.getSchema())) {
 				return theElement;
 			}

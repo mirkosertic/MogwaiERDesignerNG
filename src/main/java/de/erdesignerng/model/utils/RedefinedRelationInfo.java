@@ -23,7 +23,7 @@ package de.erdesignerng.model.utils;
  */
 public class RedefinedRelationInfo extends RedefinedInfo {
 
-	public RedefinedRelationInfo(String aWhat) {
+	public RedefinedRelationInfo(final String aWhat) {
 		super(aWhat);
 	}
 }

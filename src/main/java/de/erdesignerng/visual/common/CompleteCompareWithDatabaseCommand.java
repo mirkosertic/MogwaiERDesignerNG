@@ -47,7 +47,7 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
 
         final Model theModel = component.getModel();
 
-        ReverseEngineerEditor theEditor = new ReverseEngineerEditor(
+        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(
                 theModel, getDetailComponent());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
@@ -66,7 +66,7 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
                 theDatabaseModel.setDialect(theModel.getDialect());
                 theDatabaseModel.getProperties().copyFrom(theModel);
 
-                LongRunningTask<Model> theTask = new LongRunningTask<Model>(
+                final LongRunningTask<Model> theTask = new LongRunningTask<>(
                         getWorldConnector()) {
 
                     @Override
@@ -76,8 +76,8 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
                                 theStrategy.getTablesForSchemas(theConnection,
                                         theOptions.getSchemaEntries()));
 
-                        ReverseEngineeringNotifier theNotifier = (aResourceKey, aValues) -> {
-                            String theMessage = MessageFormat.format(
+                        final ReverseEngineeringNotifier theNotifier = (aResourceKey, aValues) -> {
+                            final String theMessage = MessageFormat.format(
                                     component.getResourceHelper().getText(
                                             aResourceKey),
                                     (Object[]) aValues);
@@ -93,12 +93,12 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
                     }
 
                     @Override
-                    public void handleResult(Model aResultModel) {
+                    public void handleResult(final Model aResultModel) {
                         component
                                 .addConnectionToConnectionHistory(theDatabaseModel
                                         .createConnectionHistoryEntry());
 
-                        CompleteCompareEditor theCompare = new CompleteCompareEditor(
+                        final CompleteCompareEditor theCompare = new CompleteCompareEditor(
                                 getDetailComponent(), theModel, aResultModel,
                                 ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
                         theCompare.showModal();
@@ -113,7 +113,7 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
                 };
                 theTask.start();
 
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

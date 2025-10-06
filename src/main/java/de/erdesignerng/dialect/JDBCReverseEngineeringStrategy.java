@@ -35,7 +35,6 @@ import de.erdesignerng.model.RelationList;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.TableType;
 import de.erdesignerng.model.View;
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.SQLUtils;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
@@ -65,7 +64,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	private static final Logger LOGGER = Logger.getLogger(JDBCReverseEngineeringStrategy.class);
 	protected final T dialect;
 
-	protected JDBCReverseEngineeringStrategy(T aDialect) {
+	protected JDBCReverseEngineeringStrategy(final T aDialect) {
 		dialect = aDialect;
 	}
 
@@ -77,28 +76,23 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * @param aValue the JDBC type
 	 * @return the CascadeType
 	 */
-	protected CascadeType getCascadeType(int aValue) {
-		switch (aValue) {
-			case DatabaseMetaData.importedKeyNoAction:
-				return CascadeType.NOTHING;
-			case DatabaseMetaData.importedKeySetNull:
-				return CascadeType.SETNULL;
-			case DatabaseMetaData.importedKeyCascade:
-				return CascadeType.CASCADE;
-			case DatabaseMetaData.importedKeyRestrict:
-				return CascadeType.RESTRICT;
-			default:
-				return CascadeType.CASCADE;
-		}
+	protected CascadeType getCascadeType(final int aValue) {
+        return switch (aValue) {
+            case DatabaseMetaData.importedKeyNoAction -> CascadeType.NOTHING;
+            case DatabaseMetaData.importedKeySetNull -> CascadeType.SETNULL;
+            case DatabaseMetaData.importedKeyCascade -> CascadeType.CASCADE;
+            case DatabaseMetaData.importedKeyRestrict -> CascadeType.RESTRICT;
+            default -> CascadeType.CASCADE;
+        };
 	}
 
-	protected void reverseEngineerAttribute(Attribute<Table> aAttribute, TableEntry aTable, Connection aConnection) throws SQLException {
+	protected void reverseEngineerAttribute(final Attribute<Table> aAttribute, final TableEntry aTable, final Connection aConnection) throws SQLException {
 	}
 
-	protected void reverseEngineerDomain(Model aModel, Domain aDomain, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, Connection aConnection) {
+	protected void reverseEngineerDomain(final Model aModel, final Domain aDomain, final ReverseEngineeringOptions aOptions, final ReverseEngineeringNotifier aNotifier, final Connection aConnection) {
 	}
 
-	protected void reverseEngineerCustomType(Model aModel, CustomType aCustomType, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, Connection aConnection) {
+	protected void reverseEngineerCustomType(final Model aModel, final CustomType aCustomType, final ReverseEngineeringOptions aOptions, final ReverseEngineeringNotifier aNotifier, final Connection aConnection) {
 		throw new UnsupportedOperationException("Userdefined datatypes (UDTs) not supported for " + aModel.getDialect().getUniqueName() + " databases.");
 	}
 
@@ -111,7 +105,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * @return the sql statement
 	 * @throws SQLException	is thrown in case of an exception
 	 */
-	protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException {
+	protected String reverseEngineerViewSQL(final TableEntry aViewEntry, final Connection aConnection, final View aView) throws SQLException {
 		return null;
 	}
 
@@ -126,22 +120,22 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * @throws SQLException	is thrown in case of an error
 	 * @throws ReverseEngineeringException is thrown in case of an error
 	 */
-	protected void reverseEngineerView(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aViewEntry, Connection aConnection) throws SQLException, ReverseEngineeringException {
+	protected void reverseEngineerView(final Model aModel, final ReverseEngineeringOptions aOptions, final ReverseEngineeringNotifier aNotifier, final TableEntry aViewEntry, final Connection aConnection) throws SQLException, ReverseEngineeringException {
 
 		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aViewEntry.getTableName());
 
-		DatabaseMetaData theMetaData = aConnection.getMetaData();
+		final DatabaseMetaData theMetaData = aConnection.getMetaData();
 
-		String theTablePattern = getEscapedPattern(theMetaData, aViewEntry.getTableName());
-		String theSchemaPattern = getEscapedPattern(theMetaData, aViewEntry.getSchemaName());
+		final String theTablePattern = getEscapedPattern(theMetaData, aViewEntry.getTableName());
+		final String theSchemaPattern = getEscapedPattern(theMetaData, aViewEntry.getSchemaName());
 
-		ResultSet theViewsResultSet = theMetaData.getTables(aViewEntry.getCatalogName(), theSchemaPattern, theTablePattern, new String[]{aViewEntry.getTableType().toString()});
+		final ResultSet theViewsResultSet = theMetaData.getTables(aViewEntry.getCatalogName(), theSchemaPattern, theTablePattern, new String[]{aViewEntry.getTableType().toString()});
 
 		while (theViewsResultSet.next()) {
 
-			String theViewRemarks = theViewsResultSet.getString("REMARKS");
+			final String theViewRemarks = theViewsResultSet.getString("REMARKS");
 
-			View theView = new View();
+			final View theView = new View();
 
 			theView.setName(dialect.getCastType().cast(aViewEntry.getTableName()));
 			theView.setOriginalName(aViewEntry.getTableName());
@@ -156,11 +150,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 				theView.setComment(theViewRemarks);
 			}
 
-			String theStatement = reverseEngineerViewSQL(aViewEntry, aConnection, theView);
+			final String theStatement = reverseEngineerViewSQL(aViewEntry, aConnection, theView);
 
 			try {
 				SQLUtils.updateViewAttributesFromSQL(theView, theStatement);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.warn("View " + theView.getName() + " has a strange SQL : " + theStatement);
 			}
 
@@ -169,7 +163,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			// We are done here
 			try {
 				aModel.addView(theView);
-			} catch (VetoException | ElementInvalidNameException | ElementAlreadyExistsException e) {
+			} catch (final ElementInvalidNameException | ElementAlreadyExistsException e) {
 				throw new ReverseEngineeringException(e.getMessage(), e);
 			}
 
@@ -178,8 +172,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		theViewsResultSet.close();
 	}
 
-	protected String getEscapedPattern(DatabaseMetaData aMetaData, String aValue) throws SQLException {
-		String thePrefix = aMetaData.getSearchStringEscape();
+	protected String getEscapedPattern(final DatabaseMetaData aMetaData, String aValue) throws SQLException {
+		final String thePrefix = aMetaData.getSearchStringEscape();
 		if (!StringUtils.isEmpty(thePrefix) && !StringUtils.isEmpty(aValue)) {
 			aValue = aValue.replace("_", thePrefix + "_");
 			aValue = aValue.replace("%", thePrefix + "%");
@@ -202,22 +196,22 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * @throws SQLException	is thrown in case of an error
 	 * @throws ReverseEngineeringException is thrown in case of an error
 	 */
-	protected final  Map<String, ModelProperties> reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException, ReverseEngineeringException {
+	protected final  Map<String, ModelProperties> reverseEngineerTable(final Model aModel, final ReverseEngineeringOptions aOptions, final ReverseEngineeringNotifier aNotifier, final TableEntry aTableEntry, final Connection aConnection) throws SQLException, ReverseEngineeringException {
 		Map<String, ModelProperties> theExistingModelItemProperties = null;
 		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aTableEntry.getTableName());
 
-		DatabaseMetaData theMetaData = aConnection.getMetaData();
+		final DatabaseMetaData theMetaData = aConnection.getMetaData();
 
-		String theTablePattern = getEscapedPattern(theMetaData, aTableEntry.getTableName());
-		String theSchemaPattern = getEscapedPattern(theMetaData, aTableEntry.getSchemaName());
+		final String theTablePattern = getEscapedPattern(theMetaData, aTableEntry.getTableName());
+		final String theSchemaPattern = getEscapedPattern(theMetaData, aTableEntry.getSchemaName());
 
-		ResultSet theTablesResultSet = theMetaData.getTables(aTableEntry.getCatalogName(), theSchemaPattern, theTablePattern, new String[]{aTableEntry.getTableType().toString()});
+		final ResultSet theTablesResultSet = theMetaData.getTables(aTableEntry.getCatalogName(), theSchemaPattern, theTablePattern, new String[]{aTableEntry.getTableType().toString()});
 
 		while (theTablesResultSet.next()) {
 
-			String theTableRemarks = theTablesResultSet.getString("REMARKS");
+			final String theTableRemarks = theTablesResultSet.getString("REMARKS");
 
-			Table theNewTable = new Table();
+			final Table theNewTable = new Table();
 
 			theNewTable.setName(dialect.getCastType().cast(aTableEntry.getTableName()));
 			theNewTable.setOriginalName(aTableEntry.getTableName());
@@ -233,7 +227,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			}
 
 			// Reverse engineer attributes
-			ResultSet theColumnsResultSet = theMetaData.getColumns(aTableEntry.getCatalogName(), theSchemaPattern, theTablePattern, null);
+			final ResultSet theColumnsResultSet = theMetaData.getColumns(aTableEntry.getCatalogName(), theSchemaPattern, theTablePattern, null);
 			while (theColumnsResultSet.next()) {
 
 				String theColumnName = null;
@@ -247,32 +241,32 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 				try {
 					theColumnName = theColumnsResultSet.getString("COLUMN_NAME");
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 				}
 
 				try {
 					theTypeName = theColumnsResultSet.getString("TYPE_NAME");
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 				}
 
 				try {
 					theSize = theColumnsResultSet.getInt("COLUMN_SIZE");
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 				}
 
 				try {
 					theFraction = theColumnsResultSet.getInt("DECIMAL_DIGITS");
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 				}
 
 				try {
 					theRadix = theColumnsResultSet.getInt("NUM_PREC_RADIX");
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 				}
 
 				try {
 					theNullable = theColumnsResultSet.getInt("NULLABLE");
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 				}
 
 				try {
@@ -280,15 +274,15 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 					if (!StringUtils.isEmpty(theDefaultValue)) {
 						theDefaultValue = theDefaultValue.trim();
 					}
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 				}
 
 				try {
 					theColumnRemarks = theColumnsResultSet.getString("REMARKS");
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 				}
 
-				Attribute<Table> theAttribute = new Attribute<>();
+				final Attribute<Table> theAttribute = new Attribute<>();
 
 				theAttribute.setName(dialect.getCastType().cast(theColumnName));
 				if (!StringUtils.isEmpty(theColumnRemarks)) {
@@ -296,7 +290,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 				}
 
 				// Search for the datatype in the domains, the dialect specific and the user defined datatypes
-				DataType theDataType = aModel.getAvailableDataTypes().findByName(dialect.convertTypeNameToRealTypeName(theTypeName));
+				final DataType theDataType = aModel.getAvailableDataTypes().findByName(dialect.convertTypeNameToRealTypeName(theTypeName));
 
 				if (theDataType == null) {
 					throw new ReverseEngineeringException("Unknown data type " + theTypeName + " for " + aTableEntry.getTableName() + "." + theColumnName);
@@ -326,7 +320,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 				try {
 					theNewTable.addAttribute(aModel, theAttribute);
-				} catch (ElementAlreadyExistsException | ElementInvalidNameException e) {
+				} catch (final ElementAlreadyExistsException | ElementInvalidNameException e) {
 					throw new ReverseEngineeringException(e.getMessage(), e);
 				}
 			}
@@ -338,20 +332,20 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			// Reverse engineer indexes
 			try {
 				reverseEngineerIndexes(aModel, aTableEntry, theMetaData, theNewTable, aNotifier);
-			} catch (SQLException e) {
+			} catch (final SQLException e) {
 				// if there is an sql exception, just ignore it
 			}
 
 			// We are done here
 			try {
 				aModel.addTable(theNewTable);
-			} catch (ElementAlreadyExistsException e1) {
+			} catch (final ElementAlreadyExistsException e1) {
 				//this manages the reverse engineering into an existing model and cares only about the table names of the model that conflict with the new table names from the connection
 				//TODO: also care about tables that are no longer part of the connection, but still exist in the local model. E.g. show a dialog and ask the user what to do (delete/keep)
 				try {
 					//buffer the properties (e.g. position in model) of the existing table and its relations (e.g. the offset of the title) that are going to be replaced
-					Table theExistingTable = aModel.getTables().findByName(theNewTable.getName());
-					RelationList theExistingRelations = aModel.getRelations().getAllRelataionsOf(theExistingTable);
+					final Table theExistingTable = aModel.getTables().findByName(theNewTable.getName());
+					final RelationList theExistingRelations = aModel.getRelations().getAllRelataionsOf(theExistingTable);
 
 					if (theExistingModelItemProperties == null) {
 						theExistingModelItemProperties = new HashMap<>();
@@ -359,7 +353,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 					//store former layouting data for the table and its relations in the old graph
 					theExistingModelItemProperties.put(theExistingTable.getName(), theExistingTable.getProperties());
-					for (Relation anExistingRelation : theExistingRelations) {
+					for (final Relation anExistingRelation : theExistingRelations) {
 						theExistingModelItemProperties.put(anExistingRelation.getName(), anExistingRelation.getProperties());
 					}
 
@@ -368,10 +362,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 					//add the new table without relations
 					aModel.addTable(theNewTable);
-				} catch (ElementAlreadyExistsException | ElementInvalidNameException | VetoException e2) {
+				} catch (final ElementAlreadyExistsException | ElementInvalidNameException e2) {
 					throw new ReverseEngineeringException(e2.getMessage());
 				}
-			} catch (ElementInvalidNameException | VetoException e3) {
+			} catch (final ElementInvalidNameException e3) {
 				 throw new ReverseEngineeringException(e3.getMessage());
 			}
 		}
@@ -381,15 +375,15 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		return theExistingModelItemProperties;
 	}
 
-	protected void reverseEngineerPrimaryKey(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData, Table aTable) throws SQLException, ReverseEngineeringException {
+	protected void reverseEngineerPrimaryKey(final Model aModel, final TableEntry aTableEntry, final DatabaseMetaData aMetaData, final Table aTable) throws SQLException, ReverseEngineeringException {
 
-		ResultSet thePrimaryKeyResultSet = aMetaData.getPrimaryKeys(aTableEntry.getCatalogName(), aTableEntry.getSchemaName(), aTableEntry.getTableName());
+		final ResultSet thePrimaryKeyResultSet = aMetaData.getPrimaryKeys(aTableEntry.getCatalogName(), aTableEntry.getSchemaName(), aTableEntry.getTableName());
 		Index thePrimaryKeyIndex = null;
 
 		while (thePrimaryKeyResultSet.next()) {
 
-			String thePKName = thePrimaryKeyResultSet.getString("PK_NAME");
-			String theColumnName = thePrimaryKeyResultSet.getString("COLUMN_NAME");
+			final String thePKName = thePrimaryKeyResultSet.getString("PK_NAME");
+			final String theColumnName = thePrimaryKeyResultSet.getString("COLUMN_NAME");
 
 			if (thePrimaryKeyIndex == null) {
 				thePrimaryKeyIndex = new Index();
@@ -403,19 +397,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 				try {
 					aTable.addIndex(aModel, thePrimaryKeyIndex);
-				} catch (ElementAlreadyExistsException | ElementInvalidNameException e) {
+				} catch (final ElementAlreadyExistsException | ElementInvalidNameException e) {
 					throw new ReverseEngineeringException(e.getMessage(), e);
 				}
 			}
 
-			Attribute<Table> theIndexAttribute = aTable.getAttributes().findByName(dialect.getCastType().cast(theColumnName));
+			final Attribute<Table> theIndexAttribute = aTable.getAttributes().findByName(dialect.getCastType().cast(theColumnName));
 			if (theIndexAttribute == null) {
 				throw new ReverseEngineeringException("Cannot find attribute " + theColumnName + " in table " + aTable.getName());
 			}
 
 			try {
 				thePrimaryKeyIndex.getExpressions().addExpressionFor(theIndexAttribute);
-			} catch (ElementAlreadyExistsException e) {
+			} catch (final ElementAlreadyExistsException e) {
 				throw new ReverseEngineeringException("Error adding index attribute", e);
 			}
 
@@ -424,22 +418,22 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		thePrimaryKeyResultSet.close();
 	}
 
-	protected String convertIndexNameFor(Table aTable, String aIndexName) {
+	protected String convertIndexNameFor(final Table aTable, final String aIndexName) {
 		return aIndexName;
 	}
 
-	protected void reverseEngineerIndexes(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData, Table aTable, ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
+	protected void reverseEngineerIndexes(final Model aModel, final TableEntry aTableEntry, final DatabaseMetaData aMetaData, final Table aTable, final ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
 
-		ResultSet theIndexResults = aMetaData.getIndexInfo(aTableEntry.getCatalogName(), aTableEntry.getSchemaName(), aTableEntry.getTableName(), false, true);
+		final ResultSet theIndexResults = aMetaData.getIndexInfo(aTableEntry.getCatalogName(), aTableEntry.getSchemaName(), aTableEntry.getTableName(), false, true);
 		Index theIndex = null;
 
 		while (theIndexResults.next()) {
 
-			String theIndexName = convertIndexNameFor(aTable, theIndexResults.getString("INDEX_NAME"));
+			final String theIndexName = convertIndexNameFor(aTable, theIndexResults.getString("INDEX_NAME"));
 
 			if ((theIndexName != null) && ((theIndex == null) || (!theIndex.getOriginalName().equals(theIndexName)))) {
 
-				String theNewIndexName = dialect.getCastType().cast(
+				final String theNewIndexName = dialect.getCastType().cast(
 						theIndexName);
 
 				if (aTable.getIndexes().findByName(theNewIndexName) == null) {
@@ -447,7 +441,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 					theIndex.setName(theNewIndexName);
 					theIndex.setOriginalName(theIndexName);
 
-					boolean isNonUnique = theIndexResults.getBoolean("NON_UNIQUE");
+					final boolean isNonUnique = theIndexResults.getBoolean("NON_UNIQUE");
 					if (isNonUnique) {
 						theIndex.setIndexType(IndexType.NONUNIQUE);
 					} else {
@@ -458,7 +452,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 					try {
 						aTable.addIndex(aModel, theIndex);
-					} catch (ElementAlreadyExistsException | ElementInvalidNameException e) {
+					} catch (final ElementAlreadyExistsException | ElementInvalidNameException e) {
 						throw new ReverseEngineeringException("Cannot add index " + theIndexName + " in table " + aTable.getName() + " : " + e.getMessage(), e);
 					}
 				} else {
@@ -467,10 +461,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			}
 
 			if (theIndex != null) {
-				short aPosition = theIndexResults.getShort("ORDINAL_POSITION");
+				final short aPosition = theIndexResults.getShort("ORDINAL_POSITION");
 
-				String theColumnName = theIndexResults.getString("COLUMN_NAME");
-				String theASCorDESC = theIndexResults.getString("ASC_OR_DESC");
+				final String theColumnName = theIndexResults.getString("COLUMN_NAME");
+				final String theASCorDESC = theIndexResults.getString("ASC_OR_DESC");
 
 				reverseEngineerIndexAttribute(aMetaData, aTableEntry, aTable, aNotifier, theIndex, theColumnName, aPosition, theASCorDESC);
 			}
@@ -479,10 +473,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		theIndexResults.close();
 
 		// Remove duplicate unique indexes
-		Index thePrimaryKey = aTable.getPrimarykey();
+		final Index thePrimaryKey = aTable.getPrimarykey();
 		if (thePrimaryKey != null) {
-			Set<Index> theDuplicateIndexes = new HashSet<>();
-			for (Index theInd : aTable.getIndexes()) {
+			final Set<Index> theDuplicateIndexes = new HashSet<>();
+			for (final Index theInd : aTable.getIndexes()) {
 				if ((theInd.getIndexType() == IndexType.UNIQUE) && (thePrimaryKey.getExpressions().containsAllExpressions(theInd.getExpressions()))) {
 					theDuplicateIndexes.add(theInd);
 				}
@@ -507,8 +501,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * @throws SQLException	in case of an error
 	 * @throws ReverseEngineeringException in case of an error
 	 */
-	protected void reverseEngineerIndexAttribute(DatabaseMetaData aMetaData, TableEntry aTableEntry, Table aTable, ReverseEngineeringNotifier aNotifier, Index aIndex, String aColumnName, short aPosition, String aASCorDESC) throws SQLException, ReverseEngineeringException {
-		Attribute<Table> theIndexAttribute = aTable.getAttributes().findByName(dialect.getCastType().cast(aColumnName));
+	protected void reverseEngineerIndexAttribute(final DatabaseMetaData aMetaData, final TableEntry aTableEntry, final Table aTable, final ReverseEngineeringNotifier aNotifier, final Index aIndex, final String aColumnName, final short aPosition, final String aASCorDESC) throws SQLException, ReverseEngineeringException {
+		final Attribute<Table> theIndexAttribute = aTable.getAttributes().findByName(dialect.getCastType().cast(aColumnName));
 
 		if (theIndexAttribute == null) {
 
@@ -520,7 +514,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			// It is a column based index
 			try {
 				aIndex.getExpressions().addExpressionFor(theIndexAttribute);
-			} catch (ElementAlreadyExistsException e) {
+			} catch (final ElementAlreadyExistsException e) {
 				throw new ReverseEngineeringException("Error adding index attribute", e);
 			}
 		}
@@ -537,9 +531,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * @throws SQLException	is thrown in case of an error
 	 * @throws ReverseEngineeringException is thrown in case of an error
 	 */
-	protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry,	Connection aConnection) throws SQLException, ReverseEngineeringException {
+	protected void reverseEngineerRelations(final Model aModel, final ReverseEngineeringOptions aOptions, final ReverseEngineeringNotifier aNotifier, final TableEntry aTableEntry, final Connection aConnection) throws SQLException, ReverseEngineeringException {
 
-		DatabaseMetaData theMetaData = aConnection.getMetaData();
+		final DatabaseMetaData theMetaData = aConnection.getMetaData();
 
 		String theSchemaName = null;
 		String theCatalogName = null;
@@ -550,26 +544,20 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 		int theSysCounter = 0;
 
-		List<Relation> theNewRelations = new ArrayList<>();
+		final List<Relation> theNewRelations = new ArrayList<>();
 
-		String theImportingTableName = aModel.getDialect().getCastType().cast(aTableEntry.getTableName());
+		final String theImportingTableName = aModel.getDialect().getCastType().cast(aTableEntry.getTableName());
 		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGRELATION, theImportingTableName);
 
-		Table theImportingTable;
+		final Table theImportingTable = switch (aOptions.getTableNaming()) {
+            case STANDARD -> aModel.getTables().findByName(
+                    theImportingTableName);
+            case INCLUDE_SCHEMA -> aModel.getTables().findByNameAndSchema(
+                    theImportingTableName, theSchemaName);
+            default -> throw new RuntimeException("Not supported naming type");
+        };
 
-		switch (aOptions.getTableNaming()) {
-			case STANDARD:
-				theImportingTable = aModel.getTables().findByName(
-						theImportingTableName);
-				break;
-			case INCLUDE_SCHEMA:
-				theImportingTable = aModel.getTables().findByNameAndSchema(
-						theImportingTableName, theSchemaName);
-				break;
-			default:
-				throw new RuntimeException("Not supported naming type");
-		}
-		if (theImportingTable == null) {
+        if (theImportingTable == null) {
 			throw new ReverseEngineeringException("Cannot find table in model : " + theImportingTableName);
 		}
 
@@ -577,36 +565,29 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 		// Foreign keys
 		Relation theNewRelation = null;
-		ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, aTableEntry.getTableName());
+		final ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, aTableEntry.getTableName());
 
 		while (theForeignKeys.next()) {
-			String theFKName = theForeignKeys.getString("FK_NAME");
+			final String theFKName = theForeignKeys.getString("FK_NAME");
 
 			if ((theNewRelation == null) || (!theFKName.equals(theOldFKName))) {
 
 				theOldFKName = theFKName;
 
-				String thePKTableName = theForeignKeys.getString("PKTABLE_NAME");
-				String thePKTableSchema = theForeignKeys.getString("PKTABLE_SCHEM");
+				final String thePKTableName = theForeignKeys.getString("PKTABLE_NAME");
+				final String thePKTableSchema = theForeignKeys.getString("PKTABLE_SCHEM");
 
-				String theUpdateRule = theForeignKeys.getString("UPDATE_RULE");
-				String theDeleteRule = theForeignKeys.getString("DELETE_RULE");
+				final String theUpdateRule = theForeignKeys.getString("UPDATE_RULE");
+				final String theDeleteRule = theForeignKeys.getString("DELETE_RULE");
 
-				Table theExportingTable;
-				switch (aOptions.getTableNaming()) {
-					case INCLUDE_SCHEMA:
-						theExportingTable = aModel.getTables().findByNameAndSchema(dialect.getCastType().cast(thePKTableName), thePKTableSchema);
-						break;
+				final Table theExportingTable = switch (aOptions.getTableNaming()) {
+                    case INCLUDE_SCHEMA ->
+                            aModel.getTables().findByNameAndSchema(dialect.getCastType().cast(thePKTableName), thePKTableSchema);
+                    case STANDARD -> aModel.getTables().findByName(dialect.getCastType().cast(thePKTableName));
+                    default -> throw new RuntimeException("Naming not supported : " + aOptions.getTableNaming());
+                };
 
-					case STANDARD:
-						theExportingTable = aModel.getTables().findByName(dialect.getCastType().cast(thePKTableName));
-						break;
-
-					default:
-						throw new RuntimeException("Naming not supported : " + aOptions.getTableNaming());
-				}
-
-				if (theExportingTable != null) {
+                if (theExportingTable != null) {
 
 					// The relation is only added to the model
 					// if the exporting table is also part of the model
@@ -633,7 +614,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 						theNewRelation.setImportingTable(theImportingTable);
 
 						if (theUpdateRule != null) {
-							int theType = Integer.parseInt(theUpdateRule);
+							final int theType = Integer.parseInt(theUpdateRule);
 
 							theNewRelation.setOnUpdate(getCascadeType(theType));
 						} else {
@@ -642,7 +623,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 						}
 
 						if (theDeleteRule != null) {
-							int theType = Integer.parseInt(theDeleteRule);
+							final int theType = Integer.parseInt(theDeleteRule);
 
 							theNewRelation.setOnDelete(getCascadeType(theType));
 						} else {
@@ -655,25 +636,25 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			}
 
 			if ((theNewRelation != null) && (theNewRelation.getImportingTable() != null) && (theNewRelation.getExportingTable() != null)) {
-				String thePKColumnName = dialect.getCastType().cast(theForeignKeys.getString("PKCOLUMN_NAME"));
-				String theFKColumnName = dialect.getCastType().cast(theForeignKeys.getString("FKCOLUMN_NAME"));
+				final String thePKColumnName = dialect.getCastType().cast(theForeignKeys.getString("PKCOLUMN_NAME"));
+				final String theFKColumnName = dialect.getCastType().cast(theForeignKeys.getString("FKCOLUMN_NAME"));
 
-				Attribute<Table> theExportingAttribute = theNewRelation.getExportingTable().getAttributes().findByName(dialect.getCastType().cast(thePKColumnName));
+				final Attribute<Table> theExportingAttribute = theNewRelation.getExportingTable().getAttributes().findByName(dialect.getCastType().cast(thePKColumnName));
 				if (theExportingAttribute == null) {
 					throw new ReverseEngineeringException("Cannot find column " + thePKColumnName + " in table " + theNewRelation.getExportingTable().getName());
 				}
 
-				Index thePrimaryKey = theNewRelation.getExportingTable().getPrimarykey();
+				final Index thePrimaryKey = theNewRelation.getExportingTable().getPrimarykey();
 				if (thePrimaryKey == null) {
 					throw new ReverseEngineeringException("Table " + theNewRelation.getExportingTable().getName() + " does not have a primary key");
 				}
 
-				IndexExpression theExpression = thePrimaryKey.getExpressions().findByAttributeName(thePKColumnName);
+				final IndexExpression theExpression = thePrimaryKey.getExpressions().findByAttributeName(thePKColumnName);
 				if (theExpression == null) {
 					throw new RuntimeException("Cannot find attribute " + thePKColumnName + " in primary key for table " + theNewRelation.getExportingTable().getName());
 				}
 
-				Attribute<Table> theImportingAttribute = theNewRelation.getImportingTable().getAttributes().findByName(theFKColumnName);
+				final Attribute<Table> theImportingAttribute = theNewRelation.getImportingTable().getAttributes().findByName(theFKColumnName);
 				if (theImportingAttribute == null) {
 					throw new ReverseEngineeringException("Cannot find column " + theFKColumnName + " in table " + theNewRelation.getImportingTable().getName());
 				}
@@ -685,10 +666,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		theForeignKeys.close();
 
 		try {
-			for (Relation theRelation : theNewRelations) {
+			for (final Relation theRelation : theNewRelations) {
 				try {
 					aModel.addRelation(theRelation);
-				} catch (ElementAlreadyExistsException e) {
+				} catch (final ElementAlreadyExistsException e) {
 					// This might happen for instance on DB2 databases. We will try to generate a new name here!!!
 					int counter = 0;
 					String theNewName = null;
@@ -702,7 +683,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 					aModel.addRelation(theRelation);
 				}
 			}
-		} catch (ElementInvalidNameException | VetoException | ElementAlreadyExistsException e) {
+		} catch (final ElementInvalidNameException | ElementAlreadyExistsException e) {
 			throw new ReverseEngineeringException(e.getMessage(), e);
 		}
 	}
@@ -713,7 +694,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * @param aTableName the table name
 	 * @return true if the table is valid, else false
 	 */
-	protected boolean isValidTable(String aTableName) {
+	protected boolean isValidTable(final String aTableName) {
 		return true;
 	}
 
@@ -723,18 +704,18 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * @param aTableName the table name
 	 * @return true if the table is valid, else false
 	 */
-	protected boolean isValidView(String aTableName) {
+	protected boolean isValidView(final String aTableName) {
 		return true;
 	}
 
-	public void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector, Connection aConnection, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
-		Map<String, ModelProperties> theGlobalPreviousModelItemProperties =  new HashMap<>();
+	public void updateModelFromConnection(final Model aModel, final ERDesignerWorldConnector aConnector, final Connection aConnection, final ReverseEngineeringOptions aOptions, final ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
+		final Map<String, ModelProperties> theGlobalPreviousModelItemProperties =  new HashMap<>();
 		Exception theUDTError = null;
 
 		if (aModel.getDialect().isSupportsCustomTypes()) {
 			try {
 				reverseEngineerCustomTypes(aModel, aOptions, aNotifier, aConnection);
-			} catch (ReverseEngineeringException e) {
+			} catch (final ReverseEngineeringException e) {
 				theUDTError = e;
 			}
 		}
@@ -743,18 +724,18 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			reverseEngineerDomains(aModel, aOptions, aNotifier, aConnection);
 		}
 
-		for (TableEntry theTable : aOptions.getTableEntries()) {
+		for (final TableEntry theTable : aOptions.getTableEntries()) {
 			if (TableType.VIEW.equals(theTable.getTableType())) {
 				reverseEngineerView(aModel, aOptions, aNotifier, theTable, aConnection);
 			} else {
-				Map<String, ModelProperties> theLocalPreviousModelItemProperties = reverseEngineerTable(aModel, aOptions, aNotifier, theTable, aConnection);
+				final Map<String, ModelProperties> theLocalPreviousModelItemProperties = reverseEngineerTable(aModel, aOptions, aNotifier, theTable, aConnection);
 				if (theLocalPreviousModelItemProperties != null) {
 					theGlobalPreviousModelItemProperties.putAll(theLocalPreviousModelItemProperties);
 				}
 			}
 		}
 
-		for (TableEntry theTableEntry : aOptions.getTableEntries()) {
+		for (final TableEntry theTableEntry : aOptions.getTableEntries()) {
 			// Reverse engineer only relations for tables, not for views!
 			if (TableType.TABLE.equals(theTableEntry.getTableType())) {
 				reverseEngineerRelations(aModel, aOptions, aNotifier, theTableEntry, aConnection);
@@ -762,15 +743,15 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		}
 
 		//transfer the properties of formerly removed tables/relations to the newly added tables/relations in case their types and names match
-		for (Map.Entry pairs : theGlobalPreviousModelItemProperties.entrySet()) {
-			String modelItemName = (String)pairs.getKey();
-			ModelProperties modelItemProperties = (ModelProperties)pairs.getValue();
+		for (final Map.Entry pairs : theGlobalPreviousModelItemProperties.entrySet()) {
+			final String modelItemName = (String)pairs.getKey();
+			final ModelProperties modelItemProperties = (ModelProperties)pairs.getValue();
 
-			Table theNewTable = aModel.getTables().findByName(modelItemName);
+			final Table theNewTable = aModel.getTables().findByName(modelItemName);
 			if (theNewTable != null) {
 				theNewTable.setProperties(modelItemProperties);
 			} else {
-				Relation theNewRelation = aModel.getRelations().findByName(modelItemName);
+				final Relation theNewRelation = aModel.getRelations().findByName(modelItemName);
 				if (theNewRelation != null) {
 					theNewRelation.setProperties(modelItemProperties);
 				}
@@ -784,7 +765,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		}
 	}
 
-	protected void reverseEngineerCustomTypes(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException, ReverseEngineeringException {
+	protected void reverseEngineerCustomTypes(final Model aModel, final ReverseEngineeringOptions aOptions, final ReverseEngineeringNotifier aNotifier, final Connection aConnection) throws SQLException, ReverseEngineeringException {
 		throw new UnsupportedOperationException("Userdefined datatypes (UDTs) not supported for " + aModel.getDialect().getUniqueName() + " databases.");
 	}
 
@@ -798,34 +779,34 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * @throws SQLException	- SQL exception
 	 * @throws ReverseEngineeringException - reverse engineering exception
 	 */
-	protected void reverseEngineerDomains(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException, ReverseEngineeringException {
-		PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM information_schema.domains where DOMAIN_SCHEMA = ?");
+	protected void reverseEngineerDomains(final Model aModel, final ReverseEngineeringOptions aOptions, final ReverseEngineeringNotifier aNotifier, final Connection aConnection) throws SQLException, ReverseEngineeringException {
+		final PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM information_schema.domains where DOMAIN_SCHEMA = ?");
 
-		for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
+		for (final SchemaEntry theEntry : aOptions.getSchemaEntries()) {
 			theStatement.setString(1, theEntry.getSchemaName());
-			ResultSet theResult = theStatement.executeQuery();
+			final ResultSet theResult = theStatement.executeQuery();
 
 			while (theResult.next()) {
-				String theDomainName = theResult.getString("DOMAIN_NAME");
-				String theDataType = theResult.getString("DATA_TYPE");
+				final String theDomainName = theResult.getString("DOMAIN_NAME");
+				final String theDataType = theResult.getString("DATA_TYPE");
 				Integer theSize = null;
 				try {
-					Integer theTemp = theResult.getInt("NUMERIC_PRECISION");
+					final Integer theTemp = theResult.getInt("NUMERIC_PRECISION");
 					if (theTemp != null) {
 						theSize = theTemp;
 					}
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 				}
 				try {
-					Integer theTemp = theResult.getInt("CHARACTER_MAXIMUM_LENGTH");
+					final Integer theTemp = theResult.getInt("CHARACTER_MAXIMUM_LENGTH");
 					if (theTemp != null) {
 						theSize = theTemp;
 					}
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 				}
 
-				int theFraction = theResult.getInt("NUMERIC_PRECISION_RADIX");
-				int theScale = theResult.getInt("NUMERIC_SCALE");
+				final int theFraction = theResult.getInt("NUMERIC_PRECISION_RADIX");
+				final int theScale = theResult.getInt("NUMERIC_SCALE");
 
 				aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGDOMAIN, theDomainName);
 
@@ -834,7 +815,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 					throw new ReverseEngineeringException("Duplicate domain found : " + theDomainName);
 				}
 
-				DataType theType = aModel.getDialect().getDataTypes().findByName(dialect.convertTypeNameToRealTypeName(theDataType));
+				final DataType theType = aModel.getDialect().getDataTypes().findByName(dialect.convertTypeNameToRealTypeName(theDataType));
 				if (theType != null) {
 					theDomain = new Domain();
 					theDomain.setName(theDomainName);
@@ -843,12 +824,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 					theDomain.setFraction(theFraction);
 					theDomain.setScale(theScale);
 
-					try {
-						aModel.addDomain(theDomain);
-					} catch (VetoException e) {
-						throw new ReverseEngineeringException(e.getMessage(), e);
-					}
-				} else {
+                    aModel.addDomain(theDomain);
+                } else {
 					throw new ReverseEngineeringException("Unknown data type " + theDataType + " for domain " + theDomainName);
 				}
 
@@ -861,15 +838,15 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		theStatement.close();
 	}
 
-	public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
-		List<SchemaEntry> theList = new ArrayList<>();
+	public List<SchemaEntry> getSchemaEntries(final Connection aConnection) throws SQLException {
+		final List<SchemaEntry> theList = new ArrayList<>();
 
-		DatabaseMetaData theMetadata = aConnection.getMetaData();
-		ResultSet theResult = theMetadata.getSchemas();
+		final DatabaseMetaData theMetadata = aConnection.getMetaData();
+		final ResultSet theResult = theMetadata.getSchemas();
 
 		while (theResult.next()) {
-			String theSchemaName = theResult.getString("TABLE_SCHEM");
-			String theCatalogName = theResult.getString("TABLE_CATALOG");
+			final String theSchemaName = theResult.getString("TABLE_SCHEM");
+			final String theCatalogName = theResult.getString("TABLE_CATALOG");
 
 			theList.add(new SchemaEntry(theCatalogName, theSchemaName));
 		}
@@ -877,13 +854,13 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		return theList;
 	}
 
-	protected List<TableEntry> getTablesForSchemaEntry(Connection aConnection, SchemaEntry aEntry) throws SQLException {
-		List<TableEntry> theResult = new ArrayList<>();
+	protected List<TableEntry> getTablesForSchemaEntry(final Connection aConnection, final SchemaEntry aEntry) throws SQLException {
+		final List<TableEntry> theResult = new ArrayList<>();
 
-		DatabaseMetaData theMetaData = aConnection.getMetaData();
+		final DatabaseMetaData theMetaData = aConnection.getMetaData();
 
 		// Reverse engineer tables
-		ResultSet theTablesResultSet;
+		final ResultSet theTablesResultSet;
 		String theCatalogName = null;
 		String theSchemaName = null;
 		if (aEntry != null) {
@@ -896,17 +873,17 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 		while (theTablesResultSet.next()) {
 
-			TableType theTableType = TableType.fromString(theTablesResultSet.getString("TABLE_TYPE"));
-			String theTableName = theTablesResultSet.getString("TABLE_NAME");
+			final TableType theTableType = TableType.fromString(theTablesResultSet.getString("TABLE_TYPE"));
+			final String theTableName = theTablesResultSet.getString("TABLE_NAME");
 
 			if (TableType.VIEW.equals(theTableType)) {
 				if (isValidView(theTableName)) {
-					TableEntry theEntry = new TableEntry(theCatalogName, theSchemaName, theTableName, theTableType);
+					final TableEntry theEntry = new TableEntry(theCatalogName, theSchemaName, theTableName, theTableType);
 					theResult.add(theEntry);
 				}
 			} else {
 				if (isValidTable(theTableName)) {
-					TableEntry theEntry = new TableEntry(theCatalogName, theSchemaName, theTableName, theTableType);
+					final TableEntry theEntry = new TableEntry(theCatalogName, theSchemaName, theTableName, theTableType);
 					theResult.add(theEntry);
 				}
 			}
@@ -917,11 +894,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		return theResult;
 	}
 
-	public List<TableEntry> getTablesForSchemas(Connection aConnection, List<SchemaEntry> aSchemaEntries) throws SQLException {
-		List<TableEntry> theResult = new ArrayList<>();
+	public List<TableEntry> getTablesForSchemas(final Connection aConnection, final List<SchemaEntry> aSchemaEntries) throws SQLException {
+		final List<TableEntry> theResult = new ArrayList<>();
 
 		if (dialect.isSupportsSchemaInformation()) {
-			for (SchemaEntry theEntry : aSchemaEntries) {
+			for (final SchemaEntry theEntry : aSchemaEntries) {
 				theResult.addAll(getTablesForSchemaEntry(aConnection, theEntry));
 			}
 		} else {
@@ -943,7 +920,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			theViewDefinitionLower = theViewDefinitionLower.trim();
 
 			if (theViewDefinitionLower.startsWith("create")) {
-				int p = theViewDefinitionLower.indexOf(" as ");
+				final int p = theViewDefinitionLower.indexOf(" as ");
 				if (p >= 0) {
 					theViewDefinition = theViewDefinition.substring(p + 4).trim();
 				}

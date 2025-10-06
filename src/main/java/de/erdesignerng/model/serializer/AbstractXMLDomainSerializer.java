@@ -35,18 +35,18 @@ public abstract class AbstractXMLDomainSerializer extends CommonAbstractXMLSeria
 
 	protected static final String NULLABLE = "nullable";
 
-    protected String safeString(Object aValue) {
+    protected String safeString(final Object aValue) {
         if (aValue == null) {
             return "";
         }
         return aValue.toString();
     }
 
-    protected Integer safeInteger(String aValue) {
+    protected Integer safeInteger(final String aValue) {
         if (aValue == null) {
             return null;
         }
-        if (aValue.length() == 0) {
+        if (aValue.isEmpty()) {
             return null;
         }
         // In older models this might be the case as there was a bug in data serialization

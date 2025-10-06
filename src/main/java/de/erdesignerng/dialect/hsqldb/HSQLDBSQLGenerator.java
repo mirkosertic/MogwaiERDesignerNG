@@ -33,19 +33,19 @@ import org.apache.commons.lang.StringUtils;
  */
 public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 
-	public HSQLDBSQLGenerator(HSQLDBDialect aDialect) {
+	public HSQLDBSQLGenerator(final HSQLDBDialect aDialect) {
 		super(aDialect);
 	}
 
 	@Override
 	protected void addAdditionalInformationToPreCreateTableStatement(
-			Table aTable, StringBuilder aStatement) {
+            final Table aTable, final StringBuilder aStatement) {
 	}
 
 	@Override
-	public StatementList createAddViewStatement(View aView) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddViewStatement(final View aView) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 		theStatement.append("CREATE ");
 
 		theStatement.append("VIEW ");
@@ -57,10 +57,10 @@ public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 	}
 
 	@Override
-	public StatementList createAddIndexToTableStatement(Table aTable,
-														Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddIndexToTableStatement(final Table aTable,
+                                                        final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("CREATE ");
 
@@ -79,7 +79,7 @@ public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 		theStatement.append(" (");
 
 		for (int i = 0; i < aIndex.getExpressions().size(); i++) {
-			IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
+			final IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
 
 			if (i > 0) {
 				theStatement.append(",");
@@ -99,10 +99,10 @@ public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 	}
 
 	@Override
-	public StatementList createRemoveIndexFromTableStatement(Table aTable,
-															 Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createRemoveIndexFromTableStatement(final Table aTable,
+                                                             final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("DROP INDEX ");
 		theStatement.append(aIndex.getName());
@@ -113,11 +113,11 @@ public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 	}
 
 	@Override
-	public StatementList createRenameTableStatement(Table aTable,
-													String aNewName) {
+	public StatementList createRenameTableStatement(final Table aTable,
+                                                    final String aNewName) {
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(aTable));
@@ -131,11 +131,11 @@ public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createRenameAttributeStatement(final Attribute<Table> anExistingAttribute, final String aNewName) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -150,12 +150,12 @@ public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createChangeAttributeStatement(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 
-		StringBuilder theStatement = new StringBuilder();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -164,7 +164,7 @@ public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 		theStatement.append(" ");
 		theStatement.append(aNewAttribute.getPhysicalDeclaration());
 
-		boolean isNullable = aNewAttribute.isNullable();
+		final boolean isNullable = aNewAttribute.isNullable();
 
 		if (!isNullable) {
 			theStatement.append(" NOT NULL");
@@ -178,9 +178,9 @@ public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 	}
 
 	@Override
-	public StatementList createAddSchemaStatement(String aSchema) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddSchemaStatement(final String aSchema) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 		theStatement.append("CREATE SCHEMA ");
 		theStatement.append(createUniqueSchemaName(aSchema));
 		theStatement.append(" authorization SA");

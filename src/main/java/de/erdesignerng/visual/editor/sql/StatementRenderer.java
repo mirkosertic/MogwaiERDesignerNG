@@ -31,9 +31,9 @@ public class StatementRenderer implements ListCellRenderer {
 	private final UIInitializer initializer = UIInitializer.getInstance();
 
 	@Override
-	public Component getListCellRendererComponent(JList aList, Object aValue, int aIndex, boolean isSelected,
-			boolean cellHasFocus) {
-		Statement theStatement = (Statement) aValue;
+	public Component getListCellRendererComponent(final JList aList, final Object aValue, final int aIndex, final boolean isSelected,
+                                                  final boolean cellHasFocus) {
+		final Statement theStatement = (Statement) aValue;
 		if (theStatement.isExecuted()) {
 			component.setForeground(Color.BLACK);
 		} else {

@@ -23,7 +23,7 @@ public class ZoomInfo {
 
 	private final double value;
 
-	public ZoomInfo(String aDescription, double aValue) {
+	public ZoomInfo(final String aDescription, final double aValue) {
 		description = aDescription;
 		value = aValue;
 	}

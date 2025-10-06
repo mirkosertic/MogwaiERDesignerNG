@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
 
 public class ReverseEngineerCommand extends UICommand {
 
-	private static final Logger LOGGER = Logger.getLogger(JDBCReverseEngineeringStrategy.class);
+	private static final Logger LOGGER = Logger.getLogger(ReverseEngineerCommand.class);
 
 	public ReverseEngineerCommand() {
 	}
@@ -53,7 +53,7 @@ public class ReverseEngineerCommand extends UICommand {
 	@Override
 	public void execute() {
 
-		ERDesignerComponent component = ERDesignerComponent.getDefault();
+		final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
 		if (!component.checkForValidConnection()) {
 			return;
@@ -73,44 +73,44 @@ public class ReverseEngineerCommand extends UICommand {
 						return;
 					}
 
-					LongRunningTask<ReverseEngineeringOptions> theRETask = new LongRunningTask<ReverseEngineeringOptions>(getWorldConnector()) {
+					final LongRunningTask<ReverseEngineeringOptions> theRETask = new LongRunningTask<>(getWorldConnector()) {
 
-						@Override
-						public ReverseEngineeringOptions doWork(MessagePublisher aMessagePublisher) throws Exception {
-							ReverseEngineeringOptions theOptions = theEditor.createREOptions();
-							theOptions.getTableEntries().addAll(theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
+                        @Override
+                        public ReverseEngineeringOptions doWork(final MessagePublisher aMessagePublisher) throws Exception {
+                            final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
+                            theOptions.getTableEntries().addAll(theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
 
-							return theOptions;
-						}
+                            return theOptions;
+                        }
 
-						@Override
-						public void handleResult(ReverseEngineeringOptions theOptions) {
-							showTablesSelectEditor(theStrategy, theModel, theConnection, theOptions);
-						}
+                        @Override
+                        public void handleResult(final ReverseEngineeringOptions theOptions) {
+                            showTablesSelectEditor(theStrategy, theModel, theConnection, theOptions);
+                        }
 
-					};
+                    };
 
 					theRETask.start();
 
-				} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
+				} catch (final ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
 					getWorldConnector().notifyAboutException(e);
 				}
 			}
 		} else {
 			try {
 
-				Connection theConnection = theModel.createConnection();
+				final Connection theConnection = theModel.createConnection();
 				if (theConnection == null) {
 					return;
 				}
 
-				ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
+				final ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
 				theOptions.setTableNaming(TableNamingEnum.STANDARD);
 				theOptions.getTableEntries().addAll(theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
 
 				showTablesSelectEditor(theStrategy, theModel, theConnection, theOptions);
 
-			} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
+			} catch (final ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
 				getWorldConnector().notifyAboutException(e);
 			}
 		}
@@ -118,83 +118,83 @@ public class ReverseEngineerCommand extends UICommand {
 
 	// FR 2895534 [ERDesignerNG] show RevEngEd only on DBs with schema support
 	private void showTablesSelectEditor(final JDBCReverseEngineeringStrategy aStrategy, final Model aModel, final Connection aConnection, final ReverseEngineeringOptions theOptions) {
-		TablesSelectEditor theTablesEditor = new TablesSelectEditor(theOptions, getDetailComponent());
+		final TablesSelectEditor theTablesEditor = new TablesSelectEditor(theOptions, getDetailComponent());
 
 		if (theTablesEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-			LongRunningTask<Model> theTask = new LongRunningTask<Model>(getWorldConnector()) {
+			final LongRunningTask<Model> theTask = new LongRunningTask<>(getWorldConnector()) {
 
-				@Override
-				public Model doWork(final MessagePublisher aPublisher) throws Exception {
-					ReverseEngineeringNotifier theNotifier = (aResourceKey, aValues) -> {
-                        String theMessage = MessageFormat.format(ERDesignerComponent.getDefault().getResourceHelper().getText(aResourceKey), (Object[]) aValues);
+                @Override
+                public Model doWork(final MessagePublisher aPublisher) throws Exception {
+                    final ReverseEngineeringNotifier theNotifier = (aResourceKey, aValues) -> {
+                        final String theMessage = MessageFormat.format(ERDesignerComponent.getDefault().getResourceHelper().getText(aResourceKey), (Object[]) aValues);
                         aPublisher.publishMessage(theMessage);
                     };
 
-					aStrategy.updateModelFromConnection(aModel, getWorldConnector(), aConnection, theOptions, theNotifier);
+                    aStrategy.updateModelFromConnection(aModel, getWorldConnector(), aConnection, theOptions, theNotifier);
 
-					// Iterate over the views and the tables and
-					// order them in a matrix like position
-					List<ModelItem> theItems = new ArrayList<>();
-					theItems.addAll(aModel.getTables());
-					theItems.addAll(aModel.getViews());
-					int xoffset = 20;
-					int yoffset = 20;
-					int xcounter = 0;
-					int maxheight = Integer.MIN_VALUE;
+                    // Iterate over the views and the tables and
+                    // order them in a matrix like position
+                    final List<ModelItem> theItems = new ArrayList<>();
+                    theItems.addAll(aModel.getTables());
+                    theItems.addAll(aModel.getViews());
+                    int xoffset = 20;
+                    int yoffset = 20;
+                    int xcounter = 0;
+                    int maxheight = Integer.MIN_VALUE;
 
-					for (ModelItem theItem : theItems) {
-						Component theComponent = null;
-						if (theItem instanceof Table) {
-							theComponent = new TableCellView.MyRenderer().getRendererComponent((Table) theItem);
-						}
+                    for (final ModelItem theItem : theItems) {
+                        Component theComponent = null;
+                        if (theItem instanceof Table) {
+                            theComponent = new TableCellView.MyRenderer().getRendererComponent((Table) theItem);
+                        }
 
-						if (theItem instanceof View) {
-							theComponent = new ViewCellView.MyRenderer().getRendererComponent((View) theItem);
-						}
-						Dimension theSize = theComponent.getPreferredSize();
+                        if (theItem instanceof View) {
+                            theComponent = new ViewCellView.MyRenderer().getRendererComponent((View) theItem);
+                        }
+                        final Dimension theSize = theComponent.getPreferredSize();
 
-						//check if PROPERTY_LOCATION is already set. This can be the case if reverse engineering into an existing model. Only set, if not present.
-						if (theItem.getProperties().getProperty(ModelItem.PROPERTY_LOCATION) == null) {
-							String theLocation = xoffset + ":" + yoffset;
-							theItem.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
-						} else {
-							LOGGER.info("graph layout properties for item '" + theItem.getName() + "' taken from previous model.");
-						}
+                        //check if PROPERTY_LOCATION is already set. This can be the case if reverse engineering into an existing model. Only set, if not present.
+                        if (theItem.getProperties().getProperty(ModelItem.PROPERTY_LOCATION) == null) {
+                            final String theLocation = xoffset + ":" + yoffset;
+                            theItem.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
+                        } else {
+                            LOGGER.info("graph layout properties for item '" + theItem.getName() + "' taken from previous model.");
+                        }
 
-						maxheight = Math.max(maxheight, theSize.height);
-						xoffset += theSize.width + 20;
+                        maxheight = Math.max(maxheight, theSize.height);
+                        xoffset += theSize.width + 20;
 
-						xcounter++;
-						if (xcounter >= ApplicationPreferences.getInstance().getGridWidthAfterReverseEngineering()) {
-							xcounter = 0;
-							xoffset = 0;
-							yoffset += maxheight + 20;
-							maxheight = Integer.MIN_VALUE;
-						}
-					}
+                        xcounter++;
+                        if (xcounter >= ApplicationPreferences.getInstance().getGridWidthAfterReverseEngineering()) {
+                            xcounter = 0;
+                            xoffset = 0;
+                            yoffset += maxheight + 20;
+                            maxheight = Integer.MIN_VALUE;
+                        }
+                    }
 
-					return aModel;
-				}
+                    return aModel;
+                }
 
-				@Override
-				public void handleResult(final Model aResultModel) {
-					try {
-						// Make sure this is called in the EDT, as else JGraph might throw a NPE
-						SwingUtilities.invokeAndWait(() -> ERDesignerComponent.getDefault().setModel(aResultModel));
-					} catch (InterruptedException | InvocationTargetException e) {
-						throw new RuntimeException("Cannot set model in editor", e);
-					}
-				}
+                @Override
+                public void handleResult(final Model aResultModel) {
+                    try {
+                        // Make sure this is called in the EDT, as else JGraph might throw a NPE
+                        SwingUtilities.invokeAndWait(() -> ERDesignerComponent.getDefault().setModel(aResultModel));
+                    } catch (final InterruptedException | InvocationTargetException e) {
+                        throw new RuntimeException("Cannot set model in editor", e);
+                    }
+                }
 
-				@Override
-				public void cleanup() throws SQLException {
-					if (!aModel.getDialect().generatesManagedConnection()) {
-						aConnection.close();
-					}
-				}
+                @Override
+                public void cleanup() throws SQLException {
+                    if (!aModel.getDialect().generatesManagedConnection()) {
+                        aConnection.close();
+                    }
+                }
 
-			};
+            };
 
 			theTask.start();
 		}

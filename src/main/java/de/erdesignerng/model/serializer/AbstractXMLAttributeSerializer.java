@@ -47,7 +47,7 @@ public abstract class AbstractXMLAttributeSerializer extends CommonAbstractXMLSe
 
 	@Override
 	@Deprecated
-	public void deserialize(Model aModel, Document aDocument) {
+	public void deserialize(final Model aModel, final Document aDocument) {
 		throw new UnsupportedOperationException("Not supported.");
 	}
 }

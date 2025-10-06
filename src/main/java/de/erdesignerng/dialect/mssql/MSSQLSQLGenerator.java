@@ -34,15 +34,15 @@ import org.apache.commons.lang.StringUtils;
  */
 public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
-	public MSSQLSQLGenerator(MSSQLDialect aDialect) {
+	public MSSQLSQLGenerator(final MSSQLDialect aDialect) {
 		super(aDialect);
 	}
 
 	@Override
-	public StatementList createRemoveRelationStatement(Relation aRelation) {
-		Table theImportingTable = aRelation.getImportingTable();
+	public StatementList createRemoveRelationStatement(final Relation aRelation) {
+		final Table theImportingTable = aRelation.getImportingTable();
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 		theResult.add(new Statement("ALTER TABLE "
 				+ createUniqueTableName(theImportingTable)
 				+ " DROP CONSTRAINT " + aRelation.getName()));
@@ -50,10 +50,10 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 	}
 
 	@Override
-	public StatementList createRenameTableStatement(Table aTable,
-													String aNewName) {
+	public StatementList createRenameTableStatement(final Table aTable,
+                                                    final String aNewName) {
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 		theResult.add(new Statement("EXEC sp_rename '"
 				+ createUniqueTableName(aTable) + "' , '" + aNewName + "'"));
 		return theResult;
@@ -61,10 +61,10 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createRenameAttributeStatement(final Attribute<Table> anExistingAttribute, final String aNewName) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 		theResult.add(new Statement("EXEC sp_rename '" + theTable.getName()
 				+ "." + anExistingAttribute.getName() + "' , '" + aNewName
 				+ "' , 'COLUMN'"));
@@ -72,11 +72,11 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createChangeAttributeStatement(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -92,10 +92,10 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 	}
 
 	@Override
-	public StatementList createAddIndexToTableStatement(Table aTable,
-														Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddIndexToTableStatement(final Table aTable,
+                                                        final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("CREATE ");
 
@@ -107,7 +107,7 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 				break;
 		}
 
-		MSSQLIndexProperties theProperties = (MSSQLIndexProperties) getDialect()
+		final MSSQLIndexProperties theProperties = (MSSQLIndexProperties) getDialect()
 				.createIndexPropertiesFor(aIndex);
 		if (theProperties.getIndexType() != null) {
 			switch (theProperties.getIndexType()) {
@@ -127,7 +127,7 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 		theStatement.append(" (");
 
 		for (int i = 0; i < aIndex.getExpressions().size(); i++) {
-			IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
+			final IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
 
 			if (i > 0) {
 				theStatement.append(",");
@@ -156,11 +156,11 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 	}
 
 	@Override
-	protected String createCreateTableSuffix(Table aTable) {
-		MSSQLTableProperties theProperties = (MSSQLTableProperties) getDialect()
+	protected String createCreateTableSuffix(final Table aTable) {
+		final MSSQLTableProperties theProperties = (MSSQLTableProperties) getDialect()
 				.createTablePropertiesFor(aTable);
 
-		StringBuilder theStatement = new StringBuilder();
+		final StringBuilder theStatement = new StringBuilder();
 		if (!StringUtils.isEmpty(theProperties.getFileGroup())) {
 			theStatement.append(" ON ");
 			theStatement.append("\"");
@@ -172,15 +172,15 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 	}
 
 	@Override
-	public StatementList createAddViewStatement(View aView) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createAddViewStatement(final View aView) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 		theStatement.append("CREATE VIEW ");
 		theStatement.append(createUniqueViewName(aView));
 
 		boolean first = true;
 		int counter = 0;
-		MSSQLViewProperties theProperties = (MSSQLViewProperties) getDialect()
+		final MSSQLViewProperties theProperties = (MSSQLViewProperties) getDialect()
 				.createViewPropertiesFor(aView);
 		if (Boolean.TRUE.equals(theProperties.getEncryption())) {
 			first = false;

@@ -27,19 +27,19 @@ public class DataBrowserCommand extends UICommand {
     private Table table;
     private View view;
 
-    public DataBrowserCommand(Table aTable) {
+    public DataBrowserCommand(final Table aTable) {
         table = aTable;
     }
 
-    public DataBrowserCommand(View aView) {
+    public DataBrowserCommand(final View aView) {
         view = aView;
     }
 
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        DataBrowserEditor theEditor = new DataBrowserEditor(component
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final DataBrowserEditor theEditor = new DataBrowserEditor(component
                 .getDetailComponent());
         if (table != null) {
             theEditor.initializeFor(table);
@@ -51,7 +51,7 @@ public class DataBrowserCommand extends UICommand {
             try {
                 theEditor.applyValues();
 
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

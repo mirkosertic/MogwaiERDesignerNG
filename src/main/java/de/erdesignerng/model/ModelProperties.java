@@ -19,23 +19,23 @@ public class ModelProperties implements Serializable {
 		return properties;
 	}
 
-	public void setProperties(Map<String, String> aProperties) {
+	public void setProperties(final Map<String, String> aProperties) {
 		properties = aProperties;
 	}
 
-	public void setProperty(String aName, String aValue) {
+	public void setProperty(final String aName, final String aValue) {
 		properties.put(aName, aValue);
 	}
 
-	public void setProperty(String aName, boolean aValue) {
+	public void setProperty(final String aName, final boolean aValue) {
 		properties.put(aName, Boolean.toString(aValue));
 	}
 
-	public String getProperty(String aName) {
+	public String getProperty(final String aName) {
 		return properties.get(aName);
 	}
 
-	public boolean getBooleanProperty(String aName) {
+	public boolean getBooleanProperty(final String aName) {
 		if (!properties.containsKey(aName)) {
 			return false;
 		}
@@ -43,12 +43,12 @@ public class ModelProperties implements Serializable {
 		return Boolean.parseBoolean(properties.get(aName));
 	}
 
-	public void setBooleanProperty(String aName, boolean aState) {
+	public void setBooleanProperty(final String aName, final boolean aState) {
 		properties.put(aName, Boolean.toString(aState));
 	}
 
-	public void setPointProperty(String aKey, int x, int y) {
-		String theLocation = x + ":" + y;
+	public void setPointProperty(final String aKey, final int x, final int y) {
+		final String theLocation = x + ":" + y;
 		setProperty(aKey, theLocation);
 	}
 
@@ -58,7 +58,7 @@ public class ModelProperties implements Serializable {
 	 * @param aPoint
 	 * @return string, containing coordinates; separated by colon
 	 */
-	public static String toString(Point2D aPoint) {
+	public static String toString(final Point2D aPoint) {
 		return "" + (int) aPoint.getX() + ":" + (int) aPoint.getY();
 
 	}
@@ -69,25 +69,25 @@ public class ModelProperties implements Serializable {
 	 * @param aValue
 	 * @return Point2D representation of a string containing coordinates
 	 */
-	public static Point2D toPoint2D(String aValue) {
+	public static Point2D toPoint2D(final String aValue) {
 
 		if (aValue == null) {
 			return null;
 		}
 
-		int theP = aValue.indexOf(":");
-		int theX = Integer.parseInt(aValue.substring(0, theP));
-		int theY = Integer.parseInt(aValue.substring(theP + 1));
+		final int theP = aValue.indexOf(":");
+		final int theX = Integer.parseInt(aValue.substring(0, theP));
+		final int theY = Integer.parseInt(aValue.substring(theP + 1));
 
 		return new Point2D.Double(theX, theY);
 	}
 
-	public Point2D getPoint2DProperty(String aKey) {
+	public Point2D getPoint2DProperty(final String aKey) {
 		return toPoint2D(getProperty(aKey));
 	}
 
 
-	public void copyFrom(Model aModel) {
+	public void copyFrom(final Model aModel) {
 		setProperties(aModel.getProperties().getProperties());
 	}
 
@@ -97,7 +97,7 @@ public class ModelProperties implements Serializable {
 	 * @param aOtherProperties the other propertie
 	 * @return true if they were modified, else false
 	 */
-	public boolean isModified(ModelProperties aOtherProperties) {
+	public boolean isModified(final ModelProperties aOtherProperties) {
 
 		if (!properties.keySet().containsAll(aOtherProperties.properties.keySet())) {
 			return true;
@@ -106,8 +106,8 @@ public class ModelProperties implements Serializable {
 			return true;
 		}
 
-		for (Map.Entry<String, String> theKey : properties.entrySet()) {
-			String theOtherValue = aOtherProperties.getProperty(theKey.getKey());
+		for (final Map.Entry<String, String> theKey : properties.entrySet()) {
+			final String theOtherValue = aOtherProperties.getProperty(theKey.getKey());
 			if (theKey.getValue() != null) {
 				if (!theKey.getValue().equals(theOtherValue)) {
 					return true;
@@ -122,8 +122,8 @@ public class ModelProperties implements Serializable {
 		return false;
 	}
 
-	public void copyFrom(ModelProperties aProperties) {
-		for (Map.Entry<String, String> theEntry : aProperties.properties.entrySet()) {
+	public void copyFrom(final ModelProperties aProperties) {
+		for (final Map.Entry<String, String> theEntry : aProperties.properties.entrySet()) {
 			properties.put(theEntry.getKey(), theEntry.getValue());
 		}
 	}

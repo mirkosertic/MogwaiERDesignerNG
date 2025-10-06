@@ -55,7 +55,7 @@ public class Relation extends OwnedModelItem<Model> implements
     /**
      * @param end the end to set
      */
-    public void setExportingTable(Table end) {
+    public void setExportingTable(final Table end) {
         exportingTable = end;
     }
 
@@ -69,7 +69,7 @@ public class Relation extends OwnedModelItem<Model> implements
     /**
      * @param start the start to set
      */
-    public void setImportingTable(Table start) {
+    public void setImportingTable(final Table start) {
         importingTable = start;
     }
 
@@ -84,7 +84,7 @@ public class Relation extends OwnedModelItem<Model> implements
         return onDelete;
     }
 
-    public void setOnDelete(CascadeType aOnDelete) {
+    public void setOnDelete(final CascadeType aOnDelete) {
         onDelete = aOnDelete;
     }
 
@@ -92,19 +92,19 @@ public class Relation extends OwnedModelItem<Model> implements
         return onUpdate;
     }
 
-    public void setOnUpdate(CascadeType aOnUpdate) {
+    public void setOnUpdate(final CascadeType aOnUpdate) {
         onUpdate = aOnUpdate;
     }
 
     @Override
     public Relation clone() {
-        Relation theClone = new Relation();
+        final Relation theClone = new Relation();
         theClone.setImportingTable(getImportingTable());
         theClone.setExportingTable(getExportingTable());
         theClone.setOnDelete(getOnDelete());
         theClone.setOnUpdate(getOnUpdate());
         theClone.getProperties().copyFrom(getProperties());
-        for (IndexExpression theExpression : getMapping().keySet()) {
+        for (final IndexExpression theExpression : getMapping().keySet()) {
             theClone.getMapping().put(theExpression,
                     getMapping().get(theExpression));
         }
@@ -112,19 +112,19 @@ public class Relation extends OwnedModelItem<Model> implements
     }
 
     @Override
-    public void restoreFrom(Relation aValue) {
+    public void restoreFrom(final Relation aValue) {
         setName(aValue.getName());
         setImportingTable(aValue.getImportingTable());
         setExportingTable(aValue.getExportingTable());
         setOnDelete(aValue.getOnDelete());
         setOnUpdate(aValue.getOnUpdate());
         getProperties().copyFrom(aValue.getProperties());
-        for (IndexExpression theExpression : aValue.getMapping().keySet()) {
+        for (final IndexExpression theExpression : aValue.getMapping().keySet()) {
             mapping.put(theExpression, aValue.getMapping().get(theExpression));
         }
     }
 
-    public boolean isModified(Relation aRelation, boolean aUseName) {
+    public boolean isModified(final Relation aRelation, final boolean aUseName) {
         if (isStringModified(getName(), aRelation.getName())) {
             return true;
         }
@@ -139,9 +139,9 @@ public class Relation extends OwnedModelItem<Model> implements
             return true;
         }
 
-        List<Attribute> theMyAttributes = new ArrayList<>(mapping
+        final List<Attribute> theMyAttributes = new ArrayList<>(mapping
                 .values());
-        List<Attribute> theOtherAttributes = new ArrayList<>(aRelation
+        final List<Attribute> theOtherAttributes = new ArrayList<>(aRelation
                 .getMapping().values());
         if (theMyAttributes.size() != theOtherAttributes.size()) {
             return true;
@@ -173,12 +173,12 @@ public class Relation extends OwnedModelItem<Model> implements
      */
     public boolean isOneToOne() {
         boolean isOneToOne = false;
-        Index thePrimaryKey = importingTable.getPrimarykey();
+        final Index thePrimaryKey = importingTable.getPrimarykey();
         if (thePrimaryKey != null) {
-            int thePrimaryKeyLength = thePrimaryKey.getExpressions().size();
+            final int thePrimaryKeyLength = thePrimaryKey.getExpressions().size();
             if (thePrimaryKeyLength == mapping.size()) {
                 isOneToOne = true;
-                for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : mapping.entrySet()) {
+                for (final Map.Entry<IndexExpression, Attribute<Table>> theEntry : mapping.entrySet()) {
                     if (!theEntry.getValue().isPrimaryKey()) {
                         isOneToOne = false;
                     }
@@ -200,7 +200,7 @@ public class Relation extends OwnedModelItem<Model> implements
      */
     public boolean isIdentifying() {
         boolean isIdentifying = true;
-        for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : mapping.entrySet()) {
+        for (final Map.Entry<IndexExpression, Attribute<Table>> theEntry : mapping.entrySet()) {
             if (theEntry.getValue().isNullable()) {
                 isIdentifying = false;
             }

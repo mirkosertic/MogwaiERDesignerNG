@@ -33,32 +33,32 @@ public final class MessagesHelper {
 		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 	}
 
-	public static void displayErrorMessage(Component aParent, String aMessage) {
-		String theErrorText = getResourceHelper().getText(ERDesignerBundle.ERROR);
+	public static void displayErrorMessage(final Component aParent, final String aMessage) {
+		final String theErrorText = getResourceHelper().getText(ERDesignerBundle.ERROR);
 		displayErrorMessage(aParent, aMessage, theErrorText);
 	}
 
-	public static void displayErrorMessage(Component aParent, String aMessage, String aErrorText) {
+	public static void displayErrorMessage(final Component aParent, final String aMessage, final String aErrorText) {
 		JOptionPane.showMessageDialog(aParent, StringEscapeUtils.unescapeJava(aMessage), aErrorText, JOptionPane.ERROR_MESSAGE);
 	}
 
-	public static void displayInfoMessage(Component aParent, String aMessage) {
-		String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);
+	public static void displayInfoMessage(final Component aParent, final String aMessage) {
+		final String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);
 		displayInfoMessage(aParent, aMessage, theInfoText);
 	}
 
-	public static void displayInfoMessage(Component aParent, String aMessage, String anInfoText) {
+	public static void displayInfoMessage(final Component aParent, final String aMessage, final String anInfoText) {
 		JOptionPane.showMessageDialog(aParent, StringEscapeUtils.unescapeJava(aMessage), anInfoText, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public static boolean displayQuestionMessage(Component aParent, String aMessageKey, Object... aReplacementValues) {
-		String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
-		String theMessage = getResourceHelper().getFormattedText(aMessageKey, aReplacementValues);
+	public static boolean displayQuestionMessage(final Component aParent, final String aMessageKey, final Object... aReplacementValues) {
+		final String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
+		final String theMessage = getResourceHelper().getFormattedText(aMessageKey, aReplacementValues);
 
 		return displayQuestionMessage(aParent, theMessage, theQuestionText, aMessageKey, aReplacementValues);
 	}
 
-	public static boolean displayQuestionMessage(Component aParent, String aMessage, String aQuestionText, String aMessageKey, Object... aReplacementValues) {
+	public static boolean displayQuestionMessage(final Component aParent, final String aMessage, final String aQuestionText, final String aMessageKey, final Object... aReplacementValues) {
 		return JOptionPane.showConfirmDialog(aParent, StringEscapeUtils.unescapeJava(aMessage), StringEscapeUtils.unescapeJava(aQuestionText), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 	}
 }

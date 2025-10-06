@@ -33,40 +33,40 @@ import org.jgraph.graph.DefaultGraphCellEditor;
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
-    protected BaseEditor createEditDialogForValue(JComponent aParent, Object aValue) {
+    protected BaseEditor createEditDialogForValue(final JComponent aParent, final Object aValue) {
 
         if (aValue instanceof TableCell) {
-            TableCell theCell = (TableCell) aValue;
+            final TableCell theCell = (TableCell) aValue;
 
-            Table theTable = (Table) theCell.getUserObject();
+            final Table theTable = (Table) theCell.getUserObject();
             return EditorFactory.createEditorFor(theTable, aParent);
         }
 
         if (aValue instanceof ViewCell) {
-            ViewCell theCell = (ViewCell) aValue;
+            final ViewCell theCell = (ViewCell) aValue;
 
-            View theTable = (View) theCell.getUserObject();
+            final View theTable = (View) theCell.getUserObject();
             return EditorFactory.createEditorFor(theTable, aParent);
         }
 
         if (aValue instanceof SubjectAreaCell) {
-            SubjectAreaCell theCell = (SubjectAreaCell) aValue;
+            final SubjectAreaCell theCell = (SubjectAreaCell) aValue;
 
-            SubjectArea theSubjectArea = (SubjectArea) theCell.getUserObject();
+            final SubjectArea theSubjectArea = (SubjectArea) theCell.getUserObject();
             return EditorFactory.createEditorFor(theSubjectArea, aParent);
         }
 
         if (aValue instanceof CommentCell) {
-            CommentCell theCell = (CommentCell) aValue;
+            final CommentCell theCell = (CommentCell) aValue;
 
-            Comment theComment = (Comment) theCell.getUserObject();
+            final Comment theComment = (Comment) theCell.getUserObject();
             return EditorFactory.createEditorFor(theComment, aParent);
         }
 
         if (aValue instanceof RelationEdge) {
-            RelationEdge theCell = (RelationEdge) aValue;
+            final RelationEdge theCell = (RelationEdge) aValue;
 
-            Relation theRelation = (Relation) theCell.getUserObject();
+            final Relation theRelation = (Relation) theCell.getUserObject();
 
             return EditorFactory.createEditorFor(theRelation, aParent);
         }
@@ -75,16 +75,16 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
     }
 
     @Override
-    public Component getGraphCellEditorComponent(JGraph aGraph, Object aValue, boolean arg2) {
+    public Component getGraphCellEditorComponent(final JGraph aGraph, final Object aValue, final boolean arg2) {
 
-        BaseEditor theEditor = createEditDialogForValue(aGraph, aValue);
+        final BaseEditor theEditor = createEditDialogForValue(aGraph, aValue);
         theEditor.validate();
 
         return theEditor;
     }
 
     @Override
-    public boolean isCellEditable(EventObject aEvent) {
+    public boolean isCellEditable(final EventObject aEvent) {
         return true;
     }
 }

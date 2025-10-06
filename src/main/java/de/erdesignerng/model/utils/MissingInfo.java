@@ -19,7 +19,7 @@ package de.erdesignerng.model.utils;
 
 public class MissingInfo extends Info {
 
-	protected MissingInfo(String aKey, String aWhat) {
+	protected MissingInfo(final String aKey, final String aWhat) {
 		super(aKey, aWhat);
 	}
 }

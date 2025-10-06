@@ -42,8 +42,8 @@ public final class CheckboxCellRenderer extends JCheckBox implements TableCellRe
         initializer.initializeComponent(this);
     }
 
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-                                                   int row, int column) {
+    public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected, final boolean hasFocus,
+                                                   final int row, final int column) {
 
         if (value != null) {
             setSelected((Boolean) value);

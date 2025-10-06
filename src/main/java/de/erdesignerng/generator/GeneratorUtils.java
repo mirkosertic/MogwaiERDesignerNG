@@ -26,55 +26,36 @@ public final class GeneratorUtils {
 	private GeneratorUtils() {
 	}
 
-	public static String findClosestJavaTypeFor(DataType aType) {
+	public static String findClosestJavaTypeFor(final DataType aType) {
 		return findClosestJavaTypeFor(aType, true);
 	}
 
-	public static String findClosestJavaTypeFor(DataType aType, boolean aNullable) {
+	public static String findClosestJavaTypeFor(final DataType aType, final boolean aNullable) {
 		return findClosestJavaTypeFor(aType.getJDBCType()[0], aNullable);
 	}
 
-	public static String findClosestJavaTypeFor(int aJdbcType, boolean aNullable) {
-		switch (aJdbcType) {
-			case Types.CHAR:
-				return "String";
-			case Types.VARCHAR:
-				return "String";
-			case Types.LONGVARCHAR:
-				return "String";
-			case Types.NUMERIC:
-				return "java.math.BigDecimal";
-			case Types.DECIMAL:
-				return "java.math.BigDecimal";
-			case Types.BIT:
-				return aNullable ? "Boolean" : "boolean";
-			case Types.TINYINT:
-				return aNullable ? "Byte" : "byte";
-			case Types.SMALLINT:
-				return aNullable ? "Short" : "short";
-			case Types.INTEGER:
-				return aNullable ? "Integer" : "int";
-			case Types.BIGINT:
-				return aNullable ? "Long" : "long";
-			case Types.REAL:
-				return aNullable ? "Float" : "float";
-			case Types.FLOAT:
-				return aNullable ? "Double" : "double";
-			case Types.DOUBLE:
-				return aNullable ? "Double" : "double";
-			case Types.BINARY:
-				return "byte[]";
-			case Types.VARBINARY:
-				return "byte[]";
-			case Types.LONGVARBINARY:
-				return "byte[]";
-			case Types.DATE:
-				return "java.sql.Date";
-			case Types.TIME:
-				return "java.sql.Time";
-			case Types.TIMESTAMP:
-				return "java.sql.Timestamp";
-			}
-			return "String";
-	}
+	public static String findClosestJavaTypeFor(final int aJdbcType, final boolean aNullable) {
+        return switch (aJdbcType) {
+            case Types.CHAR -> "String";
+            case Types.VARCHAR -> "String";
+            case Types.LONGVARCHAR -> "String";
+            case Types.NUMERIC -> "java.math.BigDecimal";
+            case Types.DECIMAL -> "java.math.BigDecimal";
+            case Types.BIT -> aNullable ? "Boolean" : "boolean";
+            case Types.TINYINT -> aNullable ? "Byte" : "byte";
+            case Types.SMALLINT -> aNullable ? "Short" : "short";
+            case Types.INTEGER -> aNullable ? "Integer" : "int";
+            case Types.BIGINT -> aNullable ? "Long" : "long";
+            case Types.REAL -> aNullable ? "Float" : "float";
+            case Types.FLOAT -> aNullable ? "Double" : "double";
+            case Types.DOUBLE -> aNullable ? "Double" : "double";
+            case Types.BINARY -> "byte[]";
+            case Types.VARBINARY -> "byte[]";
+            case Types.LONGVARBINARY -> "byte[]";
+            case Types.DATE -> "java.sql.Date";
+            case Types.TIME -> "java.sql.Time";
+            case Types.TIMESTAMP -> "java.sql.Timestamp";
+            default -> "String";
+        };
+    }
 }

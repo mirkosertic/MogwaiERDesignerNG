@@ -42,15 +42,15 @@ public class ExceptionEditor extends BaseEditor {
 
 	private final DefaultAction closeAction = new DefaultAction(e -> commandClose(), this, ERDesignerBundle.CLOSE);
 
-	public ExceptionEditor(Component aParent, Exception aException) {
+	public ExceptionEditor(final Component aParent, final Exception aException) {
 		super(aParent, ERDesignerBundle.EXCEPTIONWINDOW);
 
 		LOGGER.error("Exception", aException);
 
 		initialize();
 
-		StringWriter theWriter = new StringWriter();
-		PrintWriter thePrintWriter = new PrintWriter(theWriter);
+		final StringWriter theWriter = new StringWriter();
+		final PrintWriter thePrintWriter = new PrintWriter(theWriter);
 		aException.printStackTrace(thePrintWriter);
 		thePrintWriter.flush();
 
@@ -69,7 +69,7 @@ public class ExceptionEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 	}
 
 	private void commandClose() {

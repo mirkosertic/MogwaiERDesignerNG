@@ -37,7 +37,7 @@ import org.jgraph.graph.VertexView;
 public class CellViewFactory extends DefaultCellViewFactory {
 
     @Override
-    protected VertexView createVertexView(Object aVertex) {
+    protected VertexView createVertexView(final Object aVertex) {
         if (aVertex instanceof TableCell) {
             return new TableCellView((TableCell) aVertex);
         }
@@ -55,7 +55,7 @@ public class CellViewFactory extends DefaultCellViewFactory {
     }
 
     @Override
-    protected EdgeView createEdgeView(Object aObject) {
+    protected EdgeView createEdgeView(final Object aObject) {
         if (aObject instanceof RelationEdge) {
             return new RelationEdgeView((RelationEdge) aObject);
         }
@@ -63,7 +63,7 @@ public class CellViewFactory extends DefaultCellViewFactory {
     }
 
     @Override
-    protected PortView createPortView(Object cell) {
+    protected PortView createPortView(final Object cell) {
         if (cell instanceof DefaultPort) {
             return new DefaultPortView(cell);
         }

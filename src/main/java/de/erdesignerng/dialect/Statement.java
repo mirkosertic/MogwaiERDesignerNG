@@ -25,7 +25,7 @@ public class Statement {
 
 	private boolean saved;
 
-	public Statement(String aSQL) {
+	public Statement(final String aSQL) {
 		sql = aSQL;
 	}
 
@@ -46,7 +46,7 @@ public class Statement {
 	/**
 	 * @param executed the executed to set
 	 */
-	public void setExecuted(boolean executed) {
+	public void setExecuted(final boolean executed) {
 		this.executed = executed;
 	}
 
@@ -60,7 +60,7 @@ public class Statement {
 	/**
 	 * @param saved the saved to set
 	 */
-	public void setSaved(boolean saved) {
+	public void setSaved(final boolean saved) {
 		this.saved = saved;
 	}
 

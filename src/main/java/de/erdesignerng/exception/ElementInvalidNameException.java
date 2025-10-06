@@ -25,7 +25,7 @@ public class ElementInvalidNameException extends ModelException {
 
 	private static final long serialVersionUID = -3853933090405919607L;
 
-	public ElementInvalidNameException(String aMessage) {
+	public ElementInvalidNameException(final String aMessage) {
 		super(aMessage);
 	}
 }

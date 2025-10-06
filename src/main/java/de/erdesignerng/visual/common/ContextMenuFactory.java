@@ -39,22 +39,22 @@ public final class ContextMenuFactory {
     private ContextMenuFactory() {
     }
 
-    public static void addActionsToMenu(GenericModelEditor aEditor,
-                                        JPopupMenu aMenu,
-                                        List<ModelItem> aItemList) {
+    public static void addActionsToMenu(final GenericModelEditor aEditor,
+                                        final JPopupMenu aMenu,
+                                        final List<ModelItem> aItemList) {
 
-        ResourceHelper theHelper = ResourceHelper
+        final ResourceHelper theHelper = ResourceHelper
                 .getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
         final List<ModelItem> theNewSubjectAreaItems = new ArrayList<>();
         final List<ModelItem> theItemsToBeDeleted = new ArrayList<>();
 
-        for (ModelItem theUserObject : aItemList) {
+        for (final ModelItem theUserObject : aItemList) {
             if (theUserObject instanceof Table) {
 
-                Table theTable = (Table) theUserObject;
+                final Table theTable = (Table) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
+                final JMenuItem theEditItem = new JMenuItem();
                 theEditItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.EDITTABLE, theTable.getName()));
                 theEditItem.addActionListener(new EditTableCommand(theTable));
@@ -62,11 +62,11 @@ public final class ContextMenuFactory {
 
                 final Table theClone = theTable.createCopy();
 
-                Point2D theLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+                final Point2D theLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
                 final Point2D theNewLocation = new Point2D.Double(theLocation.getX() + 20, theLocation.getY() + 20);
                 theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX(), (int) theNewLocation.getY());
 
-                JMenuItem theCloneItem = new JMenuItem();
+                final JMenuItem theCloneItem = new JMenuItem();
                 theCloneItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.CLONETABLE, theTable.getName()));
                 theCloneItem.addActionListener(new EditTableCommand(theClone) {
@@ -78,7 +78,7 @@ public final class ContextMenuFactory {
 
                 aMenu.add(theCloneItem);
 
-                JMenuItem theDataBrowserItem = new JMenuItem();
+                final JMenuItem theDataBrowserItem = new JMenuItem();
                 theDataBrowserItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.SHOWDATAOF, theTable.getName()));
                 theDataBrowserItem.addActionListener(new DataBrowserCommand(theTable));
@@ -86,14 +86,14 @@ public final class ContextMenuFactory {
                 aMenu.add(theDataBrowserItem);
 
                 if (aEditor.supportShowingAndHidingOfRelations()) {
-                    JMenuItem theHideRelationsItem = new JMenuItem();
+                    final JMenuItem theHideRelationsItem = new JMenuItem();
                     theHideRelationsItem.setText(theHelper.getFormattedText(
                             ERDesignerBundle.HIDEALLRELATIONSFOR, theTable.getName()));
                     theHideRelationsItem.addActionListener(new ShowHideTableRelationsCommand(theTable, false));
 
                     aMenu.add(theHideRelationsItem);
 
-                    JMenuItem theShowRelationsItem = new JMenuItem();
+                    final JMenuItem theShowRelationsItem = new JMenuItem();
                     theShowRelationsItem.setText(theHelper.getFormattedText(
                             ERDesignerBundle.SHOWALLRELATIONSFOR, theTable.getName()));
                     theShowRelationsItem.addActionListener(new ShowHideTableRelationsCommand(theTable, true));
@@ -106,20 +106,20 @@ public final class ContextMenuFactory {
             }
             if (theUserObject instanceof View) {
 
-                View theView = (View) theUserObject;
+                final View theView = (View) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
+                final JMenuItem theEditItem = new JMenuItem();
                 theEditItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.EDITVIEW, theView.getName()));
                 theEditItem.addActionListener(new EditViewCommand(theView));
 
                 final View theClone = theView.createCopy();
 
-                Point2D theLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+                final Point2D theLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
                 final Point2D theNewLocation = new Point2D.Double(theLocation.getX() + 20, theLocation.getY() + 20);
                 theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX(), (int) theNewLocation.getY());
 
-                JMenuItem theCloneItem = new JMenuItem();
+                final JMenuItem theCloneItem = new JMenuItem();
                 theCloneItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.CLONEVIEW, theClone.getName()));
                 theCloneItem.addActionListener(new EditViewCommand(theClone) {
@@ -131,7 +131,7 @@ public final class ContextMenuFactory {
 
                 aMenu.add(theCloneItem);
 
-                JMenuItem theDataBrowserItem = new JMenuItem();
+                final JMenuItem theDataBrowserItem = new JMenuItem();
                 theDataBrowserItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.SHOWDATAOF, theView.getName()));
                 theDataBrowserItem.addActionListener(new DataBrowserCommand(theView));
@@ -145,9 +145,9 @@ public final class ContextMenuFactory {
             }
             if (theUserObject instanceof Relation) {
 
-                Relation theRelation = (Relation) theUserObject;
+                final Relation theRelation = (Relation) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
+                final JMenuItem theEditItem = new JMenuItem();
                 theEditItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.EDITRELATION, theRelation.getName()));
                 theEditItem.addActionListener(new EditRelationCommand(theRelation));
@@ -156,8 +156,8 @@ public final class ContextMenuFactory {
                 theItemsToBeDeleted.add(theRelation);
             }
             if (theUserObject instanceof Comment) {
-                Comment theComment = (Comment) theUserObject;
-                JMenuItem theEditItem = new JMenuItem();
+                final Comment theComment = (Comment) theUserObject;
+                final JMenuItem theEditItem = new JMenuItem();
                 theEditItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.EDITCOMMENT, theComment.getName()));
                 theEditItem.addActionListener(new EditCommentCommand(aEditor, theComment));
@@ -168,9 +168,9 @@ public final class ContextMenuFactory {
 
             if (theUserObject instanceof CustomType) {
 
-                CustomType theCustomType = (CustomType) theUserObject;
+                final CustomType theCustomType = (CustomType) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
+                final JMenuItem theEditItem = new JMenuItem();
                 theEditItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.EDITCUSTOMTYPE, theCustomType
                         .getName()));
@@ -181,9 +181,9 @@ public final class ContextMenuFactory {
             }
             if (theUserObject instanceof Domain) {
 
-                Domain theDomain = (Domain) theUserObject;
+                final Domain theDomain = (Domain) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
+                final JMenuItem theEditItem = new JMenuItem();
                 theEditItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.EDITDOMAIN, theDomain.getName()));
                 theEditItem.addActionListener(new EditDomainCommand(theDomain));
@@ -194,7 +194,7 @@ public final class ContextMenuFactory {
             if (theUserObject instanceof SubjectArea) {
 
                 final SubjectArea theSubjectArea = (SubjectArea) theUserObject;
-                JMenuItem theEditItem = new JMenuItem();
+                final JMenuItem theEditItem = new JMenuItem();
                 theEditItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.EDITSUBJECTAREA, theSubjectArea
                         .getName()));
@@ -203,9 +203,9 @@ public final class ContextMenuFactory {
                 aMenu.add(theEditItem);
 
                 if (theSubjectArea.isVisible()) {
-                    DefaultAction theHideAction = new DefaultAction(
+                    final DefaultAction theHideAction = new DefaultAction(
                             ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.HIDE);
-                    DefaultMenuItem theHideMenuItem = new DefaultMenuItem(theHideAction);
+                    final DefaultMenuItem theHideMenuItem = new DefaultMenuItem(theHideAction);
                     theHideAction.addActionListener(e -> ERDesignerComponent.getDefault().commandHideSubjectArea(theSubjectArea));
 
                     aMenu.add(theHideMenuItem);
@@ -214,11 +214,11 @@ public final class ContextMenuFactory {
             }
 
             if (theUserObject instanceof Attribute) {
-                Attribute theAttribute = (Attribute) theUserObject;
+                final Attribute theAttribute = (Attribute) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
+                final JMenuItem theEditItem = new JMenuItem();
                 theEditItem.setText(theHelper.getFormattedText(ERDesignerBundle.EDITATTRIBUTE, theAttribute.getName()));
-                ModelItem theOwner = theAttribute.getOwner();
+                final ModelItem theOwner = theAttribute.getOwner();
                 if (theOwner instanceof Table) {
                     theEditItem.addActionListener(new EditTableCommand((Table) theOwner, theAttribute));
                 }
@@ -228,9 +228,9 @@ public final class ContextMenuFactory {
 
             if (theUserObject instanceof Index) {
 
-                Index theIndex = (Index) theUserObject;
+                final Index theIndex = (Index) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
+                final JMenuItem theEditItem = new JMenuItem();
                 theEditItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.EDITINDEX, theIndex.getName()));
                 theEditItem.addActionListener(new EditTableCommand(theIndex.getOwner(), theIndex));
@@ -239,12 +239,12 @@ public final class ContextMenuFactory {
             }
         }
 
-        if (theNewSubjectAreaItems.size() > 0 && aEditor.supportsSubjectAreas()) {
+        if (!theNewSubjectAreaItems.isEmpty() && aEditor.supportsSubjectAreas()) {
 
-            DefaultAction theAddAction = new DefaultAction(
+            final DefaultAction theAddAction = new DefaultAction(
                     ERDesignerBundle.BUNDLE_NAME,
                     ERDesignerBundle.ADDTONEWSUBJECTAREA);
-            DefaultMenuItem theAddItem = new DefaultMenuItem(theAddAction);
+            final DefaultMenuItem theAddItem = new DefaultMenuItem(theAddAction);
             theAddAction.addActionListener(e -> ERDesignerComponent.getDefault()
                     .commandAddToNewSubjectArea(theNewSubjectAreaItems));
 
@@ -252,11 +252,11 @@ public final class ContextMenuFactory {
             aMenu.add(theAddItem);
         }
 
-        if (theItemsToBeDeleted.size() > 0 && aEditor.supportsDeletionOfObjects()) {
+        if (!theItemsToBeDeleted.isEmpty() && aEditor.supportsDeletionOfObjects()) {
 
-            DefaultAction theDeleteAction = new DefaultAction(
+            final DefaultAction theDeleteAction = new DefaultAction(
                     ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
-            DefaultMenuItem theDeleteItem = new DefaultMenuItem(theDeleteAction);
+            final DefaultMenuItem theDeleteItem = new DefaultMenuItem(theDeleteAction);
             theDeleteAction.addActionListener(e -> ERDesignerComponent.getDefault().commandDelete(theItemsToBeDeleted));
             aMenu.addSeparator();
             aMenu.add(theDeleteItem);

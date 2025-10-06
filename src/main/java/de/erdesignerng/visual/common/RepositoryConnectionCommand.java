@@ -28,12 +28,12 @@ public class RepositoryConnectionCommand extends UICommand {
     @Override
     public void execute() {
 
-        RepositoryConnectionEditor theEditor = new RepositoryConnectionEditor(
+        final RepositoryConnectionEditor theEditor = new RepositoryConnectionEditor(
                 getDetailComponent());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

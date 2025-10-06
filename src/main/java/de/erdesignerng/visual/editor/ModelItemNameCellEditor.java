@@ -33,36 +33,36 @@ public class ModelItemNameCellEditor<T extends ModelItem> extends DefaultCellEdi
     private T currentAttribute;
     private final Dialect dialect;
 
-    public ModelItemNameCellEditor(Dialect aDialect) {
+    public ModelItemNameCellEditor(final Dialect aDialect) {
         super(new DefaultTextField());
         dialect = aDialect;
     }
 
     @Override
-    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+    public Component getTableCellEditorComponent(final JTable table, final Object value, final boolean isSelected, final int row, final int column) {
 
         model = (ModelItemTableModel<T>) table.getModel();
         currentAttribute = model.getRow(row);
 
-        DefaultTextField theTextfield = (DefaultTextField) getComponent();
+        final DefaultTextField theTextfield = (DefaultTextField) getComponent();
         theTextfield.setBorder(BorderFactory.createLineBorder(Color.black));
 
         return super.getTableCellEditorComponent(table, value, isSelected, row, column);
     }
 
-    private boolean isValidInput(DefaultTextField aTextfield) {
+    private boolean isValidInput(final DefaultTextField aTextfield) {
 
-        String theTempName = aTextfield.getText();
+        final String theTempName = aTextfield.getText();
         try {
             dialect.checkName(theTempName);
-        } catch (ElementInvalidNameException e) {
+        } catch (final ElementInvalidNameException e) {
             return false;
         }
 
         for (int i = 0; i < model.getRowCount(); i++) {
-            T theTempAttribute = model.getRow(i);
+            final T theTempAttribute = model.getRow(i);
             if (theTempAttribute != currentAttribute) {
-                boolean theSame;
+                final boolean theSame;
                 if (dialect.isCaseSensitive()) {
                     theSame = theTempAttribute.getName().equals(theTempName);
                 } else {
@@ -78,7 +78,7 @@ public class ModelItemNameCellEditor<T extends ModelItem> extends DefaultCellEdi
 
     @Override
     public boolean stopCellEditing() {
-        DefaultTextField theTextfield = (DefaultTextField) getComponent();
+        final DefaultTextField theTextfield = (DefaultTextField) getComponent();
         if (isValidInput(theTextfield)) {
             return super.stopCellEditing();
         }

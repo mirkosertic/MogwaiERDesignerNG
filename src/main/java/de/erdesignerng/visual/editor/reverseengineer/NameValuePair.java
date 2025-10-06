@@ -23,7 +23,7 @@ public class NameValuePair {
 
 	private final String displayName;
 
-	public NameValuePair(Object aValue, String aDisplayName) {
+	public NameValuePair(final Object aValue, final String aDisplayName) {
 		value = aValue;
 		displayName = aDisplayName;
 	}

@@ -46,9 +46,9 @@ public class RelationList extends ModelItemVector<Relation> {
 		}
 	}
 
-	private void addToForeignKeyCache(Relation theRelation) {
+	private void addToForeignKeyCache(final Relation theRelation) {
 		synchronized (foreignKeyCache) {
-			Map<IndexExpression, Attribute<Table>> theMap = theRelation.getMapping();
+			final Map<IndexExpression, Attribute<Table>> theMap = theRelation.getMapping();
 			foreignKeyCache.addAll(theMap.values());
 		}
 	}
@@ -59,7 +59,7 @@ public class RelationList extends ModelItemVector<Relation> {
 	 * @param aAttribute the attribute
 	 * @return true if yes, else false
 	 */
-	public boolean isForeignKeyAttribute(Attribute<Table> aAttribute) {
+	public boolean isForeignKeyAttribute(final Attribute<Table> aAttribute) {
 		synchronized (foreignKeyCache) {
 			return foreignKeyCache.contains(aAttribute);
 		}
@@ -70,10 +70,10 @@ public class RelationList extends ModelItemVector<Relation> {
 	 *
 	 * @param aTable the table
 	 */
-	public void removeByTable(Table aTable) {
-		List<Relation> theRelationsToRemove = new ArrayList<>();
+	public void removeByTable(final Table aTable) {
+		final List<Relation> theRelationsToRemove = new ArrayList<>();
 
-		for (Relation theRelation : this) {
+		for (final Relation theRelation : this) {
 			if (theRelation.getImportingTable().equals(aTable)) {
 				theRelationsToRemove.add(theRelation);
 			} else {
@@ -87,15 +87,14 @@ public class RelationList extends ModelItemVector<Relation> {
 		updateForeignKeyCache();
 	}
 
-	public RelationList getAllRelataionsOf(Table aTable) {
-		RelationList theResult = this.stream().filter(theRelation -> (theRelation.getImportingTable().getName().equalsIgnoreCase(aTable.getName())) || (theRelation.getExportingTable().getName().equalsIgnoreCase(aTable.getName()))).collect(Collectors.toCollection(() -> new RelationList()));
+	public RelationList getAllRelataionsOf(final Table aTable) {
 
-        return theResult;
+        return this.stream().filter(theRelation -> (theRelation.getImportingTable().getName().equalsIgnoreCase(aTable.getName())) || (theRelation.getExportingTable().getName().equalsIgnoreCase(aTable.getName()))).collect(Collectors.toCollection(RelationList::new));
 	}
 
-	public List<Relation> getForeignKeysFor(Table aTable) {
-		List<Relation> theResult = new ArrayList<>();
-		List<Relation> theByImportingTable = relationsByImportingTable.get(aTable);
+	public List<Relation> getForeignKeysFor(final Table aTable) {
+		final List<Relation> theResult = new ArrayList<>();
+		final List<Relation> theByImportingTable = relationsByImportingTable.get(aTable);
 
 		if (theByImportingTable != null) {
 			theResult.addAll(theByImportingTable);
@@ -104,9 +103,9 @@ public class RelationList extends ModelItemVector<Relation> {
 		return theResult;
 	}
 
-	public List<Relation> getExportedKeysFor(Table aTable) {
-		List<Relation> theResult = new ArrayList<>();
-		List<Relation> theByExportingTable = relationsByExportingTable.get(aTable);
+	public List<Relation> getExportedKeysFor(final Table aTable) {
+		final List<Relation> theResult = new ArrayList<>();
+		final List<Relation> theByExportingTable = relationsByExportingTable.get(aTable);
 
 		if (theByExportingTable != null) {
 			theResult.addAll(theByExportingTable);
@@ -116,30 +115,20 @@ public class RelationList extends ModelItemVector<Relation> {
 	}
 
 	@Override
-	public boolean add(Relation e) {
-		List<Relation> byImporting = relationsByImportingTable.get(e.getImportingTable());
+	public boolean add(final Relation e) {
+        final List<Relation> byImporting = relationsByImportingTable.computeIfAbsent(e.getImportingTable(), k -> new ArrayList<>());
 
-		if (byImporting == null) {
-			byImporting = new ArrayList<>();
-			relationsByImportingTable.put(e.getImportingTable(), byImporting);
-		}
-
-		if (!byImporting.contains(e)) {
+        if (!byImporting.contains(e)) {
 			byImporting.add(e);
 		}
 
-		List<Relation> byExporting = relationsByExportingTable.get(e.getExportingTable());
+        final List<Relation> byExporting = relationsByExportingTable.computeIfAbsent(e.getExportingTable(), k -> new ArrayList<>());
 
-		if (byExporting == null) {
-			byExporting = new ArrayList<>();
-			relationsByExportingTable.put(e.getExportingTable(), byExporting);
-		}
-
-		if (!byExporting.contains(e)) {
+        if (!byExporting.contains(e)) {
 			byExporting.add(e);
 		}
 
-		boolean theResult = super.add(e);
+		final boolean theResult = super.add(e);
 
 		addToForeignKeyCache(e);
 
@@ -147,14 +136,14 @@ public class RelationList extends ModelItemVector<Relation> {
 	}
 
 	@Override
-	public boolean remove(Object o) {
+	public boolean remove(final Object o) {
 		if (o instanceof Relation) {
-			Relation theRelation = (Relation) o;
+			final Relation theRelation = (Relation) o;
 			relationsByExportingTable.remove(theRelation.getExportingTable());
 			relationsByImportingTable.remove(theRelation.getImportingTable());
 		}
 
-		boolean theResult = super.remove(o);
+		final boolean theResult = super.remove(o);
 
 		updateForeignKeyCache();
 

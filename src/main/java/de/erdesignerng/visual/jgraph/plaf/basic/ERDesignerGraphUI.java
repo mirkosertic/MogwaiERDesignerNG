@@ -61,7 +61,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 
     private final JGraphEditor erdesigner;
 
-    public ERDesignerGraphUI(JGraphEditor aComponent) {
+    public ERDesignerGraphUI(final JGraphEditor aComponent) {
         erdesigner = aComponent;
     }
 
@@ -84,7 +84,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
     public class MyMouseHandler extends MouseHandler {
 
         @Override
-        public void mouseWheelMoved(MouseWheelEvent e) {
+        public void mouseWheelMoved(final MouseWheelEvent e) {
             if (e.isControlDown()) {
                 if (e.getWheelRotation() < 0) {
                     erdesigner.commandZoomOneLevelIn();
@@ -95,18 +95,18 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void mousePressed(final MouseEvent e) {
             handler = null;
             if (!e.isConsumed() && graph.isEnabled()) {
                 graph.requestFocus();
-                int s = graph.getTolerance();
-                Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
+                final int s = graph.getTolerance();
+                final Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
                         2 * s));
                 lastFocus = focus;
                 focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
                 cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
                 if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
-                    CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
+                    final CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
                     if (theTemp != null) {
                         cell = theTemp;
                     }
@@ -115,8 +115,8 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 focus = cell;
                 // }
                 completeEditing();
-                boolean isForceMarquee = isForceMarqueeEvent(e);
-                boolean isEditable = graph.isGroupsEditable() || (focus != null && focus.isLeaf());
+                final boolean isForceMarquee = isForceMarqueeEvent(e);
+                final boolean isEditable = graph.isGroupsEditable() || (focus != null && focus.isLeaf());
                 if (!isForceMarquee) {
                     if (e.getClickCount() == graph.getEditClickCount() && focus != null && isEditable
                             && graph.isCellEditable(focus.getCell()) && handleEditTrigger(cell.getCell(), e)) {
@@ -150,33 +150,33 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         }
 
         @Override
-        public void mouseDragged(MouseEvent e) {
+        public void mouseDragged(final MouseEvent e) {
             super.mouseDragged(e);
 
-            ERDesignerGraph theGraph = (ERDesignerGraph) graph;
+            final ERDesignerGraph theGraph = (ERDesignerGraph) graph;
             theGraph.setDragging(true);
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void mouseReleased(final MouseEvent e) {
             super.mouseReleased(e);
 
-            ERDesignerGraph theGraph = (ERDesignerGraph) graph;
+            final ERDesignerGraph theGraph = (ERDesignerGraph) graph;
             theGraph.setDragging(false);
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mouseClicked(final MouseEvent e) {
 
-            int s = graph.getTolerance();
+            final int s = graph.getTolerance();
 
-            Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
+            final Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
                     2 * s));
             lastFocus = focus;
             focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
             cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
             if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
-                CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
+                final CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
                 if (theTemp != null) {
                     cell = theTemp;
                 }
@@ -189,17 +189,17 @@ public class ERDesignerGraphUI extends BasicGraphUI {
             if (e.getClickCount() == 1 && !SwingUtilities.isRightMouseButton(e)) {
                 // Check if the user clicked a subject area
                 if (cell instanceof SubjectAreaCellView) {
-                    SubjectAreaCellView theView = (SubjectAreaCellView) cell;
-                    SubjectAreaCell theCell = (SubjectAreaCell) theView.getCell();
+                    final SubjectAreaCellView theView = (SubjectAreaCellView) cell;
+                    final SubjectAreaCell theCell = (SubjectAreaCell) theView.getCell();
 
-                    Rectangle2D theBounds = theView.getBounds();
-                    Point2D theClickPoint = graph.fromScreen(e.getPoint());
+                    final Rectangle2D theBounds = theView.getBounds();
+                    final Point2D theClickPoint = graph.fromScreen(e.getPoint());
 
                     // Check if user clicked on top left corner
                     if ((theClickPoint.getX() > theBounds.getX() + 5 && theClickPoint.getX() < theBounds.getX() + 20)
                             && (theClickPoint.getY() > theBounds.getY() + 5 && theClickPoint.getY() < theBounds.getY() + 20)) {
 
-                        ERDesignerGraph theGraph = (ERDesignerGraph) graph;
+                        final ERDesignerGraph theGraph = (ERDesignerGraph) graph;
 
                         // Yes, so toggle collapsed / expanded state
                         if (!theCell.isExpanded()) {
@@ -224,20 +224,20 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 graph.scrollCellToVisible(cell.getCell());
 
                 if (SwingUtilities.isRightMouseButton(e)) {
-                    List<DefaultGraphCell> theSelectionList = new ArrayList<>();
-                    for (Object theSelection : graph.getSelectionCells()) {
+                    final List<DefaultGraphCell> theSelectionList = new ArrayList<>();
+                    for (final Object theSelection : graph.getSelectionCells()) {
                         if (theSelection instanceof DefaultGraphCell) {
                             theSelectionList.add((DefaultGraphCell) theSelection);
                         }
                     }
 
-                    DefaultPopupMenu theMenu = createPopupMenu(theSelectionList);
+                    final DefaultPopupMenu theMenu = createPopupMenu(theSelectionList);
                     theMenu.show(graph, e.getX(), e.getY());
                 }
                 e.consume();
             } else {
                 if (marquee instanceof BaseTool) {
-                    BaseTool theTool = (BaseTool) marquee;
+                    final BaseTool theTool = (BaseTool) marquee;
                     if (theTool.startCreateNew(e)) {
                         e.consume();
                     }
@@ -246,16 +246,16 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         }
 
         @Override
-        protected void postProcessSelection(MouseEvent aEvent, Object aCell, boolean aWasSelected) {
+        protected void postProcessSelection(final MouseEvent aEvent, final Object aCell, final boolean aWasSelected) {
         }
     }
 
-    private DefaultPopupMenu createPopupMenu(List<DefaultGraphCell> aCells) {
+    private DefaultPopupMenu createPopupMenu(final List<DefaultGraphCell> aCells) {
 
-        DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
+        final DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
                 .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-        List<ModelItem> theItems = aCells.stream().map(theCell -> (ModelItem) theCell.getUserObject()).collect(Collectors.toList());
+        final List<ModelItem> theItems = aCells.stream().map(theCell -> (ModelItem) theCell.getUserObject()).collect(Collectors.toList());
 
         ContextMenuFactory.addActionsToMenu(erdesigner, theMenu, theItems);
 
@@ -270,11 +270,11 @@ public class ERDesignerGraphUI extends BasicGraphUI {
     }
 
     @Override
-    protected boolean startEditing(Object cell, MouseEvent event) {
+    protected boolean startEditing(final Object cell, final MouseEvent event) {
         completeEditing();
 
         if (graph.isCellEditable(cell)) {
-            CellView tmp = graphLayoutCache.getMapping(cell, false);
+            final CellView tmp = graphLayoutCache.getMapping(cell, false);
             cellEditor = tmp.getEditor();
             editingComponent = cellEditor.getGraphCellEditorComponent(graph, cell, graph.isCellSelected(cell));
             if (cellEditor.isCellEditable(event)) {
@@ -286,7 +286,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                     stopEditingInCompleteEditing = false;
                     try {
                         graph.setSelectionCell(cell);
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         LOGGER.error("Error setting selection cell", e);
                     }
                     stopEditingInCompleteEditing = true;
@@ -296,7 +296,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                      * Find the component that will get forwarded all the mouse
                      * events until mouseReleased.
                      */
-                Point componentPoint = SwingUtilities.convertPoint(graph, new Point(event.getX(), event.getY()),
+                final Point componentPoint = SwingUtilities.convertPoint(graph, new Point(event.getX(), event.getY()),
                         editingComponent);
 
                 /*
@@ -305,13 +305,13 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                      */
                 // We really want similar behavior to getMouseEventTarget,
                 // but it is package private.
-                Component activeComponent = SwingUtilities.getDeepestComponentAt(editingComponent, componentPoint.x,
+                final Component activeComponent = SwingUtilities.getDeepestComponentAt(editingComponent, componentPoint.x,
                         componentPoint.y);
                 if (activeComponent != null) {
                     new MouseInputHandler(graph, activeComponent, event);
                 }
 
-                BaseEditor theDialog = (BaseEditor) editingComponent;
+                final BaseEditor theDialog = (BaseEditor) editingComponent;
                 event.consume();
                 if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
                     try {
@@ -320,7 +320,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                         erdesigner.commandNotifyAboutEdit();
 
                         OutlineComponent.getDefault().refresh(ERDesignerComponent.getDefault().getModel());
-                    } catch (Exception e1) {
+                    } catch (final Exception e1) {
                         ERDesignerComponent.getDefault().getWorldConnector().notifyAboutException(e1);
                     }
                 }
@@ -329,7 +329,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 
                 // Mark the cell as edited, so it is resized during
                 // redisplay to its new preferred size
-                DefaultGraphCell theCell = (DefaultGraphCell) editingCell;
+                final DefaultGraphCell theCell = (DefaultGraphCell) editingCell;
                 graph.getGraphLayoutCache().editCell(theCell, theCell.getAttributes());
 
                 graph.invalidate();
@@ -342,7 +342,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
     }
 
     @Override
-    public boolean isEditing(JGraph aGraph) {
+    public boolean isEditing(final JGraph aGraph) {
         return false;
     }
 
@@ -353,16 +353,16 @@ public class ERDesignerGraphUI extends BasicGraphUI {
      * @param realClipBounds
      */
     @Override
-    protected void paintCells(Graphics g, Rectangle2D realClipBounds) {
-        CellView[] views = graphLayoutCache.getRoots();
-        List<CellView> edges = new ArrayList<>();
+    protected void paintCells(final Graphics g, final Rectangle2D realClipBounds) {
+        final CellView[] views = graphLayoutCache.getRoots();
+        final List<CellView> edges = new ArrayList<>();
 
         // Draw everything except of edges
-        for (CellView theView : views) {
+        for (final CellView theView : views) {
             if (theView instanceof EdgeView) {
                 edges.add(theView);
             } else {
-                Rectangle2D bounds = theView.getBounds();
+                final Rectangle2D bounds = theView.getBounds();
                 if (bounds != null) {
                     if (realClipBounds == null) {
                         paintCell(g, theView, bounds, false);
@@ -374,8 +374,8 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         }
 
         // Finally draw the edges
-        for (CellView theView : edges) {
-            Rectangle2D bounds = theView.getBounds();
+        for (final CellView theView : edges) {
+            final Rectangle2D bounds = theView.getBounds();
             if (bounds != null) {
                 if (realClipBounds == null) {
                     paintCell(g, theView, bounds, false);

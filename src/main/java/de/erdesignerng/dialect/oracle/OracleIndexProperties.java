@@ -27,7 +27,7 @@ public class OracleIndexProperties extends IndexProperties {
         return tableSpace;
     }
 
-    public void setTableSpace(String tableSpace) {
+    public void setTableSpace(final String tableSpace) {
         this.tableSpace = tableSpace;
     }
 }

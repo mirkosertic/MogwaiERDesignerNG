@@ -52,38 +52,32 @@ public class OpenXavaGenerator {
     public OpenXavaGenerator() {
     }
 
-    private CompilationUnit createNewCompilationUnit(String aPackageName, String aMainTypeName) {
-        CompilationUnit theUnit = new CompilationUnit();
+    private CompilationUnit createNewCompilationUnit(final String aPackageName, final String aMainTypeName) {
+        final CompilationUnit theUnit = new CompilationUnit();
         if (!StringUtils.isEmpty(aPackageName)) {
             theUnit.setPackage(new PackageDeclaration(ASTHelper.createNameExpr(aPackageName)));
         }
-        List<ImportDeclaration> theImports = new ArrayList<>();
+        final List<ImportDeclaration> theImports = new ArrayList<>();
         theImports.add(new ImportDeclaration(ASTHelper.createNameExpr("java.util"), false, true));
         theImports.add(new ImportDeclaration(ASTHelper.createNameExpr("javax.persistence"), false, true));
         theImports.add(new ImportDeclaration(ASTHelper.createNameExpr("org.openxava.annotations"), false, true));
         theUnit.setImports(theImports);
-        ClassOrInterfaceDeclaration theType = new ClassOrInterfaceDeclaration(ModifierSet.PUBLIC, false, aMainTypeName);
+        final ClassOrInterfaceDeclaration theType = new ClassOrInterfaceDeclaration(ModifierSet.PUBLIC, false, aMainTypeName);
         ASTHelper.addTypeDeclaration(theUnit, theType);
         return theUnit;
     }
 
-    private CompilationUnit createCompilationUnitFromFile(File aFile) throws IOException {
-        FileInputStream theStream = null;
-        try {
-            theStream = new FileInputStream(aFile);
+    private CompilationUnit createCompilationUnitFromFile(final File aFile) throws IOException {
+        try (final FileInputStream theStream = new FileInputStream(aFile)) {
             return JavaParser.parse(theStream);
-        } catch (ParseException e) {
+        } catch (final ParseException e) {
             throw new IOException(e);
-        } finally {
-            if (theStream != null) {
-                theStream.close();
-            }
         }
     }
 
-    public void generate(Model aModel, OpenXavaOptions aOptions) throws IOException {
+    public void generate(final Model aModel, final OpenXavaOptions aOptions) throws IOException {
 
-        String thePackageName = aOptions.getPackageName();
+        final String thePackageName = aOptions.getPackageName();
 
         File theTargetDirectory = new File(aOptions.getSrcDirectory());
         if (!StringUtils.isEmpty(thePackageName)) {
@@ -97,13 +91,13 @@ public class OpenXavaGenerator {
             theTargetDirectory.mkdirs();
         }
 
-        for (Table theTable : aModel.getTables()) {
-            String theTableClassName = aOptions.createTableName(theTable.getName());
+        for (final Table theTable : aModel.getTables()) {
+            final String theTableClassName = aOptions.createTableName(theTable.getName());
 
             LOGGER.info("Processing generated code for " + theTableClassName);
 
-            File theTargetFile = new File(theTargetDirectory, theTableClassName + ".java");
-            CompilationUnit theUnit;
+            final File theTargetFile = new File(theTargetDirectory, theTableClassName + ".java");
+            final CompilationUnit theUnit;
             if (!theTargetFile.exists()) {
 
                 LOGGER.info("Creating new file for " + theTableClassName + " at " + theTargetFile);
@@ -115,17 +109,17 @@ public class OpenXavaGenerator {
 
             updateCompilationUnit(aModel, aOptions, theTable, theUnit);
 
-            PrintWriter theWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(theTargetFile),
+            final PrintWriter theWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(theTargetFile),
                     JAVA_ENCODING));
-            theWriter.print(theUnit.toString());
+            theWriter.print(theUnit);
             theWriter.close();
         }
     }
 
-    private void updateCompilationUnit(Model aModel, OpenXavaOptions aOptions, Table aTable, CompilationUnit aUnit) {
+    private void updateCompilationUnit(final Model aModel, final OpenXavaOptions aOptions, final Table aTable, final CompilationUnit aUnit) {
 
         ClassOrInterfaceDeclaration theType = null;
-        for (TypeDeclaration theDeclaration : aUnit.getTypes()) {
+        for (final TypeDeclaration theDeclaration : aUnit.getTypes()) {
             if (theDeclaration instanceof ClassOrInterfaceDeclaration) {
                 theType = (ClassOrInterfaceDeclaration) theDeclaration;
                 break;
@@ -140,8 +134,8 @@ public class OpenXavaGenerator {
         theType.accept(new VoidVisitorAdapter() {
 
             @Override
-            public void visit(FieldDeclaration aField, Object aArg) {
-                ClassOrInterfaceDeclaration theClass = (ClassOrInterfaceDeclaration) aArg;
+            public void visit(final FieldDeclaration aField, final Object aArg) {
+                final ClassOrInterfaceDeclaration theClass = (ClassOrInterfaceDeclaration) aArg;
                 if (aField.getVariables().size() != 1) {
                     throw new RuntimeException("Cannot parse Java Type : " + theClass.getName()
                             + ". Please make sure to declare only one field per statement!");
@@ -149,22 +143,22 @@ public class OpenXavaGenerator {
             }
         }, theType);
 
-        List<FieldDeclaration> thePersistentFields = new ArrayList<>();
+        final List<FieldDeclaration> thePersistentFields = new ArrayList<>();
 
         OpenXavaASTHelper.addMarkerAnnotationTo("Entity", theType);
 
-        for (Attribute<Table> theAttribute : aTable.getAttributes()) {
+        for (final Attribute<Table> theAttribute : aTable.getAttributes()) {
 
-            String theFieldName = aOptions.createFieldName(theAttribute.getName());
+            final String theFieldName = aOptions.createFieldName(theAttribute.getName());
             if (!theAttribute.isForeignKey()) {
 
-                DataType theDataType = theAttribute.getDatatype();
-                OpenXavaTypeMap theMap = aOptions.getTypeMapping().get(theDataType);
+                final DataType theDataType = theAttribute.getDatatype();
+                final OpenXavaTypeMap theMap = aOptions.getTypeMapping().get(theDataType);
 
-                String theJavaType = aOptions.getJavaType(theDataType, theAttribute.isNullable(), theAttribute
+                final String theJavaType = aOptions.getJavaType(theDataType, theAttribute.isNullable(), theAttribute
                         .isPrimaryKey());
 
-                String theStereoType = theMap.getStereoType();
+                final String theStereoType = theMap.getStereoType();
 
                 FieldDeclaration theDeclaration = OpenXavaASTHelper.findFieldDeclaration(theFieldName, theType);
                 if (theDeclaration == null) {
@@ -194,7 +188,7 @@ public class OpenXavaGenerator {
                     OpenXavaASTHelper.removeAnnotationFrom("Stereotype", theDeclaration);
                 }
 
-                List<MemberValuePair> theValues = new ArrayList<>();
+                final List<MemberValuePair> theValues = new ArrayList<>();
                 theValues.add(new MemberValuePair("name", new StringLiteralExpr(theAttribute.getName())));
 
                 if (theDataType.supportsSize() && theAttribute.getSize() != null) {
@@ -219,26 +213,26 @@ public class OpenXavaGenerator {
         }
 
         // Generate the associations
-        for (Relation theRelation : aModel.getRelations().getExportedKeysFor(aTable)) {
+        for (final Relation theRelation : aModel.getRelations().getExportedKeysFor(aTable)) {
 
             if (theRelation.getMapping().size() == 1
                     && !theRelation.getExportingTable().equals(theRelation.getImportingTable())) {
-                Table theImportingTable = theRelation.getImportingTable();
+                final Table theImportingTable = theRelation.getImportingTable();
 
-                String theImpFieldName = aOptions.createFieldName(theImportingTable.getName());
-                String theImpTableClassName = aOptions.createTableName(theImportingTable.getName());
+                final String theImpFieldName = aOptions.createFieldName(theImportingTable.getName());
+                final String theImpTableClassName = aOptions.createTableName(theImportingTable.getName());
 
                 FieldDeclaration theDeclaration = OpenXavaASTHelper.findFieldDeclaration(theImpFieldName, theType);
                 if (theDeclaration == null) {
-                    ClassOrInterfaceType theRelationType = new ClassOrInterfaceType("Set");
-                    List<Type> theTypeArgs = new ArrayList<>();
+                    final ClassOrInterfaceType theRelationType = new ClassOrInterfaceType("Set");
+                    final List<Type> theTypeArgs = new ArrayList<>();
                     theTypeArgs.add(new ClassOrInterfaceType(theImpTableClassName));
                     theRelationType.setTypeArgs(theTypeArgs);
                     theDeclaration = ASTHelper.createFieldDeclaration(ModifierSet.PRIVATE, theRelationType, theImpFieldName);
                     ASTHelper.addMember(theType, theDeclaration);
                 } else {
-                    ClassOrInterfaceType theRelationType = new ClassOrInterfaceType("Set");
-                    List<Type> theTypeArgs = new ArrayList<>();
+                    final ClassOrInterfaceType theRelationType = new ClassOrInterfaceType("Set");
+                    final List<Type> theTypeArgs = new ArrayList<>();
                     theTypeArgs.add(new ClassOrInterfaceType(theImpTableClassName));
                     theRelationType.setTypeArgs(theTypeArgs);
                     theDeclaration.setType(theRelationType);
@@ -255,13 +249,13 @@ public class OpenXavaGenerator {
 
         if (theType.getMembers() != null) {
 
-            List<FieldDeclaration> theFieldsToRemove = new ArrayList<>();
+            final List<FieldDeclaration> theFieldsToRemove = new ArrayList<>();
 
             // Test if the field is marked as persistent and is not a
 // persistent attribute
             theType.getMembers().stream().filter(theDeclaration -> theDeclaration instanceof FieldDeclaration).forEach(theDeclaration -> {
 
-                FieldDeclaration theField = (FieldDeclaration) theDeclaration;
+                final FieldDeclaration theField = (FieldDeclaration) theDeclaration;
 
                 // Test if the field is marked as persistent and is not a
                 // persistent attribute
@@ -272,13 +266,13 @@ public class OpenXavaGenerator {
             theType.getMembers().removeAll(theFieldsToRemove);
 
             // Remove the getter and setter for the removed fields
-            List<MethodDeclaration> theMethodsToRemove = new ArrayList<>();
-            for (FieldDeclaration theField : theFieldsToRemove) {
+            final List<MethodDeclaration> theMethodsToRemove = new ArrayList<>();
+            for (final FieldDeclaration theField : theFieldsToRemove) {
 
-                String theName = theField.getVariables().get(0).getId().getName();
-                String thePropertyName = aOptions.createPropertyName(theName);
+                final String theName = theField.getVariables().getFirst().getId().getName();
+                final String thePropertyName = aOptions.createPropertyName(theName);
 
-                boolean isBoolean = "boolean".equals(theField.getType().toString());
+                final boolean isBoolean = "boolean".equals(theField.getType().toString());
 
                 String theMethodName = "set" + thePropertyName;
                 MethodDeclaration theMethod = OpenXavaASTHelper.findMethodDeclaration(theMethodName, theType);
@@ -298,29 +292,29 @@ public class OpenXavaGenerator {
             theType.getMembers().removeAll(theMethodsToRemove);
         }
 
-        for (FieldDeclaration theField : thePersistentFields) {
+        for (final FieldDeclaration theField : thePersistentFields) {
 
-            String theName = theField.getVariables().get(0).getId().getName();
-            String thePropertyName = aOptions.createPropertyName(theName);
+            final String theName = theField.getVariables().getFirst().getId().getName();
+            final String thePropertyName = aOptions.createPropertyName(theName);
 
-            boolean isBoolean = "boolean".equals(theField.getType().toString());
+            final boolean isBoolean = "boolean".equals(theField.getType().toString());
 
             String theMethodName = "set" + thePropertyName;
             MethodDeclaration theSetMethod = OpenXavaASTHelper.findMethodDeclaration(theMethodName, theType);
             if (theSetMethod == null) {
                 theSetMethod = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.VOID_TYPE, theMethodName);
-                List<Parameter> theParams = new ArrayList<>();
+                final List<Parameter> theParams = new ArrayList<>();
                 theParams.add(ASTHelper.createParameter(theField.getType(), "aValue"));
                 theSetMethod.setParameters(theParams);
 
-                BlockStmt theBlock = new BlockStmt();
+                final BlockStmt theBlock = new BlockStmt();
                 ASTHelper.addStmt(theBlock, new AssignExpr(new NameExpr(theName), new NameExpr("aValue"),
                         Operator.assign));
                 theSetMethod.setBody(theBlock);
 
                 ASTHelper.addMember(theType, theSetMethod);
             } else {
-                List<Parameter> theParams = new ArrayList<>();
+                final List<Parameter> theParams = new ArrayList<>();
                 theParams.add(ASTHelper.createParameter(theField.getType(), "aValue"));
                 theSetMethod.setParameters(theParams);
             }
@@ -334,7 +328,7 @@ public class OpenXavaGenerator {
             if (theGetMethod == null) {
                 theGetMethod = new MethodDeclaration(ModifierSet.PUBLIC, theField.getType(), theMethodName);
 
-                BlockStmt theBlock = new BlockStmt();
+                final BlockStmt theBlock = new BlockStmt();
                 ASTHelper.addStmt(theBlock, new ReturnStmt(new NameExpr(theName)));
                 theGetMethod.setBody(theBlock);
 

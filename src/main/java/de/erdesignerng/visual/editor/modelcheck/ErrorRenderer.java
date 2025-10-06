@@ -31,9 +31,9 @@ public class ErrorRenderer implements ListCellRenderer {
 	private final UIInitializer initializer = UIInitializer.getInstance();
 
 	@Override
-	public Component getListCellRendererComponent(JList aList, Object aValue, int aIndex, boolean isSelected,
-			boolean cellHasFocus) {
-		ModelError theStatement = (ModelError) aValue;
+	public Component getListCellRendererComponent(final JList aList, final Object aValue, final int aIndex, final boolean isSelected,
+                                                  final boolean cellHasFocus) {
+		final ModelError theStatement = (ModelError) aValue;
 		if (theStatement.getQuickFix() != null) {
 			component.setForeground(Color.BLACK);
 		} else {

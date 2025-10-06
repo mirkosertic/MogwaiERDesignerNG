@@ -34,7 +34,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 	private final DatabaseConnectionEditorView view = new DatabaseConnectionEditorView() {
 
 		@Override
-		public void handleDialectChange(Dialect aDialect) {
+		public void handleDialectChange(final Dialect aDialect) {
 			commandChangeDialect(aDialect, getAlias().getText(), getDriver()
 					.getText(), getUrl().getText(), getUser().getText(), String
 					.valueOf(getPassword().getPassword()));
@@ -45,24 +45,24 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
 	private final BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<>();
 
-	public DatabaseConnectionEditor(Component aParent, Model aModel,
-			ConnectionDescriptor aConnection) {
+	public DatabaseConnectionEditor(final Component aParent, final Model aModel,
+                                    final ConnectionDescriptor aConnection) {
 		super(aParent, ERDesignerBundle.CONNECTIONCONFIGURATION);
 
 		model = aModel;
 
 		initialize();
 
-		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+		final DefaultComboBoxModel theModel = new DefaultComboBoxModel();
 		theModel.addElement(null);
 
-		List<Dialect> theDialects = DialectFactory.getInstance()
+		final List<Dialect> theDialects = DialectFactory.getInstance()
 				.getSupportedDialects();
         theDialects.forEach(theModel::addElement);
 
 		view.getDialect().setModel(theModel);
 
-		DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
+		final DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
 		if (aConnection.getDialect() != null) {
 			theDescriptor.setDialect(DialectFactory.getInstance().getDialect(
 					aConnection.getDialect()));
@@ -88,8 +88,8 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
 		bindingInfo.model2view();
 
-		boolean isDefinedModel = aModel.getDomains().size() > 0
-				|| aModel.getTables().size() > 0;
+		final boolean isDefinedModel = !aModel.getDomains().isEmpty()
+				|| !aModel.getTables().isEmpty();
 		if (isDefinedModel) {
 			// If there are domains or tables already defined, the dialect
 			// cannot be changed
@@ -112,9 +112,9 @@ public class DatabaseConnectionEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 
-		DatabaseConnectionDatamodel theDescriptor = bindingInfo
+		final DatabaseConnectionDatamodel theDescriptor = bindingInfo
 				.getDefaultModel();
 		model.initializeWith(theDescriptor.createConnectionDescriptor());
 	}
@@ -136,14 +136,14 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
 			bindingInfo.view2model();
 
-			DatabaseConnectionDatamodel theModel = bindingInfo
+			final DatabaseConnectionDatamodel theModel = bindingInfo
 					.getDefaultModel();
 
-			Dialect theDialect = theModel.getDialect();
+			final Dialect theDialect = theModel.getDialect();
 
 			try {
 
-				Connection theConnection = theDialect.createConnection(
+				final Connection theConnection = theDialect.createConnection(
 						ApplicationPreferences.getInstance()
 								.createDriverClassLoader(), theModel
 								.getDriver(), theModel.getUrl(), theModel
@@ -153,10 +153,10 @@ public class DatabaseConnectionEditor extends BaseEditor {
 					return;
 				}
 
-				DatabaseMetaData theMeta = theConnection.getMetaData();
+				final DatabaseMetaData theMeta = theConnection.getMetaData();
 
-				String theDB = theMeta.getDatabaseProductName();
-				String theVersion = theMeta.getDatabaseProductVersion();
+				final String theDB = theMeta.getDatabaseProductName();
+				final String theVersion = theMeta.getDatabaseProductVersion();
 
 				if (!theDialect.generatesManagedConnection()) {
 					theConnection.close();
@@ -166,20 +166,20 @@ public class DatabaseConnectionEditor extends BaseEditor {
 						.getText(ERDesignerBundle.CONNECTIONSEEMSTOBEOK)
 						+ " DB : " + theDB + " " + theVersion);
 
-			} catch (Exception e) {
+			} catch (final Exception e) {
 
 				MessagesHelper.displayErrorMessage(this, e.getMessage());
 			}
 		}
 	}
 
-	private void commandChangeDialect(Dialect aNewDialect,
-			String theUserdefinedAlias, String theUserdefinedDriver,
-			String theUserdefinedUrl, String theUserdefinedUsername,
-			String theUserdefinedPassword) {
+	private void commandChangeDialect(final Dialect aNewDialect,
+                                      final String theUserdefinedAlias, final String theUserdefinedDriver,
+                                      final String theUserdefinedUrl, final String theUserdefinedUsername,
+                                      final String theUserdefinedPassword) {
 
 		if (!bindingInfo.isBinding()) {
-			DatabaseConnectionDatamodel theDescriptor = bindingInfo
+			final DatabaseConnectionDatamodel theDescriptor = bindingInfo
 					.getDefaultModel();
 
 			if (aNewDialect != null) {
@@ -218,7 +218,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 		}
 	}
 
-	private String getSetting(String aPrimarySetting, String aSecondarySetting) {
+	private String getSetting(final String aPrimarySetting, final String aSecondarySetting) {
 		return StringUtils.isNotEmpty(aPrimarySetting) ? aPrimarySetting : aSecondarySetting;
 	}
 }

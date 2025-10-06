@@ -39,9 +39,9 @@ public class GenerateMigrationScriptCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
-        ConnectionDescriptor theRepositoryConnection = ApplicationPreferences
+        final ConnectionDescriptor theRepositoryConnection = ApplicationPreferences
                 .getInstance().getRepositoryConnection();
         if (theRepositoryConnection == null) {
             MessagesHelper.displayErrorMessage(getDetailComponent(), component
@@ -50,7 +50,7 @@ public class GenerateMigrationScriptCommand extends UICommand {
             return;
         }
         Connection theConnection = null;
-        Dialect theDialect = DialectFactory.getInstance().getDialect(
+        final Dialect theDialect = DialectFactory.getInstance().getDialect(
                 theRepositoryConnection.getDialect());
         try {
 
@@ -61,11 +61,11 @@ public class GenerateMigrationScriptCommand extends UICommand {
                     .getUsername(), theRepositoryConnection
                     .getPassword(), false);
 
-            RepositoryEntity theEntity = DictionaryModelSerializer.SERIALIZER
+            final RepositoryEntity theEntity = DictionaryModelSerializer.SERIALIZER
                     .getRepositoryEntity(theDialect.getHibernateDialectClass(),
                             theConnection, component.currentRepositoryEntry);
 
-            MigrationScriptEditor theEditor = new MigrationScriptEditor(
+            final MigrationScriptEditor theEditor = new MigrationScriptEditor(
                     getDetailComponent(), theEntity,
                     new GenericConnectionProvider(theConnection, theDialect
                             .createSQLGenerator()
@@ -74,7 +74,7 @@ public class GenerateMigrationScriptCommand extends UICommand {
 
             theEditor.showModal();
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             getWorldConnector().notifyAboutException(e);
         } finally {
             if (theConnection != null

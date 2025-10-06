@@ -23,12 +23,12 @@ public class ModelError {
 
     private QuickFix quickFix;
 
-    public ModelError(String aMessage, QuickFix aQuickFix) {
+    public ModelError(final String aMessage, final QuickFix aQuickFix) {
         message = aMessage;
         quickFix = aQuickFix;
     }
 
-    public ModelError(String aMessage) {
+    public ModelError(final String aMessage) {
         this(aMessage, null);
     }
 

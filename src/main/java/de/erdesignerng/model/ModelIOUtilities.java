@@ -47,7 +47,7 @@ public final class ModelIOUtilities {
 
 	private static ModelIOUtilities me;
 
-	private XMLUtils xmlUtils;
+	private final XMLUtils xmlUtils;
 
 	private final List<AbstractXMLModelSerializer> knownSerializers = new ArrayList<>();
 
@@ -68,10 +68,10 @@ public final class ModelIOUtilities {
 		return me;
 	}
 
-	public Model deserializeModelFromXML(InputStream aInputStream) throws SAXException, IOException {
+	public Model deserializeModelFromXML(final InputStream aInputStream) throws SAXException, IOException {
 		try {
-			Document theDocument = xmlUtils.parse(aInputStream);
-			for (AbstractXMLModelSerializer theSerializer : knownSerializers) {
+			final Document theDocument = xmlUtils.parse(aInputStream);
+			for (final AbstractXMLModelSerializer theSerializer : knownSerializers) {
 				if (theSerializer.supportsDocument(theDocument)) {
 					return theSerializer.deserializeModelFromXML(theDocument);
 				}
@@ -94,7 +94,7 @@ public final class ModelIOUtilities {
 	 * @throws TransformerException will be thrown in case of an error
 	 * @throws IOException		  will be thrown in case of an error
 	 */
-	public void serializeModelToXML(Model aModel, Writer aWriter) throws TransformerException, IOException {
+	public void serializeModelToXML(final Model aModel, final Writer aWriter) throws TransformerException, IOException {
 		new XMLModel50Serializer(xmlUtils).serializeModelToXML(aModel, aWriter);
 	}
 
@@ -106,10 +106,9 @@ public final class ModelIOUtilities {
 	 * @param aConnection the connection
 	 * @param aModel	  the model
 	 * @return the descriptor
-	 * @throws Exception will be thrown in case of an exception
-	 */
-	public RepositoryEntryDescriptor serializeModelToDB(RepositoryEntryDescriptor aDesc, Dialect aDialect, Connection aConnection, Model aModel) throws Exception {
-		Class theDialectClass = aDialect.getHibernateDialectClass();
+     */
+	public RepositoryEntryDescriptor serializeModelToDB(RepositoryEntryDescriptor aDesc, final Dialect aDialect, final Connection aConnection, final Model aModel) {
+		final Class theDialectClass = aDialect.getHibernateDialectClass();
 		aDesc = DictionaryModelSerializer.SERIALIZER.serialize(aDesc, aModel, aConnection, theDialectClass);
 
 		return aDesc;
@@ -122,9 +121,8 @@ public final class ModelIOUtilities {
 	 * @param aDialect	the repository dialect
 	 * @param aConnection the repository connection
 	 * @return the loaded model
-	 * @throws Exception will be thrown in case of an exception
-	 */
-	public Model deserializeModelFromRepository(RepositoryEntryDescriptor aDescriptor, Dialect aDialect, Connection aConnection) throws Exception {
+     */
+	public Model deserializeModelFromRepository(final RepositoryEntryDescriptor aDescriptor, final Dialect aDialect, final Connection aConnection) {
 		return DictionaryModelSerializer.SERIALIZER.deserialize(aDescriptor, aConnection, aDialect.getHibernateDialectClass());
 	}
 
@@ -134,9 +132,8 @@ public final class ModelIOUtilities {
 	 * @param aDialect	the dialect
 	 * @param aConnection the connection
 	 * @return the list of descriptors
-	 * @throws Exception will be thrown in case of an exception
-	 */
-	public List<RepositoryEntryDescriptor> getRepositoryEntries( Dialect aDialect, Connection aConnection) throws Exception {
+     */
+	public List<RepositoryEntryDescriptor> getRepositoryEntries(final Dialect aDialect, final Connection aConnection) {
 		return DictionaryModelSerializer.SERIALIZER.getRepositoryEntries(aDialect.getHibernateDialectClass(), aConnection);
 	}
 }

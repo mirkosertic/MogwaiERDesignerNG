@@ -60,7 +60,7 @@ public final class MSAccessFormats {
      *
      * @param aFileName - the file to examine
      */
-    public static int getVersion(String aFileName) {
+    public static int getVersion(final String aFileName) {
 
         int theVersion = VERSION_UNKNOWN;
 
@@ -91,7 +91,7 @@ public final class MSAccessFormats {
      *
      * @param aFileName - the file to examine
      */
-    public static int getVersion(Connection aConnection) {
+    public static int getVersion(final Connection aConnection) {
 
         int theVersion = VERSION_UNKNOWN;
 

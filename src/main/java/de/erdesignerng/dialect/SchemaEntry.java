@@ -23,7 +23,7 @@ public class SchemaEntry {
 
 	private final String schemaName;
 
-	public SchemaEntry(String aCatalogName, String aSchemaName) {
+	public SchemaEntry(final String aCatalogName, final String aSchemaName) {
 		catalogName = aCatalogName;
 		schemaName = aSchemaName;
 	}

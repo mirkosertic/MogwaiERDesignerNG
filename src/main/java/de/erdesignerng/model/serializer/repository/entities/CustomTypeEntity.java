@@ -40,7 +40,7 @@ public class CustomTypeEntity extends ModelEntity implements AttributeEntityProv
         return schema;
     }
 
-    public void setSchema(String schema) {
+    public void setSchema(final String schema) {
         this.schema = schema;
     }
 
@@ -48,7 +48,7 @@ public class CustomTypeEntity extends ModelEntity implements AttributeEntityProv
         return alias;
     }
 
-    public void setAlias(String alias) {
+    public void setAlias(final String alias) {
         this.alias = alias;
     }
 
@@ -57,7 +57,7 @@ public class CustomTypeEntity extends ModelEntity implements AttributeEntityProv
         return attributes;
     }
 
-    public void setAttributes(List<AttributeEntity> attributes) {
+    public void setAttributes(final List<AttributeEntity> attributes) {
         this.attributes = attributes;
     }
 
@@ -65,7 +65,7 @@ public class CustomTypeEntity extends ModelEntity implements AttributeEntityProv
         return type;
     }
 
-    public void setType(CustomTypeType type) {
+    public void setType(final CustomTypeType type) {
         this.type = type;
     }
 }

@@ -30,14 +30,14 @@ import de.erdesignerng.model.Table;
  */
 public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 
-	public PostgresSQLGenerator(PostgresDialect aDialect) {
+	public PostgresSQLGenerator(final PostgresDialect aDialect) {
 		super(aDialect);
 	}
 
 	@Override
-	public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createRemoveIndexFromTableStatement(final Table aTable, final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("DROP INDEX ");
 		theStatement.append(aIndex.getName());
@@ -48,10 +48,10 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 	}
 
 	@Override
-	public StatementList createRenameTableStatement(Table aTable, String aNewName) {
+	public StatementList createRenameTableStatement(final Table aTable, final String aNewName) {
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(aTable));
@@ -65,11 +65,11 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createRenameAttributeStatement(final Attribute<Table> anExistingAttribute, final String aNewName) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -84,10 +84,10 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createChangeAttributeStatement(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
+		final StatementList theResult = new StatementList();
 
 		StringBuilder theStatement = new StringBuilder();
 
@@ -107,7 +107,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 		theStatement.append(" ALTER ");
 		theStatement.append(anExistingAttribute.getName());
 
-		boolean isNullable = aNewAttribute.isNullable();
+		final boolean isNullable = aNewAttribute.isNullable();
 
 		if (!isNullable) {
 			theStatement.append("SET NOT NULL");

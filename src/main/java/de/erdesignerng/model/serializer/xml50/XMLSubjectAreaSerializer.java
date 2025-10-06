@@ -31,9 +31,9 @@ import org.w3c.dom.NodeList;
 public class XMLSubjectAreaSerializer extends de.erdesignerng.model.serializer.xml20.XMLSubjectAreaSerializer {
 
     @Override
-    public void serialize(SubjectArea aArea, Document aDocument, Element aRootElement) {
+    public void serialize(final SubjectArea aArea, final Document aDocument, final Element aRootElement) {
 
-        Element theSubjectAreaElement = addElement(aDocument, aRootElement, SUBJECTAREA);
+        final Element theSubjectAreaElement = addElement(aDocument, aRootElement, SUBJECTAREA);
 
         // Basisdaten des Modelelementes speichern
         serializeProperties(aDocument, theSubjectAreaElement, aArea);
@@ -41,30 +41,30 @@ public class XMLSubjectAreaSerializer extends de.erdesignerng.model.serializer.x
         setBooleanAttribute(theSubjectAreaElement, VISIBLE, aArea.isVisible());
         setBooleanAttribute(theSubjectAreaElement, EXPANDED, aArea.isExpanded());
 
-        for (Table theTable : aArea.getTables()) {
-            Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+        for (final Table theTable : aArea.getTables()) {
+            final Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
             theTableElement.setAttribute(TABLEREFID, theTable.getSystemId());
         }
 
-        for (View theView : aArea.getViews()) {
-            Element theViewElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+        for (final View theView : aArea.getViews()) {
+            final Element theViewElement = addElement(aDocument, theSubjectAreaElement, ITEM);
             theViewElement.setAttribute(VIEWREFID, theView.getSystemId());
         }
 
-        for (Comment theComment : aArea.getComments()) {
-            Element theCommentElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+        for (final Comment theComment : aArea.getComments()) {
+            final Element theCommentElement = addElement(aDocument, theSubjectAreaElement, ITEM);
             theCommentElement.setAttribute(COMMENTREFID, theComment.getSystemId());
         }
     }
 
     @Override
-    public void deserialize(Model aModel, Document aDocument) {
+    public void deserialize(final Model aModel, final Document aDocument) {
 
-        NodeList theElements = aDocument.getElementsByTagName(SUBJECTAREA);
+        final NodeList theElements = aDocument.getElementsByTagName(SUBJECTAREA);
         for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+            final Element theElement = (Element) theElements.item(i);
 
-            SubjectArea theSubjectArea = new SubjectArea();
+            final SubjectArea theSubjectArea = new SubjectArea();
             deserializeProperties(theElement, theSubjectArea);
 
             theSubjectArea.setColor(new Color(Integer.parseInt(theElement.getAttribute(COLOR))));
@@ -76,16 +76,16 @@ public class XMLSubjectAreaSerializer extends de.erdesignerng.model.serializer.x
                 theSubjectArea.setExpanded(TRUE.equals(theElement.getAttribute(EXPANDED)));
             }
 
-            NodeList theTables = theElement.getElementsByTagName(ITEM);
+            final NodeList theTables = theElement.getElementsByTagName(ITEM);
             for (int j = 0; j < theTables.getLength(); j++) {
 
-                Element theItemElement = (Element) theTables.item(j);
-                String theTableId = theItemElement.getAttribute(TABLEREFID);
-                String theViewId = theItemElement.getAttribute(VIEWREFID);
-                String theCommentId = theItemElement.getAttribute(COMMENTREFID);
+                final Element theItemElement = (Element) theTables.item(j);
+                final String theTableId = theItemElement.getAttribute(TABLEREFID);
+                final String theViewId = theItemElement.getAttribute(VIEWREFID);
+                final String theCommentId = theItemElement.getAttribute(COMMENTREFID);
 
                 if (!StringUtils.isEmpty(theTableId)) {
-                    Table theTable = aModel.getTables().findBySystemId(theTableId);
+                    final Table theTable = aModel.getTables().findBySystemId(theTableId);
                     if (theTable == null) {
                         throw new IllegalArgumentException("Cannot find table with id " + theTableId);
                     }
@@ -94,7 +94,7 @@ public class XMLSubjectAreaSerializer extends de.erdesignerng.model.serializer.x
                 }
 
                 if (!StringUtils.isEmpty(theViewId)) {
-                    View theView = aModel.getViews().findBySystemId(theViewId);
+                    final View theView = aModel.getViews().findBySystemId(theViewId);
                     if (theView == null) {
                         throw new IllegalArgumentException("Cannot find view with id " + theViewId);
                     }
@@ -103,7 +103,7 @@ public class XMLSubjectAreaSerializer extends de.erdesignerng.model.serializer.x
                 }
 
                 if (!StringUtils.isEmpty(theCommentId)) {
-                    Comment theComment = aModel.getComments().findBySystemId(theCommentId);
+                    final Comment theComment = aModel.getComments().findBySystemId(theCommentId);
                     if (theComment == null) {
                         throw new IllegalArgumentException("Cannot find comment with id " + theCommentId);
                     }

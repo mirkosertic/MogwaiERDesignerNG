@@ -142,23 +142,23 @@ public class MySQLDialect extends Dialect {
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final int... aJdbcType) {
 		return new MySQLDataType(aName, aDefinition, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcType) {
 		return new MySQLDataType(aName, aDefinition, anIdentity, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcType) {
 		return new MySQLDataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
 	}
 
 	@Override
-	public TableProperties createTablePropertiesFor(Table aTable) {
-		MySQLTableProperties theProperties = new MySQLTableProperties();
+	public TableProperties createTablePropertiesFor(final Table aTable) {
+		final MySQLTableProperties theProperties = new MySQLTableProperties();
 		theProperties.initializeFrom(aTable);
 		return theProperties;
 	}

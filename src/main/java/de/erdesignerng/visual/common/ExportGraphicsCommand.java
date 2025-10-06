@@ -38,7 +38,7 @@ public class ExportGraphicsCommand extends UICommand {
 
     private final JGraphEditor editor;
 
-    public ExportGraphicsCommand(JGraphEditor aEditor, Exporter aExporter, ExportType aExportType) {
+    public ExportGraphicsCommand(final JGraphEditor aEditor, final Exporter aExporter, final ExportType aExportType) {
         editor = aEditor;
         exporter = aExporter;
         exportType = aExportType;
@@ -49,23 +49,23 @@ public class ExportGraphicsCommand extends UICommand {
 
         if (exportType == ExportType.ONE_PER_FILE) {
 
-            JFileChooser theChooser = new JFileChooser();
+            final JFileChooser theChooser = new JFileChooser();
             theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
-                File theBaseDirectory = theChooser.getSelectedFile();
+                final File theBaseDirectory = theChooser.getSelectedFile();
 
-                CellView[] theViews = editor.getGraph().getGraphLayoutCache().getAllViews();
-                for (CellView theView : theViews) {
+                final CellView[] theViews = editor.getGraph().getGraphLayoutCache().getAllViews();
+                for (final CellView theView : theViews) {
                     if (theView instanceof TableCellView) {
-                        TableCellView theItemCellView = (TableCellView) theView;
-                        DefaultGraphCell theItemCell = (DefaultGraphCell) theItemCellView.getCell();
-                        ModelItem theItem = (ModelItem) theItemCell.getUserObject();
+                        final TableCellView theItemCellView = (TableCellView) theView;
+                        final DefaultGraphCell theItemCell = (DefaultGraphCell) theItemCellView.getCell();
+                        final ModelItem theItem = (ModelItem) theItemCell.getUserObject();
 
-                        File theOutputFile = new File(theBaseDirectory, theItem.getName() + exporter.getFileExtension());
+                        final File theOutputFile = new File(theBaseDirectory, theItem.getName() + exporter.getFileExtension());
                         try {
                             exporter.exportToStream(theItemCellView.getRendererComponent(editor.getGraph(), false, false,
                                     false), new FileOutputStream(theOutputFile));
-                        } catch (Exception e) {
+                        } catch (final Exception e) {
                             getWorldConnector().notifyAboutException(e);
                         }
                     }
@@ -74,17 +74,17 @@ public class ExportGraphicsCommand extends UICommand {
 
         } else {
 
-            JFileChooser theChooser = new JFileChooser();
-            GenericFileFilter theFilter = new GenericFileFilter(exporter.getFileExtension(), exporter
+            final JFileChooser theChooser = new JFileChooser();
+            final GenericFileFilter theFilter = new GenericFileFilter(exporter.getFileExtension(), exporter
                     .getFileExtension()
                     + " File");
             theChooser.setFileFilter(theFilter);
             if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-                File theFile = theFilter.getCompletedFile(theChooser.getSelectedFile());
+                final File theFile = theFilter.getCompletedFile(theChooser.getSelectedFile());
                 try {
                     exporter.fullExportToStream(editor.getGraph(), new FileOutputStream(theFile));
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     getWorldConnector().notifyAboutException(e);
                 }
             }

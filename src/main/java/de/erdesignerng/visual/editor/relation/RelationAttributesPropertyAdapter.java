@@ -38,17 +38,17 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
 
 	private static final ResourceHelper BINDINGHELPER = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
 
-	public RelationAttributesPropertyAdapter(JComponent aComponent, ResourceHelper aHelper) {
+	public RelationAttributesPropertyAdapter(final JComponent aComponent, final ResourceHelper aHelper) {
 		super(aComponent, null);
 	}
 
 	@Override
-	public void model2view(Object aModel, String aPropertyName) {
+	public void model2view(final Object aModel, final String aPropertyName) {
 
-		Relation theRelation = (Relation) aModel;
+		final Relation theRelation = (Relation) aModel;
 
-		Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
-		Attribute<Table>[] theAssigned;
+		final Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
+		final Attribute<Table>[] theAssigned;
 		if (thePrimaryKey != null) {
 			theAssigned = new Attribute[thePrimaryKey.getExpressions().size()];
 			for (int count = 0; count < thePrimaryKey.getExpressions().size(); count++) {
@@ -57,20 +57,20 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
 		} else {
 			theAssigned = new Attribute[0];
 		}
-		AttributeTableModel theTableModel = new AttributeTableModel(theRelation.getExportingTable().getName(),
+		final AttributeTableModel theTableModel = new AttributeTableModel(theRelation.getExportingTable().getName(),
 				theRelation.getImportingTable().getName(), thePrimaryKey, theAssigned);
 
-		DefaultTable theTable = (DefaultTable) getComponent()[0];
+		final DefaultTable theTable = (DefaultTable) getComponent()[0];
 		theTable.setModel(theTableModel);
 		theTable.getTableHeader().setReorderingAllowed(false);
 
-		DefaultComboBox theAttributes = new DefaultComboBox();
+		final DefaultComboBox theAttributes = new DefaultComboBox();
 		theAttributes.setBorder(BorderFactory.createEmptyBorder());
-		Vector<Attribute<Table>> theElements = new Vector<>(theRelation.getImportingTable().getAttributes());
-		DefaultComboBoxModel theModel = new DefaultComboBoxModel(theElements);
+		final Vector<Attribute<Table>> theElements = new Vector<>(theRelation.getImportingTable().getAttributes());
+		final DefaultComboBoxModel theModel = new DefaultComboBoxModel(theElements);
 
 		// This is for for the foreign key suggestions
-		for (Attribute<Table> theAttribute : theAssigned) {
+		for (final Attribute<Table> theAttribute : theAssigned) {
 			if (theModel.getIndexOf(theAttribute) < 0) {
 				theModel.addElement(theAttribute);
 			}
@@ -82,16 +82,16 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
 	}
 
 	@Override
-	public void view2model(Object aModel, String aPropertyName) {
+	public void view2model(final Object aModel, final String aPropertyName) {
 
-		Relation theRelation = (Relation) aModel;
-		DefaultTable theTable = (DefaultTable) getComponent()[0];
-		AttributeTableModel theTableModel = (AttributeTableModel) theTable.getModel();
+		final Relation theRelation = (Relation) aModel;
+		final DefaultTable theTable = (DefaultTable) getComponent()[0];
+		final AttributeTableModel theTableModel = (AttributeTableModel) theTable.getModel();
 
 		theRelation.getMapping().clear();
 		for (int i = 0; i < theTableModel.getRowCount(); i++) {
-			IndexExpression theIndexExpression = (IndexExpression) theTableModel.getValueAt(i, 0);
-			Attribute<Table> theAssignedAttribute = (Attribute<Table>) theTableModel.getValueAt(i, 1);
+			final IndexExpression theIndexExpression = (IndexExpression) theTableModel.getValueAt(i, 0);
+			final Attribute<Table> theAssignedAttribute = (Attribute<Table>) theTableModel.getValueAt(i, 1);
 
 			theRelation.getMapping().put(theIndexExpression, theAssignedAttribute);
 		}
@@ -100,11 +100,11 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
 
 	@Override
 	public List<ValidationError> validate() {
-		DefaultTable theTable = (DefaultTable) getComponent()[0];
-		List<ValidationError> theErrors = new ArrayList<>();
-		AttributeTableModel theTableModel = (AttributeTableModel) theTable.getModel();
+		final DefaultTable theTable = (DefaultTable) getComponent()[0];
+		final List<ValidationError> theErrors = new ArrayList<>();
+		final AttributeTableModel theTableModel = (AttributeTableModel) theTable.getModel();
 		for (int i = 0; i < theTableModel.getRowCount(); i++) {
-			Attribute<Table> theAssignedAttribute = (Attribute<Table>) theTableModel.getValueAt(i, 1);
+			final Attribute<Table> theAssignedAttribute = (Attribute<Table>) theTableModel.getValueAt(i, 1);
 			if (theAssignedAttribute == null) {
 				theErrors.add(new ValidationError(this, BINDINGHELPER.getText(BindingBundle.MISSINGREQUIREDFIELD)));
 			}

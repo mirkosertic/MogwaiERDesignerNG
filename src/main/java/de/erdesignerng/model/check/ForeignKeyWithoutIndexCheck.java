@@ -26,7 +26,6 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * Check for Foreign keys without an index (performance problem).
@@ -37,15 +36,15 @@ public class ForeignKeyWithoutIndexCheck implements ModelCheck {
 
 		private final Relation relation;
 
-		private CreateIndexForRelationQuickFix(Relation aRelation) {
+		private CreateIndexForRelationQuickFix(final Relation aRelation) {
 			relation = aRelation;
 		}
 
 		@Override
-		public Object[] applyTo(Model aModel) throws VetoException, ElementAlreadyExistsException,
+		public Object[] applyTo(final Model aModel) throws ElementAlreadyExistsException,
 				ElementInvalidNameException {
-			Table theImportingTable = relation.getImportingTable();
-			Index theIndex = new Index();
+			final Table theImportingTable = relation.getImportingTable();
+			final Index theIndex = new Index();
 			boolean validName = false;
 			int counter = 1;
 			while (!validName) {
@@ -55,7 +54,7 @@ public class ForeignKeyWithoutIndexCheck implements ModelCheck {
 				}
 			}
 			theIndex.setIndexType(IndexType.NONUNIQUE);
-			for (Attribute<Table> theAttribute : relation.getMapping().values()) {
+			for (final Attribute<Table> theAttribute : relation.getMapping().values()) {
 				theIndex.getExpressions().addExpressionFor(theAttribute);
 			}
 			aModel.addIndexToTable(theImportingTable, theIndex);
@@ -65,22 +64,22 @@ public class ForeignKeyWithoutIndexCheck implements ModelCheck {
 	}
 
 	@Override
-	public void check(Model aModel, ModelChecker aChecker) {
-		for (Relation theRelation : aModel.getRelations()) {
-			Table theImportingTable = theRelation.getImportingTable();
+	public void check(final Model aModel, final ModelChecker aChecker) {
+		for (final Relation theRelation : aModel.getRelations()) {
+			final Table theImportingTable = theRelation.getImportingTable();
 
 			boolean containsValidIndex = false;
 
-			IndexExpressionList theList = new IndexExpressionList();
-			for (Attribute<Table> theAttribute : theRelation.getMapping().values()) {
+			final IndexExpressionList theList = new IndexExpressionList();
+			for (final Attribute<Table> theAttribute : theRelation.getMapping().values()) {
 				try {
 					theList.addExpressionFor(theAttribute);
-				} catch (ElementAlreadyExistsException e) {
+				} catch (final ElementAlreadyExistsException e) {
 					throw new RuntimeException(e);
 				}
 			}
 
-			for (Index theIndex : theImportingTable.getIndexes()) {
+			for (final Index theIndex : theImportingTable.getIndexes()) {
 				if (theIndex.getExpressions().containsAllExpressions(theList)) {
 					containsValidIndex = true;
 				}

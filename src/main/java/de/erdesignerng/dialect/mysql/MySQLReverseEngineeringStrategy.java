@@ -36,12 +36,12 @@ import java.sql.Statement;
  */
 public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MySQLDialect> {
 
-	public MySQLReverseEngineeringStrategy(MySQLDialect aDialect) {
+	public MySQLReverseEngineeringStrategy(final MySQLDialect aDialect) {
 		super(aDialect);
 	}
 
 	@Override
-	protected String convertIndexNameFor(Table aTable, String aIndexName) {
+	protected String convertIndexNameFor(final Table aTable, final String aIndexName) {
 		if ("PRIMARY".equals(aIndexName)) {
 			return "PK_" + aTable.getName();
 		}
@@ -49,31 +49,31 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
 	}
 
 	@Override
-	protected void reverseEngineerAttribute(Attribute<Table> aAttribute,
-											TableEntry aEntry, Connection aConnection) throws SQLException {
+	protected void reverseEngineerAttribute(final Attribute<Table> aAttribute,
+                                            final TableEntry aEntry, final Connection aConnection) throws SQLException {
 
 		// Special treatment for BIT types
 		if ("BIT".equals(aAttribute.getDatatype().getName())) {
-			String theDefault = aAttribute.getDefaultValue();
+			final String theDefault = aAttribute.getDefaultValue();
 			if (!StringUtils.isEmpty(theDefault) && (theDefault.length() == 1)) {
-				int theDefaultInt = theDefault.charAt(0);
+				final int theDefaultInt = theDefault.charAt(0);
 				aAttribute.setDefaultValue("" + theDefaultInt);
 			}
 		}
 
-		Statement theStatement = aConnection.createStatement();
-		ResultSet theResult = theStatement.executeQuery("DESCRIBE " + aEntry.getTableName());
+		final Statement theStatement = aConnection.createStatement();
+		final ResultSet theResult = theStatement.executeQuery("DESCRIBE " + aEntry.getTableName());
 		while (theResult.next()) {
-			String theType = theResult.getString("Type");
-			String theColumnName = theResult.getString("Field");
+			final String theType = theResult.getString("Type");
+			final String theColumnName = theResult.getString("Field");
 			if (aAttribute.getName().equals(theColumnName)) {
 				String theExtra = theResult.getString("Extra");
 				if ("AUTO_INCREMENT".equalsIgnoreCase(theExtra)) {
 					aAttribute.setExtra("AUTO_INCREMENT PRIMARY KEY");
 				}
 				if (theType.toLowerCase().startsWith("enum") || theType.toLowerCase().startsWith("set")) {
-					int p = theType.indexOf("(");
-					int p2 = theType.lastIndexOf(")");
+					final int p = theType.indexOf("(");
+					final int p2 = theType.lastIndexOf(")");
 					theExtra = theType.substring(p + 1, p2);
 					aAttribute.setExtra(theExtra);
 				}
@@ -95,9 +95,9 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
 	}
 
 	@Override
-	protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
+	protected String reverseEngineerViewSQL(final TableEntry aViewEntry, final Connection aConnection, final View aView)
 			throws SQLException {
-		PreparedStatement theStatement = aConnection
+		final PreparedStatement theStatement = aConnection
 				.prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ?");
 		theStatement.setString(1, aViewEntry.getTableName());
 		ResultSet theResult = null;
@@ -105,7 +105,7 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
 			theResult = theStatement.executeQuery();
 			if (theResult.next()) {
 				String theViewDefinition = theResult.getString("VIEW_DEFINITION");
-				int p = theViewDefinition.indexOf("*/");
+				final int p = theViewDefinition.indexOf("*/");
 				if (p > 0) {
 					theViewDefinition = theViewDefinition.substring(p + 2);
 				}

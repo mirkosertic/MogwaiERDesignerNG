@@ -41,7 +41,7 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
      * @throws ElementAlreadyExistsException is thrown in case of an error
      * @throws ElementInvalidNameException   is thrown in case of an error
      */
-    public void addAttribute(Model aModel, Attribute<Table> aAttribute) throws ElementAlreadyExistsException,
+    public void addAttribute(final Model aModel, final Attribute<Table> aAttribute) throws ElementAlreadyExistsException,
             ElementInvalidNameException {
 
         ModelUtilities.checkNameAndExistence(attributes, aAttribute, aModel.getDialect());
@@ -58,7 +58,7 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
      * @throws ElementAlreadyExistsException is thrown in case of an error
      * @throws ElementInvalidNameException   is thrown in case of an error
      */
-    public void addIndex(Model aModel, Index aIndex) throws ElementAlreadyExistsException, ElementInvalidNameException {
+    public void addIndex(final Model aModel, final Index aIndex) throws ElementAlreadyExistsException, ElementInvalidNameException {
 
         ModelUtilities.checkNameAndExistence(indexes, aIndex, aModel.getDialect());
         aIndex.setOwner(this);
@@ -70,8 +70,8 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
         return attributes;
     }
 
-    public boolean isForeignKey(Attribute<Table> aAttribute) {
-        Model theOwner = getOwner();
+    public boolean isForeignKey(final Attribute<Table> aAttribute) {
+        final Model theOwner = getOwner();
         if (theOwner != null) {
             return getOwner().getRelations().isForeignKeyAttribute(aAttribute);
         }
@@ -84,7 +84,7 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
     }
 
     public Index getPrimarykey() {
-        for (Index theIndex : getIndexes()) {
+        for (final Index theIndex : getIndexes()) {
             if (IndexType.PRIMARYKEY == theIndex.getIndexType()) {
                 return theIndex;
             }
@@ -98,9 +98,9 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
      * @return true if yes, else false
      */
     public boolean hasPrimaryKey() {
-        Index theIndex = getPrimarykey();
+        final Index theIndex = getPrimarykey();
         if (theIndex != null) {
-            return theIndex.getExpressions().size() > 0;
+            return !theIndex.getExpressions().isEmpty();
         }
         return false;
     }
@@ -111,8 +111,8 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
      * @param aAttribute the attribute
      * @return true if yes, else false
      */
-    public boolean isPrimaryKey(Attribute<Table> aAttribute) {
-        Index thePrimaryKey = getPrimarykey();
+    public boolean isPrimaryKey(final Attribute<Table> aAttribute) {
+        final Index thePrimaryKey = getPrimarykey();
 
         if (thePrimaryKey != null) {
             return thePrimaryKey.getExpressions().findByAttribute(aAttribute) != null;
@@ -131,7 +131,7 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
     /**
      * @param schema the schema to set
      */
-    public void setSchema(String schema) {
+    public void setSchema(final String schema) {
         this.schema = schema;
     }
 
@@ -147,24 +147,24 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
      * Create a deep copy of the table.
      */
     public Table createCopy() {
-        Table theCopy = new Table();
+        final Table theCopy = new Table();
         theCopy.setComment(getComment());
         theCopy.setSchema(getSchema());
         theCopy.setName(getName() + "_CLONE");
         theCopy.setOriginalName(getOriginalName());
         theCopy.getProperties().copyFrom(getProperties());
-        for (Attribute<Table> theAttribute : attributes) {
-            Attribute<Table> theClone = theAttribute.clone();
+        for (final Attribute<Table> theAttribute : attributes) {
+            final Attribute<Table> theClone = theAttribute.clone();
             theClone.setSystemId(ModelUtilities.createSystemIdFor());
             theClone.setOwner(theCopy);
             theCopy.getAttributes().add(theClone);
         }
-        for (Index theIndex : indexes) {
-            Index theClone = theIndex.clone();
+        for (final Index theIndex : indexes) {
+            final Index theClone = theIndex.clone();
             theClone.setName(theClone.getName() + "_CLONE");
             theClone.setOwner(theCopy);
             theClone.setSystemId(ModelUtilities.createSystemIdFor());
-            for (IndexExpression theExpression : theClone.getExpressions()) {
+            for (final IndexExpression theExpression : theClone.getExpressions()) {
                 theExpression.setSystemId(ModelUtilities.createSystemIdFor());
                 if (theExpression.getAttributeRef() != null) {
                     theExpression.setAttributeRef(theCopy.getAttributes().findByName(theExpression.getAttributeRef().getName()));
@@ -177,7 +177,7 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
 
     @Override
     public Attribute<Table> createNewAttribute() {
-        Attribute<Table> theNewAttribute = new Attribute<>();
+        final Attribute<Table> theNewAttribute = new Attribute<>();
         theNewAttribute.setOwner(this);
         attributes.add(theNewAttribute);
         return theNewAttribute;

@@ -29,15 +29,15 @@ public class EditDomainCommand extends UICommand {
         this(null);
     }
 
-    public EditDomainCommand(Domain aDomain) {
+    public EditDomainCommand(final Domain aDomain) {
         domain = aDomain;
     }
 
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        DomainEditor theEditor = new DomainEditor(component.getModel(), getDetailComponent());
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final DomainEditor theEditor = new DomainEditor(component.getModel(), getDetailComponent());
         if (domain != null) {
             theEditor.setSelectedDomain(domain);
         }
@@ -46,7 +46,7 @@ public class EditDomainCommand extends UICommand {
                 theEditor.applyValues();
 
                 refreshDisplayAndOutline();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

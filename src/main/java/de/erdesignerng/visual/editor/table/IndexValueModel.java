@@ -30,7 +30,7 @@ public class IndexValueModel {
 		return expression;
 	}
 
-	public void setExpression(String expression) {
+	public void setExpression(final String expression) {
 		this.expression = expression;
 	}
 
@@ -38,7 +38,7 @@ public class IndexValueModel {
 		return attribute;
 	}
 
-	public void setAttribute(Attribute<Table> attribute) {
+	public void setAttribute(final Attribute<Table> attribute) {
 		this.attribute = attribute;
 	}
 }

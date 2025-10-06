@@ -56,13 +56,13 @@ public class ClasspathEditorView extends JPanel {
 		FormLayout theLayout = new FormLayout(theColDef, theRowDef);
 		setLayout(theLayout);
 
-		CellConstraints cons = new CellConstraints();
+		final CellConstraints cons = new CellConstraints();
 
 		add(new JScrollPane(getClassPath()), cons.xywh(2, 2, 1, 4));
 		add(addButton, cons.xy(4, 3));
 		add(removeButton, cons.xy(4, 5));
 
-		JPanel thePanel = new JPanel();
+		final JPanel thePanel = new JPanel();
 
 		theColDef = "60dlu,fill:2dlu:grow,60dlu";
 		theRowDef = "p";

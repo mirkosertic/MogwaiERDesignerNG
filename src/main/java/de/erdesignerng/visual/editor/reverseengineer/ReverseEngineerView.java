@@ -66,13 +66,13 @@ public class ReverseEngineerView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
-        String colDef = "2dlu,fill:60dlu:grow,fill:60dlu:grow,fill:60dlu:grow,2dlu";
+        final String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
+        final String colDef = "2dlu,fill:60dlu:grow,fill:60dlu:grow,fill:60dlu:grow,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
+        final FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(new DefaultSeparator(ERDesignerBundle.SCHEMAOPTIONS), cons.xywh(2, 2, 3, 1));
         add(getSchemaGrid(), cons.xywh(2, 4, 3, 1));
@@ -92,13 +92,13 @@ public class ReverseEngineerView extends JPanel {
         if (schemaGrid == null) {
             schemaGrid = new JPanel();
 
-            String rowDef = "2dlu,80dlu,2dlu,p,2dlu";
-            String colDef = "40dlu:grow,2dlu,fill:70dlu";
+            final String rowDef = "2dlu,80dlu,2dlu,p,2dlu";
+            final String colDef = "40dlu:grow,2dlu,fill:70dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             schemaGrid.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             schemaGrid.add(getSchemaList().getScrollPane(), cons.xywh(1, 2, 3, 1));
             schemaGrid.add(getRefreshButton(), cons.xywh(3, 4, 1, 1));
@@ -175,13 +175,13 @@ public class ReverseEngineerView extends JPanel {
         if (engineeringOptions == null) {
             engineeringOptions = new JPanel();
 
-            String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu";
-            String colDef = "80dlu,2dlu,40dlu:grow";
+            final String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu";
+            final String colDef = "80dlu,2dlu,40dlu:grow";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             engineeringOptions.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             engineeringOptions.add(getComponent9(), cons.xywh(1, 2, 1, 1));
             engineeringOptions.add(getNaming(), cons.xywh(3, 2, 1, 1));

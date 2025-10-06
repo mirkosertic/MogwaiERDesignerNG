@@ -51,19 +51,19 @@ public class MigrationScriptEditor extends BaseEditor {
 
 	private final ERDesignerWorldConnector worldConnector;
 
-	public MigrationScriptEditor(Component aParent,
-			RepositoryEntity aRepositoryEntity,
-			ConnectionProvider aConnectionProvider,
-			ERDesignerWorldConnector aWorldConnector) {
+	public MigrationScriptEditor(final Component aParent,
+                                 final RepositoryEntity aRepositoryEntity,
+                                 final ConnectionProvider aConnectionProvider,
+                                 final ERDesignerWorldConnector aWorldConnector) {
 		super(aParent, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
 		worldConnector = aWorldConnector;
 
 		initialize();
 
-		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
-		DefaultComboBoxModel theModel2 = new DefaultComboBoxModel();
-		for (ChangeEntity theEntry : aRepositoryEntity.getChanges()) {
+		final DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+		final DefaultComboBoxModel theModel2 = new DefaultComboBoxModel();
+		for (final ChangeEntity theEntry : aRepositoryEntity.getChanges()) {
 			theModel.addElement(new ChangeDescriptor(theEntry,
 					aRepositoryEntity.getChanges().indexOf(theEntry)));
 			theModel2.addElement(new ChangeDescriptor(theEntry,
@@ -96,7 +96,7 @@ public class MigrationScriptEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 	}
 
 	@Override
@@ -105,19 +105,19 @@ public class MigrationScriptEditor extends BaseEditor {
 		if (bindingInfo.validate().isEmpty()) {
 			bindingInfo.view2model();
 
-			MigrationScriptDataModel theModel = bindingInfo.getDefaultModel();
+			final MigrationScriptDataModel theModel = bindingInfo.getDefaultModel();
 
-			MessageFormat theFormat = new MessageFormat(
+			final MessageFormat theFormat = new MessageFormat(
 					"changelog-{0}-to-{1}.sql");
-			String theChangeLogFile = theFormat.format(new String[] {
+			final String theChangeLogFile = theFormat.format(new String[] {
 					"" + theModel.getSourceChange().getIndex(),
 					"" + theModel.getDestinationChange().getIndex() });
 
-			StatementList theStatements = repositoryEntity.createChangeLog(
+			final StatementList theStatements = repositoryEntity.createChangeLog(
 					theModel.getSourceChange().getChange(), theModel
 							.getDestinationChange().getChange());
 
-			SQLEditor theEditor = new SQLEditor(this, connectionProvider,
+			final SQLEditor theEditor = new SQLEditor(this, connectionProvider,
 					theStatements, null, theChangeLogFile, worldConnector);
 			theEditor.showModal();
 		}

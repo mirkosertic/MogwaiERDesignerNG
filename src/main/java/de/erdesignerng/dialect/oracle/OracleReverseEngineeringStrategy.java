@@ -42,21 +42,21 @@ import java.util.List;
  */
 public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<OracleDialect> {
 
-	public OracleReverseEngineeringStrategy(OracleDialect aDialect) {
+	public OracleReverseEngineeringStrategy(final OracleDialect aDialect) {
 		super(aDialect);
 	}
 
 	@Override
-	public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
+	public List<SchemaEntry> getSchemaEntries(final Connection aConnection) throws SQLException {
 
-		List<SchemaEntry> theList = new ArrayList<>();
+		final List<SchemaEntry> theList = new ArrayList<>();
 
-		DatabaseMetaData theMetadata = aConnection.getMetaData();
-		ResultSet theResult = theMetadata.getSchemas();
+		final DatabaseMetaData theMetadata = aConnection.getMetaData();
+		final ResultSet theResult = theMetadata.getSchemas();
 
 		while (theResult.next()) {
-			String theSchemaName = theResult.getString("TABLE_SCHEM");
-			String theCatalogName = null;
+			final String theSchemaName = theResult.getString("TABLE_SCHEM");
+			final String theCatalogName = null;
 
 			theList.add(new SchemaEntry(theCatalogName, theSchemaName));
 		}
@@ -65,18 +65,18 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
 	}
 
 	@Override
-	protected boolean isValidTable(String aTableName) {
+	protected boolean isValidTable(final String aTableName) {
 		// Check for recycle bin tables
 		return (!aTableName.startsWith("BIN$")) && (!aTableName.contains("/"));
 	}
 
 	@Override
-	protected boolean isValidView(String aViewName) {
+	protected boolean isValidView(final String aViewName) {
 		return !aViewName.contains("/") && !aViewName.contains("==");
 	}
 
 	@Override
-	protected void reverseEngineerIndexAttribute(DatabaseMetaData aMetaData, TableEntry aTableEntry, Table aTable, ReverseEngineeringNotifier aNotifier, Index aIndex, String aColumnName, short aPosition, String aAscOrDesc) throws SQLException, ReverseEngineeringException {
+	protected void reverseEngineerIndexAttribute(final DatabaseMetaData aMetaData, final TableEntry aTableEntry, final Table aTable, final ReverseEngineeringNotifier aNotifier, final Index aIndex, final String aColumnName, final short aPosition, final String aAscOrDesc) throws SQLException, ReverseEngineeringException {
 
 		// This needs only to be checked if it is a function based index
 		if (!aColumnName.endsWith("$")) {
@@ -85,16 +85,16 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
 			return;
 		}
 
-		Connection theConnection = aMetaData.getConnection();
-		PreparedStatement theStatement = theConnection.prepareStatement("SELECT * FROM USER_IND_EXPRESSIONS WHERE INDEX_NAME = ? AND TABLE_NAME = ? AND COLUMN_POSITION = ?");
+		final Connection theConnection = aMetaData.getConnection();
+		final PreparedStatement theStatement = theConnection.prepareStatement("SELECT * FROM USER_IND_EXPRESSIONS WHERE INDEX_NAME = ? AND TABLE_NAME = ? AND COLUMN_POSITION = ?");
 		theStatement.setString(1, aIndex.getOriginalName());
 		theStatement.setString(2, aTable.getOriginalName());
 		theStatement.setShort(3, aPosition);
-		ResultSet theResult = theStatement.executeQuery();
+		final ResultSet theResult = theStatement.executeQuery();
 		boolean found = false;
 		while (theResult.next()) {
 			found = true;
-			String theColumnExpression = theResult.getString("COLUMN_EXPRESSION");
+			final String theColumnExpression = theResult.getString("COLUMN_EXPRESSION");
 
 			aIndex.getExpressions().addExpressionFor(theColumnExpression);
 		}
@@ -106,9 +106,9 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
 	}
 
 	@Override
-	protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
+	protected String reverseEngineerViewSQL(final TableEntry aViewEntry, final Connection aConnection, final View aView)
 			throws SQLException {
-		PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM USER_VIEWS WHERE VIEW_NAME = ?");
+		final PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM USER_VIEWS WHERE VIEW_NAME = ?");
 		theStatement.setString(1, aViewEntry.getTableName());
 		ResultSet theResult = null;
 		try {
@@ -137,13 +137,13 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
 	}
 
 	@Override
-	protected String getEscapedPattern(DatabaseMetaData aMetaData, String aValue) throws SQLException {
+	protected String getEscapedPattern(final DatabaseMetaData aMetaData, String aValue) {
 		if (StringUtils.isEmpty(aValue)) {
 			return aValue;
 		}
 		// Oracle is strange, just use a single / here!
 		// The driver is just wrong.
-		String thePrefix = "/";
+		final String thePrefix = "/";
 		aValue = aValue.replace("_", thePrefix + "_");
 		aValue = aValue.replace("%", thePrefix + "%");
 		return aValue;

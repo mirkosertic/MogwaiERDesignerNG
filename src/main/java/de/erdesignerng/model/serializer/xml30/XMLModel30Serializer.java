@@ -32,7 +32,7 @@ public class XMLModel30Serializer extends XMLModel20Serializer {
 
 	private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_3.0.xsd";
 
-	public XMLModel30Serializer(XMLUtils utils) {
+	public XMLModel30Serializer(final XMLUtils utils) {
 		super(utils);
 		setXMLAttributeSerializer(new XMLAttributeSerializer());
 		setXMLDomainSerializer(new XMLDomainSerializer());

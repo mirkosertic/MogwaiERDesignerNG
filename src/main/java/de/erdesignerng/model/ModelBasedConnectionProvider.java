@@ -31,7 +31,7 @@ public class ModelBasedConnectionProvider implements ConnectionProvider {
 
 	private final Model model;
 
-	public ModelBasedConnectionProvider(Model aModel) {
+	public ModelBasedConnectionProvider(final Model aModel) {
 		model = aModel;
 	}
 

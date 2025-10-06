@@ -47,7 +47,7 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
     public static final int LINE_BEGIN = 1000;
     public static final int LINE_END = 1001;
 
-    public RelationEdge(Relation aRelation, TableCell aImporting, TableCell aExporting) {
+    public RelationEdge(final Relation aRelation, final TableCell aImporting, final TableCell aExporting) {
 
         super(aRelation);
 
@@ -65,41 +65,41 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
     }
 
     @Override
-    public void transferAttributesToProperties(Map aAttributes) {
-        Relation theRelation = (Relation) getUserObject();
+    public void transferAttributesToProperties(final Map aAttributes) {
+        final Relation theRelation = (Relation) getUserObject();
 
         // PROPERTY_TEXT_OFFSET
-        Point2D theOffset = GraphConstants.getOffset(aAttributes);
+        final Point2D theOffset = GraphConstants.getOffset(aAttributes);
         if (theOffset != null) {
             theRelation.getProperties().setPointProperty(Relation.PROPERTY_TEXT_OFFSET, (int) theOffset.getX(), (int) theOffset.getY());
         }
 
         // PROPERTY_LABEL_POSITION
-        Point2D theLabelPosition = GraphConstants.getLabelPosition(aAttributes);
+        final Point2D theLabelPosition = GraphConstants.getLabelPosition(aAttributes);
         if (theLabelPosition != null) {
             theRelation.getProperties().setPointProperty(Relation.PROPERTY_LABEL_POSITION, (int) theLabelPosition.getX(), (int) theLabelPosition.getY());
         }
 
         // PROPERTY_POINTS
-        List<Point2D> thePoints = GraphConstants.getPoints(aAttributes);
+        final List<Point2D> thePoints = GraphConstants.getPoints(aAttributes);
         if (thePoints != null) {
-            StringBuilder theBuffer = new StringBuilder();
+            final StringBuilder theBuffer = new StringBuilder();
 
-            for (Point2D thePoint : thePoints) {
-                if (theBuffer.length() > 0) {
+            for (final Point2D thePoint : thePoints) {
+                if (!theBuffer.isEmpty()) {
                     theBuffer.append(",");
                 }
 
                 theBuffer.append(ModelProperties.toString(thePoint));
             }
 
-            String thePointBuffer = theBuffer.toString();
+            final String thePointBuffer = theBuffer.toString();
             theRelation.getProperties().setProperty(Relation.PROPERTY_POINTS, thePointBuffer);
         }
     }
 
     @Override
-    public void transferPropertiesToAttributes(Relation aRelation) {
+    public void transferPropertiesToAttributes(final Relation aRelation) {
         Point2D thePoint;
 
         // PROPERTY_TEXT_OFFSET
@@ -120,11 +120,11 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         }
 
         // PROPERTY_POINTS
-        String thePoints = aRelation.getProperties().getProperty(Relation.PROPERTY_POINTS);
+        final String thePoints = aRelation.getProperties().getProperty(Relation.PROPERTY_POINTS);
         if (thePoints != null) {
-            List<Point2D> thePointList = new ArrayList<>();
+            final List<Point2D> thePointList = new ArrayList<>();
 
-            for (StringTokenizer theSt = new StringTokenizer(thePoints, ","); theSt.hasMoreTokens(); ) {
+            for (final StringTokenizer theSt = new StringTokenizer(thePoints, ","); theSt.hasMoreTokens(); ) {
                 thePoint = ModelProperties.toPoint2D(theSt.nextToken());
                 thePointList.add(thePoint);
             }

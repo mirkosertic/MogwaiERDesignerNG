@@ -29,15 +29,15 @@ public class OpenXavaExportExportCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        OpenXavaExportEditor theEditor = new OpenXavaExportEditor(component.getModel(), getDetailComponent());
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final OpenXavaExportEditor theEditor = new OpenXavaExportEditor(component.getModel(), getDetailComponent());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
 
                 getWorldConnector().setStatusText(
                         component.getResourceHelper().getText(ERDesignerBundle.OPENXAVAEXPORTOK));
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

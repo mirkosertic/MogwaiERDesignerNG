@@ -30,15 +30,15 @@ public class ConvertModelCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (!component.checkForValidConnection()) {
             return;
         }
 
-        Model theModel = component.getModel();
+        final Model theModel = component.getModel();
 
-        ConvertModelEditor theEditor = new ConvertModelEditor(theModel, getDetailComponent());
+        final ConvertModelEditor theEditor = new ConvertModelEditor(theModel, getDetailComponent());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
@@ -48,7 +48,7 @@ public class ConvertModelCommand extends UICommand {
                 getWorldConnector().setStatusText(
                         component.getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
 
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

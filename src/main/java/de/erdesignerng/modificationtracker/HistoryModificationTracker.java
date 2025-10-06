@@ -36,7 +36,7 @@ public class HistoryModificationTracker implements ModelModificationTracker {
 
 	private final StatementList statements = new StatementList();
 
-	public HistoryModificationTracker(Model aModel) {
+	public HistoryModificationTracker(final Model aModel) {
 		model = aModel;
 	}
 
@@ -44,87 +44,87 @@ public class HistoryModificationTracker implements ModelModificationTracker {
 		return model.getDialect().createSQLGenerator();
 	}
 
-	protected void addStatementsToHistory(StatementList aStatement) {
+	protected void addStatementsToHistory(final StatementList aStatement) {
 		statements.addAll(aStatement);
 	}
 
 	@Override
-	public void addAttributeToTable(Table aTable, Attribute<Table> aAttribute) throws VetoException {
+	public void addAttributeToTable(final Table aTable, final Attribute<Table> aAttribute) {
 		addStatementsToHistory(getSQLGenerator().createAddAttributeToTableStatement(aTable, aAttribute));
 	}
 
 	@Override
-	public void addIndexToTable(Table aTable, Index aIndex) throws VetoException {
+	public void addIndexToTable(final Table aTable, final Index aIndex) {
 		addStatementsToHistory(getSQLGenerator().createAddIndexToTableStatement(aTable, aIndex));
 	}
 
 	@Override
-	public void addRelation(Relation aRelation) throws VetoException {
+	public void addRelation(final Relation aRelation) {
 		addStatementsToHistory(getSQLGenerator().createAddRelationStatement(aRelation));
 	}
 
 	@Override
-	public void addTable(Table aTable) throws VetoException {
+	public void addTable(final Table aTable) {
 		addStatementsToHistory(getSQLGenerator().createAddTableStatement(aTable));
 	}
 
 	@Override
-	public void changeAttribute(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) throws VetoException {
+	public void changeAttribute(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
 		addStatementsToHistory(getSQLGenerator().createChangeAttributeStatement(anExistingAttribute, aNewAttribute));
 	}
 
 	@Override
-	public void changeIndex(Index anExistingIndex, Index aNewIndex) throws VetoException {
+	public void changeIndex(final Index anExistingIndex, final Index aNewIndex) {
 		addStatementsToHistory(getSQLGenerator().createChangeIndexStatement(anExistingIndex, aNewIndex));
 	}
 
 	@Override
-	public void changeRelation(Relation aRelation, Relation aTempRelation) throws VetoException {
+	public void changeRelation(final Relation aRelation, final Relation aTempRelation) {
 		addStatementsToHistory(getSQLGenerator().createChangeRelationStatement(aRelation, aTempRelation));
 	}
 
 	@Override
-	public void changeTableComment(Table aTable, String aNewComment) throws VetoException {
+	public void changeTableComment(final Table aTable, final String aNewComment) {
 		addStatementsToHistory(getSQLGenerator().createChangeTableCommentStatement(aTable, aNewComment));
 	}
 
 	@Override
-	public void removeAttributeFromTable(Table aTable, Attribute<Table> aAttribute) throws VetoException {
+	public void removeAttributeFromTable(final Table aTable, final Attribute<Table> aAttribute) {
 		addStatementsToHistory(getSQLGenerator().createRemoveAttributeFromTableStatement(aTable, aAttribute));
 	}
 
 	@Override
-	public void removeIndexFromTable(Table aTable, Index aIndex) throws VetoException {
+	public void removeIndexFromTable(final Table aTable, final Index aIndex) {
 		addStatementsToHistory(getSQLGenerator().createRemoveIndexFromTableStatement(aTable, aIndex));
 	}
 
 	@Override
-	public void removeRelation(Relation aRelation) throws VetoException {
+	public void removeRelation(final Relation aRelation) {
 		addStatementsToHistory(getSQLGenerator().createRemoveRelationStatement(aRelation));
 	}
 
 	@Override
-	public void removeTable(Table aTable) throws VetoException {
+	public void removeTable(final Table aTable) {
 		addStatementsToHistory(getSQLGenerator().createRemoveTableStatement(aTable));
 	}
 
 	@Override
-	public void renameAttribute(Attribute<Table> anExistingAttribute, String aNewName) throws VetoException {
+	public void renameAttribute(final Attribute<Table> anExistingAttribute, final String aNewName) {
 		addStatementsToHistory(getSQLGenerator().createRenameAttributeStatement(anExistingAttribute, aNewName));
 	}
 
 	@Override
-	public void renameTable(Table aTable, String aNewName) throws VetoException {
+	public void renameTable(final Table aTable, final String aNewName) {
 		addStatementsToHistory(getSQLGenerator().createRenameTableStatement(aTable, aNewName));
 	}
 
 	@Override
-	public void removePrimaryKeyFromTable(Table aTable, Index aIndex) throws VetoException {
+	public void removePrimaryKeyFromTable(final Table aTable, final Index aIndex) {
 		addStatementsToHistory(getSQLGenerator().createRemovePrimaryKeyStatement(aTable, aIndex));
 	}
 
 	@Override
-	public void addPrimaryKeyToTable(Table aTable, Index aIndex) throws VetoException {
+	public void addPrimaryKeyToTable(final Table aTable, final Index aIndex) {
 		addStatementsToHistory(getSQLGenerator().createAddPrimaryKeyToTable(aTable, aIndex));
 	}
 
@@ -133,42 +133,41 @@ public class HistoryModificationTracker implements ModelModificationTracker {
 	}
 
 	public StatementList getNotSavedStatements() {
-		StatementList theResult = statements.stream().filter(theStatement -> !theStatement.isSaved()).collect(Collectors.toCollection(() -> new StatementList()));
-        return theResult;
+        return statements.stream().filter(theStatement -> !theStatement.isSaved()).collect(Collectors.toCollection(StatementList::new));
 	}
 
 	@Override
-	public void addView(View aView) throws VetoException {
+	public void addView(final View aView) {
 		addStatementsToHistory(getSQLGenerator().createAddViewStatement(aView));
 	}
 
 	@Override
-	public void changeView(View aView) throws VetoException {
+	public void changeView(final View aView) {
 		addStatementsToHistory(getSQLGenerator().createChangeViewStatement(aView));
 	}
 
 	@Override
-	public void removeView(View aView) throws VetoException {
+	public void removeView(final View aView) {
 		addStatementsToHistory(getSQLGenerator().createDropViewStatement(aView));
 	}
 
 	@Override
-	public void addDomain(Domain aDomain) throws VetoException {
+	public void addDomain(final Domain aDomain) {
 		addStatementsToHistory(getSQLGenerator().createAddDomainStatement(aDomain));
 	}
 
 	@Override
-	public void removeDomain(Domain aDomain) throws VetoException {
+	public void removeDomain(final Domain aDomain) {
 		addStatementsToHistory(getSQLGenerator().createDropDomainStatement(aDomain));
 	}
 
 	@Override
-	public void addCustomType(CustomType aCustomType) throws VetoException {
+	public void addCustomType(final CustomType aCustomType) {
 		addStatementsToHistory(getSQLGenerator().createAddCustomTypeStatement(aCustomType));
 	}
 
 	@Override
-	public void removeCustomType(CustomType aCustomType) throws VetoException {
+	public void removeCustomType(final CustomType aCustomType) {
 		addStatementsToHistory(getSQLGenerator().createDropCustomTypeStatement(aCustomType));
 	}
 }

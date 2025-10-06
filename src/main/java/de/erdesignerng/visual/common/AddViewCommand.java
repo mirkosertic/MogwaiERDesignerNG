@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.model.View;
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.view.ViewEditor;
 
@@ -28,36 +27,31 @@ public class AddViewCommand extends UICommand {
 
     private final Point2D location;
 
-    public AddViewCommand(Point2D aLocation) {
+    public AddViewCommand(final Point2D aLocation) {
         location = aLocation;
     }
 
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (!component.checkForValidConnection()) {
             return;
         }
 
-        View theView = new View();
-        ViewEditor theEditor = new ViewEditor(component.getModel(), getDetailComponent());
+        final View theView = new View();
+        final ViewEditor theEditor = new ViewEditor(component.getModel(), getDetailComponent());
         theEditor.initializeFor(theView);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
 
-                try {
-                    theEditor.applyValues();
-                } catch (VetoException e) {
-                    getWorldConnector().notifyAboutException(e);
-                    return;
-                }
+                theEditor.applyValues();
 
                 component.commandCreateView(theView, location);
 
                 refreshDisplayAndOutline();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

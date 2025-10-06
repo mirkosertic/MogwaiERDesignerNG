@@ -72,7 +72,7 @@ public abstract class Dialect {
 
 	private final HashMap<String, String> dataTypeAliases = new HashMap<>();
 
-	protected void addDataTypeAlias(String aDataTypeAlias, String aBaseDataTypeName) {
+	protected void addDataTypeAlias(final String aDataTypeAlias, final String aBaseDataTypeName) {
 		dataTypeAliases.put(aDataTypeAlias, aBaseDataTypeName);
 	}
 
@@ -90,7 +90,7 @@ public abstract class Dialect {
 	/**
 	 * @param aCaseSensitive the caseSensitive to set
 	 */
-	public void setCaseSensitive(boolean aCaseSensitive) {
+	public void setCaseSensitive(final boolean aCaseSensitive) {
 		caseSensitive = aCaseSensitive;
 	}
 
@@ -104,7 +104,7 @@ public abstract class Dialect {
 	/**
 	 * @param aMaxObjectNameLength the maxObjectNameLength to set
 	 */
-	public void setMaxObjectNameLength(int aMaxObjectNameLength) {
+	public void setMaxObjectNameLength(final int aMaxObjectNameLength) {
 		maxObjectNameLength = aMaxObjectNameLength;
 	}
 
@@ -118,7 +118,7 @@ public abstract class Dialect {
 	/**
 	 * @param aSpacesAllowedInObjectNames the spacesAllowedInObjectNames to set
 	 */
-	public void setSpacesAllowedInObjectNames(boolean aSpacesAllowedInObjectNames) {
+	public void setSpacesAllowedInObjectNames(final boolean aSpacesAllowedInObjectNames) {
 		spacesAllowedInObjectNames = aSpacesAllowedInObjectNames;
 	}
 
@@ -129,7 +129,7 @@ public abstract class Dialect {
 	 * @return the converted name
 	 * @throws ElementInvalidNameException will be thrown if the name is invalid
 	 */
-	public String checkName(String aName) throws ElementInvalidNameException {
+	public String checkName(final String aName) throws ElementInvalidNameException {
 		if (StringUtils.isEmpty(aName)) {
 			throw new ElementInvalidNameException("Element must have a name");
 		}
@@ -157,7 +157,7 @@ public abstract class Dialect {
 	/**
 	 * @param aNullablePrimaryKeyAllowed the nullablePrimaryKeyAllowed to set
 	 */
-	public void setNullablePrimaryKeyAllowed(boolean aNullablePrimaryKeyAllowed) {
+	public void setNullablePrimaryKeyAllowed(final boolean aNullablePrimaryKeyAllowed) {
 		nullablePrimaryKeyAllowed = aNullablePrimaryKeyAllowed;
 	}
 
@@ -171,7 +171,7 @@ public abstract class Dialect {
 	/**
 	 * @param aCastType the castType to set
 	 */
-	public void setCastType(NameCastType aCastType) {
+	public void setCastType(final NameCastType aCastType) {
 		castType = aCastType;
 	}
 
@@ -212,9 +212,9 @@ public abstract class Dialect {
 	 * @throws IllegalAccessException is thrown in case of an error
 	 * @throws SQLException		   is thrown in case of an error
 	 */
-	public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-		Class<Driver> theDriverClass = (Class<Driver>) aClassLoader.loadClass(aDriver);
-		Driver theDriver = theDriverClass.newInstance();
+	public Connection createConnection(final ClassLoader aClassLoader, final String aDriver, final String aUrl, final String aUser, String aPassword, final boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+		final Class<Driver> theDriverClass = (Class<Driver>) aClassLoader.loadClass(aDriver);
+		final Driver theDriver = theDriverClass.newInstance();
 
 		if (aPromptForPassword) {
 			aPassword = DialogUtils.promptForPassword();
@@ -223,7 +223,7 @@ public abstract class Dialect {
 			}
 		}
 
-		Properties theProperties = new Properties();
+		final Properties theProperties = new Properties();
 		theProperties.put("user", aUser);
 		theProperties.put("password", aPassword);
 
@@ -234,7 +234,7 @@ public abstract class Dialect {
 		return supportsSchemaInformation;
 	}
 
-	protected void registerType(DataType aType) {
+	protected void registerType(final DataType aType) {
 		dataTypes.add(aType);
 	}
 
@@ -250,7 +250,7 @@ public abstract class Dialect {
 	/**
 	 * @param supportsOnDelete the supportsOnDelete to set
 	 */
-	public void setSupportsOnDelete(boolean supportsOnDelete) {
+	public void setSupportsOnDelete(final boolean supportsOnDelete) {
 		this.supportsOnDelete = supportsOnDelete;
 	}
 
@@ -264,7 +264,7 @@ public abstract class Dialect {
 	/**
 	 * @param supportsOnUpdate the supportsOnUpdate to set
 	 */
-	public void setSupportsOnUpdate(boolean supportsOnUpdate) {
+	public void setSupportsOnUpdate(final boolean supportsOnUpdate) {
 		this.supportsOnUpdate = supportsOnUpdate;
 	}
 
@@ -284,7 +284,7 @@ public abstract class Dialect {
 		return generatesManagedConnection;
 	}
 
-	public void setGeneratesManagedConnection(boolean generatesStaticConnection) {
+	public void setGeneratesManagedConnection(final boolean generatesStaticConnection) {
 		generatesManagedConnection = generatesStaticConnection;
 	}
 
@@ -298,7 +298,7 @@ public abstract class Dialect {
 	/**
 	 * @param supportsColumnExtra the supportsColumnExtra to set
 	 */
-	public void setSupportsColumnExtra(boolean supportsColumnExtra) {
+	public void setSupportsColumnExtra(final boolean supportsColumnExtra) {
 		this.supportsColumnExtra = supportsColumnExtra;
 	}
 
@@ -312,7 +312,7 @@ public abstract class Dialect {
 	/**
 	 * @param suppressONALLIfNOACTION the suppressONALLIfNOACTION to set
 	 */
-	public void setSuppressONALLIfNOACTION(boolean suppressONALLIfNOACTION) {
+	public void setSuppressONALLIfNOACTION(final boolean suppressONALLIfNOACTION) {
 		this.suppressONALLIfNOACTION = suppressONALLIfNOACTION;
 	}
 
@@ -340,10 +340,10 @@ public abstract class Dialect {
 	 * @param aDataType the datatype
 	 * @return the matching datatype or null if no match was found
 	 */
-	public DataType findClosestMatchingTypeFor(DataType aDataType) {
-		for (int theCurrentJDBCType : aDataType.getJDBCType()) {
-			for (DataType theType : dataTypes) {
-				for (int theJDBCType : theType.getJDBCType()) {
+	public DataType findClosestMatchingTypeFor(final DataType aDataType) {
+		for (final int theCurrentJDBCType : aDataType.getJDBCType()) {
+			for (final DataType theType : dataTypes) {
+				for (final int theJDBCType : theType.getJDBCType()) {
 					if (theJDBCType == theCurrentJDBCType) {
 						return theType;
 					}
@@ -357,7 +357,7 @@ public abstract class Dialect {
 		return supportsDomains;
 	}
 
-	public void setSupportsDomains(boolean supportsDomains) {
+	public void setSupportsDomains(final boolean supportsDomains) {
 		this.supportsDomains = supportsDomains;
 	}
 
@@ -365,11 +365,11 @@ public abstract class Dialect {
 		return supportsCustomTypes;
 	}
 
-	public void setSupportsCustomTypes(boolean supportsCustomTypes) {
+	public void setSupportsCustomTypes(final boolean supportsCustomTypes) {
 		this.supportsCustomTypes = supportsCustomTypes;
 	}
 
-	public void setSupportsSchemaInformation(boolean supportsSchemaInformation) {
+	public void setSupportsSchemaInformation(final boolean supportsSchemaInformation) {
 		this.supportsSchemaInformation = supportsSchemaInformation;
 	}
 
@@ -380,7 +380,7 @@ public abstract class Dialect {
 		return new ArrayList<>();
 	}
 
-	public void addSystemSchema(String aSystemSchemaName) {
+	public void addSystemSchema(final String aSystemSchemaName) {
 		if (systemSchemas == null) {
 			systemSchemas = new ArrayList<>();
 		}
@@ -400,8 +400,8 @@ public abstract class Dialect {
 	 * @param aTable the table
 	 * @return the created table properties object
 	 */
-	public TableProperties createTablePropertiesFor(Table aTable) {
-		TableProperties theProps = new TableProperties();
+	public TableProperties createTablePropertiesFor(final Table aTable) {
+		final TableProperties theProps = new TableProperties();
 		theProps.initializeFrom(aTable);
 		return theProps;
 	}
@@ -412,8 +412,8 @@ public abstract class Dialect {
 	 * @param aView the view
 	 * @return the created view properties object
 	 */
-	public ViewProperties createViewPropertiesFor(View aView) {
-		ViewProperties theProps = new ViewProperties();
+	public ViewProperties createViewPropertiesFor(final View aView) {
+		final ViewProperties theProps = new ViewProperties();
 		theProps.initializeFrom(aView);
 		return theProps;
 	}
@@ -424,8 +424,8 @@ public abstract class Dialect {
 	 * @param aDomain the domain
 	 * @return the created domain properties object
 	 */
-	public DomainProperties createDomainPropertiesFor(Domain aDomain) {
-		DomainProperties theProps = new DomainProperties();
+	public DomainProperties createDomainPropertiesFor(final Domain aDomain) {
+		final DomainProperties theProps = new DomainProperties();
 		theProps.initializeFrom(aDomain);
 		return theProps;
 	}
@@ -436,8 +436,8 @@ public abstract class Dialect {
 	 * @param aRelation the relation
 	 * @return the created relation properties object
 	 */
-	public RelationProperties createRelationPropertiesFor(Relation aRelation) {
-		RelationProperties theProps = new RelationProperties();
+	public RelationProperties createRelationPropertiesFor(final Relation aRelation) {
+		final RelationProperties theProps = new RelationProperties();
 		theProps.initializeFrom(aRelation);
 		return theProps;
 	}
@@ -448,8 +448,8 @@ public abstract class Dialect {
 	 * @param aIndex the index
 	 * @return the created index properties object
 	 */
-	public IndexProperties createIndexPropertiesFor(Index aIndex) {
-		IndexProperties theProps = new IndexProperties();
+	public IndexProperties createIndexPropertiesFor(final Index aIndex) {
+		final IndexProperties theProps = new IndexProperties();
 		theProps.initializeFrom(aIndex);
 		return theProps;
 	}
@@ -484,7 +484,7 @@ public abstract class Dialect {
 	/**
 	 * @param defaultSchemaName the name of the default schema
 	 */
-	public void setDefaultSchemaName(String defaultSchemaName) {
+	public void setDefaultSchemaName(final String defaultSchemaName) {
 		this.defaultSchemaName = defaultSchemaName;
 	}
 
@@ -494,7 +494,7 @@ public abstract class Dialect {
 	 * @param aTypeName the name of a real data type OR alias
 	 * @return the name of the real data type
 	 */
-	protected String convertTypeNameToRealTypeName(String aTypeName) {
+	protected String convertTypeNameToRealTypeName(final String aTypeName) {
 		return aTypeName;
 	}
 	}

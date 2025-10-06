@@ -100,17 +100,17 @@ public final class OracleDialect extends Dialect {
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final int... aJdbcType) {
 		return new OracleDataType(aName, aDefinition, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcType) {
 		return new OracleDataType(aName, aDefinition, anIdentity, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcType) {
 		return new OracleDataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
 	}
 
@@ -120,22 +120,22 @@ public final class OracleDialect extends Dialect {
 	}
 
 	@Override
-	public IndexProperties createIndexPropertiesFor(Index aIndex) {
-		OracleIndexProperties theProperties = new OracleIndexProperties();
+	public IndexProperties createIndexPropertiesFor(final Index aIndex) {
+		final OracleIndexProperties theProperties = new OracleIndexProperties();
 		theProperties.initializeFrom(aIndex);
 		return theProperties;
 	}
 
 	@Override
-	public TableProperties createTablePropertiesFor(Table aTable) {
-		OracleTableProperties theProperties = new OracleTableProperties();
+	public TableProperties createTablePropertiesFor(final Table aTable) {
+		final OracleTableProperties theProperties = new OracleTableProperties();
 		theProperties.initializeFrom(aTable);
 		return theProperties;
 	}
 
 	@Override
-	protected String convertTypeNameToRealTypeName(String aTypeName) {
-		int p = aTypeName.indexOf("(");
+	protected String convertTypeNameToRealTypeName(final String aTypeName) {
+		final int p = aTypeName.indexOf("(");
 		if (p >= 0) {
 			return aTypeName.substring(0, p);
 		}

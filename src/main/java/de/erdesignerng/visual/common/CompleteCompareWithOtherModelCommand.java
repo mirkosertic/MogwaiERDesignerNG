@@ -27,7 +27,6 @@ import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class CompleteCompareWithOtherModelCommand extends UICommand {
@@ -38,49 +37,39 @@ public class CompleteCompareWithOtherModelCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
-        Model theCurrentModel = component.getModel();
+        final Model theCurrentModel = component.getModel();
 
-        ModelFileFilter theFiler = new ModelFileFilter();
+        final ModelFileFilter theFiler = new ModelFileFilter();
 
-        JFileChooser theChooser = new JFileChooser();
+        final JFileChooser theChooser = new JFileChooser();
         theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         theChooser.setFileFilter(theFiler);
         if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-            File theFile = theFiler.getCompletedFile(theChooser
+            final File theFile = theFiler.getCompletedFile(theChooser
                     .getSelectedFile());
 
-            InputStream theStream = null;
-            try {
+            try (final InputStream theStream = new FileInputStream(theFile)) {
 
-                theStream = new FileInputStream(theFile);
-
-                Model theNewModel = ModelIOUtilities.getInstance()
+                final Model theNewModel = ModelIOUtilities.getInstance()
                         .deserializeModelFromXML(theStream);
 
-                CompleteCompareEditor theCompare = new CompleteCompareEditor(
+                final CompleteCompareEditor theCompare = new CompleteCompareEditor(
                         getDetailComponent(), theCurrentModel, theNewModel,
                         ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
                 theCompare.showModal();
 
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 MessagesHelper.displayErrorMessage(getDetailComponent(),
                         component.getResourceHelper().getText(
                                 ERDesignerBundle.ERRORLOADINGFILE));
 
                 getWorldConnector().notifyAboutException(e);
 
-            } finally {
-                if (theStream != null) {
-                    try {
-                        theStream.close();
-                    } catch (IOException e) {
-                        // Ignore this exception
-                    }
-                }
             }
+            // Ignore this exception
         }
     }
 }

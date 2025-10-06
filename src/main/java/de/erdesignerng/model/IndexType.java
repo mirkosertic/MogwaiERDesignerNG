@@ -55,9 +55,9 @@ public enum IndexType {
 	 * @return the enum constant with the specified id
 	 * @throws IllegalArgumentException if this enum type has no constant with the specified id
 	 */
-	public static IndexType fromId(int id) {
+	public static IndexType fromId(final int id) {
 
-		for(IndexType aIndexType : IndexType.values()) { 
+		for(final IndexType aIndexType : IndexType.values()) {
 			if (aIndexType.getId() == id) {
 				return aIndexType;
 			}
@@ -66,7 +66,7 @@ public enum IndexType {
 		throw new IllegalArgumentException("Unknown type \"" + id + "\"!");
 	}
 
-	public static IndexType fromString(String aConstantName) {
+	public static IndexType fromString(final String aConstantName) {
 		return IndexType.valueOf(aConstantName.toUpperCase());
 	}
 

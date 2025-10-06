@@ -48,12 +48,12 @@ public class PreferencesEditorView extends JPanel {
 		FormLayout theLayout = new FormLayout(theColDef, theRowDef);
 		setLayout(theLayout);
 
-		CellConstraints cons = new CellConstraints();
+		final CellConstraints cons = new CellConstraints();
 
 		UIInitializer.getInstance().initialize(this);
 		add(preferences, cons.xy(2, 2));
 
-		JPanel thePanel = new JPanel();
+		final JPanel thePanel = new JPanel();
 		UIInitializer.getInstance().initialize(thePanel);
 
 		theColDef = "60dlu,2dlu:grow,60dlu";

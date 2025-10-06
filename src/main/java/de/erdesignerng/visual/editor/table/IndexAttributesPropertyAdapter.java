@@ -29,28 +29,28 @@ import java.util.List;
 
 public class IndexAttributesPropertyAdapter extends PropertyAdapter {
 
-	public IndexAttributesPropertyAdapter(DefaultList aComponent) {
+	public IndexAttributesPropertyAdapter(final DefaultList aComponent) {
 		super(aComponent, null);
 	}
 
 	@Override
-	public void model2view(Object aModel, String aPropertyName) {
+	public void model2view(final Object aModel, final String aPropertyName) {
 
-		DefaultList theComponent = (DefaultList) getComponent()[0];
+		final DefaultList theComponent = (DefaultList) getComponent()[0];
 
-		Index theIndex = (Index) aModel;
-		DefaultListModel theModel = theComponent.getModel();
+		final Index theIndex = (Index) aModel;
+		final DefaultListModel theModel = theComponent.getModel();
 		theModel.clear();
         theIndex.getExpressions().forEach(theModel::add);
 	}
 
 	@Override
-	public void view2model(Object aModel, String aPropertyName) {
-		DefaultList theComponent = (DefaultList) getComponent()[0];
+	public void view2model(final Object aModel, final String aPropertyName) {
+		final DefaultList theComponent = (DefaultList) getComponent()[0];
 
-		Index theIndex = (Index) aModel;
+		final Index theIndex = (Index) aModel;
 		theIndex.getExpressions().clear();
-		DefaultListModel<IndexExpression> theModel = theComponent.getModel();
+		final DefaultListModel<IndexExpression> theModel = theComponent.getModel();
 		for (int i = 0; i < theModel.getSize(); i++) {
 			theIndex.getExpressions().add(theModel.get(i));
 		}
@@ -59,7 +59,7 @@ public class IndexAttributesPropertyAdapter extends PropertyAdapter {
 
 	@Override
 	public List<ValidationError> validate() {
-		List<ValidationError> theResult = new ArrayList<>();
+		final List<ValidationError> theResult = new ArrayList<>();
 		markValid();
 		return theResult;
 	}

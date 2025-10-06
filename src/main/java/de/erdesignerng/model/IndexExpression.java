@@ -40,7 +40,7 @@ public class IndexExpression extends ModelItem implements ModelItemCloneable<Ind
 	 * @param expression
 	 *			Wert f�r das Attribut expression.
 	 */
-	public void setExpression(String expression) {
+	public void setExpression(final String expression) {
 		this.expression = expression;
 	}
 
@@ -59,13 +59,13 @@ public class IndexExpression extends ModelItem implements ModelItemCloneable<Ind
 	 * @param attributeRef
 	 *			Wert f�r das Attribut attributeRef.
 	 */
-	public void setAttributeRef(Attribute<Table> attributeRef) {
+	public void setAttributeRef(final Attribute<Table> attributeRef) {
 		this.attributeRef = attributeRef;
 	}
 
 	@Override
 	public IndexExpression clone() {
-		IndexExpression theClone = new IndexExpression();
+		final IndexExpression theClone = new IndexExpression();
 		theClone.setExpression(expression);
 		theClone.setSystemId(getSystemId());
 		if (attributeRef != null) {
@@ -75,12 +75,12 @@ public class IndexExpression extends ModelItem implements ModelItemCloneable<Ind
 	}
 
 	@Override
-	public void restoreFrom(IndexExpression aValue) {
+	public void restoreFrom(final IndexExpression aValue) {
 		expression = aValue.getExpression();
 		setSystemId(aValue.getSystemId());
-		Attribute<Table> theAttributeRef = aValue.getAttributeRef();
+		final Attribute<Table> theAttributeRef = aValue.getAttributeRef();
 		if (theAttributeRef != null) {
-			Attribute<Table> theNewAttribute = new Attribute<>();
+			final Attribute<Table> theNewAttribute = new Attribute<>();
 			theNewAttribute.restoreFrom(theAttributeRef);
 			attributeRef = theNewAttribute;
 		} else {
@@ -98,7 +98,7 @@ public class IndexExpression extends ModelItem implements ModelItemCloneable<Ind
 	 *			id
 	 * @return true if they are not equals
 	 */
-	public boolean isModified(IndexExpression aExpression, boolean aUseName) {
+	public boolean isModified(final IndexExpression aExpression, final boolean aUseName) {
 		if (!StringUtils.isEmpty(expression)) {
 			return !expression.equals(aExpression.getExpression());
 		}

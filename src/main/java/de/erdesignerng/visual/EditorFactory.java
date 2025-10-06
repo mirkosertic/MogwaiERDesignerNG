@@ -26,43 +26,43 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.editor.view.ViewEditor;
 import javax.swing.JComponent;
 
-public class EditorFactory {
+public final class EditorFactory {
 
     private EditorFactory() {
     }
 
-    public static BaseEditor createEditorFor(ModelItem aItem, JComponent aParent) {
+    public static BaseEditor createEditorFor(final ModelItem aItem, final JComponent aParent) {
         if (aItem instanceof Table) {
-            Table theTable = (Table) aItem;
-            TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
+            final Table theTable = (Table) aItem;
+            final TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
             theEditor.initializeFor(theTable);
             return theEditor;
         }
 
         if (aItem instanceof View) {
-            View theTable = (View) aItem;
-            ViewEditor theEditor = new ViewEditor(theTable.getOwner(), aParent);
+            final View theTable = (View) aItem;
+            final ViewEditor theEditor = new ViewEditor(theTable.getOwner(), aParent);
             theEditor.initializeFor(theTable);
             return theEditor;
         }
 
         if (aItem instanceof SubjectArea) {
-            SubjectArea theSubjectArea = (SubjectArea) aItem;
-            SubjectAreaEditor theEditor = new SubjectAreaEditor(aParent);
+            final SubjectArea theSubjectArea = (SubjectArea) aItem;
+            final SubjectAreaEditor theEditor = new SubjectAreaEditor(aParent);
             theEditor.initializeFor(theSubjectArea);
             return theEditor;
         }
 
         if (aItem instanceof Comment) {
-            Comment theComment = (Comment) aItem;
-            CommentEditor theEditor = new CommentEditor(theComment.getOwner(), aParent);
+            final Comment theComment = (Comment) aItem;
+            final CommentEditor theEditor = new CommentEditor(theComment.getOwner(), aParent);
             theEditor.initializeFor(theComment);
             return theEditor;
         }
         if (aItem instanceof Relation) {
-            Relation theRelation = (Relation) aItem;
+            final Relation theRelation = (Relation) aItem;
 
-            RelationEditor theEditor = new RelationEditor(theRelation.getOwner(), aParent);
+            final RelationEditor theEditor = new RelationEditor(theRelation.getOwner(), aParent);
             theEditor.initializeFor(theRelation);
 
             return theEditor;

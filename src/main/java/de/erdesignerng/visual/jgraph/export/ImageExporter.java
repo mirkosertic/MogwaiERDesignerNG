@@ -37,22 +37,22 @@ public class ImageExporter implements Exporter {
 
     public static List<String> getSupportedFormats() {
 
-        List<String> theKnown = new ArrayList<>();
-        String[] theList = ImageIO.getWriterMIMETypes();
-        for (String theEntry : theList) {
+        final List<String> theKnown = new ArrayList<>();
+        final String[] theList = ImageIO.getWriterMIMETypes();
+        for (final String theEntry : theList) {
             theKnown.add(theEntry.toUpperCase());
         }
         return theKnown;
     }
 
-    public ImageExporter(String aExt) {
+    public ImageExporter(final String aExt) {
         ext = aExt;
     }
 
     @Override
-    public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException {
-        Color theBackgroundColor = aGraph.getBackground();
-        BufferedImage theImage = aGraph.getImage(theBackgroundColor, 10);
+    public void fullExportToStream(final ERDesignerGraph aGraph, final OutputStream aStream) throws IOException {
+        final Color theBackgroundColor = aGraph.getBackground();
+        final BufferedImage theImage = aGraph.getImage(theBackgroundColor, 10);
         ImageIO.write(theImage, ext, aStream);
         aStream.flush();
         aStream.close();
@@ -64,11 +64,11 @@ public class ImageExporter implements Exporter {
     }
 
     @Override
-    public void exportToStream(Component aComponent, OutputStream aStream) throws IOException {
-        Dimension theSize = aComponent.getPreferredSize();
+    public void exportToStream(final Component aComponent, final OutputStream aStream) throws IOException {
+        final Dimension theSize = aComponent.getPreferredSize();
         aComponent.setSize(theSize);
-        BufferedImage theImage = new BufferedImage(theSize.width + 10, theSize.height + 10, BufferedImage.TYPE_INT_RGB);
-        Graphics theGraphics = theImage.getGraphics();
+        final BufferedImage theImage = new BufferedImage(theSize.width + 10, theSize.height + 10, BufferedImage.TYPE_INT_RGB);
+        final Graphics theGraphics = theImage.getGraphics();
         theGraphics.setColor(Color.white);
         theGraphics.fillRect(0, 0, theSize.width + 10, theSize.height + 10);
         theGraphics.translate(5, 5);

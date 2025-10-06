@@ -32,9 +32,9 @@ public class TableList extends ModelItemVector<Table> {
 	 *			the system id
 	 * @return the attribute or null if nothing was found
 	 */
-	public Attribute<Table> findAttributeBySystemId(String aSystemId) {
-		for (Table theTable : this) {
-			Attribute<Table> theAttribute = theTable.getAttributes().findBySystemId(aSystemId);
+	public Attribute<Table> findAttributeBySystemId(final String aSystemId) {
+		for (final Table theTable : this) {
+			final Attribute<Table> theAttribute = theTable.getAttributes().findBySystemId(aSystemId);
 			if (theAttribute != null) {
 				return theAttribute;
 			}
@@ -49,8 +49,8 @@ public class TableList extends ModelItemVector<Table> {
 	 *			the domain
 	 * @return the using table or null if the domain is not in use
 	 */
-	public Table checkIfUsedByTable(Domain aDomain) {
-		for (Table theTable : this) {
+	public Table checkIfUsedByTable(final Domain aDomain) {
+		for (final Table theTable : this) {
 			if (theTable.getAttributes().isDomainInUse(aDomain)) {
 				return theTable;
 			}
@@ -67,8 +67,8 @@ public class TableList extends ModelItemVector<Table> {
 	 *			the schema of the table
 	 * @return the table or null if nothing was found
 	 */
-	public Table findByNameAndSchema(String aName, String aSchemaName) {
-		for (Table theElement : this) {
+	public Table findByNameAndSchema(final String aName, final String aSchemaName) {
+		for (final Table theElement : this) {
 			if (aName.equals(theElement.getName()) && aSchemaName.equals(theElement.getSchema())) {
 				return theElement;
 			}
@@ -82,7 +82,7 @@ public class TableList extends ModelItemVector<Table> {
 	 * @param aType the type
 	 * @return the table where it is used or null of it is nowhere used
 	 */
-	public Table checkIfUsedByTable(CustomType aType) {
+	public Table checkIfUsedByTable(final CustomType aType) {
 		return null;
 	}
 }

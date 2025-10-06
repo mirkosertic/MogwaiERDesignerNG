@@ -30,7 +30,7 @@ public class AddRelationCommand extends UICommand {
 
     private final Table importingTable;
 
-    public AddRelationCommand(Table aImportingCell, Table aExportingCell) {
+    public AddRelationCommand(final Table aImportingCell, final Table aExportingCell) {
         exportingTable = aExportingCell;
         importingTable = aImportingCell;
     }
@@ -38,10 +38,10 @@ public class AddRelationCommand extends UICommand {
     @Override
     public void execute() {
 
-        Relation theRelation = createPreparedRelationFor(importingTable,
+        final Relation theRelation = createPreparedRelationFor(importingTable,
                 exportingTable);
 
-        RelationEditor theEditor = new RelationEditor(importingTable
+        final RelationEditor theEditor = new RelationEditor(importingTable
                 .getOwner(), getDetailComponent());
         theEditor.initializeFor(theRelation);
 
@@ -54,15 +54,15 @@ public class AddRelationCommand extends UICommand {
                 ERDesignerComponent.getDefault().commandCreateRelation(theRelation);
 
                 refreshDisplayAndOutline();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }
     }
 
-    private Relation createPreparedRelationFor(Table aSourceTable,
-                                               Table aTargetTable) {
-        Relation theRelation = new Relation();
+    private Relation createPreparedRelationFor(final Table aSourceTable,
+                                               final Table aTargetTable) {
+        final Relation theRelation = new Relation();
         theRelation.setImportingTable(aSourceTable);
         theRelation.setExportingTable(aTargetTable);
         theRelation.setOnUpdate(ApplicationPreferences.getInstance()
@@ -70,17 +70,17 @@ public class AddRelationCommand extends UICommand {
         theRelation.setOnDelete(ApplicationPreferences.getInstance()
                 .getOnDeleteDefault());
 
-        String thePattern = ApplicationPreferences.getInstance()
+        final String thePattern = ApplicationPreferences.getInstance()
                 .getAutomaticRelationAttributePattern();
-        String theTargetTableName = ERDesignerComponent.getDefault().getModel().getDialect()
+        final String theTargetTableName = ERDesignerComponent.getDefault().getModel().getDialect()
                 .getCastType().cast(aTargetTable.getName());
 
         // Create the foreign key suggestions
-        Index thePrimaryKey = aTargetTable.getPrimarykey();
-        for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
-            Attribute<Table> theAttribute = theExpression.getAttributeRef();
+        final Index thePrimaryKey = aTargetTable.getPrimarykey();
+        for (final IndexExpression theExpression : thePrimaryKey.getExpressions()) {
+            final Attribute<Table> theAttribute = theExpression.getAttributeRef();
             if (theAttribute != null) {
-                String theNewname = MessageFormat.format(thePattern,
+                final String theNewname = MessageFormat.format(thePattern,
                         theTargetTableName, theAttribute.getName());
                 Attribute<Table> theNewAttribute = aSourceTable.getAttributes().findByName(theNewname);
                 if (theNewAttribute == null) {

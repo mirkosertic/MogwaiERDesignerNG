@@ -24,7 +24,6 @@ import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.*;
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.ModelItemNameCellEditor;
@@ -75,7 +74,7 @@ public class TableEditor extends BaseEditor {
 
 	private final DefaultAction newAttributeAction = new DefaultAction(e -> commandNewAttribute(), this, ERDesignerBundle.NEW);
 
-	private final DefaultAction deleteAttributeAction = new DefaultAction(e -> commandDeleteAttribute(e), this, ERDesignerBundle.DELETE);
+	private final DefaultAction deleteAttributeAction = new DefaultAction(this::commandDeleteAttribute, this, ERDesignerBundle.DELETE);
 
 	private final DefaultAction newIndexAction = new DefaultAction(e -> commandNewIndex(), this, ERDesignerBundle.NEW);
 
@@ -99,11 +98,11 @@ public class TableEditor extends BaseEditor {
 
 	private final ModelItemNameCellEditor<Attribute<Table>> attributeEditor;
 
-	public TableEditor(Model aModel, Component aParent) {
+	public TableEditor(final Model aModel, final Component aParent) {
 		super(aParent, ERDesignerBundle.ENTITYEDITOR);
 		initialize();
 
-		DefaultComboBoxModel dataTypesModel = editingView.getDataTypeModel();
+		final DefaultComboBoxModel dataTypesModel = editingView.getDataTypeModel();
 
         aModel.getAvailableDataTypes().forEach(dataTypesModel::addElement);
 
@@ -123,7 +122,7 @@ public class TableEditor extends BaseEditor {
 		indexBindingInfo.addBinding("attributes", new IndexAttributesPropertyAdapter(editingView.getIndexFieldList()
 		));
 
-		RadioButtonAdapter theAdapter = new RadioButtonAdapter();
+		final RadioButtonAdapter theAdapter = new RadioButtonAdapter();
 		theAdapter.addMapping(IndexType.PRIMARYKEY, editingView.getPrimaryIndex());
 		theAdapter.addMapping(IndexType.UNIQUE, editingView.getUniqueIndex());
 		theAdapter.addMapping(IndexType.NONUNIQUE, editingView.getNotUniqueIndex());
@@ -157,7 +156,7 @@ public class TableEditor extends BaseEditor {
 
 		editingView = new TableEditorView() {
 			@Override
-			protected void attributeEditorRemoved(Attribute<Table> aAttribute) {
+			protected void attributeEditorRemoved(final Attribute<Table> aAttribute) {
 				if (aAttribute.getName() == null) {
 					removeAttribute(aAttribute);
 				}
@@ -171,9 +170,9 @@ public class TableEditor extends BaseEditor {
 		editingView.getUpdateIndexButton().setAction(updateIndex);
 		editingView.getNewIndexButton().setAction(newIndexAction);
 		editingView.getDeleteIndexButton().setAction(deleteIndexAction);
-		editingView.getIndexList().addListSelectionListener(e -> commandIndexListValueChanged(e));
+		editingView.getIndexList().addListSelectionListener(this::commandIndexListValueChanged);
 
-		editingView.getIndexFieldList().addListSelectionListener(e -> commandIndexFieldListValueChanged(e));
+		editingView.getIndexFieldList().addListSelectionListener(this::commandIndexFieldListValueChanged);
 
 		editingView.getAddIndexAttribute().addActionListener(e -> updateIndexStatusFields());
 
@@ -192,22 +191,22 @@ public class TableEditor extends BaseEditor {
 		editingView.getUpdateIndexButton().setEnabled(false);
 	}
 
-	public void initializeFor(Table aTable) {
+	public void initializeFor(final Table aTable) {
 
 		tableBindingInfo.setDefaultModel(aTable);
 		tableBindingInfo.model2view();
 
 		editingView.getEntityName().setName(aTable.getName());
-		for (Attribute<Table> theAttribute : aTable.getAttributes()) {
+		for (final Attribute<Table> theAttribute : aTable.getAttributes()) {
 
-			Attribute<Table> theClone = theAttribute.clone();
+			final Attribute<Table> theClone = theAttribute.clone();
 
 			editingView.getAttributeTableModel().add(theClone);
 			knownAttributeValues.put(theClone.getSystemId(), theClone);
 		}
-		for (Index theIndex : aTable.getIndexes()) {
+		for (final Index theIndex : aTable.getIndexes()) {
 
-			Index theClone = theIndex.clone();
+			final Index theClone = theIndex.clone();
 
 			indexListModel.add(theClone);
 			knownIndexValues.put(theClone.getSystemId(), theClone);
@@ -216,7 +215,7 @@ public class TableEditor extends BaseEditor {
 		updateAttributeEditFields();
 
 		tableProperties = model.getDialect().createTablePropertiesFor(aTable);
-		DefaultTabbedPaneTab theTab = editingView.getTablePropertiesTab();
+		final DefaultTabbedPaneTab theTab = editingView.getTablePropertiesTab();
 		tablePropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, tableProperties);
 		theTab.add(tablePropertiesWrapper.getComponent(), BorderLayout.CENTER);
 		if (!tablePropertiesWrapper.hasComponents()) {
@@ -255,7 +254,7 @@ public class TableEditor extends BaseEditor {
 			}
 			try {
 				model.checkName(editingView.getEntityName().getText());
-			} catch (ElementInvalidNameException e) {
+			} catch (final ElementInvalidNameException e) {
 				MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.NAMEINVALID));
 				return;
 			}
@@ -265,7 +264,7 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandTabStateChange() {
-		int theIndex = editingView.getMainTabbedPane().getSelectedIndex();
+		final int theIndex = editingView.getMainTabbedPane().getSelectedIndex();
 		if (theIndex == 1) {
 			commandNewIndex();
 		}
@@ -276,7 +275,7 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void updateAttributeEditFields() {
-		int theRow = editingView.getAttributesTable().getSelectedRow();
+		final int theRow = editingView.getAttributesTable().getSelectedRow();
 		if (theRow >= 0) {
 			deleteAttributeAction.setEnabled(true);
 		} else {
@@ -285,11 +284,11 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void updateIndexEditFields() {
-		Index theValue = indexBindingInfo.getDefaultModel();
+		final Index theValue = indexBindingInfo.getDefaultModel();
 
 		if (theValue != null) {
 
-			boolean isNew = !indexListModel.contains(theValue);
+			final boolean isNew = !indexListModel.contains(theValue);
 
 			editingView.getNewIndexButton().setEnabled(true);
 			editingView.getUpdateIndexButton().setEnabled(true);
@@ -315,7 +314,7 @@ public class TableEditor extends BaseEditor {
 			indexBindingInfo.setEnabled(false);
 		}
 
-		DefaultComboBoxModel theAttModel = new DefaultComboBoxModel();
+		final DefaultComboBoxModel theAttModel = new DefaultComboBoxModel();
 		for (int i = 0; i < editingView.getAttributeTableModel().getRowCount(); i++) {
 			theAttModel.addElement(editingView.getAttributeTableModel().getRow(i));
 		}
@@ -331,7 +330,7 @@ public class TableEditor extends BaseEditor {
 
 	private void updateIndexStatusFields() {
 
-		boolean theCurrentIndexSelected = indexBindingInfo.getDefaultModel() != null;
+		final boolean theCurrentIndexSelected = indexBindingInfo.getDefaultModel() != null;
 		editingView.getAddIndexAttribute().setEnabled(theCurrentIndexSelected);
 		editingView.getAddIndexExpression().setEnabled(theCurrentIndexSelected);
 
@@ -339,7 +338,7 @@ public class TableEditor extends BaseEditor {
 		editingView.getIndexAttribute().setEnabled(theEnabled);
 		editingView.getAddAttributeToIndexButton().setEnabled(theEnabled);
 
-		IndexValueModel theModel = new IndexValueModel();
+		final IndexValueModel theModel = new IndexValueModel();
 
 		if (theEnabled) {
 			indexExpressionBindingInfo2.setDefaultModel(theModel);
@@ -355,16 +354,16 @@ public class TableEditor extends BaseEditor {
 		}
 	}
 
-	private void commandIndexFieldListValueChanged(javax.swing.event.ListSelectionEvent evt) {
+	private void commandIndexFieldListValueChanged(final javax.swing.event.ListSelectionEvent evt) {
 
 		removeIndexElement.setEnabled(editingView.getIndexFieldList().getSelectedValue() != null);
 
 		updateIndexStatusFields();
 	}
 
-	private void commandIndexListValueChanged(javax.swing.event.ListSelectionEvent evt) {
+	private void commandIndexListValueChanged(final javax.swing.event.ListSelectionEvent evt) {
 
-		int index = editingView.getIndexList().getSelectedIndex();
+		final int index = editingView.getIndexList().getSelectedIndex();
 		if (index >= 0) {
 			indexBindingInfo.setDefaultModel((Index) indexListModel.get(index));
 
@@ -376,10 +375,10 @@ public class TableEditor extends BaseEditor {
 
 	private void updateIndexProperties() {
 
-		Index theIndex = indexBindingInfo.getDefaultModel();
+		final Index theIndex = indexBindingInfo.getDefaultModel();
 
 		indexProperties = model.getDialect().createIndexPropertiesFor(theIndex);
-		DefaultTabbedPaneTab theTab = editingView.getIndexPropertiesTab();
+		final DefaultTabbedPaneTab theTab = editingView.getIndexPropertiesTab();
 		indexPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, indexProperties);
 		theTab.removeAll();
 
@@ -394,10 +393,10 @@ public class TableEditor extends BaseEditor {
 
 	}
 
-	private void commandDeleteAttribute(java.awt.event.ActionEvent aEvent) {
+	private void commandDeleteAttribute(final java.awt.event.ActionEvent aEvent) {
 
-		int theRow = editingView.getAttributesTable().getSelectedRow();
-		Attribute<Table> theAttribute = editingView.getAttributeTableModel().getRow(theRow);
+		final int theRow = editingView.getAttributesTable().getSelectedRow();
+		final Attribute<Table> theAttribute = editingView.getAttributeTableModel().getRow(theRow);
 
 		if (model.checkIfUsedAsForeignKey(tableBindingInfo.getDefaultModel(), theAttribute)) {
 
@@ -424,9 +423,9 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandNewAttribute() {
-		Attribute<Table> theNewAttribute = new Attribute<>();
+		final Attribute<Table> theNewAttribute = new Attribute<>();
 		editingView.getAttributeTableModel().add(theNewAttribute);
-		int theRow = editingView.getAttributeTableModel().getRowCount();
+		final int theRow = editingView.getAttributeTableModel().getRowCount();
 		editingView.getAttributesTable().setRowSelectionInterval(theRow - 1, theRow - 1);
 		knownAttributeValues.put(theNewAttribute.getSystemId(), theNewAttribute);
 
@@ -435,7 +434,7 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandDeleteIndex() {
-		Index theAttribute = indexBindingInfo.getDefaultModel();
+		final Index theAttribute = indexBindingInfo.getDefaultModel();
 
 		if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
 			knownIndexValues.remove(theAttribute.getSystemId());
@@ -456,13 +455,13 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandUpdateIndex() {
-		Index theIndex = indexBindingInfo.getDefaultModel();
-		List<ValidationError> theValidationResult = indexBindingInfo.validate();
+		final Index theIndex = indexBindingInfo.getDefaultModel();
+		final List<ValidationError> theValidationResult = indexBindingInfo.validate();
 		if (theValidationResult.isEmpty()) {
 
-			Dialect theDialect = model.getDialect();
+			final Dialect theDialect = model.getDialect();
 			for (int i = 0; i < indexListModel.getSize(); i++) {
-				Index theTempIndex = (Index) indexListModel.get(i);
+				final Index theTempIndex = (Index) indexListModel.get(i);
 				try {
 					if (theDialect.checkName(theTempIndex.getName()).equals(
 							theDialect.checkName(editingView.getIndexName().getText()))
@@ -471,7 +470,7 @@ public class TableEditor extends BaseEditor {
 								ERDesignerBundle.INDEXALREADYEXISTS));
 						return;
 					}
-				} catch (ElementInvalidNameException e) {
+				} catch (final ElementInvalidNameException e) {
 					MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.NAMEINVALID));
 					return;
 				}
@@ -481,7 +480,7 @@ public class TableEditor extends BaseEditor {
 
 			if (theIndex.getIndexType() == IndexType.PRIMARYKEY) {
 				for (int i = 0; i < indexListModel.getSize(); i++) {
-					Index theTempIndex = (Index) indexListModel.get(i);
+					final Index theTempIndex = (Index) indexListModel.get(i);
 					if ((theTempIndex.getIndexType() == IndexType.PRIMARYKEY && (!theIndex.equals(theTempIndex)))) {
 						MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
 								ERDesignerBundle.THEREISALREADYAPRIMARYKEY));
@@ -490,7 +489,7 @@ public class TableEditor extends BaseEditor {
 				}
 			}
 
-			DefaultListModel<IndexExpression> theListModel = editingView.getIndexFieldList().getModel();
+			final DefaultListModel<IndexExpression> theListModel = editingView.getIndexFieldList().getModel();
 			if (theListModel.getSize() == 0) {
 				MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
 						ERDesignerBundle.ANINDEXMUSTHAVEATLEASTONEELEMENT));
@@ -521,9 +520,9 @@ public class TableEditor extends BaseEditor {
 			indexBindingInfo.view2model();
 
 			indexExpressionBindingInfo.view2model();
-			IndexValueModel theValue = indexExpressionBindingInfo.getDefaultModel();
+			final IndexValueModel theValue = indexExpressionBindingInfo.getDefaultModel();
 
-			Index theCurrentModel = indexBindingInfo.getDefaultModel();
+			final Index theCurrentModel = indexBindingInfo.getDefaultModel();
 
 			theCurrentModel.getExpressions().addExpressionFor(theValue.getExpression());
 
@@ -538,16 +537,16 @@ public class TableEditor extends BaseEditor {
 			indexBindingInfo.view2model();
 
 			indexExpressionBindingInfo2.view2model();
-			IndexValueModel theValue = indexExpressionBindingInfo2.getDefaultModel();
+			final IndexValueModel theValue = indexExpressionBindingInfo2.getDefaultModel();
 
-			Index theCurrentModel = indexBindingInfo.getDefaultModel();
+			final Index theCurrentModel = indexBindingInfo.getDefaultModel();
 
 			try {
 				theCurrentModel.getExpressions().addExpressionFor(theValue.getAttribute());
 
 				indexBindingInfo.model2view();
 				indexBindingInfo.markChanged();
-			} catch (ElementAlreadyExistsException e) {
+			} catch (final ElementAlreadyExistsException e) {
 				MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
 						ERDesignerBundle.ATTRIBUTEALREADYPARTOFINDEX));
 			}
@@ -561,7 +560,7 @@ public class TableEditor extends BaseEditor {
 
 				indexBindingInfo.view2model();
 
-				Index theCurrentModel = indexBindingInfo.getDefaultModel();
+				final Index theCurrentModel = indexBindingInfo.getDefaultModel();
 				theCurrentModel.getExpressions().remove(editingView.getIndexFieldList().getSelectedValue());
 
 				indexBindingInfo.model2view();
@@ -573,9 +572,9 @@ public class TableEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+	public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException {
 
-		Table theTable = tableBindingInfo.getDefaultModel();
+		final Table theTable = tableBindingInfo.getDefaultModel();
 
 		tablePropertiesWrapper.save();
 		tableProperties.copyTo(theTable);
@@ -587,14 +586,14 @@ public class TableEditor extends BaseEditor {
 			// The table is new, so just add it
 			// In case of a clone, we have to check it is not already added
 			for (int i = 0; i < editingView.getAttributeTableModel().getRowCount(); i++) {
-				Attribute<Table> theAttribute = editingView.getAttributeTableModel().getRow(i);
+				final Attribute<Table> theAttribute = editingView.getAttributeTableModel().getRow(i);
 				if (!theTable.getAttributes().contains(theAttribute)) {
 					theTable.addAttribute(model, editingView.getAttributeTableModel().getRow(i));
 				}
 			}
 
 			for (int i = 0; i < indexListModel.getSize(); i++) {
-				Index theIndex = (Index) indexListModel.get(i);
+				final Index theIndex = (Index) indexListModel.get(i);
 				if (!theTable.getIndexes().contains(theIndex)) {
 					theTable.addIndex(model, (Index) indexListModel.get(i));
 				}
@@ -603,7 +602,7 @@ public class TableEditor extends BaseEditor {
 			model.addTable(theTable);
 		} else {
 			// The table exists already in the model
-			Table theTempTable = new Table();
+			final Table theTempTable = new Table();
 
 			tableBindingInfo.setDefaultModel(theTempTable);
 			tableBindingInfo.view2model();
@@ -619,21 +618,21 @@ public class TableEditor extends BaseEditor {
 			}
 
 			// Remove the removed attributes
-			for (Attribute<Table> theAttribute : removedAttributes) {
+			for (final Attribute<Table> theAttribute : removedAttributes) {
 				model.removeAttributeFromTable(theTable, theAttribute);
 			}
 
 			// Remove the removed indexes
-			for (Index theIndex : removedIndexes) {
+			for (final Index theIndex : removedIndexes) {
 				model.removeIndex(theTable, theIndex);
 			}
 
 			// And finally check all attributes if they are new or were renamed
 			// or modified
-			for (String theKey : knownAttributeValues.keySet()) {
-				Attribute<Table> theAttribute = knownAttributeValues.get(theKey);
+			for (final String theKey : knownAttributeValues.keySet()) {
+				final Attribute<Table> theAttribute = knownAttributeValues.get(theKey);
 
-				Attribute<Table> theExistingAttribute = theTable.getAttributes().findBySystemId(theKey);
+				final Attribute<Table> theExistingAttribute = theTable.getAttributes().findBySystemId(theKey);
 				if (theExistingAttribute == null) {
 					model.addAttributeToTable(theTable, theAttribute);
 				} else {
@@ -645,18 +644,16 @@ public class TableEditor extends BaseEditor {
 								model.changeAttribute(theExistingAttribute, theAttribute);
 							}
 						}
-					} catch (VetoException e1) {
-						throw e1;
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						logFatalError(e);
 					}
 				}
 			}
 
-			for (String theKey : knownIndexValues.keySet()) {
-				Index theIndex = knownIndexValues.get(theKey);
+			for (final String theKey : knownIndexValues.keySet()) {
+				final Index theIndex = knownIndexValues.get(theKey);
 
-				Index theExistingIndex = theTable.getIndexes().findBySystemId(theKey);
+				final Index theExistingIndex = theTable.getIndexes().findBySystemId(theKey);
 				if (theExistingIndex == null) {
 					model.addIndexToTable(theTable, theIndex);
 				} else {
@@ -664,9 +661,7 @@ public class TableEditor extends BaseEditor {
 						if (theExistingIndex.isModified(theIndex, false)) {
 							model.changeIndex(theExistingIndex, theIndex);
 						}
-					} catch (VetoException e1) {
-						throw e1;
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						logFatalError(e);
 					}
 				}
@@ -674,9 +669,9 @@ public class TableEditor extends BaseEditor {
 		}
 	}
 
-	boolean isPrimaryKey(Attribute<Table> aAttribute) {
+	boolean isPrimaryKey(final Attribute<Table> aAttribute) {
 		for (int i = 0; i < indexListModel.getSize(); i++) {
-			Index theIndex = (Index) indexListModel.get(i);
+			final Index theIndex = (Index) indexListModel.get(i);
 			if (IndexType.PRIMARYKEY == theIndex.getIndexType()) {
 				return theIndex.getExpressions().findByAttribute(aAttribute) != null;
 			}
@@ -684,9 +679,9 @@ public class TableEditor extends BaseEditor {
 		return false;
 	}
 
-	private boolean isUsedInIndex(Attribute<Table> aAttribute) {
+	private boolean isUsedInIndex(final Attribute<Table> aAttribute) {
 		for (int i = 0; i < indexListModel.getSize(); i++) {
-			Index theIndex = (Index) indexListModel.get(i);
+			final Index theIndex = (Index) indexListModel.get(i);
 			if (theIndex.getExpressions().findByAttribute(aAttribute) != null) {
 				return true;
 			}
@@ -699,8 +694,8 @@ public class TableEditor extends BaseEditor {
 	 *
 	 * @param aAttribute the attribute
 	 */
-	public void setSelectedAttribute(Attribute<Table> aAttribute) {
-		int theIndex = editingView.getAttributeTableModel().getRowIndex(aAttribute);
+	public void setSelectedAttribute(final Attribute<Table> aAttribute) {
+		final int theIndex = editingView.getAttributeTableModel().getRowIndex(aAttribute);
 		editingView.getAttributesTable().setRowSelectionInterval(theIndex, theIndex);
 	}
 
@@ -709,7 +704,7 @@ public class TableEditor extends BaseEditor {
 	 *
 	 * @param aIndex the index
 	 */
-	public void setSelectedIndex(Index aIndex) {
+	public void setSelectedIndex(final Index aIndex) {
 		editingView.getMainTabbedPane().setSelectedIndex(1);
 		editingView.getIndexList().setSelectedValue(aIndex, true);
 	}
@@ -719,7 +714,7 @@ public class TableEditor extends BaseEditor {
 	 *
 	 * @param aAttribute
 	 */
-	private void removeAttribute(Attribute<Table> aAttribute) {
+	private void removeAttribute(final Attribute<Table> aAttribute) {
 		knownAttributeValues.remove(aAttribute.getSystemId());
 
 		editingView.getAttributeTableModel().remove(aAttribute);

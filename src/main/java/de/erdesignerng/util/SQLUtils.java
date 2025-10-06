@@ -40,7 +40,7 @@ public final class SQLUtils {
 	private SQLUtils() {
 	}
 
-	private static void addViewAttribute(String aExpression, View aView) {
+	private static void addViewAttribute(String aExpression, final View aView) {
 		int p = aExpression.toUpperCase().indexOf(AS_CLAUSE);
 		if (p > 0) {
 			aExpression = aExpression.substring(p + AS_CLAUSE.length()).trim();
@@ -50,15 +50,15 @@ public final class SQLUtils {
 				aExpression = aExpression.substring(p + 1).trim();
 			}
 		}
-		ViewAttribute theAttribute = new ViewAttribute();
+		final ViewAttribute theAttribute = new ViewAttribute();
 		theAttribute.setName(aExpression);
 
 		aView.getAttributes().add(theAttribute);
 	}
 
-	public static void updateViewAttributesFromSQL(View aView, String aStatement) throws Exception {
+	public static void updateViewAttributesFromSQL(final View aView, String aStatement) throws Exception {
 
-		ViewAttributeList theList = aView.getAttributes();
+		final ViewAttributeList theList = aView.getAttributes();
 		theList.clear();
 
 		if (StringUtils.isEmpty(aStatement)) {
@@ -71,10 +71,10 @@ public final class SQLUtils {
 		aStatement = aStatement.replace('\f', ' ');
 		aStatement = aStatement.replace('\r', ' ');
 
-		String theUpperSQL = aStatement.toUpperCase();
+		final String theUpperSQL = aStatement.toUpperCase();
 
-		int theSelectStart = theUpperSQL.indexOf(SELECT_CLAUSE);
-		int theFromStart = theUpperSQL.indexOf(FROM_CLAUSE);
+		final int theSelectStart = theUpperSQL.indexOf(SELECT_CLAUSE);
+		final int theFromStart = theUpperSQL.indexOf(FROM_CLAUSE);
 
 		if (theSelectStart < 0) {
 			throw new Exception("The SQL must contain the SELECT keyword : " + aStatement);
@@ -86,7 +86,7 @@ public final class SQLUtils {
 			throw new Exception("Syntax error : " + aStatement);
 		}
 
-		String theSelectFields = aStatement.substring(theSelectStart + SELECT_CLAUSE.length(), theFromStart).trim();
+		final String theSelectFields = aStatement.substring(theSelectStart + SELECT_CLAUSE.length(), theFromStart).trim();
 		if (StringUtils.isEmpty(theSelectFields)) {
 			throw new Exception("No fields are selected : " + aStatement);
 		}
@@ -97,7 +97,7 @@ public final class SQLUtils {
 		boolean inString = false;
 		while (p < theSelectFields.length()) {
 
-			char theCurrentChar = theSelectFields.charAt(p);
+			final char theCurrentChar = theSelectFields.charAt(p);
 			switch (theCurrentChar) {
 			case '(':
 				if (!inString) {
@@ -155,7 +155,7 @@ public final class SQLUtils {
 	 *		  - SQL statement to format
 	 * @return pretty formatted SQL
 	 */
-	public static String prettyFormat(String aSQLStatement) {
+	public static String prettyFormat(final String aSQLStatement) {
 		if (StringUtils.isEmpty(aSQLStatement)) {
 			return aSQLStatement;
 		}

@@ -56,14 +56,14 @@ public class EditorPanel extends JPanel {
         boolean center;
         public final Object userObject;
 
-        public EditorComponent(Object aUserObject, float aAngle, int aRadius, JComponent aPaintComponent) {
+        public EditorComponent(final Object aUserObject, final float aAngle, final int aRadius, final JComponent aPaintComponent) {
             finalRadius = aRadius;
             angle = aAngle;
             paintComponent = aPaintComponent;
             userObject = aUserObject;
         }
 
-        public EditorComponent(Object aUserObject, float aAngle, int aRadius, JComponent aPaintComponent, boolean aCenter) {
+        public EditorComponent(final Object aUserObject, final float aAngle, final int aRadius, final JComponent aPaintComponent, final boolean aCenter) {
             finalRadius = aRadius;
             angle = aAngle;
             paintComponent = aPaintComponent;
@@ -78,10 +78,10 @@ public class EditorPanel extends JPanel {
         final EditorComponent to;
         final Color color;
 
-        public Connector(EditorComponent aFrom, EditorComponent aTo) {
+        public Connector(final EditorComponent aFrom, final EditorComponent aTo) {
             from = aFrom;
             to = aTo;
-            int r = 75 + (int) (Math.random() * 180);
+            final int r = 75 + (int) (Math.random() * 180);
             color = new Color(r, r, r);
         }
     }
@@ -95,7 +95,7 @@ public class EditorPanel extends JPanel {
 
     public EditorPanel() {
 
-        StringBuilder theHelpHtml = new StringBuilder();
+        final StringBuilder theHelpHtml = new StringBuilder();
         theHelpHtml.append("<html>");
         theHelpHtml.append("<h1>");
         theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_2D3D_EDITOR_1));
@@ -129,7 +129,7 @@ public class EditorPanel extends JPanel {
 
         addMouseWheelListener(e -> {
             components.stream().filter(theComponent -> !theComponent.center).forEach(theComponent -> {
-                int aAmount = e.getUnitsToScroll() * 2;
+                final int aAmount = e.getUnitsToScroll() * 2;
                 if (theComponent.currentRadius + aAmount > 0) {
                     theComponent.currentRadius += aAmount;
                 }
@@ -139,13 +139,13 @@ public class EditorPanel extends JPanel {
         });
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mouseReleased(final MouseEvent e) {
                 lastMouseLocation = null;
             }
 
             @Override
-            public void mouseClicked(MouseEvent e) {
-                EditorComponent theSelected = findEditorComponentAt(e.getPoint());
+            public void mouseClicked(final MouseEvent e) {
+                final EditorComponent theSelected = findEditorComponentAt(e.getPoint());
                 if (theSelected != null) {
                     componentClicked(theSelected, e);
                 }
@@ -154,8 +154,8 @@ public class EditorPanel extends JPanel {
 
         addMouseMotionListener(new MouseAdapter() {
             @Override
-            public void mouseMoved(MouseEvent e) {
-                EditorComponent theSelected = findEditorComponentAt(e.getPoint());
+            public void mouseMoved(final MouseEvent e) {
+                final EditorComponent theSelected = findEditorComponentAt(e.getPoint());
                 if (theSelected != null) {
                     if (theSelected != fadingComponent) {
                         fadingHelper.setComponentToHighlightFadeOut(fadingHelper.getComponentToHighlight() != null);
@@ -172,31 +172,29 @@ public class EditorPanel extends JPanel {
         });
         addMouseMotionListener(new MouseAdapter() {
             @Override
-            public void mouseDragged(MouseEvent e) {
+            public void mouseDragged(final MouseEvent e) {
 
-                Dimension theCenter = getSize();
-                int theX = theCenter.width / 2;
-                int theY = theCenter.height / 2;
+                final Dimension theCenter = getSize();
+                final int theX = theCenter.width / 2;
+                final int theY = theCenter.height / 2;
 
                 if (lastMouseLocation == null) {
                     if (findEditorComponentAt(e.getPoint()) != null) {
                         lastMouseLocation = e.getPoint();
                     }
                 } else {
-                    Point theCurrentLocation = e.getPoint();
+                    final Point theCurrentLocation = e.getPoint();
 
-                    int mx1 = lastMouseLocation.x - theX;
-                    int my1 = lastMouseLocation.y - theY;
+                    final int mx1 = lastMouseLocation.x - theX;
+                    final int my1 = lastMouseLocation.y - theY;
 
-                    int mx2 = theCurrentLocation.x - theX;
-                    int my2 = theCurrentLocation.y - theY;
+                    final int mx2 = theCurrentLocation.x - theX;
+                    final int my2 = theCurrentLocation.y - theY;
 
-                    float oldAngle = getAngle(mx1, my1);
-                    float newAngle = getAngle(mx2, my2);
+                    final float oldAngle = getAngle(mx1, my1);
+                    final float newAngle = getAngle(mx2, my2);
 
-                    components.stream().filter(theComponent -> !theComponent.center).forEach(theComponent -> {
-                        theComponent.angle += newAngle - oldAngle;
-                    });
+                    components.stream().filter(theComponent -> !theComponent.center).forEach(theComponent -> theComponent.angle += newAngle - oldAngle);
                     invalidate();
                     repaint();
 
@@ -208,29 +206,29 @@ public class EditorPanel extends JPanel {
     }
 
     @Override
-    public void setBackground(Color bg) {
+    public void setBackground(final Color bg) {
         super.setBackground(Color.black);
     }
 
-    protected JComponent getHighlightComponentFor(EditorComponent aComponent) {
+    protected JComponent getHighlightComponentFor(final EditorComponent aComponent) {
         return null;
     }
 
-    private EditorComponent findEditorComponentAt(Point aPoint) {
+    private EditorComponent findEditorComponentAt(final Point aPoint) {
         EditorComponent theSelected = null;
 
-        Dimension theCenter = getSize();
-        int centerX = theCenter.width / 2;
-        int centerY = theCenter.height / 2;
+        final Dimension theCenter = getSize();
+        final int centerX = theCenter.width / 2;
+        final int centerY = theCenter.height / 2;
 
-        for (EditorComponent theComponent : components) {
+        for (final EditorComponent theComponent : components) {
 
-            Dimension theComponentSize = theComponent.paintComponent.getSize();
+            final Dimension theComponentSize = theComponent.paintComponent.getSize();
 
-            int tX = centerX + (int) (Math.cos(Math.toRadians(theComponent.angle)) * theComponent.currentRadius) - theComponentSize.width / 2;
-            int ty = centerY + (int) (Math.sin(Math.toRadians(theComponent.angle)) * theComponent.currentRadius) - theComponentSize.height / 2;
+            final int tX = centerX + (int) (Math.cos(Math.toRadians(theComponent.angle)) * theComponent.currentRadius) - theComponentSize.width / 2;
+            final int ty = centerY + (int) (Math.sin(Math.toRadians(theComponent.angle)) * theComponent.currentRadius) - theComponentSize.height / 2;
 
-            Rectangle theRectangle = new Rectangle(tX, ty, theComponentSize.width, theComponentSize.height);
+            final Rectangle theRectangle = new Rectangle(tX, ty, theComponentSize.width, theComponentSize.height);
             if (theRectangle.contains(aPoint)) {
                 theSelected = theComponent;
             }
@@ -238,7 +236,7 @@ public class EditorPanel extends JPanel {
         return theSelected;
     }
 
-    public void componentClicked(EditorComponent aComponent, MouseEvent aEvent) {
+    public void componentClicked(final EditorComponent aComponent, final MouseEvent aEvent) {
     }
 
     public void cleanup() {
@@ -248,7 +246,7 @@ public class EditorPanel extends JPanel {
     }
 
     private float getAngle(float dx, float dy) {
-        int sector;
+        final int sector;
         if (dx > 0) {
             if (dy >= 0) {
                 sector = 1;
@@ -275,30 +273,26 @@ public class EditorPanel extends JPanel {
             }
         }
 
-        float theAngle = (float) Math.toDegrees(Math.atan(dy / dx));
-        switch (sector) {
-            case 1:
-                return theAngle;
-            case 2:
-                return 180 - theAngle;
-            case 3:
-                return 180 + theAngle;
-            case 4:
-                return 360 - theAngle;
-        }
-        return 0;
+        final float theAngle = (float) Math.toDegrees(Math.atan(dy / dx));
+        return switch (sector) {
+            case 1 -> theAngle;
+            case 2 -> 180 - theAngle;
+            case 3 -> 180 + theAngle;
+            case 4 -> 360 - theAngle;
+            default -> 0;
+        };
     }
 
-    public void add(EditorComponent aComponent) {
+    public void add(final EditorComponent aComponent) {
         components.add(aComponent);
     }
 
-    public void add(Connector aConnector) {
+    public void add(final Connector aConnector) {
         connectors.add(aConnector);
     }
 
-    public boolean hasConnection(EditorComponent a, EditorComponent b) {
-        for (Connector theConnector : connectors) {
+    public boolean hasConnection(final EditorComponent a, final EditorComponent b) {
+        for (final Connector theConnector : connectors) {
             if (theConnector.from == a && theConnector.to == b) {
                 return true;
             }
@@ -310,15 +304,15 @@ public class EditorPanel extends JPanel {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(final Graphics g) {
         super.paint(g);
 
-        Dimension theSize = getSize();
-        int centerX = theSize.width / 2;
-        int centerY = theSize.height / 2;
+        final Dimension theSize = getSize();
+        final int centerX = theSize.width / 2;
+        final int centerY = theSize.height / 2;
 
-        String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo();
-        String theTitle = "(c) " + resourceHelper.getText(ERDesignerBundle.TITLE) + " "
+        final String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo();
+        final String theTitle = "(c) " + resourceHelper.getText(ERDesignerBundle.TITLE) + " "
                 + theVersion + " ";
 
         g.setColor(Color.white);
@@ -329,39 +323,39 @@ public class EditorPanel extends JPanel {
         if (components.isEmpty()) {
 
             if (helpImage == null) {
-                Dimension theHelpSize = new Dimension(600, 300);
+                final Dimension theHelpSize = new Dimension(600, 300);
 
-                JLabel theHelpLabel = new JLabel(helpHTML);
+                final JLabel theHelpLabel = new JLabel(helpHTML);
                 theHelpLabel.setFont(g.getFont());
                 theHelpLabel.setSize(theHelpSize);
                 theHelpLabel.setForeground(Color.white);
 
                 helpImage = new BufferedImage((int) theHelpSize.getWidth(), (int) theHelpSize.getHeight(),
                         BufferedImage.TYPE_INT_RGB);
-                Graphics2D theHelpGraphics = (Graphics2D) helpImage.getGraphics();
+                final Graphics2D theHelpGraphics = (Graphics2D) helpImage.getGraphics();
                 theHelpGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                         RenderingHints.VALUE_ANTIALIAS_ON);
                 theHelpLabel.paint(theHelpGraphics);
             }
 
-            int xp = centerX - helpImage.getWidth() / 2;
-            int yp = centerY - helpImage.getHeight() / 2;
+            final int xp = centerX - helpImage.getWidth() / 2;
+            final int yp = centerY - helpImage.getHeight() / 2;
 
             g.drawImage(helpImage, xp, yp, null);
         }
 
         int outerRadius = -1;
-        for (Connector theConnector : connectors) {
+        for (final Connector theConnector : connectors) {
 
             if (theConnector.from.center != theConnector.to.center) {
 
                 g.setColor(Color.white);
 
-                int tX1 = centerX + (int) (Math.cos(Math.toRadians(theConnector.from.angle)) * theConnector.from.currentRadius);
-                int ty1 = centerY + (int) (Math.sin(Math.toRadians(theConnector.from.angle)) * theConnector.from.currentRadius);
+                final int tX1 = centerX + (int) (Math.cos(Math.toRadians(theConnector.from.angle)) * theConnector.from.currentRadius);
+                final int ty1 = centerY + (int) (Math.sin(Math.toRadians(theConnector.from.angle)) * theConnector.from.currentRadius);
 
-                int tX2 = centerX + (int) (Math.cos(Math.toRadians(theConnector.to.angle)) * theConnector.to.currentRadius);
-                int ty2 = centerY + (int) (Math.sin(Math.toRadians(theConnector.to.angle)) * theConnector.to.currentRadius);
+                final int tX2 = centerX + (int) (Math.cos(Math.toRadians(theConnector.to.angle)) * theConnector.to.currentRadius);
+                final int ty2 = centerY + (int) (Math.sin(Math.toRadians(theConnector.to.angle)) * theConnector.to.currentRadius);
 
                 g.drawLine(tX1, ty1, tX2, ty2);
             } else {
@@ -372,26 +366,26 @@ public class EditorPanel extends JPanel {
                     outerRadius = (int) (theConnector.to.currentRadius * 1.5);
                 }
 
-                int tX1 = centerX + (int) (Math.cos(Math.toRadians(theConnector.from.angle)) * theConnector.from.currentRadius);
-                int ty1 = centerY + (int) (Math.sin(Math.toRadians(theConnector.from.angle)) * theConnector.from.currentRadius);
+                final int tX1 = centerX + (int) (Math.cos(Math.toRadians(theConnector.from.angle)) * theConnector.from.currentRadius);
+                final int ty1 = centerY + (int) (Math.sin(Math.toRadians(theConnector.from.angle)) * theConnector.from.currentRadius);
 
-                int tX1O = centerX + (int) (Math.cos(Math.toRadians(theConnector.from.angle)) * outerRadius);
-                int ty1O = centerY + (int) (Math.sin(Math.toRadians(theConnector.from.angle)) * outerRadius);
+                final int tX1O = centerX + (int) (Math.cos(Math.toRadians(theConnector.from.angle)) * outerRadius);
+                final int ty1O = centerY + (int) (Math.sin(Math.toRadians(theConnector.from.angle)) * outerRadius);
                 g.drawLine(tX1, ty1, tX1O, ty1O);
 
-                int tX2 = centerX + (int) (Math.cos(Math.toRadians(theConnector.to.angle)) * theConnector.to.currentRadius);
-                int ty2 = centerY + (int) (Math.sin(Math.toRadians(theConnector.to.angle)) * theConnector.to.currentRadius);
+                final int tX2 = centerX + (int) (Math.cos(Math.toRadians(theConnector.to.angle)) * theConnector.to.currentRadius);
+                final int ty2 = centerY + (int) (Math.sin(Math.toRadians(theConnector.to.angle)) * theConnector.to.currentRadius);
 
-                int tX2O = centerX + (int) (Math.cos(Math.toRadians(theConnector.to.angle)) * outerRadius);
-                int ty2O = centerY + (int) (Math.sin(Math.toRadians(theConnector.to.angle)) * outerRadius);
+                final int tX2O = centerX + (int) (Math.cos(Math.toRadians(theConnector.to.angle)) * outerRadius);
+                final int ty2O = centerY + (int) (Math.sin(Math.toRadians(theConnector.to.angle)) * outerRadius);
                 g.drawLine(tX2, ty2, tX2O, ty2O);
 
-                float theAngleFrom;
-                float theAngleTo;
+                final float theAngleFrom;
+                final float theAngleTo;
                 int lastX;
                 int lastY;
-                int finalX;
-                int finalY;
+                final int finalX;
+                final int finalY;
 
                 if (theConnector.from.angle < theConnector.to.angle) {
                     theAngleFrom = theConnector.from.angle;
@@ -412,8 +406,8 @@ public class EditorPanel extends JPanel {
                 float theCurrentAngle = theAngleFrom;
                 while (theCurrentAngle < theAngleTo) {
 
-                    int x1 = centerX + (int) (Math.cos(Math.toRadians(theCurrentAngle)) * outerRadius);
-                    int y1 = centerY + (int) (Math.sin(Math.toRadians(theCurrentAngle)) * outerRadius);
+                    final int x1 = centerX + (int) (Math.cos(Math.toRadians(theCurrentAngle)) * outerRadius);
+                    final int y1 = centerY + (int) (Math.sin(Math.toRadians(theCurrentAngle)) * outerRadius);
 
                     g.drawLine(lastX, lastY, x1, y1);
                     lastX = x1;
@@ -428,12 +422,12 @@ public class EditorPanel extends JPanel {
             }
         }
 
-        for (EditorComponent theComponent : components) {
+        for (final EditorComponent theComponent : components) {
 
-            Dimension theComponentSize = theComponent.paintComponent.getSize();
+            final Dimension theComponentSize = theComponent.paintComponent.getSize();
 
-            int tX = centerX + (int) (Math.cos(Math.toRadians(theComponent.angle)) * theComponent.currentRadius) - theComponentSize.width / 2;
-            int ty = centerY + (int) (Math.sin(Math.toRadians(theComponent.angle)) * theComponent.currentRadius) - theComponentSize.height / 2;
+            final int tX = centerX + (int) (Math.cos(Math.toRadians(theComponent.angle)) * theComponent.currentRadius) - theComponentSize.width / 2;
+            final int ty = centerY + (int) (Math.sin(Math.toRadians(theComponent.angle)) * theComponent.currentRadius) - theComponentSize.height / 2;
 
             g.translate(tX, ty);
             theComponent.paintComponent.paint(g);
@@ -441,7 +435,7 @@ public class EditorPanel extends JPanel {
         }
 
         if (fadingHelper.getComponentToHighlight() != null) {
-            Graphics2D theGraphics = (Graphics2D) g;
+            final Graphics2D theGraphics = (Graphics2D) g;
             g.translate(theSize.width - fadingHelper.getComponentToHighlightPosition(), 10);
             theGraphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
                     0.85f));
@@ -450,32 +444,29 @@ public class EditorPanel extends JPanel {
     }
 
     public void explodeAnimation() {
-        Thread theThread = new Thread() {
-            @Override
-            public void run() {
-                boolean needsMotification = true;
-                while (needsMotification) {
+        final Thread theThread = new Thread(() -> {
+            boolean needsMotification = true;
+            while (needsMotification) {
 
-                    needsMotification = false;
-                    for (EditorComponent theComponent : components) {
-                        if (theComponent.currentRadius < theComponent.finalRadius) {
-                            theComponent.currentRadius += 10;
-                            needsMotification = true;
-                        }
-                    }
-
-                    SwingUtilities.invokeLater(() -> {
-                        invalidate();
-                        repaint();
-                    });
-
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
+                needsMotification = false;
+                for (final EditorComponent theComponent : components) {
+                    if (theComponent.currentRadius < theComponent.finalRadius) {
+                        theComponent.currentRadius += 10;
+                        needsMotification = true;
                     }
                 }
+
+                SwingUtilities.invokeLater(() -> {
+                    invalidate();
+                    repaint();
+                });
+
+                try {
+                    Thread.sleep(10);
+                } catch (final InterruptedException e) {
+                }
             }
-        };
+        });
         theThread.start();
     }
 }

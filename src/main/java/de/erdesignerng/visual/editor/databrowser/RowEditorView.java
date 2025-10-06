@@ -4,7 +4,6 @@ import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
 import de.mogwai.common.client.looks.components.DefaultButton;
 
 import javax.swing.*;
-import java.sql.SQLException;
 
 /**
  * View for the RowEditor.
@@ -17,11 +16,11 @@ public class RowEditorView extends JPanel {
 
 	private ScaffoldingWrapper content;
 
-	public RowEditorView(PaginationDataModel aModel, int aRow) throws SQLException {
+	public RowEditorView(final PaginationDataModel aModel, final int aRow) {
 		initialize(aModel, aRow);
 	}
 
-	private void initialize(PaginationDataModel aModel, int aRow) {
+	private void initialize(final PaginationDataModel aModel, final int aRow) {
 
 /*		String theColDef = "2dlu,fill:250dlu:grow,2dlu";
 		String theRowDef = "2dlu,fill:200dlu:grow,10dlu,p,2dlu";

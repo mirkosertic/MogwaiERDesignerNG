@@ -31,13 +31,13 @@ import org.w3c.dom.NodeList;
  */
 public class XMLCustomTypeSerializer extends AbstractXMLCustomTypeSerializer {
 
-	public XMLCustomTypeSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+	public XMLCustomTypeSerializer(final AbstractXMLModelSerializer xmlModelSerializer) {
 		super(xmlModelSerializer);
 	}
 
 	@Override
-	public void serialize(CustomType aCustomType, Document aDocument, Element aRootElement) {
-		Element theCustomTypeElement = addElement(aDocument, aRootElement, CUSTOMTYPE);
+	public void serialize(final CustomType aCustomType, final Document aDocument, final Element aRootElement) {
+		final Element theCustomTypeElement = addElement(aDocument, aRootElement, CUSTOMTYPE);
 
 		serializeProperties(aDocument, theCustomTypeElement, aCustomType);
 		serializeCommentElement(aDocument, theCustomTypeElement, aCustomType);
@@ -46,12 +46,12 @@ public class XMLCustomTypeSerializer extends AbstractXMLCustomTypeSerializer {
 	}
 
 	@Override
-	public void deserialize(Model aModel, Document aDocument) {
-		NodeList theElements = aDocument.getElementsByTagName(CUSTOMTYPE);
+	public void deserialize(final Model aModel, final Document aDocument) {
+		final NodeList theElements = aDocument.getElementsByTagName(CUSTOMTYPE);
 		for (int i = 0; i < theElements.getLength(); i++) {
-			Element theElement = (Element) theElements.item(i);
+			final Element theElement = (Element) theElements.item(i);
 
-			CustomType theCustomType = new CustomType();
+			final CustomType theCustomType = new CustomType();
 
 			theCustomType.setOwner(aModel);
 

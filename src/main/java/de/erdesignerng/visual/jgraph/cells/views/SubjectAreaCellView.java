@@ -43,7 +43,7 @@ public class SubjectAreaCellView extends VertexView {
 
     private static final MyRenderer RENDERER = new MyRenderer();
 
-    public SubjectAreaCellView(SubjectAreaCell aCell) {
+    public SubjectAreaCellView(final SubjectAreaCell aCell) {
         super(aCell);
     }
 
@@ -54,7 +54,7 @@ public class SubjectAreaCellView extends VertexView {
 
     public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
 
-        final static float dash1[] = {10.0f};
+        final static float[] dash1 = {10.0f};
         private final static BasicStroke DASHED_STROKE = new BasicStroke(1.0f,
                 BasicStroke.CAP_BUTT,
                 BasicStroke.JOIN_MITER,
@@ -73,15 +73,15 @@ public class SubjectAreaCellView extends VertexView {
         }
 
         @Override
-        public void paint(Graphics aGraphics) {
+        public void paint(final Graphics aGraphics) {
 
-            Graphics2D theGraphics = (Graphics2D) aGraphics;
+            final Graphics2D theGraphics = (Graphics2D) aGraphics;
 
-            Dimension theSize = getSize();
-            int theWidth = theSize.width;
-            int theHeight = theSize.height;
+            final Dimension theSize = getSize();
+            final int theWidth = theSize.width;
+            final int theHeight = theSize.height;
 
-            GradientPaint thePaint = new GradientPaint(0, 0, subjectArea.getColor(), theWidth, theHeight,
+            final GradientPaint thePaint = new GradientPaint(0, 0, subjectArea.getColor(), theWidth, theHeight,
                     getBackground(), false);
             theGraphics.setPaint(thePaint);
             aGraphics.fillRect(0, 0, theWidth - 1, theHeight - 1);
@@ -98,22 +98,22 @@ public class SubjectAreaCellView extends VertexView {
 
             aGraphics.setColor(Color.black);
 
-            FontMetrics theMetrics = aGraphics.getFontMetrics();
-            int theYOffset = theMetrics.getHeight();
+            final FontMetrics theMetrics = aGraphics.getFontMetrics();
+            final int theYOffset = theMetrics.getHeight();
 
             aGraphics.setFont(getFont().deriveFont(Font.BOLD));
 
             if (expanded) {
-                ImageIcon theIcon = IconFactory.getCollapseIcon();
+                final ImageIcon theIcon = IconFactory.getCollapseIcon();
                 theIcon.paintIcon(this, theGraphics, -5, -5);
                 aGraphics.drawString(subjectArea.getName(), 24, theYOffset);
             } else {
-                Rectangle2D theTextSize = theMetrics.getStringBounds(subjectArea.getName(), getGraphics());
+                final Rectangle2D theTextSize = theMetrics.getStringBounds(subjectArea.getName(), getGraphics());
 
-                int xp = (int) (theWidth / 2 - theTextSize.getWidth() / 2);
-                int yp = theHeight / 2;
+                final int xp = (int) (theWidth / 2 - theTextSize.getWidth() / 2);
+                final int yp = theHeight / 2;
 
-                ImageIcon theIcon = IconFactory.getExpandIcon();
+                final ImageIcon theIcon = IconFactory.getExpandIcon();
                 theIcon.paintIcon(this, theGraphics, -5, -5);
                 aGraphics.drawString(subjectArea.getName(), xp, yp);
             }
@@ -121,8 +121,8 @@ public class SubjectAreaCellView extends VertexView {
 
         @Override
         public Dimension getPreferredSize() {
-            FontMetrics theMetrics = getFontMetrics(getFont());
-            Rectangle2D theSize = theMetrics.getStringBounds(subjectArea.getName(), getGraphics());
+            final FontMetrics theMetrics = getFontMetrics(getFont());
+            final Rectangle2D theSize = theMetrics.getStringBounds(subjectArea.getName(), getGraphics());
 
             if (!expanded) {
                 return new Dimension((int) theSize.getWidth() + 40, theMetrics.getHeight() * 2);
@@ -137,11 +137,11 @@ public class SubjectAreaCellView extends VertexView {
         }
 
         @Override
-        public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
-                                              boolean aPreview) {
+        public Component getRendererComponent(final JGraph aGraph, final CellView aView, final boolean aSelected, final boolean aHasFocus,
+                                              final boolean aPreview) {
 
-            SubjectAreaCellView theView = (SubjectAreaCellView) aView;
-            SubjectAreaCell theCell = (SubjectAreaCell) aView.getCell();
+            final SubjectAreaCellView theView = (SubjectAreaCellView) aView;
+            final SubjectAreaCell theCell = (SubjectAreaCell) aView.getCell();
             subjectArea = (SubjectArea) ((SubjectAreaCell) theView.getCell()).getUserObject();
             selected = aSelected;
             expanded = theCell.isExpanded();
@@ -156,20 +156,20 @@ public class SubjectAreaCellView extends VertexView {
     }
 
     @Override
-    public void translate(double dx, double dy) {
+    public void translate(final double dx, final double dy) {
         super.translate(dx, dy);
 
-        SubjectAreaCell theCell = (SubjectAreaCell) getCell();
+        final SubjectAreaCell theCell = (SubjectAreaCell) getCell();
         //if (!theCell.isExpanded()) {
         // Invisible childs are not automatically translated
         // if a collapsed subject area is moved, so we have to do that by hand.
-        SubjectArea theArea = (SubjectArea) theCell.getUserObject();
-        for (ModelItem theItem : theArea.getTables()) {
-            Point2D theLocation = theItem.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+        final SubjectArea theArea = (SubjectArea) theCell.getUserObject();
+        for (final ModelItem theItem : theArea.getTables()) {
+            final Point2D theLocation = theItem.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
             theItem.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) (theLocation.getX() + dx), (int) (theLocation.getY() + dy));
         }
-        for (ModelItem theItem : theArea.getViews()) {
-            Point2D theLocation = theItem.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+        for (final ModelItem theItem : theArea.getViews()) {
+            final Point2D theLocation = theItem.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
             theItem.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) (theLocation.getX() + dx), (int) (theLocation.getY() + dy));
         }
         //}

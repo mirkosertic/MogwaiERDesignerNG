@@ -37,7 +37,7 @@ public class StringKeyValuePair {
 	 * @param key
 	 *			the key to set
 	 */
-	public void setKey(String key) {
+	public void setKey(final String key) {
 		this.key = key;
 	}
 
@@ -52,7 +52,7 @@ public class StringKeyValuePair {
 	 * @param value
 	 *			the value to set
 	 */
-	public void setValue(String value) {
+	public void setValue(final String value) {
 		this.value = value;
 	}
 }

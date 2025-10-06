@@ -122,37 +122,37 @@ public final class MSSQLDialect extends Dialect {
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final int... aJdbcType) {
 		return new MSSQLDataType(aName, aDefinition, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcType) {
 		return new MSSQLDataType(aName, aDefinition, anIdentity, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcType) {
 		return new MSSQLDataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
 	}
 
 	@Override
-	public ViewProperties createViewPropertiesFor(View aView) {
-		MSSQLViewProperties theResult = new MSSQLViewProperties();
+	public ViewProperties createViewPropertiesFor(final View aView) {
+		final MSSQLViewProperties theResult = new MSSQLViewProperties();
 		theResult.initializeFrom(aView);
 		return theResult;
 	}
 
 	@Override
-	public IndexProperties createIndexPropertiesFor(Index aIndex) {
-		MSSQLIndexProperties theResult = new MSSQLIndexProperties();
+	public IndexProperties createIndexPropertiesFor(final Index aIndex) {
+		final MSSQLIndexProperties theResult = new MSSQLIndexProperties();
 		theResult.initializeFrom(aIndex);
 		return theResult;
 	}
 
 	@Override
-	public TableProperties createTablePropertiesFor(Table aTable) {
-		MSSQLTableProperties theResult = new MSSQLTableProperties();
+	public TableProperties createTablePropertiesFor(final Table aTable) {
+		final MSSQLTableProperties theResult = new MSSQLTableProperties();
 		theResult.initializeFrom(aTable);
 		return theResult;
 	}

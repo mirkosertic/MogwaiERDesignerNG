@@ -77,7 +77,7 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
 
     private XMLUtils utils = null;
 
-    protected AbstractXMLModelSerializer(XMLUtils aUtils) {
+    protected AbstractXMLModelSerializer(final XMLUtils aUtils) {
         utils = aUtils;
     }
 
@@ -87,16 +87,16 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
      * @param aDocument the document
      * @return true if yes, else false
      */
-    public boolean supportsDocument(Document aDocument) {
-        NodeList theNodes = aDocument.getElementsByTagName(MODEL);
+    public boolean supportsDocument(final Document aDocument) {
+        final NodeList theNodes = aDocument.getElementsByTagName(MODEL);
         if (theNodes.getLength() != 1) {
             return false;
         }
-        Element theDocumentElement = (Element) theNodes.item(0);
+        final Element theDocumentElement = (Element) theNodes.item(0);
         return getVersion().equals(theDocumentElement.getAttribute(VERSION));
     }
 
-    public Model deserializeModelFromXML(Document aDocument) throws SAXException, IOException {
+    public Model deserializeModelFromXML(final Document aDocument) throws SAXException, IOException {
 
         if (!supportsDocument(aDocument)) {
             throw new IOException("Unsupported model version");
@@ -105,23 +105,23 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
         final List<SAXParseException> theExceptions = new ArrayList<>();
 
         // Validate the document
-        SchemaFactory theSchemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        final SchemaFactory theSchemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
         // hook up org.XML.sax.ErrorHandler implementation.
-        ErrorHandler theHandler = new ErrorHandler() {
+        final ErrorHandler theHandler = new ErrorHandler() {
 
             @Override
-            public void error(SAXParseException aException) {
+            public void error(final SAXParseException aException) {
                 theExceptions.add(aException);
             }
 
             @Override
-            public void fatalError(SAXParseException aException) {
+            public void fatalError(final SAXParseException aException) {
                 theExceptions.add(aException);
             }
 
             @Override
-            public void warning(SAXParseException aException) {
+            public void warning(final SAXParseException aException) {
                 theExceptions.add(aException);
             }
         };
@@ -129,26 +129,26 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
 
         // get the custom xsd schema describing the required format for my XML
         // files.
-        Schema theSchema = theSchemaFactory.newSchema(getClass().getResource(getSchemaResource()));
+        final Schema theSchema = theSchemaFactory.newSchema(getClass().getResource(getSchemaResource()));
 
         // Create a Validator capable of validating XML files according to my
         // custom schema.
-        Validator validator = theSchema.newValidator();
+        final Validator validator = theSchema.newValidator();
         validator.setErrorHandler(theHandler);
 
         // parse the XML DOM tree against the stricter XSD schema
         validator.validate(new DOMSource(aDocument));
 
-        if (theExceptions.size() > 0) {
-            throw new IOException("Failed to validate document against schema", theExceptions.get(0));
+        if (!theExceptions.isEmpty()) {
+            throw new IOException("Failed to validate document against schema", theExceptions.getFirst());
         }
 
         return deserialize(aDocument);
     }
 
-    public void serializeModelToXML(Model aModel, Writer aWriter) throws IOException, TransformerException {
+    public void serializeModelToXML(final Model aModel, final Writer aWriter) throws IOException, TransformerException {
 
-        Document theDocument = utils.newDocument();
+        final Document theDocument = utils.newDocument();
 
         serialize(aModel, theDocument);
 
@@ -163,13 +163,13 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
 
     @Override
     @Deprecated
-    public void serialize(OwnedModelItem aModelItem, Document aDocument, Element aRootElement) {
+    public void serialize(final OwnedModelItem aModelItem, final Document aDocument, final Element aRootElement) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     @Deprecated
-    public void deserialize(Model aModel, Document aDocument) {
+    public void deserialize(final Model aModel, final Document aDocument) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -185,7 +185,7 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
         return xmlCommentSerializer;
     }
 
-    protected AbstractXMLCustomTypeSerializer getXMLCustomTypeSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+    protected AbstractXMLCustomTypeSerializer getXMLCustomTypeSerializer(final AbstractXMLModelSerializer xmlModelSerializer) {
         return xmlCustomTypeSerializer;
     }
 
@@ -205,7 +205,7 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
         return xmlSubjectAreaSerializer;
     }
 
-    protected AbstractXMLTableSerializer getXMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+    protected AbstractXMLTableSerializer getXMLTableSerializer(final AbstractXMLModelSerializer xmlModelSerializer) {
         return xmlTableSerializer;
     }
 
@@ -213,39 +213,39 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
         return xmlViewSerializer;
     }
 
-    protected void setXMLAttributeSerializer(AbstractXMLAttributeSerializer xmlAttributeSerializer) {
+    protected void setXMLAttributeSerializer(final AbstractXMLAttributeSerializer xmlAttributeSerializer) {
         this.xmlAttributeSerializer = xmlAttributeSerializer;
     }
 
-    protected void setXMLCommentSerializer(AbstractXMLCommentSerializer xmlCommentSerializer) {
+    protected void setXMLCommentSerializer(final AbstractXMLCommentSerializer xmlCommentSerializer) {
         this.xmlCommentSerializer = xmlCommentSerializer;
     }
 
-    protected void setXMLCustomTypeSerializer(AbstractXMLCustomTypeSerializer xmlCustomTypeSerializer) {
+    protected void setXMLCustomTypeSerializer(final AbstractXMLCustomTypeSerializer xmlCustomTypeSerializer) {
         this.xmlCustomTypeSerializer = xmlCustomTypeSerializer;
     }
 
-    protected void setXMLDomainSerializer(AbstractXMLDomainSerializer xmlDomainSerializer) {
+    protected void setXMLDomainSerializer(final AbstractXMLDomainSerializer xmlDomainSerializer) {
         this.xmlDomainSerializer = xmlDomainSerializer;
     }
 
-    protected void setXMLIndexSerializer(AbstractXMLIndexSerializer xmlIndexSerializer) {
+    protected void setXMLIndexSerializer(final AbstractXMLIndexSerializer xmlIndexSerializer) {
         this.xmlIndexSerializer = xmlIndexSerializer;
     }
 
-    protected void setXMLRelationSerializer(AbstractXMLRelationSerializer xmlRelationSerializer) {
+    protected void setXMLRelationSerializer(final AbstractXMLRelationSerializer xmlRelationSerializer) {
         this.xmlRelationSerializer = xmlRelationSerializer;
     }
 
-    protected void setXMLSubjectAreaSerializer(AbstractXMLSubjectAreaSerializer xmlSubjectAreaSerializer) {
+    protected void setXMLSubjectAreaSerializer(final AbstractXMLSubjectAreaSerializer xmlSubjectAreaSerializer) {
         this.xmlSubjectAreaSerializer = xmlSubjectAreaSerializer;
     }
 
-    protected void setXMLTableSerializer(AbstractXMLTableSerializer xmlTableSerializer) {
+    protected void setXMLTableSerializer(final AbstractXMLTableSerializer xmlTableSerializer) {
         this.xmlTableSerializer = xmlTableSerializer;
     }
 
-	protected void setXMLViewSerializer(AbstractXMLViewSerializer xmlViewSerializer) {
+	protected void setXMLViewSerializer(final AbstractXMLViewSerializer xmlViewSerializer) {
         this.xmlViewSerializer = xmlViewSerializer;
     }
 }

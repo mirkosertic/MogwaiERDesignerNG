@@ -41,11 +41,11 @@ public class LoadFromRepositoryEditor extends BaseEditor {
 	private final BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<>(
 			new LoadFromRepositoryDataModel());
 
-	public LoadFromRepositoryEditor(Component aParent,
-									List<RepositoryEntryDescriptor> aEntries) {
+	public LoadFromRepositoryEditor(final Component aParent,
+                                    final List<RepositoryEntryDescriptor> aEntries) {
 		super(aParent, ERDesignerBundle.LOADMODELFROMDB);
 
-		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+		final DefaultComboBoxModel theModel = new DefaultComboBoxModel();
         aEntries.forEach(theModel::addElement);
 		view.getExistingNameBox().setModel(theModel);
 
@@ -69,7 +69,7 @@ public class LoadFromRepositoryEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 	}
 
 	@Override

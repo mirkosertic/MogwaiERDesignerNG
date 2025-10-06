@@ -25,21 +25,21 @@ public class EditSubjectAreaCommand extends UICommand {
 
     private final SubjectArea area;
 
-    public EditSubjectAreaCommand(SubjectArea aArea) {
+    public EditSubjectAreaCommand(final SubjectArea aArea) {
         area = aArea;
     }
 
     @Override
     public void execute() {
 
-        SubjectAreaEditor theEditor = new SubjectAreaEditor(getDetailComponent());
+        final SubjectAreaEditor theEditor = new SubjectAreaEditor(getDetailComponent());
         theEditor.initializeFor(area);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
 
                 refreshDisplayAndOutline();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

@@ -62,14 +62,14 @@ public class ReverseEngineerEditor extends BaseEditor {
 	 * @param aParent
 	 *			the parent container
 	 */
-	public ReverseEngineerEditor(Model aModel, Component aParent) {
+	public ReverseEngineerEditor(final Model aModel, final Component aParent) {
 		super(aParent, ERDesignerBundle.REVERSEENGINEER);
 
 		model = aModel;
 
 		initialize();
 
-		ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
+		final ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
 
 		theModel.getTableOptions().add(
 				new NameValuePair(TableNamingEnum.STANDARD, getResourceHelper()
@@ -98,7 +98,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 			// schema in RevEngEd
 			// initially preselect first *non-system* schema if possible
 			if (schemaList.getSize() > 0) {
-				List<String> systemSchemas = model.getDialect().getSystemSchemas();
+				final List<String> systemSchemas = model.getDialect().getSystemSchemas();
 				Integer selectedIndex = null;
 				int theAlternativeIndex = 0;
 
@@ -169,9 +169,9 @@ public class ReverseEngineerEditor extends BaseEditor {
 	@Override
 	protected void commandOk() {
 		if (bindingInfo.validate().isEmpty()) {
-			List<Object> theSelectedValues = editingView.getSchemaList()
+			final List<Object> theSelectedValues = editingView.getSchemaList()
 					.getSelectedValuesList();
-			if (((theSelectedValues == null) || (theSelectedValues.size() == 0))
+			if (((theSelectedValues == null) || (theSelectedValues.isEmpty()))
 					&& (model.getDialect().isSupportsSchemaInformation())) {
 				MessagesHelper.displayErrorMessage(this, getResourceHelper()
 						.getText(ERDesignerBundle.CHOOSEONESCHEMA));
@@ -196,21 +196,21 @@ public class ReverseEngineerEditor extends BaseEditor {
 
 				schemaList.clear();
 
-				JDBCReverseEngineeringStrategy theStrategy = model.getDialect()
+				final JDBCReverseEngineeringStrategy theStrategy = model.getDialect()
 						.getReverseEngineeringStrategy();
 
-				List<SchemaEntry> theEntries = theStrategy
+				final List<SchemaEntry> theEntries = theStrategy
 						.getSchemaEntries(theConnection);
                 theEntries.forEach(schemaList::add);
 
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				MessagesHelper.displayErrorMessage(this, e.getMessage());
 			} finally {
 				if (!model.getDialect().generatesManagedConnection()) {
 					if (theConnection != null) {
 						try {
 							theConnection.close();
-						} catch (Exception e) {
+						} catch (final Exception e) {
 							// Nothing will happen here
 						}
 					}
@@ -222,15 +222,15 @@ public class ReverseEngineerEditor extends BaseEditor {
 	}
 
 	public ReverseEngineeringOptions createREOptions() {
-		ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
+		final ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
 		bindingInfo.view2model();
 
-		ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
+		final ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
 		theOptions.setTableNaming((TableNamingEnum) theModel
 				.getTableGenerator().getValue());
 
 		if (model.getDialect().isSupportsSchemaInformation()) {
-			for (Object theEntry : editingView.getSchemaList()
+			for (final Object theEntry : editingView.getSchemaList()
 					.getSelectedValuesList()) {
 				theOptions.getSchemaEntries().add((SchemaEntry) theEntry);
 			}
@@ -240,6 +240,6 @@ public class ReverseEngineerEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 	}
 }

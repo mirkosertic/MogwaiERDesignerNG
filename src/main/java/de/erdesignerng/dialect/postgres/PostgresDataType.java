@@ -27,21 +27,21 @@ import de.erdesignerng.model.Attribute;
  */
 public class PostgresDataType extends GenericDataTypeImpl {
 
-	public PostgresDataType(String aName, String aDefinition, int... aJdbcDataType) {
+	public PostgresDataType(final String aName, final String aDefinition, final int... aJdbcDataType) {
 		super(aName, aDefinition, aJdbcDataType);
 	}
 
-	public PostgresDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcDataType) {
+	public PostgresDataType(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcDataType) {
 		super(aName, aDefinition, anIdentity, aJdbcDataType);
 	}
 
-	public PostgresDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcDataType) {
+	public PostgresDataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcDataType) {
 		super(aName, aDefinition, anIdentity, anArray, aJdbcDataType);
 	}
 
 	@Override
-	public String createTypeDefinitionFor(Attribute aAttribute) {
-		String theBaseName;
+	public String createTypeDefinitionFor(final Attribute aAttribute) {
+		final String theBaseName;
 		String theReturn;
 
 		//first: remove the array indicating square brackets, if necessary
@@ -55,9 +55,9 @@ public class PostgresDataType extends GenericDataTypeImpl {
 		if (definition == null) {
 			theReturn = theBaseName;
 		} else {
-			String theAppend = patternToType(aAttribute);
-			int p = theBaseName.indexOf("(");
-			if (theAppend.length() == 0) {
+			final String theAppend = patternToType(aAttribute);
+			final int p = theBaseName.indexOf("(");
+			if (theAppend.isEmpty()) {
 				if (p > 0 && theBaseName.charAt(p + 1) == ')') { // remove empty ()
 					theReturn = new StringBuilder(theBaseName).delete(p, p + 2).toString();
 				} else {

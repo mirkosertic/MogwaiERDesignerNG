@@ -25,20 +25,20 @@ public class EditCommentCommand extends UICommand {
     private final Comment comment;
     private final GenericModelEditor editor;
 
-    public EditCommentCommand(GenericModelEditor aEditor, Comment aComment) {
+    public EditCommentCommand(final GenericModelEditor aEditor, final Comment aComment) {
         comment = aComment;
         editor = aEditor;
     }
 
     @Override
     public void execute() {
-        CommentEditor theEditor = new CommentEditor(comment.getOwner(), getDetailComponent());
+        final CommentEditor theEditor = new CommentEditor(comment.getOwner(), getDetailComponent());
         theEditor.initializeFor(comment);
         if (theEditor.showModal() == CommentEditor.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
                 editor.repaintGraph();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

@@ -51,9 +51,9 @@ public enum TableType {
 	 * @return the enum constant with the specified id
 	 * @throws IllegalArgumentException if this enum type has no constant with the specified id
 	 */
-	public static TableType fromId(int id) {
+	public static TableType fromId(final int id) {
 
-		for (TableType aTableType : TableType.values()) { 
+		for (final TableType aTableType : TableType.values()) {
 			if (aTableType.getId() == id) {
 				return aTableType;
 			}
@@ -62,7 +62,7 @@ public enum TableType {
 		throw new IllegalArgumentException("Unknown type \"" + id + "\"!");
 	}
 
-	public static TableType fromString(String aConstantName) {
+	public static TableType fromString(final String aConstantName) {
 		return TableType.valueOf(aConstantName.toUpperCase());
 	}
 
@@ -72,10 +72,10 @@ public enum TableType {
 	}
 
 	public static String[] toArray(){
-		String[] theArray = new String[TableType.values().length];
+		final String[] theArray = new String[TableType.values().length];
 		int i = 0;
 
-		for (TableType aTableType : TableType.values()) { 
+		for (final TableType aTableType : TableType.values()) {
 			theArray[i++] = aTableType.toString();
 		}
 

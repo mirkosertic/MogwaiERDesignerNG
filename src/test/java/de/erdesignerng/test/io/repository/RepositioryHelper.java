@@ -25,7 +25,7 @@ import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import java.io.StringWriter;
 import java.sql.Connection;
 
-public class RepositioryHelper {
+public final class RepositioryHelper {
 
 	public static String performRepositorySaveAndLoad(String aModelResource, Class aHibernateDialect,
 													  Connection aConnection) throws Exception {

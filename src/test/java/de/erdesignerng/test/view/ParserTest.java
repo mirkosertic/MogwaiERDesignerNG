@@ -15,7 +15,7 @@ public class ParserTest extends BaseERDesignerTestCaseImpl {
 		ViewAttributeList theAtrributes = theView.getAttributes();
 
 		assertTrue(theAtrributes.size() == 1);
-		assertTrue("name1".equals(theAtrributes.get(0).getName()));
+		assertTrue("name1".equals(theAtrributes.getFirst().getName()));
 	}
 
 	public void testParseDoubleExpression() throws Exception {
@@ -42,7 +42,7 @@ public class ParserTest extends BaseERDesignerTestCaseImpl {
 		assertTrue("alias".equals(theAtrributes.get(1).getName()));
 	}
 
-	public void testSyntaxError1() throws Exception {
+	public void testSyntaxError1() {
 		View theView = new View();
 		String theStatement = "";
 
@@ -54,7 +54,7 @@ public class ParserTest extends BaseERDesignerTestCaseImpl {
 		}
 	}
 
-	public void testSyntaxError2() throws Exception {
+	public void testSyntaxError2() {
 		View theView = new View();
 		String theStatement = "select name1";
 
@@ -66,7 +66,7 @@ public class ParserTest extends BaseERDesignerTestCaseImpl {
 		}
 	}
 
-	public void testSyntaxError3() throws Exception {
+	public void testSyntaxError3() {
 		View theView = new View();
 		String theStatement = "from select name1";
 
@@ -78,7 +78,7 @@ public class ParserTest extends BaseERDesignerTestCaseImpl {
 		}
 	}
 
-	public void testSyntaxError4() throws Exception {
+	public void testSyntaxError4() {
 		View theView = new View();
 		String theStatement = "from name1";
 
@@ -90,7 +90,7 @@ public class ParserTest extends BaseERDesignerTestCaseImpl {
 		}
 	}
 
-	public void testSyntaxError5() throws Exception {
+	public void testSyntaxError5() {
 		View theView = new View();
 		String theStatement = "select from table1";
 

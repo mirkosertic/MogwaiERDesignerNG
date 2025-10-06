@@ -47,7 +47,7 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
      * @param aParent the parent Frame
      * @param aTitle  the title
      */
-    public BaseEditor(Component aParent, String aTitle) {
+    public BaseEditor(final Component aParent, final String aTitle) {
         super(aParent, ERDesignerBundle.BUNDLE_NAME, aTitle);
         initialize();
     }
@@ -58,7 +58,7 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
     private void initialize() {
         setSize(300, 200);
 
-        JPanel theContentPane = getJContentPane();
+        final JPanel theContentPane = getJContentPane();
 
         setContentPane(theContentPane);
         setResizable(false);
@@ -85,7 +85,7 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
      *
      * @param aModalResult the modal result.
      */
-    public void setModalResult(int aModalResult) {
+    public void setModalResult(final int aModalResult) {
         modalResult = aModalResult;
         setVisible(false);
     }
@@ -119,8 +119,8 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
      *
      * @param e the exception to log
      */
-    protected void logFatalError(Exception e) {
-        ExceptionEditor theEditor = new ExceptionEditor(this, e);
+    protected void logFatalError(final Exception e) {
+        final ExceptionEditor theEditor = new ExceptionEditor(this, e);
         theEditor.showModal();
     }
 }

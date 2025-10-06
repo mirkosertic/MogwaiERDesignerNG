@@ -29,8 +29,6 @@ import de.mogwai.common.client.looks.UIInitializer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author $Author: mirkosertic $
@@ -50,29 +48,24 @@ public class ConvertModelEditor extends BaseEditor {
 	 * @param aParent
 	 *			the parent container
 	 */
-	public ConvertModelEditor(Model aModel, Component aParent) {
+	public ConvertModelEditor(final Model aModel, final Component aParent) {
 		super(aParent, ERDesignerBundle.CONVERTMODEL);
 
 		initialize();
 
 		model = aModel;
 
-		DefaultComboBoxModel theDialectModel = new DefaultComboBoxModel();
-		DialectFactory theFactory = DialectFactory.getInstance();
+		final DefaultComboBoxModel theDialectModel = new DefaultComboBoxModel();
+		final DialectFactory theFactory = DialectFactory.getInstance();
 
         theFactory.getSupportedDialects().stream().filter(theDialect -> !theDialect.getUniqueName().equals(aModel.getDialect().getUniqueName())).forEach(theDialectModel::addElement);
 		editingView.getTargetDialect().setModel(theDialectModel);
 		bindingInfo.getDefaultModel().setTargetDialect((Dialect) theDialectModel.getElementAt(0));
 
-		editingView.getTargetDialect().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				initializeMappingModelFor((Dialect) editingView.getTargetDialect().getSelectedItem());
-				bindingInfo.model2view();
-			}
-
-		});
+		editingView.getTargetDialect().addActionListener(e -> {
+            initializeMappingModelFor((Dialect) editingView.getTargetDialect().getSelectedItem());
+            bindingInfo.model2view();
+        });
 
 		bindingInfo.addBinding("targetDialect", editingView.getTargetDialect(), true);
 		bindingInfo.addBinding("typeMapping", new ConvertPropertyAdapter(editingView.getMappingTable(), null,
@@ -88,14 +81,14 @@ public class ConvertModelEditor extends BaseEditor {
 	 * @param aDialect
 	 *			the target dialect
 	 */
-	private void initializeMappingModelFor(Dialect aDialect) {
+	private void initializeMappingModelFor(final Dialect aDialect) {
 
-		ConversionInfos theInfos = bindingInfo.getDefaultModel();
+		final ConversionInfos theInfos = bindingInfo.getDefaultModel();
 		theInfos.setTargetDialect(aDialect);
 		theInfos.getTypeMapping().clear();
 
 		// Try to map the types
-		for (DataType theCurrentType : model.getUsedDataTypes()) {
+		for (final DataType theCurrentType : model.getUsedDataTypes()) {
 			theInfos.getTypeMapping().put(theCurrentType, aDialect.findClosestMatchingTypeFor(theCurrentType));
 		}
 	}
@@ -125,9 +118,9 @@ public class ConvertModelEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 
-		ConversionInfos theInfos = bindingInfo.getDefaultModel();
+		final ConversionInfos theInfos = bindingInfo.getDefaultModel();
 		bindingInfo.view2model(theInfos);
 
 		model.convert(theInfos);

@@ -36,13 +36,13 @@ public class ModelChecker {
         checks.add(new SpatialIndexWithoutSpatialType());
     }
 
-    public void check(Model aModel) {
-        for (ModelCheck theCheck : checks) {
+    public void check(final Model aModel) {
+        for (final ModelCheck theCheck : checks) {
             theCheck.check(aModel, this);
         }
     }
 
-    public void addError(ModelError anError) {
+    public void addError(final ModelError anError) {
         errors.add(anError);
     }
 

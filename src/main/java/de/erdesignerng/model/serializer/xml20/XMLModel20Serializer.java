@@ -49,9 +49,9 @@ public class XMLModel20Serializer extends XMLModel10Serializer {
 
 	private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_2.0.xsd";
 
-	private AbstractXMLViewSerializer xmlViewSerializer = null;
+	private final AbstractXMLViewSerializer xmlViewSerializer = null;
 
-	public XMLModel20Serializer(XMLUtils utils) {
+	public XMLModel20Serializer(final XMLUtils utils) {
 		super(utils);
 		setXMLIndexSerializer(new XMLIndexSerializer());
 		setXMLRelationSerializer(new XMLRelationSerializer());
@@ -61,62 +61,62 @@ public class XMLModel20Serializer extends XMLModel10Serializer {
 	}
 
 	@Override
-	protected void serialize(Model aModel, Document aDocument) {
+	protected void serialize(final Model aModel, final Document aDocument) {
 
-		Element theRootElement = addElement(aDocument, aDocument, MODEL);
+		final Element theRootElement = addElement(aDocument, aDocument, MODEL);
 		theRootElement.setAttribute(VERSION, getVersion());
 
-		Element theConfigurationElement = addElement(aDocument, theRootElement, CONFIGURATION);
+		final Element theConfigurationElement = addElement(aDocument, theRootElement, CONFIGURATION);
 
-		Element theDialectElement = addElement(aDocument, theConfigurationElement, PROPERTY);
+		final Element theDialectElement = addElement(aDocument, theConfigurationElement, PROPERTY);
 		theDialectElement.setAttribute(NAME, DIALECT);
 		theDialectElement.setAttribute(VALUE, aModel.getDialect().getUniqueName());
 
-		for (Map.Entry<String, String> theEntry : aModel.getProperties().getProperties().entrySet()) {
-			Element thePropertyElement = addElement(aDocument, theConfigurationElement, PROPERTY);
+		for (final Map.Entry<String, String> theEntry : aModel.getProperties().getProperties().entrySet()) {
+			final Element thePropertyElement = addElement(aDocument, theConfigurationElement, PROPERTY);
 			thePropertyElement.setAttribute(NAME, theEntry.getKey());
 			thePropertyElement.setAttribute(VALUE, theEntry.getValue());
 		}
 
-		Element theDomainsElement = addElement(aDocument, theRootElement, DOMAINS);
-		for (Domain theTable : aModel.getDomains()) {
+		final Element theDomainsElement = addElement(aDocument, theRootElement, DOMAINS);
+		for (final Domain theTable : aModel.getDomains()) {
 			getXMLDomainSerializer().serialize(theTable, aDocument, theDomainsElement);
 		}
 
-		Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
-		for (Table theTable : aModel.getTables()) {
+		final Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
+		for (final Table theTable : aModel.getTables()) {
 			getXMLTableSerializer(this).serialize(theTable, aDocument, theTablesElement);
 		}
 
-		Element theRelationsElement = addElement(aDocument, theRootElement, RELATIONS);
-		for (Relation theRelation : aModel.getRelations()) {
+		final Element theRelationsElement = addElement(aDocument, theRootElement, RELATIONS);
+		for (final Relation theRelation : aModel.getRelations()) {
 			getXMLRelationSerializer().serialize(theRelation, aDocument, theRelationsElement);
 		}
 
-		Element theViewsElement = addElement(aDocument, theRootElement, VIEWS);
-		for (View theView : aModel.getViews()) {
+		final Element theViewsElement = addElement(aDocument, theRootElement, VIEWS);
+		for (final View theView : aModel.getViews()) {
 			getXMLViewSerializer().serialize(theView, aDocument, theViewsElement);
 		}
 
-		Element theSubjectAreasElement = addElement(aDocument, theRootElement, SUBJECTAREAS);
-		for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
+		final Element theSubjectAreasElement = addElement(aDocument, theRootElement, SUBJECTAREAS);
+		for (final SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
 			getXMLSubjectAreaSerializer().serialize(theSubjectArea, aDocument, theSubjectAreasElement);
 		}
 
-		Element theCommentsElement = addElement(aDocument, theRootElement, COMMENTS);
-		for (Comment theComment : aModel.getComments()) {
+		final Element theCommentsElement = addElement(aDocument, theRootElement, COMMENTS);
+		for (final Comment theComment : aModel.getComments()) {
 			getXMLCommentSerializer().serialize(theComment, aDocument, theCommentsElement);
 		}
 	}
 
 	@Override
-	protected Model deserialize(Document aDocument) {
-		Model theModel = new Model();
+	protected Model deserialize(final Document aDocument) {
+		final Model theModel = new Model();
 
 		NodeList theElements = aDocument.getElementsByTagName(MODEL);
 		for (int i = 0; i < theElements.getLength(); i++) {
-			Element theElement = (Element) theElements.item(i);
-			String theVersion = theElement.getAttribute(VERSION);
+			final Element theElement = (Element) theElements.item(i);
+			final String theVersion = theElement.getAttribute(VERSION);
 			if (!getVersion().equals(theVersion)) {
 				throw new RuntimeException("Unsupported version of model : " + theVersion);
 			}
@@ -124,14 +124,14 @@ public class XMLModel20Serializer extends XMLModel10Serializer {
 
 		theElements = aDocument.getElementsByTagName(CONFIGURATION);
 		for (int i = 0; i < theElements.getLength(); i++) {
-			Element theElement = (Element) theElements.item(i);
+			final Element theElement = (Element) theElements.item(i);
 
-			NodeList theProperties = theElement.getElementsByTagName(PROPERTY);
+			final NodeList theProperties = theElement.getElementsByTagName(PROPERTY);
 			for (int j = 0; j < theProperties.getLength(); j++) {
-				Element theProperty = (Element) theProperties.item(j);
+				final Element theProperty = (Element) theProperties.item(j);
 
-				String theName = theProperty.getAttribute(NAME);
-				String theValue = theProperty.getAttribute(VALUE);
+				final String theName = theProperty.getAttribute(NAME);
+				final String theValue = theProperty.getAttribute(VALUE);
 
 				if (DIALECT.equals(theName)) {
 					theModel.setDialect(DialectFactory.getInstance().getDialect(theValue));
@@ -189,7 +189,7 @@ public class XMLModel20Serializer extends XMLModel10Serializer {
 	}
 
 	@Override
-	protected AbstractXMLTableSerializer getXMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+	protected AbstractXMLTableSerializer getXMLTableSerializer(final AbstractXMLModelSerializer xmlModelSerializer) {
 		if (super.getXMLTableSerializer(xmlModelSerializer) == null) {
 			setXMLTableSerializer(new XMLTableSerializer(xmlModelSerializer));
 		}

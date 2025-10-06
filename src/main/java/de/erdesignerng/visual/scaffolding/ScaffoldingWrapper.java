@@ -26,7 +26,7 @@ public class ScaffoldingWrapper {
 
 	private final SwingMetawidget widget;
 
-	public ScaffoldingWrapper(SwingMetawidget aWidget) {
+	public ScaffoldingWrapper(final SwingMetawidget aWidget) {
 		widget = aWidget;
 	}
 

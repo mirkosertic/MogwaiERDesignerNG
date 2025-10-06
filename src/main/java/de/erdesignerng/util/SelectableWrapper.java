@@ -23,7 +23,7 @@ public class SelectableWrapper<T> {
 
 	private T value;
 
-	public SelectableWrapper(T aValue) {
+	public SelectableWrapper(final T aValue) {
 		value = aValue;
 		selected = true;
 	}
@@ -32,7 +32,7 @@ public class SelectableWrapper<T> {
 		return selected;
 	}
 
-	public void setSelected(boolean selected) {
+	public void setSelected(final boolean selected) {
 		this.selected = selected;
 	}
 
@@ -40,7 +40,7 @@ public class SelectableWrapper<T> {
 		return value;
 	}
 
-	public void setValue(T value) {
+	public void setValue(final T value) {
 		this.value = value;
 	}
 

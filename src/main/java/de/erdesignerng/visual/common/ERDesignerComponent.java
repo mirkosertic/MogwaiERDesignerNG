@@ -47,7 +47,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +62,9 @@ import java.util.Map;
  */
 public final class ERDesignerComponent implements ResourceHelperProvider {
 
-    protected File currentEditingFile;
+    File currentEditingFile;
 
-    protected RepositoryEntryDescriptor currentRepositoryEntry;
+    RepositoryEntryDescriptor currentRepositoryEntry;
 
     private volatile Model model;
 
@@ -152,7 +151,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     private static ERDesignerComponent DEFAULT;
 
     public static ERDesignerComponent initializeComponent(
-            ERDesignerWorldConnector aConnector) {
+            final ERDesignerWorldConnector aConnector) {
         DEFAULT = new ERDesignerComponent(aConnector);
         return DEFAULT;
     }
@@ -164,26 +163,18 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         return DEFAULT;
     }
 
-    private ERDesignerComponent(ERDesignerWorldConnector aConnector) {
+    private ERDesignerComponent(final ERDesignerWorldConnector aConnector) {
         worldConnector = aConnector;
 
         editorPanel = new JPanel(new BorderLayout());
 
         initActions();
 
-        boolean theSuccess = false;
-
-        switch (ApplicationPreferences.getInstance().getEditorMode()) {
-            case CLASSIC:
-                theSuccess = setEditor2DDiagram();
-                break;
-            case INTERACTIVE_2D:
-                theSuccess = setEditor2DInteractive();
-                break;
-            case INTERACTIVE_3D:
-                theSuccess = setEditor3DInteractive();
-                break;
-        }
+        final boolean theSuccess = switch (ApplicationPreferences.getInstance().getEditorMode()) {
+            case CLASSIC -> setEditor2DDiagram();
+            case INTERACTIVE_2D -> setEditor2DInteractive();
+            case INTERACTIVE_3D -> setEditor3DInteractive();
+        };
 
         if (!theSuccess) {
             // Perhaps OGL or Java3D init failed
@@ -198,7 +189,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         handAction.actionPerformed(new ActionEvent(editorPanel, MouseEvent.MOUSE_CLICKED, null));
     }
 
-    protected boolean setEditor2DDiagram() {
+    private boolean setEditor2DDiagram() {
         setEditor(new JGraphEditor() {
             @Override
             public void commandZoomOneLevelIn() {
@@ -216,16 +207,16 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         return true;
     }
 
-    protected boolean setEditor2DInteractive() {
+    private boolean setEditor2DInteractive() {
         setEditor(new Java2DEditor() {
             @Override
-            protected void componentClicked(EditorPanel.EditorComponent aComponent, MouseEvent aEvent) {
+            protected void componentClicked(final EditorPanel.EditorComponent aComponent, final MouseEvent aEvent) {
                 if (!SwingUtilities.isRightMouseButton(aEvent)) {
                     if (aEvent.getClickCount() == 1) {
                         OutlineComponent.getDefault().setSelectedItem((ModelItem) aComponent.userObject);
                     } else {
-                        ModelItem theItem = (ModelItem) aComponent.userObject;
-                        BaseEditor theEditor = EditorFactory.createEditorFor(theItem, editorPanel);
+                        final ModelItem theItem = (ModelItem) aComponent.userObject;
+                        final BaseEditor theEditor = EditorFactory.createEditorFor(theItem, editorPanel);
                         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
                             try {
                                 theEditor.applyValues();
@@ -235,16 +226,16 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                                 OutlineComponent.getDefault().refresh(ERDesignerComponent.getDefault().getModel());
 
                                 setSelectedObject(theItem);
-                            } catch (Exception e1) {
+                            } catch (final Exception e1) {
                                 ERDesignerComponent.getDefault().getWorldConnector().notifyAboutException(e1);
                             }
                         }
                     }
                 } else {
-                    DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
+                    final DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
                             .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-                    List<ModelItem> theItems = new ArrayList<>();
+                    final List<ModelItem> theItems = new ArrayList<>();
                     theItems.add((ModelItem) aComponent.userObject);
                     ContextMenuFactory.addActionsToMenu(this, theMenu, theItems);
 
@@ -260,7 +251,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         return true;
     }
 
-    protected boolean setEditor3DInteractive() {
+    private boolean setEditor3DInteractive() {
         try {
             setEditor(new Java3DEditor());
 
@@ -268,15 +259,15 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
             ApplicationPreferences.getInstance().setEditorMode(EditorMode.INTERACTIVE_3D);
 
             return true;
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             MessagesHelper.displayErrorMessage(getDetailComponent(), getResourceHelper().getText(ERDesignerBundle.NOSUPPORTEDOPENGLVENDOR), getResourceHelper().getText(ERDesignerBundle.ERRORINITIALIZING3DMODE));
             return false;
         }
     }
 
-    protected void setEditor(GenericModelEditor aEditor) {
+    private void setEditor(final GenericModelEditor aEditor) {
 
-        JComponent theDetail = aEditor.getDetailComponent();
+        final JComponent theDetail = aEditor.getDetailComponent();
 
         editorPanel.removeAll();
         editorPanel.add(theDetail, BorderLayout.CENTER);
@@ -330,34 +321,34 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         aEditor.repaintGraph();
     }
 
-    private void commandSetTool(ToolEnum aTool) {
+    private void commandSetTool(final ToolEnum aTool) {
         currentTool = aTool;
         editor.commandSetTool(aTool);
     }
 
-    protected final void initActions() {
+    private void initActions() {
 
         // Required by Java3D
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
-        DefaultAction theReverseEngineerAction = new DefaultAction(
+        final DefaultAction theReverseEngineerAction = new DefaultAction(
                 new ReverseEngineerCommand(), this,
                 ERDesignerBundle.REVERSEENGINEER);
 
-        DefaultAction thePreferencesAction = new DefaultAction(
+        final DefaultAction thePreferencesAction = new DefaultAction(
                 new PreferencesCommand(), this,
                 ERDesignerBundle.PREFERENCES);
 
-        DefaultAction theSaveAction = new DefaultAction(new SaveToFileCommand(
+        final DefaultAction theSaveAction = new DefaultAction(new SaveToFileCommand(
         ), this, ERDesignerBundle.SAVEMODEL);
         theSaveAction.putValue(DefaultAction.HOTKEY_KEY, KeyStroke
                 .getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 
-        DefaultAction theSaveAsAction = new DefaultAction(
+        final DefaultAction theSaveAsAction = new DefaultAction(
                 aEvent -> new SaveToFileCommand()
                         .executeSaveFileAs(), this, ERDesignerBundle.SAVEMODELAS);
 
-        DefaultAction theSaveToRepository = new DefaultAction(
+        final DefaultAction theSaveToRepository = new DefaultAction(
                 new SaveToRepositoryCommand(), this,
                 ERDesignerBundle.SAVEMODELTODB);
 
@@ -369,13 +360,13 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                     }
                 }, this, ERDesignerBundle.RELATION);
 
-        DefaultAction theNewAction = new DefaultAction(
+        final DefaultAction theNewAction = new DefaultAction(
                 e -> commandNew(), this, ERDesignerBundle.NEWMODEL);
 
-        DefaultAction theLruAction = new DefaultAction(this,
+        final DefaultAction theLruAction = new DefaultAction(this,
                 ERDesignerBundle.RECENTLYUSEDFILES);
 
-        DefaultAction theLoadAction = new DefaultAction(
+        final DefaultAction theLoadAction = new DefaultAction(
                 new OpenFromFileCommand(), this, ERDesignerBundle.LOADMODEL);
 
         handAction = new DefaultAction(
@@ -411,28 +402,28 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                     }
                 }, this, ERDesignerBundle.VIEWTOOL);
 
-        DefaultAction theExportAction = new DefaultAction(this,
+        final DefaultAction theExportAction = new DefaultAction(this,
                 ERDesignerBundle.EXPORT);
 
-        DefaultAction theExitAction = new DefaultAction(
+        final DefaultAction theExitAction = new DefaultAction(
                 e -> worldConnector.exitApplication(), this, ERDesignerBundle.EXITPROGRAM);
 
-        DefaultAction theClasspathAction = new DefaultAction(
+        final DefaultAction theClasspathAction = new DefaultAction(
                 new ClasspathCommand(), this, ERDesignerBundle.CLASSPATH);
 
-        DefaultAction theDBConnectionAction = new DefaultAction(
+        final DefaultAction theDBConnectionAction = new DefaultAction(
                 new DBConnectionCommand(), this,
                 ERDesignerBundle.DBCONNECTION);
 
-        DefaultAction theRepositoryConnectionAction = new DefaultAction(
+        final DefaultAction theRepositoryConnectionAction = new DefaultAction(
                 new RepositoryConnectionCommand(), this,
                 ERDesignerBundle.REPOSITORYCONNECTION);
 
-        DefaultAction theDomainsAction = new DefaultAction(
+        final DefaultAction theDomainsAction = new DefaultAction(
                 new EditDomainCommand(), this,
                 ERDesignerBundle.DOMAINEDITOR);
 
-        DefaultAction theZoomAction = new DefaultAction(
+        final DefaultAction theZoomAction = new DefaultAction(
                 aEvent -> editor.commandSetZoom((ZoomInfo) ((JComboBox) aEvent
                         .getSource()).getSelectedItem()), this, ERDesignerBundle.ZOOM);
 
@@ -442,35 +433,35 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         zoomOutAction = new DefaultAction(
                 e -> zoomOut(), this, ERDesignerBundle.ZOOMOUT);
 
-        DefaultAction theGenerateSQL = new DefaultAction(
+        final DefaultAction theGenerateSQL = new DefaultAction(
                 new GenerateSQLCommand(), this,
                 ERDesignerBundle.GENERATECREATEDBDDL);
 
-        DefaultAction theGenerateChangelog = new DefaultAction(
+        final DefaultAction theGenerateChangelog = new DefaultAction(
                 new GenerateChangeLogSQLCommand(), this,
                 ERDesignerBundle.GENERATECHANGELOG);
 
-        DefaultAction theCompleteCompareWithDatabaseAction = new DefaultAction(
+        final DefaultAction theCompleteCompareWithDatabaseAction = new DefaultAction(
                 new CompleteCompareWithDatabaseCommand(), this,
                 ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
 
-        DefaultAction theCompleteCompareWithModelAction = new DefaultAction(
+        final DefaultAction theCompleteCompareWithModelAction = new DefaultAction(
                 new CompleteCompareWithOtherModelCommand(), this,
                 ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
 
-        DefaultAction theConvertModelAction = new DefaultAction(
+        final DefaultAction theConvertModelAction = new DefaultAction(
                 new ConvertModelCommand(), this,
                 ERDesignerBundle.CONVERTMODEL);
 
-        DefaultAction theCreateMigrationScriptAction = new DefaultAction(
+        final DefaultAction theCreateMigrationScriptAction = new DefaultAction(
                 new GenerateMigrationScriptCommand(), this,
                 ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
-        DefaultAction theCkeckModelAction = new DefaultAction(
+        final DefaultAction theCkeckModelAction = new DefaultAction(
                 new ModelCheckCommand(), this,
                 ERDesignerBundle.CHECKMODELFORERRORS);
 
-        DefaultAction theHelpAction = new DefaultAction(
+        final DefaultAction theHelpAction = new DefaultAction(
                 aEvent -> commandShowHelp(), this, ERDesignerBundle.HELP);
 
         exportOpenXavaAction = new DefaultAction(
@@ -479,11 +470,11 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
         lruMenu = new DefaultMenu(theLruAction);
 
-        DefaultAction theStoredConnectionsAction = new DefaultAction(this,
+        final DefaultAction theStoredConnectionsAction = new DefaultAction(this,
                 ERDesignerBundle.STOREDDBCONNECTION);
         storedConnections = new DefaultMenu(theStoredConnectionsAction);
 
-        ERDesignerToolbarEntry theFileMenu = new ERDesignerToolbarEntry(
+        final ERDesignerToolbarEntry theFileMenu = new ERDesignerToolbarEntry(
                 ERDesignerBundle.FILE);
         if (worldConnector.supportsPreferences()) {
             theFileMenu.add(new DefaultMenuItem(thePreferencesAction));
@@ -492,9 +483,9 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
         theFileMenu.add(new DefaultMenuItem(theNewAction));
         theFileMenu.addSeparator();
-        DefaultMenuItem theSaveItem = new DefaultMenuItem(theSaveAction);
+        final DefaultMenuItem theSaveItem = new DefaultMenuItem(theSaveAction);
         theFileMenu.add(theSaveItem);
-        KeyStroke theStroke = (KeyStroke) theSaveAction
+        final KeyStroke theStroke = (KeyStroke) theSaveAction
                 .getValue(DefaultAction.HOTKEY_KEY);
         if (theStroke != null) {
             theSaveItem.setAccelerator(theStroke);
@@ -510,7 +501,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
             theFileMenu.add(new DefaultMenuItem(theRepositoryConnectionAction));
             theFileMenu.add(new DefaultMenuItem(theSaveToRepository));
 
-            DefaultMenuItem theLoadFromDBMenu = new DefaultMenuItem(
+            final DefaultMenuItem theLoadFromDBMenu = new DefaultMenuItem(
                     new DefaultAction(new OpenFromRepositoryCommand(),
                             this, ERDesignerBundle.LOADMODELFROMDB));
 
@@ -539,7 +530,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
             theFileMenu.add(new DefaultMenuItem(theExitAction));
         }
 
-        ERDesignerToolbarEntry theDBMenu = new ERDesignerToolbarEntry(
+        final ERDesignerToolbarEntry theDBMenu = new ERDesignerToolbarEntry(
                 ERDesignerBundle.DATABASE);
 
         boolean addSeparator = false;
@@ -585,17 +576,17 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
             updateDocumentationMenu();
         }
 
-        ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(
+        final ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(
                 ERDesignerBundle.VIEW);
 
-        DefaultMenu theViewModeMenu = new DefaultMenu(this,
+        final DefaultMenu theViewModeMenu = new DefaultMenu(this,
                 ERDesignerBundle.VIEWMODE);
 
-        DefaultAction theViewMode2DDiagramAction = new DefaultAction(
+        final DefaultAction theViewMode2DDiagramAction = new DefaultAction(
                 e -> setEditor2DDiagram(), this, ERDesignerBundle.VIEWMODE2DDIAGRAM);
-        DefaultAction theViewMode2DInteractiveAction = new DefaultAction(
+        final DefaultAction theViewMode2DInteractiveAction = new DefaultAction(
                 e -> setEditor2DInteractive(), this, ERDesignerBundle.VIEWMODE2DINTERACTIVE);
-        DefaultAction theViewMode3DInteractiveAction = new DefaultAction(
+        final DefaultAction theViewMode3DInteractiveAction = new DefaultAction(
                 e -> setEditor3DInteractive(), this, ERDesignerBundle.VIEWMODE3DINTERACTIVE);
 
 
@@ -610,7 +601,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         theViewModeMenu.add(viewMode2DInteractiveMenuItem);
         theViewModeMenu.add(viewMode3DInteractiveMenuItem);
 
-        ButtonGroup theDisplayModeGroup = new ButtonGroup();
+        final ButtonGroup theDisplayModeGroup = new ButtonGroup();
         theDisplayModeGroup.add(viewMode2DDiagramMenuItem);
         theDisplayModeGroup.add(viewMode2DInteractiveMenuItem);
         theDisplayModeGroup.add(viewMode3DInteractiveMenuItem);
@@ -622,7 +613,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
         displayCommentsAction = new DefaultAction(
                 e -> {
-                    DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
+                    final DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
                             .getSource();
                     editor.commandSetDisplayCommentsState(theItem.isSelected());
                 }, this, ERDesignerBundle.DISPLAYCOMMENTS);
@@ -634,7 +625,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
         displayGridAction = new DefaultAction(
                 e -> {
-                    DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
+                    final DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
                             .getSource();
                     editor.commandSetDisplayGridState(theItem.isSelected());
                 }, this, ERDesignerBundle.DISPLAYGRID);
@@ -646,22 +637,22 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 ERDesignerBundle.DISPLAYLEVEL);
         theViewMenu.add(displayLevelMenu);
 
-        DefaultAction theDisplayAllAction = new DefaultAction(
+        final DefaultAction theDisplayAllAction = new DefaultAction(
                 e -> editor.commandSetDisplayLevel(DisplayLevel.ALL), this, ERDesignerBundle.DISPLAYALL);
 
-        DefaultAction theDisplayPKOnlyAction = new DefaultAction(
+        final DefaultAction theDisplayPKOnlyAction = new DefaultAction(
                 e -> editor.commandSetDisplayLevel(DisplayLevel.PRIMARYKEYONLY), this, ERDesignerBundle.DISPLAYPRIMARYKEY);
 
-        DefaultAction theDisplayPKAndFK = new DefaultAction(
+        final DefaultAction theDisplayPKAndFK = new DefaultAction(
                 e -> editor.commandSetDisplayLevel(DisplayLevel.PRIMARYKEYSANDFOREIGNKEYS), this, ERDesignerBundle.DISPLAYPRIMARYKEYANDFOREIGNKEY);
 
         displayAllMenuItem = new DefaultRadioButtonMenuItem(theDisplayAllAction);
-        DefaultRadioButtonMenuItem thePKOnlyItem = new DefaultRadioButtonMenuItem(
+        final DefaultRadioButtonMenuItem thePKOnlyItem = new DefaultRadioButtonMenuItem(
                 theDisplayPKOnlyAction);
-        DefaultRadioButtonMenuItem thePKAndFKItem = new DefaultRadioButtonMenuItem(
+        final DefaultRadioButtonMenuItem thePKAndFKItem = new DefaultRadioButtonMenuItem(
                 theDisplayPKAndFK);
 
-        ButtonGroup theDisplayLevelGroup = new ButtonGroup();
+        final ButtonGroup theDisplayLevelGroup = new ButtonGroup();
         theDisplayLevelGroup.add(displayAllMenuItem);
         theDisplayLevelGroup.add(thePKOnlyItem);
         theDisplayLevelGroup.add(thePKAndFKItem);
@@ -676,23 +667,23 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 ERDesignerBundle.DISPLAYORDER);
         theViewMenu.add(displayOrderMenu);
 
-        DefaultAction theDisplayNaturalOrderAction = new DefaultAction(
+        final DefaultAction theDisplayNaturalOrderAction = new DefaultAction(
                 e -> editor.commandSetDisplayOrder(DisplayOrder.NATURAL), this, ERDesignerBundle.DISPLAYNATURALORDER);
 
-        DefaultAction theDisplayAscendingOrderAction = new DefaultAction(
+        final DefaultAction theDisplayAscendingOrderAction = new DefaultAction(
                 e -> editor.commandSetDisplayOrder(DisplayOrder.ASCENDING), this, ERDesignerBundle.DISPLAYASCENDING);
 
-        DefaultAction theDisplayDescendingOrderAction = new DefaultAction(
+        final DefaultAction theDisplayDescendingOrderAction = new DefaultAction(
                 e -> editor.commandSetDisplayOrder(DisplayOrder.DESCENDING), this, ERDesignerBundle.DISPLAYDESCENDING);
 
         displayNaturalOrderMenuItem = new DefaultRadioButtonMenuItem(
                 theDisplayNaturalOrderAction);
-        DefaultRadioButtonMenuItem theAscendingItem = new DefaultRadioButtonMenuItem(
+        final DefaultRadioButtonMenuItem theAscendingItem = new DefaultRadioButtonMenuItem(
                 theDisplayAscendingOrderAction);
-        DefaultRadioButtonMenuItem theDescendingItem = new DefaultRadioButtonMenuItem(
+        final DefaultRadioButtonMenuItem theDescendingItem = new DefaultRadioButtonMenuItem(
                 theDisplayDescendingOrderAction);
 
-        ButtonGroup theDisplayOrderGroup = new ButtonGroup();
+        final ButtonGroup theDisplayOrderGroup = new ButtonGroup();
         theDisplayOrderGroup.add(displayNaturalOrderMenuItem);
         theDisplayOrderGroup.add(theAscendingItem);
         theDisplayOrderGroup.add(theDescendingItem);
@@ -723,7 +714,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
             theViewMenu.add(new DefaultMenuItem(theHelpAction));
         }
 
-        DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
+        final DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
         theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
         for (int i = 95; i > 0; i -= 5) {
             theZoomModel.addElement(new ZoomInfo(i + " %", ((double) i)
@@ -734,7 +725,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         zoomBox.setAction(theZoomAction);
         zoomBox.setModel(theZoomModel);
 
-        DefaultToolbar theToolBar = worldConnector.getToolBar();
+        final DefaultToolbar theToolBar = worldConnector.getToolBar();
 
         theToolBar.add(theFileMenu);
         theToolBar.add(theDBMenu);
@@ -758,7 +749,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         commentButton = new DefaultToggleButton(commentAction);
         viewButton = new DefaultToggleButton(viewAction);
 
-        ButtonGroup theGroup = new ButtonGroup();
+        final ButtonGroup theGroup = new ButtonGroup();
         theGroup.add(handButton);
         theGroup.add(relationButton);
         theGroup.add(entityButton);
@@ -805,7 +796,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    protected boolean checkForValidConnection() {
+    boolean checkForValidConnection() {
 
         if (model.getDialect() == null) {
             MessagesHelper
@@ -823,39 +814,39 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     /**
      * Show all subject areas.
      */
-    protected void commandShowAllSubjectAreas() {
+    private void commandShowAllSubjectAreas() {
         model.getSubjectAreas().forEach(editor::commandShowSubjectArea);
     }
 
     /**
      * Hide all subject areas.
      */
-    protected void commandHideAllSubjectAreas() {
+    private void commandHideAllSubjectAreas() {
         model.getSubjectAreas().forEach(editor::commandHideSubjectArea);
     }
 
     /**
      * Update the create documentation menu.
      */
-    protected void updateDocumentationMenu() {
+    private void updateDocumentationMenu() {
         documentationMenu.removeAll();
 
-        File theReportsFile = ApplicationPreferences.getInstance()
+        final File theReportsFile = ApplicationPreferences.getInstance()
                 .getReportsDirectory();
         try {
-            Map<File, String> theReports = JasperUtils
+            final Map<File, String> theReports = JasperUtils
                     .findReportsInDirectory(theReportsFile);
-            for (Map.Entry<File, String> theEntry : theReports.entrySet()) {
+            for (final Map.Entry<File, String> theEntry : theReports.entrySet()) {
 
-                File theJRXMLFile = theEntry.getKey();
-                JMenuItem theItem = new JMenuItem();
+                final File theJRXMLFile = theEntry.getKey();
+                final JMenuItem theItem = new JMenuItem();
                 theItem.setText(theEntry.getValue());
                 theItem.addActionListener(new GenerateDocumentationCommand(
                         theJRXMLFile));
 
                 documentationMenu.add(theItem);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             worldConnector.notifyAboutException(e);
         }
         UIInitializer.getInstance().initialize(documentationMenu);
@@ -871,19 +862,18 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         subjectAreas.add(new DefaultMenuItem(new DefaultAction(
                 aEvent -> commandHideAllSubjectAreas(), this, ERDesignerBundle.HIDEALL)));
 
-        if (model.getSubjectAreas().size() > 0) {
+        if (!model.getSubjectAreas().isEmpty()) {
             subjectAreas.addSeparator();
 
-            for (SubjectArea theArea : model.getSubjectAreas()) {
+            for (final SubjectArea theArea : model.getSubjectAreas()) {
                 final JCheckBoxMenuItem theItem = new JCheckBoxMenuItem();
                 theItem.setText(theArea.getName());
                 theItem.setState(theArea.isVisible());
-                final SubjectArea theFinalArea = theArea;
                 theItem.addActionListener(e -> {
                     if (theItem.getState()) {
-                        editor.commandShowSubjectArea(theFinalArea);
+                        editor.commandShowSubjectArea(theArea);
                     } else {
-                        editor.commandHideSubjectArea(theFinalArea);
+                        editor.commandHideSubjectArea(theArea);
                     }
                 });
 
@@ -897,15 +887,15 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         OutlineComponent.getDefault().refresh(model);
     }
 
-    protected void updateRecentlyUsedMenuEntries() {
+    void updateRecentlyUsedMenuEntries() {
 
         lruMenu.removeAll();
         storedConnections.removeAll();
 
-        List<File> theFiles = ApplicationPreferences.getInstance()
+        final List<File> theFiles = ApplicationPreferences.getInstance()
                 .getRecentlyUsedFiles();
         for (final File theFile : theFiles) {
-            JMenuItem theItem = new JMenuItem(theFile.toString());
+            final JMenuItem theItem = new JMenuItem(theFile.toString());
             theItem.addActionListener(e -> commandOpenFile(theFile));
 
             lruMenu.add(theItem);
@@ -914,7 +904,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
         for (final ConnectionDescriptor theConnectionInfo : ApplicationPreferences
                 .getInstance().getRecentlyUsedConnections()) {
-            JMenuItem theItem1 = new JMenuItem(theConnectionInfo.toString());
+            final JMenuItem theItem1 = new JMenuItem(theConnectionInfo.toString());
             theItem1.addActionListener(e -> new DBConnectionCommand()
                     .execute(theConnectionInfo));
 
@@ -923,17 +913,17 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    protected void addCurrentConnectionToConnectionHistory() {
+    void addCurrentConnectionToConnectionHistory() {
 
-        ConnectionDescriptor theConnection = model
+        final ConnectionDescriptor theConnection = model
                 .createConnectionHistoryEntry();
         addConnectionToConnectionHistory(theConnection);
 
         editCustomTypes.setEnabled(model.getDialect().isSupportsCustomTypes());
     }
 
-    protected void addConnectionToConnectionHistory(
-            ConnectionDescriptor aConnection) {
+    void addConnectionToConnectionHistory(
+            final ConnectionDescriptor aConnection) {
 
         ApplicationPreferences.getInstance().addRecentlyUsedConnection(
                 aConnection);
@@ -941,9 +931,9 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         updateRecentlyUsedMenuEntries();
     }
 
-    protected void commandNew() {
+    private void commandNew() {
 
-        Model theModel = worldConnector.createNewModel();
+        final Model theModel = worldConnector.createNewModel();
         setModel(theModel);
 
         setupViewForNothing();
@@ -957,7 +947,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
      *
      * @param aDescriptor the entry descriptor
      */
-    protected void setupViewFor(RepositoryEntryDescriptor aDescriptor) {
+    void setupViewFor(final RepositoryEntryDescriptor aDescriptor) {
 
         currentEditingFile = null;
         currentRepositoryEntry = aDescriptor;
@@ -972,7 +962,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
      *
      * @param aFile the file
      */
-    protected void setupViewFor(File aFile) {
+    void setupViewFor(final File aFile) {
 
         currentEditingFile = aFile;
         currentRepositoryEntry = null;
@@ -985,7 +975,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     /**
      * Setup the view for an empty model.
      */
-    protected void setupViewForNothing() {
+    private void setupViewForNothing() {
 
         currentEditingFile = null;
         currentRepositoryEntry = null;
@@ -998,12 +988,12 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     /**
      * Display the application help screen.
      */
-    protected void commandShowHelp() {
+    private void commandShowHelp() {
         try {
-            URI theFile = ApplicationPreferences.getInstance()
+            final URI theFile = ApplicationPreferences.getInstance()
                     .getOnlineHelpPDFFile();
             Desktop.getDesktop().browse(theFile);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             worldConnector.notifyAboutException(e);
         }
     }
@@ -1018,7 +1008,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
      *
      * @param aModel the model
      */
-    public void setModel(Model aModel) {
+    public void setModel(final Model aModel) {
 
         //SubjectAreaHelper theHelper = new SubjectAreaHelper();
         //theHelper.computeCluster(aModel);
@@ -1076,7 +1066,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     public void savePreferences() {
         try {
             ApplicationPreferences.getInstance().store();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             worldConnector.notifyAboutException(e);
         }
     }
@@ -1089,11 +1079,11 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         editor.repaintGraph();
     }
 
-    public void setIntelligentLayoutEnabled(boolean b) {
+    public void setIntelligentLayoutEnabled(final boolean b) {
         editor.setIntelligentLayoutEnabled(b);
     }
 
-    public void setSelectedObject(ModelItem aObject) {
+    public void setSelectedObject(final ModelItem aObject) {
         selectedObject = aObject;
         editor.setSelectedObject(aObject);
     }
@@ -1102,35 +1092,35 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         editor.refreshPreferences();
     }
 
-    public void commandCreateComment(Comment aComment, Point2D aLocation) {
+    public void commandCreateComment(final Comment aComment, final Point2D aLocation) {
         editor.commandCreateComment(aComment, aLocation);
     }
 
-    public void commandCreateRelation(Relation aRelation) {
+    public void commandCreateRelation(final Relation aRelation) {
         editor.commandCreateRelation(aRelation);
     }
 
-    public void commandCreateTable(Table aTable, Point2D aLocation) {
+    public void commandCreateTable(final Table aTable, final Point2D aLocation) {
         editor.commandCreateTable(aTable, aLocation);
     }
 
-    public void commandCreateView(View aView, Point2D aLocation) {
+    public void commandCreateView(final View aView, final Point2D aLocation) {
         editor.commandCreateView(aView, aLocation);
     }
 
-    public void commandHideSubjectArea(SubjectArea aSubjectArea) {
+    public void commandHideSubjectArea(final SubjectArea aSubjectArea) {
         editor.commandHideSubjectArea(aSubjectArea);
     }
 
-    public void commandAddToNewSubjectArea(List<ModelItem> aNewSubjectAreaItems) {
+    public void commandAddToNewSubjectArea(final List<ModelItem> aNewSubjectAreaItems) {
         editor.commandAddToNewSubjectArea(aNewSubjectAreaItems);
     }
 
-    public void commandDelete(List<ModelItem> aItemsToBeDeleted) {
+    public void commandDelete(final List<ModelItem> aItemsToBeDeleted) {
         editor.commandDelete(aItemsToBeDeleted);
     }
 
-    public void commandShowOrHideRelationsFor(Table aTable, boolean aShow) {
+    public void commandShowOrHideRelationsFor(final Table aTable, final boolean aShow) {
         editor.commandShowOrHideRelationsFor(aTable, aShow);
     }
 
@@ -1138,13 +1128,11 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         return editor;
     }
 
-    public void commandOpenFile(File aFile) {
-        FileInputStream theStream = null;
+    public void commandOpenFile(final File aFile) {
 
-        try {
-            theStream = new FileInputStream(aFile);
+        try (final FileInputStream theStream = new FileInputStream(aFile)) {
 
-            Model theModel = ModelIOUtilities.getInstance()
+            final Model theModel = ModelIOUtilities.getInstance()
                     .deserializeModelFromXML(theStream);
             getWorldConnector().initializeLoadedModel(theModel);
 
@@ -1159,20 +1147,13 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                     getResourceHelper().getText(
                             ERDesignerBundle.FILELOADED));
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
 
             MessagesHelper.displayErrorMessage(getDetailComponent(), getResourceHelper().getText(
                     ERDesignerBundle.ERRORLOADINGFILE));
 
             getWorldConnector().notifyAboutException(e);
-        } finally {
-            if (theStream != null) {
-                try {
-                    theStream.close();
-                } catch (IOException e) {
-                    // Ignore this exception
-                }
-            }
         }
+        // Ignore this exception
     }
 }

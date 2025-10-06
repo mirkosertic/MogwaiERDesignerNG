@@ -49,7 +49,7 @@ public class SubjectAreaEntity extends ModelEntity {
     /**
      * @param color the color to set
      */
-    public void setColor(int color) {
+    public void setColor(final int color) {
         this.color = color;
     }
 
@@ -63,7 +63,7 @@ public class SubjectAreaEntity extends ModelEntity {
     /**
      * @param tables the tables to set
      */
-    public void setTables(List<String> tables) {
+    public void setTables(final List<String> tables) {
         this.tables = tables;
     }
 
@@ -77,7 +77,7 @@ public class SubjectAreaEntity extends ModelEntity {
     /**
      * @param comments the comments to set
      */
-    public void setComments(List<String> comments) {
+    public void setComments(final List<String> comments) {
         this.comments = comments;
     }
 
@@ -85,7 +85,7 @@ public class SubjectAreaEntity extends ModelEntity {
         return views;
     }
 
-    public void setViews(List<String> views) {
+    public void setViews(final List<String> views) {
         this.views = views;
     }
 
@@ -99,7 +99,7 @@ public class SubjectAreaEntity extends ModelEntity {
     /**
      * @param visible the visible to set
      */
-    public void setVisible(Boolean visible) {
+    public void setVisible(final Boolean visible) {
         this.visible = visible;
     }
 
@@ -107,7 +107,7 @@ public class SubjectAreaEntity extends ModelEntity {
         return expanded;
     }
 
-    public void setExpanded(Boolean expanded) {
+    public void setExpanded(final Boolean expanded) {
         this.expanded = expanded;
     }
 }

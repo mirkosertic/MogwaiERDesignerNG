@@ -31,18 +31,18 @@ import org.apache.commons.lang.StringUtils;
  */
 public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
-	public OracleSQLGenerator(OracleDialect aDialect) {
+	public OracleSQLGenerator(final OracleDialect aDialect) {
 		super(aDialect);
 	}
 
 	@Override
-	protected String createAttributeDataDefinition(Attribute<Table> aAttribute) {
+	protected String createAttributeDataDefinition(final Attribute<Table> aAttribute) {
 
-		StringBuilder theBuilder = new StringBuilder();
+		final StringBuilder theBuilder = new StringBuilder();
 		theBuilder.append(aAttribute.getPhysicalDeclaration());
-		boolean isNullable = aAttribute.isNullable();
+		final boolean isNullable = aAttribute.isNullable();
 
-		String theDefault = aAttribute.getDefaultValue();
+		final String theDefault = aAttribute.getDefaultValue();
 		boolean hasDefault = false;
 		if (!StringUtils.isEmpty(theDefault)) {
 			hasDefault = true;
@@ -57,7 +57,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 			theBuilder.append(theDefault);
 		}
 
-		String theExtra = aAttribute.getExtra();
+		final String theExtra = aAttribute.getExtra();
 		if (!StringUtils.isEmpty(theExtra) && !aAttribute.getDatatype().supportsExtra()) {
 			theBuilder.append(" ");
 			theBuilder.append(theExtra);
@@ -67,10 +67,10 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 	}
 
 	@Override
-	public StatementList createRenameTableStatement(Table aTable, String aNewName) {
+	public StatementList createRenameTableStatement(final Table aTable, final String aNewName) {
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(aTable));
@@ -84,11 +84,11 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createRenameAttributeStatement(final Attribute<Table> anExistingAttribute, final String aNewName) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -103,9 +103,9 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 	}
 
 	@Override
-	public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) {
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+	public StatementList createRemoveIndexFromTableStatement(final Table aTable, final Index aIndex) {
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("DROP INDEX ");
 		theStatement.append(aIndex.getName());
@@ -116,11 +116,11 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
-		Table theTable = anExistingAttribute.getOwner();
+	public StatementList createChangeAttributeStatement(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) {
+		final Table theTable = anExistingAttribute.getOwner();
 
-		StatementList theResult = new StatementList();
-		StringBuilder theStatement = new StringBuilder();
+		final StatementList theResult = new StatementList();
+		final StringBuilder theStatement = new StringBuilder();
 
 		theStatement.append("ALTER TABLE ");
 		theStatement.append(createUniqueTableName(theTable));
@@ -136,9 +136,9 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 	}
 
 	@Override
-	protected String createCreateTableSuffix(Table aTable) {
-		StringBuilder theResult = new StringBuilder();
-		OracleTableProperties theProperties = (OracleTableProperties) getDialect().createTablePropertiesFor(aTable);
+	protected String createCreateTableSuffix(final Table aTable) {
+		final StringBuilder theResult = new StringBuilder();
+		final OracleTableProperties theProperties = (OracleTableProperties) getDialect().createTablePropertiesFor(aTable);
 		if (!StringUtils.isEmpty(theProperties.getTableSpace())) {
 			theResult.append(" TABLESPACE ").append(theProperties.getTableSpace());
 		}
@@ -146,9 +146,9 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 	}
 
 	@Override
-	protected String createCreateIndexSuffix(Index aIndex) {
-		StringBuilder theResult = new StringBuilder();
-		OracleIndexProperties theProperties = (OracleIndexProperties) getDialect().createIndexPropertiesFor(aIndex);
+	protected String createCreateIndexSuffix(final Index aIndex) {
+		final StringBuilder theResult = new StringBuilder();
+		final OracleIndexProperties theProperties = (OracleIndexProperties) getDialect().createIndexPropertiesFor(aIndex);
 		if (!StringUtils.isEmpty(theProperties.getTableSpace())) {
 			theResult.append(" TABLESPACE ").append(theProperties.getTableSpace());
 		}
@@ -156,9 +156,9 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 	}
 
 	@Override
-	protected String createCreatePrimaryKeySuffix(Index aIndex) {
-		StringBuilder theResult = new StringBuilder();
-		OracleIndexProperties theProperties = (OracleIndexProperties) getDialect().createIndexPropertiesFor(aIndex);
+	protected String createCreatePrimaryKeySuffix(final Index aIndex) {
+		final StringBuilder theResult = new StringBuilder();
+		final OracleIndexProperties theProperties = (OracleIndexProperties) getDialect().createIndexPropertiesFor(aIndex);
 		if (!StringUtils.isEmpty(theProperties.getTableSpace())) {
 			theResult.append(" TABLESPACE ").append(theProperties.getTableSpace());
 		}

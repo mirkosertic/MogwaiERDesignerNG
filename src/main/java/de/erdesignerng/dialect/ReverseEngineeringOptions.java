@@ -37,7 +37,7 @@ public class ReverseEngineeringOptions {
         return tableNaming;
     }
 
-    public void setTableNaming(TableNamingEnum tableNaming) {
+    public void setTableNaming(final TableNamingEnum tableNaming) {
         this.tableNaming = tableNaming;
     }
 
@@ -45,7 +45,7 @@ public class ReverseEngineeringOptions {
         return schemaEntries;
     }
 
-    public void setSchemaEntries(List<SchemaEntry> schemaEntries) {
+    public void setSchemaEntries(final List<SchemaEntry> schemaEntries) {
         this.schemaEntries = schemaEntries;
     }
 
@@ -58,15 +58,13 @@ public class ReverseEngineeringOptions {
         return tableEntries;
     }
 
-    public void setTableEntries(List<TableEntry> tableNames) {
+    public void setTableEntries(final List<TableEntry> tableNames) {
         tableEntries = tableNames;
     }
 
     public List<TableType> getAvailableTableTypes() {
-        List<TableType> theResult = new ArrayList<>();
-        tableEntries.stream().filter(theEntry -> !theResult.contains(theEntry.getTableType())).forEach(theEntry -> {
-            theResult.add(theEntry.getTableType());
-        });
+        final List<TableType> theResult = new ArrayList<>();
+        tableEntries.stream().filter(theEntry -> !theResult.contains(theEntry.getTableType())).forEach(theEntry -> theResult.add(theEntry.getTableType()));
         return theResult;
     }
 }

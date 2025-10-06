@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.model.Table;
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.table.TableEditor;
 
@@ -32,8 +31,8 @@ public class AddTableCommand extends UICommand {
 
     private final boolean newTableIsChild;
 
-    public AddTableCommand(Point2D aLocation, Table aExportingCell,
-                           boolean aNewTableIsChild) {
+    public AddTableCommand(final Point2D aLocation, final Table aExportingCell,
+                           final boolean aNewTableIsChild) {
         location = aLocation;
         exportingCell = aExportingCell;
         newTableIsChild = aNewTableIsChild;
@@ -42,24 +41,19 @@ public class AddTableCommand extends UICommand {
     @Override
     public void execute() {
 
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (!component.checkForValidConnection()) {
             return;
         }
 
-        Table theTable = new Table();
-        TableEditor theTableEditor = new TableEditor(component.getModel(), getDetailComponent());
+        final Table theTable = new Table();
+        final TableEditor theTableEditor = new TableEditor(component.getModel(), getDetailComponent());
         theTableEditor.initializeFor(theTable);
         if (theTableEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
 
-                try {
-                    theTableEditor.applyValues();
-                } catch (VetoException e) {
-                    getWorldConnector().notifyAboutException(e);
-                    return;
-                }
+                theTableEditor.applyValues();
 
                 component.commandCreateTable(theTable, location);
 
@@ -76,7 +70,7 @@ public class AddTableCommand extends UICommand {
 
                 refreshDisplayAndOutline();
 
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }

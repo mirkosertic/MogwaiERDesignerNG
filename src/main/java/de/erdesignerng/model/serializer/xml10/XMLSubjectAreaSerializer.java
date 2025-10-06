@@ -36,50 +36,50 @@ import java.awt.*;
 public class XMLSubjectAreaSerializer extends AbstractXMLSubjectAreaSerializer {
 
 	@Override
-	public void serialize(SubjectArea aArea, Document aDocument, Element aRootElement) {
+	public void serialize(final SubjectArea aArea, final Document aDocument, final Element aRootElement) {
 
-		Element theSubjectAreaElement = addElement(aDocument, aRootElement, SUBJECTAREA);
+		final Element theSubjectAreaElement = addElement(aDocument, aRootElement, SUBJECTAREA);
 
 		// Basisdaten des Modelelementes speichern
 		serializeProperties(aDocument, theSubjectAreaElement, aArea);
 		theSubjectAreaElement.setAttribute(COLOR, "" + aArea.getColor().getRGB());
 
-		for (Table theTable : aArea.getTables()) {
+		for (final Table theTable : aArea.getTables()) {
 
-			Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+			final Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
 			theTableElement.setAttribute(TABLEREFID, theTable.getSystemId());
 
 		}
 
-		for (Comment theComment : aArea.getComments()) {
+		for (final Comment theComment : aArea.getComments()) {
 
-			Element theCommentElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+			final Element theCommentElement = addElement(aDocument, theSubjectAreaElement, ITEM);
 			theCommentElement.setAttribute(COMMENTREFID, theComment.getSystemId());
 
 		}
 	}
 
 	@Override
-	public void deserialize(Model aModel, Document aDocument) {
+	public void deserialize(final Model aModel, final Document aDocument) {
 
-		NodeList theElements = aDocument.getElementsByTagName(SUBJECTAREA);
+		final NodeList theElements = aDocument.getElementsByTagName(SUBJECTAREA);
 		for (int i = 0; i < theElements.getLength(); i++) {
-			Element theElement = (Element) theElements.item(i);
+			final Element theElement = (Element) theElements.item(i);
 
-			SubjectArea theSubjectArea = new SubjectArea();
+			final SubjectArea theSubjectArea = new SubjectArea();
 			deserializeProperties(theElement, theSubjectArea);
 
 			theSubjectArea.setColor(new Color(Integer.parseInt(theElement.getAttribute(COLOR))));
 
-			NodeList theTables = theElement.getElementsByTagName(ITEM);
+			final NodeList theTables = theElement.getElementsByTagName(ITEM);
 			for (int j = 0; j < theTables.getLength(); j++) {
 
-				Element theItemElement = (Element) theTables.item(j);
-				String theTableId = theItemElement.getAttribute(TABLEREFID);
-				String theCommentId = theItemElement.getAttribute(COMMENTREFID);
+				final Element theItemElement = (Element) theTables.item(j);
+				final String theTableId = theItemElement.getAttribute(TABLEREFID);
+				final String theCommentId = theItemElement.getAttribute(COMMENTREFID);
 
 				if (!StringUtils.isEmpty(theTableId)) {
-					Table theTable = aModel.getTables().findBySystemId(theTableId);
+					final Table theTable = aModel.getTables().findBySystemId(theTableId);
 					if (theTable == null) {
 						throw new IllegalArgumentException("Cannot find table with id " + theTableId);
 					}
@@ -88,7 +88,7 @@ public class XMLSubjectAreaSerializer extends AbstractXMLSubjectAreaSerializer {
 				}
 
 				if (!StringUtils.isEmpty(theCommentId)) {
-					Comment theComment = aModel.getComments().findBySystemId(theCommentId);
+					final Comment theComment = aModel.getComments().findBySystemId(theCommentId);
 					if (theComment == null) {
 						throw new IllegalArgumentException("Cannot find comment with id " + theCommentId);
 					}

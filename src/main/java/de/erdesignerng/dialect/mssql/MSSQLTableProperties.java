@@ -27,7 +27,7 @@ public class MSSQLTableProperties extends TableProperties {
 		return fileGroup;
 	}
 
-	public void setFileGroup(String fileGroup) {
+	public void setFileGroup(final String fileGroup) {
 		this.fileGroup = fileGroup;
 	}
 }

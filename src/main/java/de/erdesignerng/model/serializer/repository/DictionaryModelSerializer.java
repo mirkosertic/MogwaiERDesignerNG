@@ -47,13 +47,13 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 	public static final DictionaryModelSerializer SERIALIZER = new DictionaryModelSerializer();
 
 	public RepositoryEntryDescriptor serialize(final RepositoryEntryDescriptor aDesc, final Model aModel,
-											   Connection aConnection, Class aHibernateDialectClass) throws Exception {
+                                               final Connection aConnection, final Class aHibernateDialectClass) {
 
 		return (RepositoryEntryDescriptor) new HibernateTemplate(aHibernateDialectClass, aConnection) {
 
 			@Override
-			public Object doInSession(Session aSession) {
-				RepositoryEntity theEntity;
+			public Object doInSession(final Session aSession) {
+				final RepositoryEntity theEntity;
 				if (aDesc.getId() == null) {
 					theEntity = new RepositoryEntity();
 					theEntity.setSystemId(ModelUtilities.createSystemIdFor());
@@ -66,8 +66,8 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 
 				// Serialize properties
 				theEntity.getProperties().clear();
-				for (Map.Entry<String, String> theEntry : aModel.getProperties().getProperties().entrySet()) {
-					StringKeyValuePair theElement = new StringKeyValuePair();
+				for (final Map.Entry<String, String> theEntry : aModel.getProperties().getProperties().entrySet()) {
+					final StringKeyValuePair theElement = new StringKeyValuePair();
 					theElement.setKey(theEntry.getKey());
 					theElement.setValue(theEntry.getValue());
 					theEntity.getProperties().add(theElement);
@@ -89,14 +89,14 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 				DictionarySubjectAreaSerializer.SERIALIZER.serialize(aModel, theEntity);
 
 				// Serialize changes
-				ModelModificationTracker theTracker = aModel.getModificationTracker();
+				final ModelModificationTracker theTracker = aModel.getModificationTracker();
 				if (theTracker instanceof HistoryModificationTracker) {
-					HistoryModificationTracker theHistTracker = (HistoryModificationTracker) theTracker;
-					StatementList theList = theHistTracker.getNotSavedStatements();
-					if (theList.size() > 0) {
-						ChangeEntity theChange = new ChangeEntity();
+					final HistoryModificationTracker theHistTracker = (HistoryModificationTracker) theTracker;
+					final StatementList theList = theHistTracker.getNotSavedStatements();
+					if (!theList.isEmpty()) {
+						final ChangeEntity theChange = new ChangeEntity();
 						theChange.setSystemId(ModelUtilities.createSystemIdFor());
-						for (Statement theStatement : theList) {
+						for (final Statement theStatement : theList) {
 							theChange.getStatements().add(theStatement.getSql());
 							theStatement.setSaved(true);
 						}
@@ -115,21 +115,21 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 		}.execute();
 	}
 
-	public Model deserialize(final RepositoryEntryDescriptor aDescriptor, Connection aConnection,
-							 Class aHibernateDialectClass) throws Exception {
+	public Model deserialize(final RepositoryEntryDescriptor aDescriptor, final Connection aConnection,
+                             final Class aHibernateDialectClass) {
 
 		return (Model) new HibernateTemplate(aHibernateDialectClass, aConnection) {
 
 			@Override
-			public Object doInSession(Session aSession) {
-				RepositoryEntity theRepositoryEntity = (RepositoryEntity) aSession.get(RepositoryEntity.class,
+			public Object doInSession(final Session aSession) {
+				final RepositoryEntity theRepositoryEntity = (RepositoryEntity) aSession.get(RepositoryEntity.class,
 						aDescriptor.getId());
 
-				Model theNewModel = new Model();
+				final Model theNewModel = new Model();
 
 				// Deserialize the properties
 				theNewModel.getProperties().getProperties().clear();
-				for (StringKeyValuePair theElement : theRepositoryEntity.getProperties()) {
+				for (final StringKeyValuePair theElement : theRepositoryEntity.getProperties()) {
 					theNewModel.getProperties().getProperties().put(theElement.getKey(), theElement.getValue());
 				}
 				theNewModel.setDialect(DialectFactory.getInstance().getDialect(theRepositoryEntity.getDialect()));
@@ -161,24 +161,22 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 	 * @param aDialectClass the hibernate dialect class
 	 * @param aConnection   the jdbc connection
 	 * @return list of entries
-	 * @throws Exception will be thrown in case of an exception
-	 */
-	public List<RepositoryEntryDescriptor> getRepositoryEntries(Class aDialectClass, Connection aConnection)
-			throws Exception {
+     */
+	public List<RepositoryEntryDescriptor> getRepositoryEntries(final Class aDialectClass, final Connection aConnection) {
 		return (List<RepositoryEntryDescriptor>) new HibernateTemplate(aDialectClass, aConnection) {
 			@Override
-			public Object doInSession(Session aSession) {
-				List<RepositoryEntryDescriptor> theResult = new ArrayList<>();
+			public Object doInSession(final Session aSession) {
+				final List<RepositoryEntryDescriptor> theResult = new ArrayList<>();
 
-				Criteria theCriteria = aSession.createCriteria(RepositoryEntity.class);
+				final Criteria theCriteria = aSession.createCriteria(RepositoryEntity.class);
 				theCriteria.setProjection(Projections.projectionList().add(Projections.property("id")).add(
 						Projections.property("name")));
 				theCriteria.addOrder(Order.asc("name"));
 
-				for (Object theObject : theCriteria.list()) {
-					Object[] theArray = (Object[]) theObject;
+				for (final Object theObject : theCriteria.list()) {
+					final Object[] theArray = (Object[]) theObject;
 
-					RepositoryEntryDescriptor theEntry = new RepositoryEntryDescriptor();
+					final RepositoryEntryDescriptor theEntry = new RepositoryEntryDescriptor();
 					theEntry.setId((Long) theArray[0]);
 					theEntry.setName((String) theArray[1]);
 					theResult.add(theEntry);
@@ -195,14 +193,13 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 	 * @param aConnection			 the connection
 	 * @param aCurrentRepositoryEntry the repository descriptor
 	 * @return the entity
-	 * @throws Exception will be thrown in case of an error
-	 */
-	public RepositoryEntity getRepositoryEntity(Class aHibernateDialectClass, Connection aConnection,
-												final RepositoryEntryDescriptor aCurrentRepositoryEntry) throws Exception {
+     */
+	public RepositoryEntity getRepositoryEntity(final Class aHibernateDialectClass, final Connection aConnection,
+                                                final RepositoryEntryDescriptor aCurrentRepositoryEntry) {
 		return (RepositoryEntity) new HibernateTemplate(aHibernateDialectClass, aConnection) {
 
 			@Override
-			public Object doInSession(Session aSession) {
+			public Object doInSession(final Session aSession) {
 				return aSession.get(RepositoryEntity.class, aCurrentRepositoryEntry.getId());
 			}
 

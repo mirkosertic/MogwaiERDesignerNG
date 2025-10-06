@@ -34,14 +34,14 @@ public class ChangeDescriptor {
 
 	private final int index;
 
-	public ChangeDescriptor(ChangeEntity aChange, int aIndex) {
+	public ChangeDescriptor(final ChangeEntity aChange, final int aIndex) {
 		change = aChange;
 		index = aIndex;
 	}
 
 	@Override
 	public String toString() {
-		DateFormat theFormat = new SimpleDateFormat();
+		final DateFormat theFormat = new SimpleDateFormat();
 		return "#" + index + " " + change.getCreationUser() + "@" + theFormat.format(change.getCreationDate());
 	}
 

@@ -37,7 +37,7 @@ public class PreferencesEditor extends BaseEditor {
 
     private final ERDesignerComponent component;
 
-    public PreferencesEditor(JComponent aParent, ERDesignerComponent aComponent) {
+    public PreferencesEditor(final JComponent aParent, final ERDesignerComponent aComponent) {
         super(aParent, ERDesignerBundle.PREFERENCES);
 
         view = new PreferencesEditorView();
@@ -61,7 +61,7 @@ public class PreferencesEditor extends BaseEditor {
     }
 
     @Override
-    public void applyValues() throws Exception {
+    public void applyValues() {
     }
 
     @Override

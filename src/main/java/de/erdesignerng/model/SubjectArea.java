@@ -54,7 +54,7 @@ public final class SubjectArea extends OwnedModelItem<Model> {
 	/**
 	 * @param color the color to set
 	 */
-	public void setColor(Color color) {
+	public void setColor(final Color color) {
 		this.color = color;
 	}
 
@@ -86,7 +86,7 @@ public final class SubjectArea extends OwnedModelItem<Model> {
 		return visible;
 	}
 
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		this.visible = visible;
 	}
 
@@ -94,7 +94,7 @@ public final class SubjectArea extends OwnedModelItem<Model> {
 		return expanded;
 	}
 
-	public void setExpanded(boolean expanded) {
+	public void setExpanded(final boolean expanded) {
 		this.expanded = expanded;
 	}
 

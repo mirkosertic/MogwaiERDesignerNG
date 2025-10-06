@@ -41,27 +41,27 @@ public class TableEntryPropertyAdapter extends PropertyAdapter {
 	private final ResourceHelper helper = ResourceHelper
 			.getResourceHelper(BindingBundle.BUNDLE_NAME);
 
-	public TableEntryPropertyAdapter(DefaultTree aComponent) {
+	public TableEntryPropertyAdapter(final DefaultTree aComponent) {
 		super(aComponent, null);
 	}
 
 	@Override
-	public void model2view(Object aModel, String aPropertyName) {
+	public void model2view(final Object aModel, final String aPropertyName) {
 
-		DefaultTree theComponent = (DefaultTree) getComponent()[0];
+		final DefaultTree theComponent = (DefaultTree) getComponent()[0];
 
-		ReverseEngineeringOptions theModel = (ReverseEngineeringOptions) aModel;
+		final ReverseEngineeringOptions theModel = (ReverseEngineeringOptions) aModel;
 
-		DefaultMutableTreeNode theRootNode = new DefaultMutableTreeNode();
-		for (TableType theTableType : theModel.getAvailableTableTypes()) {
-			SelectableWrapper<String> theWrapper = new SelectableWrapper<>(theTableType.toString());
-			DefaultMutableTreeNode theNode = new DefaultMutableTreeNode(theWrapper);
+		final DefaultMutableTreeNode theRootNode = new DefaultMutableTreeNode();
+		for (final TableType theTableType : theModel.getAvailableTableTypes()) {
+			final SelectableWrapper<String> theWrapper = new SelectableWrapper<>(theTableType.toString());
+			final DefaultMutableTreeNode theNode = new DefaultMutableTreeNode(theWrapper);
 
             theModel.getTableEntries().stream().filter(theTableEntry -> theTableType.equals(theTableEntry.getTableType())).forEach(theTableEntry -> {
 
-                SelectableWrapper<TableEntry> theWrapper2 = new SelectableWrapper<>(
+                final SelectableWrapper<TableEntry> theWrapper2 = new SelectableWrapper<>(
                         theTableEntry);
-                DefaultMutableTreeNode theNode2 = new DefaultMutableTreeNode(
+                final DefaultMutableTreeNode theNode2 = new DefaultMutableTreeNode(
                         theWrapper2);
 
                 theNode.add(theNode2);
@@ -74,32 +74,32 @@ public class TableEntryPropertyAdapter extends PropertyAdapter {
 	}
 
 	@Override
-	public void view2model(Object aModel, String aPropertyName) {
+	public void view2model(final Object aModel, final String aPropertyName) {
 
-		ReverseEngineeringOptions theDataModel = (ReverseEngineeringOptions) aModel;
+		final ReverseEngineeringOptions theDataModel = (ReverseEngineeringOptions) aModel;
 
-		SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
+		final SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
 				.getModel();
 
-		Collection theSelectedEntries = theModel.getSelectedEntries();
+		final Collection theSelectedEntries = theModel.getSelectedEntries();
 		theDataModel.getTableEntries().clear();
 		theDataModel.getTableEntries().addAll(theSelectedEntries);
 	}
 
 	@Override
 	public List<ValidationError> validate() {
-		List<ValidationError> theResult = new ArrayList<>();
+		final List<ValidationError> theResult = new ArrayList<>();
 
-		SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
+		final SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
 				.getModel();
 
-		Collection theSelectedEntries = theModel.getSelectedEntries();
+		final Collection theSelectedEntries = theModel.getSelectedEntries();
 
 		if (theSelectedEntries.isEmpty()) {
 			theResult.add(new ValidationError(this, helper
 					.getText(BindingBundle.MISSINGREQUIREDFIELD)));
 		}
-		if (theResult.size() > 0) {
+		if (!theResult.isEmpty()) {
 			markInvalid(theResult);
 		} else {
 			markValid();

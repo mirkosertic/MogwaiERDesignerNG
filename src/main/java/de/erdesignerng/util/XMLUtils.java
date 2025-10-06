@@ -48,7 +48,7 @@ public final class XMLUtils {
 	private final TransformerFactory transformerFactory;
 
 	private XMLUtils() throws ParserConfigurationException {
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+		final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
 				.newInstance();
 		documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		transformerFactory = TransformerFactory.newInstance();
@@ -62,7 +62,7 @@ public final class XMLUtils {
 		return me;
 	}
 
-	public Document parse(InputStream aStream) throws SAXException, IOException {
+	public Document parse(final InputStream aStream) throws SAXException, IOException {
 		return documentBuilder.parse(aStream);
 	}
 
@@ -70,15 +70,15 @@ public final class XMLUtils {
 		return documentBuilder.newDocument();
 	}
 
-	public void transform(Document aDocument, Writer aWriter)
+	public void transform(final Document aDocument, final Writer aWriter)
 			throws TransformerException {
 
         aDocument.setXmlStandalone(true);
 
-		ApplicationPreferences thePreferences = ApplicationPreferences
+		final ApplicationPreferences thePreferences = ApplicationPreferences
 				.getInstance();
 
-		Transformer theTransformer = transformerFactory.newTransformer();
+		final Transformer theTransformer = transformerFactory.newTransformer();
 		theTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		theTransformer.setOutputProperty(OutputKeys.METHOD, "xml");
 		theTransformer.setOutputProperty(OutputKeys.ENCODING, PlatformConfig

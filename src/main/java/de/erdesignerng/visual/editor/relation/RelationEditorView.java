@@ -79,13 +79,13 @@ public class RelationEditorView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:100dlu,8dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
-        String colDef = "2dlu,60dlu,2dlu,fill:150dlu:grow,2dlu";
+        final String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:100dlu,8dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
+        final String colDef = "2dlu,60dlu,2dlu,fill:150dlu:grow,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
+        final FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(getComponent1(), cons.xywh(2, 4, 1, 1));
         add(new DefaultSeparator(ERDesignerBundle.RELATIONPROPERTIES), cons.xywh(2, 2, 3, 1));
@@ -137,13 +137,13 @@ public class RelationEditorView extends JPanel {
         if (onDeleteContainer == null) {
             onDeleteContainer = new JPanel();
 
-            String rowDef = "p,2dlu";
-            String colDef = "p,p,p,p";
+            final String rowDef = "p,2dlu";
+            final String colDef = "p,p,p,p";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             onDeleteContainer.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             onDeleteContainer.add(getOnDeleteCascadeNothing(), cons.xywh(1, 1, 1, 1));
             onDeleteContainer.add(getOnDeleteCascade(), cons.xywh(2, 1, 1, 1));
@@ -160,13 +160,13 @@ public class RelationEditorView extends JPanel {
         if (onUpdateContainer == null) {
             onUpdateContainer = new JPanel();
 
-            String rowDef = "p,2dlu";
-            String colDef = "p,p,p,p";
+            final String rowDef = "p,2dlu";
+            final String colDef = "p,p,p,p";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             onUpdateContainer.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             onUpdateContainer.add(getOnUpdateCascadeNothing(), cons.xywh(1, 1, 1, 1));
             onUpdateContainer.add(getOnUpdateCascade(), cons.xywh(2, 1, 1, 1));
@@ -255,13 +255,13 @@ public class RelationEditorView extends JPanel {
         if (component8 == null) {
             component8 = new JPanel();
 
-            String rowDef = "p";
-            String colDef = "60dlu,2dlu:grow,60dlu";
+            final String rowDef = "p";
+            final String colDef = "60dlu,2dlu:grow,60dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             component8.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             component8.add(getOKButton(), cons.xywh(1, 1, 1, 1));
             component8.add(getCancelButton(), cons.xywh(3, 1, 1, 1));
@@ -294,13 +294,13 @@ public class RelationEditorView extends JPanel {
      */
     private void buildGroups() {
 
-        ButtonGroup theGroup1 = new ButtonGroup();
+        final ButtonGroup theGroup1 = new ButtonGroup();
         theGroup1.add(getOnDeleteCascadeNothing());
         theGroup1.add(getOnDeleteCascade());
         theGroup1.add(getOnDeleteSetNull());
         theGroup1.add(getOnDeleteRestrict());
 
-        ButtonGroup theGroup2 = new ButtonGroup();
+        final ButtonGroup theGroup2 = new ButtonGroup();
         theGroup2.add(getOnUpdateCascadeNothing());
         theGroup2.add(getOnUpdateCascade());
         theGroup2.add(getOnUpdateSetNull());

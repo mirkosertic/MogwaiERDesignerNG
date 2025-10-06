@@ -20,7 +20,7 @@ class ExpandingArray {
 	 */
 	public int count = 0;
 
-	public ExpandingArray(int initCount) {
+	public ExpandingArray(final int initCount) {
 		items = new Object[Math.max(initCount, MIN_SIZE)];
 		count = initCount;
 	}
@@ -28,7 +28,7 @@ class ExpandingArray {
 	/**
 	 * Fills the portion [start;end] of the array by item.
 	 */
-	public void fill(int start, int end, Object item) {
+	public void fill(final int start, final int end, final Object item) {
 		for (int i = start; i <= end; i++)
 			items[i] = item;
 	}
@@ -41,9 +41,9 @@ class ExpandingArray {
 	 * @param shiftStart  the first element index to be shifted
 	 * @param shiftLength the number of elements to insert before the first shifted one
 	 */
-	public void shift(int shiftStart, int shiftLength) {
-		int new_count = count + shiftLength;
-		Object[] new_items;
+	public void shift(final int shiftStart, final int shiftLength) {
+		final int new_count = count + shiftLength;
+		final Object[] new_items;
 
 		// expands the array if necessary:
 		if (new_count > items.length)
@@ -74,9 +74,9 @@ class ExpandingArray {
 	 * @param shiftStart  the first element index to be shifted
 	 * @param shiftLength the number of elements to insert before the first shifted one
 	 */
-	public void unshift(int shiftStart, int shiftLength) {
-		int new_count = count - shiftLength;
-		Object[] new_items;
+	public void unshift(final int shiftStart, final int shiftLength) {
+		final int new_count = count - shiftLength;
+		final Object[] new_items;
 
 		// shrinks the array if possible:
 		if (new_count < items.length >> 2 && items.length >> 1 > MIN_SIZE)

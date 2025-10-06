@@ -32,8 +32,6 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.Component;
 import java.util.List;
 
@@ -58,7 +56,7 @@ public class ModelCheckEditor extends BaseEditor {
 
     private final Model model;
 
-    public ModelCheckEditor(Component aParent, Model aModel) {
+    public ModelCheckEditor(final Component aParent, final Model aModel) {
         super(aParent, ERDesignerBundle.MODELCHECKRESULT);
 
         model = aModel;
@@ -70,21 +68,17 @@ public class ModelCheckEditor extends BaseEditor {
 
         quickFixAction.setEnabled(false);
 
-        ModelChecker theChecker = new ModelChecker();
+        final ModelChecker theChecker = new ModelChecker();
         theChecker.check(model);
 
-        DefaultListModel theModel = view.getErrorList().getModel();
+        final DefaultListModel theModel = view.getErrorList().getModel();
         theChecker.getErrors().forEach(theModel::add);
         view.getErrorList().setCellRenderer(new ErrorRenderer());
         view.getErrorList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        view.getErrorList().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                List<Object> theSelection = view.getErrorList().getSelectedValuesList();
-                quickFixAction
-                        .setEnabled(theSelection != null && theSelection.size() > 0);
-            }
+        view.getErrorList().addListSelectionListener(e -> {
+            final List<Object> theSelection = view.getErrorList().getSelectedValuesList();
+            quickFixAction
+                    .setEnabled(theSelection != null && !theSelection.isEmpty());
         });
 
     }
@@ -104,7 +98,7 @@ public class ModelCheckEditor extends BaseEditor {
     }
 
     @Override
-    public void applyValues() throws Exception {
+    public void applyValues() {
     }
 
     private void commandClose() {
@@ -114,14 +108,14 @@ public class ModelCheckEditor extends BaseEditor {
     }
 
     private void commandApplyQuickFix() {
-        for (Object theEntry : view.getErrorList().getSelectedValuesList()) {
-            ModelError theError = (ModelError) theEntry;
-            QuickFix theFix = theError.getQuickFix();
+        for (final Object theEntry : view.getErrorList().getSelectedValuesList()) {
+            final ModelError theError = (ModelError) theEntry;
+            final QuickFix theFix = theError.getQuickFix();
             if (theFix != null) {
                 try {
                     theFix.applyTo(model);
                     OutlineComponent.getDefault().refresh(model);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LOGGER.error(e.getMessage(), e);
                 } finally {
                     theError.clearQuickFix();

@@ -22,22 +22,21 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 
 import javax.swing.*;
-import java.sql.SQLException;
 
 /**
  * Editor for a jdbc row.
  */
 public class RowEditor extends BaseEditor {
 
-	public RowEditor(JComponent aParent, PaginationDataModel aModel, int aRow) throws SQLException {
+	public RowEditor(final JComponent aParent, final PaginationDataModel aModel, final int aRow) {
 		super(aParent, ERDesignerBundle.EDITROW);
 
 		initialize(aModel, aRow);
 	}
 
-	private void initialize(PaginationDataModel aModel, int aRow) throws SQLException {
+	private void initialize(final PaginationDataModel aModel, final int aRow) {
 
-		RowEditorView view = new RowEditorView(aModel, aRow);
+		final RowEditorView view = new RowEditorView(aModel, aRow);
 
 		view.getOkButton().setAction(okAction);
 		view.getCancelButton().setAction(cancelAction);
@@ -52,6 +51,6 @@ public class RowEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws Exception {
+	public void applyValues() {
 	}
 }

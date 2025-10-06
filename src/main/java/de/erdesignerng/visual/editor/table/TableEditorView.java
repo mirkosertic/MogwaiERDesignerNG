@@ -132,7 +132,7 @@ public class TableEditorView extends DefaultPanel {
         public void removeEditor() {
             super.removeEditor();
 
-            Attribute<Table> theAttribute = attributeTableModel.getRow(getSelectedRow());
+            final Attribute<Table> theAttribute = attributeTableModel.getRow(getSelectedRow());
             attributeEditorRemoved(theAttribute);
 
             invalidate();
@@ -148,21 +148,21 @@ public class TableEditorView extends DefaultPanel {
         initialize();
     }
 
-    protected void attributeEditorRemoved(Attribute<Table> aAttribute) {
+    protected void attributeEditorRemoved(final Attribute<Table> aAttribute) {
 
     }
 
     private void initialize() {
 
-        String rowDef = "2dlu,p,2dlu,p,fill:260dlu,p,20dlu,p,2dlu";
-        String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
+        final String rowDef = "2dlu,p,2dlu,p,fill:260dlu,p,20dlu,p,2dlu";
+        final String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
+        final FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
 
         attributesTable.setCellSelectionEnabled(true);
 
-        CellConstraints cons = new CellConstraints();
+        final CellConstraints cons = new CellConstraints();
 
         add(getComponent1(), cons.xywh(2, 2, 1, 1));
         add(getEntityName(), cons.xywh(4, 2, 4, 1));
@@ -223,10 +223,10 @@ public class TableEditorView extends DefaultPanel {
         if (attributesTab == null) {
             attributesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.ATTRIBUTES);
 
-            FormLayout theLayout = new FormLayout("fill:10dlu:grow,2dlu,60dlu,2dlu,60dlu", "fill:10dlu:grow,2dlu,p");
+            final FormLayout theLayout = new FormLayout("fill:10dlu:grow,2dlu,60dlu,2dlu,60dlu", "fill:10dlu:grow,2dlu,p");
             attributesTab.setLayout(theLayout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
             attributesTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
             attributesTable.setModel(attributeTableModel);
             attributesTable.getColumnModel().getColumn(0).setPreferredWidth(200);
@@ -243,7 +243,7 @@ public class TableEditorView extends DefaultPanel {
             attributesTable.setAutoResizeMode(DefaultTable.AUTO_RESIZE_OFF);
             attributesTable.setRowHeight(22);
 
-            DefaultComboBox theBox = new DefaultComboBox();
+            final DefaultComboBox theBox = new DefaultComboBox();
             theBox.setBorder(BorderFactory.createEmptyBorder());
             theBox.setModel(dataTypeModel);
             attributesTable.setDefaultEditor(DataType.class, new DefaultCellEditor(theBox));
@@ -283,13 +283,13 @@ public class TableEditorView extends DefaultPanel {
         if (indexesTab == null) {
             indexesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.INDEXES);
 
-            String rowDef = "2dlu,p,185dlu:grow,p,2dlu,p,2dlu";
-            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
+            final String rowDef = "2dlu,p,185dlu:grow,p,2dlu,p,2dlu";
+            final String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             indexesTab.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             indexesTab.add(getIndexList().getScrollPane(), cons.xywh(2, 2, 8, 3));
             indexesTab.add(getNewIndexButton(), cons.xywh(2, 6, 1, 1));
@@ -349,13 +349,13 @@ public class TableEditorView extends DefaultPanel {
         if (indexGeneralTab == null) {
             indexGeneralTab = new DefaultTabbedPaneTab(indexTabbedPane, ERDesignerBundle.GENERAL);
 
-            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu,20dlu,2dlu";
-            String rowDef = "2dlu,p,2dlu,fill:40dlu:grow,2dlu,p,2dlu,p,2dlu,p,4dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
+            final String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu,20dlu,2dlu";
+            final String rowDef = "2dlu,p,2dlu,fill:40dlu:grow,2dlu,p,2dlu,p,2dlu,p,4dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             indexGeneralTab.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             indexGeneralTab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
             indexGeneralTab.add(getIndexName(), cons.xywh(4, 2, 3, 1));
@@ -471,13 +471,13 @@ public class TableEditorView extends DefaultPanel {
         if (tableCommentsTab == null) {
             tableCommentsTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.COMMENTS);
 
-            String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
-            String colDef = "2dlu,40dlu:grow,2dlu";
+            final String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
+            final String colDef = "2dlu,40dlu:grow,2dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
+            final FormLayout layout = new FormLayout(colDef, rowDef);
             tableCommentsTab.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+            final CellConstraints cons = new CellConstraints();
 
             tableCommentsTab.add(getEntityComment().getScrollPane(), cons.xywh(2, 2, 1, 3));
             tableCommentsTab.setName("MainCommentsTab");
@@ -520,14 +520,14 @@ public class TableEditorView extends DefaultPanel {
      */
     private void buildGroups() {
 
-        ButtonGroup theGroup = new ButtonGroup();
+        final ButtonGroup theGroup = new ButtonGroup();
         theGroup.add(getPrimaryIndex());
         theGroup.add(getUniqueIndex());
         theGroup.add(getNotUniqueIndex());
         theGroup.add(getSpatialIndex());
         theGroup.add(getFulltextIndex());
 
-        ButtonGroup theGroup2 = new ButtonGroup();
+        final ButtonGroup theGroup2 = new ButtonGroup();
         theGroup2.add(getAddIndexAttribute());
         theGroup2.add(getAddIndexExpression());
     }

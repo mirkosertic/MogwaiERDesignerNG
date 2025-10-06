@@ -20,14 +20,13 @@ package de.erdesignerng.model.serializer.repository;
 import org.hibernate.connection.ConnectionProvider;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class ThreadbasedConnectionProvider implements ConnectionProvider {
 
 	private static final ThreadLocal<Connection> connection = new ThreadLocal<>();
 
-	public static void initializeForThread(Connection aConnection) {
+	public static void initializeForThread(final Connection aConnection) {
 		connection.set(aConnection);
 	}
 
@@ -40,15 +39,15 @@ public class ThreadbasedConnectionProvider implements ConnectionProvider {
 	}
 
 	@Override
-	public void closeConnection(Connection conn) throws SQLException {
+	public void closeConnection(final Connection conn) {
 	}
 
 	@Override
-	public void configure(Properties aProps) {
+	public void configure(final Properties aProps) {
 	}
 
 	@Override
-	public Connection getConnection() throws SQLException {
+	public Connection getConnection() {
 		return connection.get();
 	}
 

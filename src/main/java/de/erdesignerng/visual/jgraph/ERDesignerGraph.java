@@ -72,8 +72,8 @@ public abstract class ERDesignerGraph extends JGraph {
 
     private DisplayOrder displayOrder = DisplayOrder.NATURAL;
 
-    public ERDesignerGraph(Model aDBModel, GraphModel aModel,
-                           GraphLayoutCache aLayoutCache) {
+    public ERDesignerGraph(final Model aDBModel, final GraphModel aModel,
+                           final GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
         model = aDBModel;
 
@@ -88,30 +88,30 @@ public abstract class ERDesignerGraph extends JGraph {
         return model;
     }
 
-    public void setTool(BaseTool aTool) {
+    public void setTool(final BaseTool aTool) {
         setMarqueeHandler(aTool);
     }
 
-    public void commandDeleteCells(List<DefaultGraphCell> aCells)
+    public void commandDeleteCells(final List<DefaultGraphCell> aCells)
             throws VetoException {
 
-        GraphModel theModel = getModel();
+        final GraphModel theModel = getModel();
 
-        List<DefaultGraphCell> theObjectsToRemove = new ArrayList<>();
+        final List<DefaultGraphCell> theObjectsToRemove = new ArrayList<>();
 
-        for (DefaultGraphCell theSingleCell : aCells) {
+        for (final DefaultGraphCell theSingleCell : aCells) {
 
             if (!theObjectsToRemove.contains(theSingleCell)) {
                 if (theSingleCell instanceof RelationEdge) {
-                    RelationEdge theEdge = (RelationEdge) theSingleCell;
+                    final RelationEdge theEdge = (RelationEdge) theSingleCell;
 
-                    Relation theRelation = (Relation) theEdge.getUserObject();
+                    final Relation theRelation = (Relation) theEdge.getUserObject();
 
                     getDBModel().removeRelation(theRelation);
                     theModel.remove(new Object[]{theEdge});
 
-                    for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : theRelation.getMapping().entrySet()) {
-                        Attribute<Table> theImportingAttribute = theEntry.getValue();
+                    for (final Map.Entry<IndexExpression, Attribute<Table>> theEntry : theRelation.getMapping().entrySet()) {
+                        final Attribute<Table> theImportingAttribute = theEntry.getValue();
 
                         if (!(theImportingAttribute.isForeignKey() || theImportingAttribute
                                 .isPrimaryKey())) {
@@ -128,10 +128,10 @@ public abstract class ERDesignerGraph extends JGraph {
                                     getDBModel().removeAttributeFromTable(
                                             theRelation.getImportingTable(),
                                             theImportingAttribute);
-                                } catch (ElementInvalidNameException e) {
+                                } catch (final ElementInvalidNameException e) {
                                     throw new VetoException(
                                             "Cannot recreate existing index", e);
-                                } catch (ElementAlreadyExistsException e) {
+                                } catch (final ElementAlreadyExistsException e) {
                                     throw new VetoException(
                                             "Cannot recreate existing index", e);
                                 }
@@ -141,7 +141,7 @@ public abstract class ERDesignerGraph extends JGraph {
                 }
 
                 if (theSingleCell instanceof CommentCell) {
-                    CommentCell theComment = (CommentCell) theSingleCell;
+                    final CommentCell theComment = (CommentCell) theSingleCell;
 
                     getDBModel().removeComment(
                             (Comment) theComment.getUserObject());
@@ -149,27 +149,27 @@ public abstract class ERDesignerGraph extends JGraph {
                 }
 
                 if (theSingleCell instanceof ViewCell) {
-                    ViewCell theViewCell = (ViewCell) theSingleCell;
+                    final ViewCell theViewCell = (ViewCell) theSingleCell;
 
                     getDBModel().removeView((View) theViewCell.getUserObject());
                     theModel.remove(new Object[]{theViewCell});
                 }
 
                 if (theSingleCell instanceof TableCell) {
-                    TableCell theCell = (TableCell) theSingleCell;
-                    Table theTable = (Table) theCell.getUserObject();
+                    final TableCell theCell = (TableCell) theSingleCell;
+                    final Table theTable = (Table) theCell.getUserObject();
 
                     theObjectsToRemove.add(theCell);
 
-                    CellView[] theViews = getGraphLayoutCache().getAllViews();
-                    for (CellView theView : theViews) {
+                    final CellView[] theViews = getGraphLayoutCache().getAllViews();
+                    for (final CellView theView : theViews) {
                         if (theView instanceof RelationEdgeView) {
-                            RelationEdgeView theRelationView = (RelationEdgeView) theView;
-                            RelationEdge theEdge = (RelationEdge) theRelationView
+                            final RelationEdgeView theRelationView = (RelationEdgeView) theView;
+                            final RelationEdge theEdge = (RelationEdge) theRelationView
                                     .getCell();
-                            TableCell theSource = (TableCell) ((DefaultPort) theEdge
+                            final TableCell theSource = (TableCell) ((DefaultPort) theEdge
                                     .getSource()).getParent();
-                            TableCell theDestination = (TableCell) ((DefaultPort) theEdge
+                            final TableCell theDestination = (TableCell) ((DefaultPort) theEdge
                                     .getTarget()).getParent();
 
                             if (theTable.equals(theSource.getUserObject())) {
@@ -216,13 +216,13 @@ public abstract class ERDesignerGraph extends JGraph {
      *
      * @param aCells the cells to add to the subject area
      */
-    public void commandAddToNewSubjectArea(List<DefaultGraphCell> aCells) {
+    public void commandAddToNewSubjectArea(final List<DefaultGraphCell> aCells) {
 
-        SubjectArea theArea = new SubjectArea();
+        final SubjectArea theArea = new SubjectArea();
         theArea.setExpanded(true);
-        SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theArea);
-        for (DefaultGraphCell theCell : aCells) {
-            Object theUserObject = theCell.getUserObject();
+        final SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theArea);
+        for (final DefaultGraphCell theCell : aCells) {
+            final Object theUserObject = theCell.getUserObject();
             if (theUserObject instanceof Table) {
                 theArea.getTables().add((Table) theUserObject);
             }
@@ -247,7 +247,7 @@ public abstract class ERDesignerGraph extends JGraph {
     /**
      * @param displayComments the displayComments to set
      */
-    public void setDisplayComments(boolean displayComments) {
+    public void setDisplayComments(final boolean displayComments) {
         this.displayComments = displayComments;
     }
 
@@ -277,7 +277,7 @@ public abstract class ERDesignerGraph extends JGraph {
     /**
      * @param displayLevel the displayLevel to set
      */
-    public void setDisplayLevel(DisplayLevel displayLevel) {
+    public void setDisplayLevel(final DisplayLevel displayLevel) {
         this.displayLevel = displayLevel;
     }
 
@@ -291,7 +291,7 @@ public abstract class ERDesignerGraph extends JGraph {
     /**
      * @param displayOrder the displayOrder to set
      */
-    public void setDisplayOrder(DisplayOrder displayOrder) {
+    public void setDisplayOrder(final DisplayOrder displayOrder) {
         this.displayOrder = displayOrder;
     }
 
@@ -305,7 +305,7 @@ public abstract class ERDesignerGraph extends JGraph {
     /**
      * @param dragging the dragging to set
      */
-    public void setDragging(boolean dragging) {
+    public void setDragging(final boolean dragging) {
         this.dragging = dragging;
     }
 
@@ -337,28 +337,28 @@ public abstract class ERDesignerGraph extends JGraph {
      */
     public abstract void refreshOutline();
 
-    private void toggleVisibilityOfRelationsInSubjectArea(SubjectAreaCell aCell, boolean aVisibilityState) {
+    private void toggleVisibilityOfRelationsInSubjectArea(final SubjectAreaCell aCell, final boolean aVisibilityState) {
 
-        Set<Relation> theRelationDoWork = new HashSet<>();
+        final Set<Relation> theRelationDoWork = new HashSet<>();
 
-        SubjectArea theSA = (SubjectArea) aCell.getUserObject();
-        for (Table theTable : theSA.getTables()) {
+        final SubjectArea theSA = (SubjectArea) aCell.getUserObject();
+        for (final Table theTable : theSA.getTables()) {
             theRelationDoWork.addAll(model.getRelations().getForeignKeysFor(theTable).stream().filter(theRelation -> theSA.getTables().contains(theRelation.getExportingTable())).collect(Collectors.toList()));
         }
 
-        Set<DefaultGraphCell> theCellsToWork = new HashSet<>();
+        final Set<DefaultGraphCell> theCellsToWork = new HashSet<>();
 
-        for (CellView theView : getGraphLayoutCache().getAllViews()) {
+        for (final CellView theView : getGraphLayoutCache().getAllViews()) {
             if (theView instanceof RelationEdgeView) {
-                RelationEdgeView theEdgeView = (RelationEdgeView) theView;
-                DefaultGraphCell theCell = (DefaultGraphCell) theEdgeView.getCell();
+                final RelationEdgeView theEdgeView = (RelationEdgeView) theView;
+                final DefaultGraphCell theCell = (DefaultGraphCell) theEdgeView.getCell();
                 if (theRelationDoWork.contains(theCell.getUserObject())) {
                     theCellsToWork.add(theCell);
                 }
             }
         }
 
-        if (theCellsToWork.size() > 0) {
+        if (!theCellsToWork.isEmpty()) {
             if (aVisibilityState) {
                 getGraphLayoutCache().showCells(theCellsToWork.toArray(new DefaultGraphCell[theCellsToWork.size()]), true);
             } else {
@@ -367,7 +367,7 @@ public abstract class ERDesignerGraph extends JGraph {
         }
     }
 
-    public void setSubjectAreaCellExpanded(SubjectAreaCell aCell) {
+    public void setSubjectAreaCellExpanded(final SubjectAreaCell aCell) {
 
         getGraphLayoutCache().expand(new Object[]{aCell});
         aCell.setExpanded(true);
@@ -377,7 +377,7 @@ public abstract class ERDesignerGraph extends JGraph {
         getGraphLayoutCache().editCell(aCell, aCell.getAttributes());
     }
 
-    public void setSubjectAreaCellCollapsed(SubjectAreaCell aCell) {
+    public void setSubjectAreaCellCollapsed(final SubjectAreaCell aCell) {
 
         getGraphLayoutCache().collapse(new Object[]{aCell});
         aCell.setExpanded(false);

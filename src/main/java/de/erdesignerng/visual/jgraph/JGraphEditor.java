@@ -67,15 +67,15 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     private static final class ERDesignerGraphSelectionListener implements
             GraphSelectionListener {
         @Override
-        public void valueChanged(GraphSelectionEvent aEvent) {
-            Object[] theCells = aEvent.getCells();
+        public void valueChanged(final GraphSelectionEvent aEvent) {
+            final Object[] theCells = aEvent.getCells();
             if (!ArrayUtils.isEmpty(theCells)) {
-                List<ModelItem> theItems = new ArrayList<>();
-                for (Object theCell : theCells) {
+                final List<ModelItem> theItems = new ArrayList<>();
+                for (final Object theCell : theCells) {
                     if (theCell instanceof DefaultGraphCell
                             && aEvent.isAddedCell(theCell)) {
-                        DefaultGraphCell theGraphCell = (DefaultGraphCell) theCell;
-                        Object theUserObject = theGraphCell.getUserObject();
+                        final DefaultGraphCell theGraphCell = (DefaultGraphCell) theCell;
+                        final Object theUserObject = theGraphCell.getUserObject();
                         if (theUserObject instanceof ModelItem) {
                             theItems.add((ModelItem) theUserObject);
                         }
@@ -86,7 +86,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
                         theItems.toArray(new ModelItem[theItems.size()]));
                 if (theItems.size() == 1) {
                     OutlineComponent.getDefault().setSelectedItem(
-                            theItems.get(0));
+                            theItems.getFirst());
                 }
 
             } else {
@@ -98,21 +98,21 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     private class ERDesignerGraphModelListener implements GraphModelListener {
 
         @Override
-        public void graphChanged(GraphModelEvent aEvent) {
+        public void graphChanged(final GraphModelEvent aEvent) {
             if (!filling) {
-                GraphLayoutCacheEvent.GraphLayoutCacheChange theChange = aEvent.getChange();
+                final GraphLayoutCacheEvent.GraphLayoutCacheChange theChange = aEvent.getChange();
 
-                Object[] theChangedObjects = theChange.getChanged();
-                Map theChangedAttributes = theChange.getPreviousAttributes();
+                final Object[] theChangedObjects = theChange.getChanged();
+                final Map theChangedAttributes = theChange.getPreviousAttributes();
 
                 if (theChangedAttributes != null) {
-                    for (Object theChangedObject : theChangedObjects) {
-                        Map theAttributes = (Map) theChangedAttributes
+                    for (final Object theChangedObject : theChangedObjects) {
+                        final Map theAttributes = (Map) theChangedAttributes
                                 .get(theChangedObject);
 
                         if (theChangedObject instanceof ModelCell) {
 
-                            ModelCell theCell = (ModelCell) theChangedObject;
+                            final ModelCell theCell = (ModelCell) theChangedObject;
                             if (theAttributes != null) {
                                 theCell
                                         .transferAttributesToProperties(theAttributes);
@@ -121,7 +121,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                         if (theChangedObject instanceof SubjectAreaCell) {
 
-                            SubjectAreaCell theCell = (SubjectAreaCell) theChangedObject;
+                            final SubjectAreaCell theCell = (SubjectAreaCell) theChangedObject;
                             if (theCell.getChildCount() == 0) {
                                 commandRemoveSubjectArea(theCell);
                             } else {
@@ -145,20 +145,20 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
                     if (layout.preEvolveLayout()) {
                         layout.evolveLayout();
 
-                        SwingUtilities.invokeAndWait(() -> layout.postEvolveLayout());
+                        SwingUtilities.invokeAndWait(layout::postEvolveLayout);
                     }
                     theDuration = System.currentTimeMillis() - theDuration;
 
                     // Assume 30 Frames / Second animation speed
-                    long theDifference = (1000 - (theDuration * 30)) / 30;
+                    final long theDifference = (1000 - (theDuration * 30)) / 30;
                     if (theDifference > 0) {
                         sleep(theDifference);
                     } else {
                         sleep(40);
                     }
-                } catch (InterruptedException e) {
+                } catch (final InterruptedException e) {
                     return;
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     ERDesignerComponent.getDefault().getWorldConnector().notifyAboutException(e);
                 }
             }
@@ -191,22 +191,22 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
         return graph;
     }
 
-    protected void commandRemoveSubjectArea(SubjectAreaCell aCell) {
+    protected void commandRemoveSubjectArea(final SubjectAreaCell aCell) {
 
         graph.getGraphLayoutCache().remove(new Object[]{aCell});
 
-        ERDesignerComponent theComponent = ERDesignerComponent.getDefault();
+        final ERDesignerComponent theComponent = ERDesignerComponent.getDefault();
         theComponent.getModel().removeSubjectArea((SubjectArea) aCell.getUserObject());
         theComponent.updateSubjectAreasMenu();
     }
 
-    protected void commandUpdateSubjectArea(SubjectAreaCell aCell) {
+    protected void commandUpdateSubjectArea(final SubjectAreaCell aCell) {
 
-        SubjectArea theArea = (SubjectArea) aCell.getUserObject();
+        final SubjectArea theArea = (SubjectArea) aCell.getUserObject();
         theArea.getTables().clear();
         theArea.getViews().clear();
         theArea.getComments().clear();
-        for (Object theObject : aCell.getChildren()) {
+        for (final Object theObject : aCell.getChildren()) {
             if (theObject instanceof TableCell) {
                 theArea.getTables().add(
                         (Table) ((TableCell) theObject).getUserObject());
@@ -226,7 +226,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     @Override
     public void repaintGraph() {
-        for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
+        for (final CellView theView : graph.getGraphLayoutCache().getCellViews()) {
             graph.updateAutoSize(theView);
         }
         graph.getGraphLayoutCache().reload();
@@ -238,28 +238,28 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void commandSetDisplayLevel(DisplayLevel aLevel) {
+    public void commandSetDisplayLevel(final DisplayLevel aLevel) {
 
         graph.setDisplayLevel(aLevel);
         repaintGraph();
     }
 
     @Override
-    public void commandSetDisplayOrder(DisplayOrder aOrder) {
+    public void commandSetDisplayOrder(final DisplayOrder aOrder) {
 
         graph.setDisplayOrder(aOrder);
         repaintGraph();
     }
 
     @Override
-    public void commandHideSubjectArea(SubjectArea aArea) {
+    public void commandHideSubjectArea(final SubjectArea aArea) {
 
         graph.getGraphLayoutCache().getVisibleSet().stream().filter(theItem -> theItem instanceof SubjectAreaCell).forEach(theItem -> {
-            SubjectAreaCell theCell = (SubjectAreaCell) theItem;
+            final SubjectAreaCell theCell = (SubjectAreaCell) theItem;
             if (theCell.getUserObject().equals(aArea)) {
                 aArea.setVisible(false);
 
-                Object[] theCellObjects = new Object[]{theCell};
+                final Object[] theCellObjects = new Object[]{theCell};
                 graph.getGraphLayoutCache().hideCells(theCellObjects, true);
             }
         });
@@ -267,25 +267,25 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void commandShowSubjectArea(SubjectArea aArea) {
+    public void commandShowSubjectArea(final SubjectArea aArea) {
 
-        for (CellView theCellView : graph.getGraphLayoutCache()
+        for (final CellView theCellView : graph.getGraphLayoutCache()
                 .getHiddenCellViews()) {
-            Object theItem = theCellView.getCell();
+            final Object theItem = theCellView.getCell();
             if (theItem instanceof SubjectAreaCell) {
-                SubjectAreaCell theCell = (SubjectAreaCell) theItem;
+                final SubjectAreaCell theCell = (SubjectAreaCell) theItem;
                 if (theCell.getUserObject().equals(aArea)) {
                     aArea.setVisible(true);
 
-                    Object[] theCellObjects = DefaultGraphModel.getDescendants(
+                    final Object[] theCellObjects = DefaultGraphModel.getDescendants(
                             graph.getModel(), new Object[]{theCell})
                             .toArray();
 
                     graph.getGraphLayoutCache().showCells(theCellObjects, true);
-                    for (Object theSingleCell : theCellObjects) {
+                    for (final Object theSingleCell : theCellObjects) {
                         if (theSingleCell instanceof TableCell) {
-                            TableCell theTableCell = (TableCell) theSingleCell;
-                            Table theTable = (Table) theTableCell
+                            final TableCell theTableCell = (TableCell) theSingleCell;
+                            final Table theTable = (Table) theTableCell
                                     .getUserObject();
 
                             theTableCell
@@ -295,8 +295,8 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
                                     theTableCell.getAttributes());
                         }
                         if (theSingleCell instanceof ViewCell) {
-                            ViewCell theViewCell = (ViewCell) theSingleCell;
-                            View theView = (View) theViewCell.getUserObject();
+                            final ViewCell theViewCell = (ViewCell) theSingleCell;
+                            final View theView = (View) theViewCell.getUserObject();
 
                             theViewCell.transferPropertiesToAttributes(theView);
                             graph.getGraphLayoutCache().edit(
@@ -304,8 +304,8 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
                                     theViewCell.getAttributes());
                         }
                         if (theSingleCell instanceof CommentCell) {
-                            CommentCell theCommentCell = (CommentCell) theSingleCell;
-                            Comment theComment = (Comment) theCommentCell
+                            final CommentCell theCommentCell = (CommentCell) theSingleCell;
+                            final Comment theComment = (Comment) theCommentCell
                                     .getUserObject();
 
                             theCommentCell
@@ -322,7 +322,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void commandSetTool(ToolEnum aTool) {
+    public void commandSetTool(final ToolEnum aTool) {
         switch (aTool) {
             case HAND:
                 graph.setTool(new HandTool(this, graph));
@@ -343,7 +343,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void commandSetZoom(ZoomInfo aZoomInfo) {
+    public void commandSetZoom(final ZoomInfo aZoomInfo) {
 
         graph.setScale(aZoomInfo.getValue());
 
@@ -357,7 +357,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
      * @return the newly created graphmodel
      */
     private GraphModel createNewGraphModel() {
-        GraphModel theModel = new DefaultGraphModel();
+        final GraphModel theModel = new DefaultGraphModel();
         theModel.addGraphModelListener(new ERDesignerGraphModelListener());
         return theModel;
     }
@@ -368,8 +368,8 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
      * @param aModel the graph model
      * @return the newly created graph layout cache
      */
-    private GraphLayoutCache createNewGraphlayoutCache(GraphModel aModel) {
-        GraphLayoutCache theCache = new GraphLayoutCache(aModel,
+    private GraphLayoutCache createNewGraphlayoutCache(final GraphModel aModel) {
+        final GraphLayoutCache theCache = new GraphLayoutCache(aModel,
                 new CellViewFactory(), true);
         theCache.setAutoSizeOnValueChange(true);
         return theCache;
@@ -377,52 +377,52 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     @Override
     public void setModel(final Model model) {
-        GraphModel theGraphModel = createNewGraphModel();
+        final GraphModel theGraphModel = createNewGraphModel();
 
         graph = new ERDesignerGraph(model, theGraphModel,
                 createNewGraphlayoutCache(theGraphModel)) {
 
             @Override
-            public void commandNewTable(Point2D aLocation) {
+            public void commandNewTable(final Point2D aLocation) {
                 new AddTableCommand(aLocation,
                         null, false).execute();
             }
 
             @Override
-            public void commandNewComment(Point2D aLocation) {
+            public void commandNewComment(final Point2D aLocation) {
                 new AddCommentCommand(aLocation)
                         .execute();
             }
 
             @Override
-            public void commandNewView(Point2D aLocation) {
+            public void commandNewView(final Point2D aLocation) {
                 new AddViewCommand(aLocation)
                         .execute();
             }
 
             @Override
-            public void commandHideCells(List<HideableCell> cellsToHide) {
+            public void commandHideCells(final List<HideableCell> cellsToHide) {
                 JGraphEditor.this.commandHideCells(cellsToHide);
             }
 
             @Override
             public void commandAddToNewSubjectArea(
-                    List<DefaultGraphCell> aCells) {
+                    final List<DefaultGraphCell> aCells) {
 
                 super.commandAddToNewSubjectArea(aCells);
                 ERDesignerComponent.getDefault().updateSubjectAreasMenu();
             }
 
             @Override
-            public void commandNewTableAndRelation(Point2D aLocation,
-                                                   TableCell aExportingTableCell, boolean aNewTableIsChild) {
+            public void commandNewTableAndRelation(final Point2D aLocation,
+                                                   final TableCell aExportingTableCell, final boolean aNewTableIsChild) {
                 new AddTableCommand(aLocation,
                         (Table) aExportingTableCell.getUserObject(), aNewTableIsChild).execute();
             }
 
             @Override
-            public void commandNewRelation(TableCell aImportingCell,
-                                           TableCell aExportingCell) {
+            public void commandNewRelation(final TableCell aImportingCell,
+                                           final TableCell aExportingCell) {
                 new AddRelationCommand(
                         (Table) aImportingCell.getUserObject(), (Table) aExportingCell.getUserObject()).execute();
             }
@@ -453,22 +453,22 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
         repaintGraph();
     }
 
-    private GraphModelMappingInfo fillGraph(Model aModel) {
+    private GraphModelMappingInfo fillGraph(final Model aModel) {
 
         filling = true;
         try {
 
-            GraphModel theGraphModel = createNewGraphModel();
+            final GraphModel theGraphModel = createNewGraphModel();
 
             graph.setModel(theGraphModel);
             graph.setGraphLayoutCache(createNewGraphlayoutCache(theGraphModel));
 
-            GraphModelMappingInfo theInfo = new GraphModelMappingInfo();
+            final GraphModelMappingInfo theInfo = new GraphModelMappingInfo();
 
-            List<Object> theCellsToInsert = new ArrayList<>();
+            final List<Object> theCellsToInsert = new ArrayList<>();
 
-            for (Table theTable : aModel.getTables()) {
-                TableCell theCell = new TableCell(theTable);
+            for (final Table theTable : aModel.getTables()) {
+                final TableCell theCell = new TableCell(theTable);
                 theCell.transferPropertiesToAttributes(theTable);
 
                 theCellsToInsert.add(theCell);
@@ -476,15 +476,15 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
                 theInfo.modelTableCells.put(theTable, theCell);
             }
 
-            for (View theView : aModel.getViews()) {
+            for (final View theView : aModel.getViews()) {
 
                 try {
                     SQLUtils.updateViewAttributesFromSQL(theView, theView.getSql());
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LOGGER.error("Error inspecting sql : " + theView.getSql(), e);
                 }
 
-                ViewCell theCell = new ViewCell(theView);
+                final ViewCell theCell = new ViewCell(theView);
                 theCell.transferPropertiesToAttributes(theView);
 
                 theCellsToInsert.add(theCell);
@@ -492,8 +492,8 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
                 theInfo.modelViewCells.put(theView, theCell);
             }
 
-            for (Comment theComment : aModel.getComments()) {
-                CommentCell theCell = new CommentCell(theComment);
+            for (final Comment theComment : aModel.getComments()) {
+                final CommentCell theCell = new CommentCell(theComment);
                 theCell.transferPropertiesToAttributes(theComment);
 
                 theCellsToInsert.add(theCell);
@@ -501,14 +501,14 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
                 theInfo.modelCommentCells.put(theComment, theCell);
             }
 
-            for (Relation theRelation : aModel.getRelations()) {
+            for (final Relation theRelation : aModel.getRelations()) {
 
-                TableCell theImportingCell = theInfo.modelTableCells
+                final TableCell theImportingCell = theInfo.modelTableCells
                         .get(theRelation.getImportingTable());
-                TableCell theExportingCell = theInfo.modelTableCells
+                final TableCell theExportingCell = theInfo.modelTableCells
                         .get(theRelation.getExportingTable());
 
-                RelationEdge theCell = new RelationEdge(theRelation,
+                final RelationEdge theCell = new RelationEdge(theRelation,
                         theImportingCell, theExportingCell);
                 theCell.transferPropertiesToAttributes(theRelation);
 
@@ -517,13 +517,13 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
             graph.getGraphLayoutCache().insert(theCellsToInsert.toArray());
 
-            List<SubjectAreaCell> theSACells = new ArrayList<>();
+            final List<SubjectAreaCell> theSACells = new ArrayList<>();
 
-            for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
+            for (final SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
 
-                SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(
+                final SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(
                         theSubjectArea);
-                List<ModelCell> theTableCells = theSubjectArea.getTables().stream().map(theInfo.modelTableCells::get).collect(Collectors.toList());
+                final List<ModelCell> theTableCells = theSubjectArea.getTables().stream().map(theInfo.modelTableCells::get).collect(Collectors.toList());
 
                 theTableCells.addAll(theSubjectArea.getViews().stream().map(theInfo.modelViewCells::get).collect(Collectors.toList()));
 
@@ -543,7 +543,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
                 }
             }
 
-            if (theSACells.size() > 0) {
+            if (!theSACells.isEmpty()) {
                 graph.getGraphLayoutCache().toBack(
                         theSACells.toArray(new Object[theSACells.size()]));
             }
@@ -562,10 +562,10 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
      *
      * @param aCellsToHide the cells to hide
      */
-    protected void commandHideCells(List<HideableCell> aCellsToHide) {
+    protected void commandHideCells(final List<HideableCell> aCellsToHide) {
         aCellsToHide.stream().filter(theCell -> theCell instanceof SubjectAreaCell).forEach(theCell -> {
-            SubjectAreaCell theSA = (SubjectAreaCell) theCell;
-            SubjectArea theArea = (SubjectArea) theSA.getUserObject();
+            final SubjectAreaCell theSA = (SubjectAreaCell) theCell;
+            final SubjectArea theArea = (SubjectArea) theSA.getUserObject();
 
             commandHideSubjectArea(theArea);
         });
@@ -574,14 +574,14 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void commandSetDisplayCommentsState(boolean aState) {
+    public void commandSetDisplayCommentsState(final boolean aState) {
 
         graph.setDisplayComments(aState);
         repaintGraph();
     }
 
     @Override
-    public void commandSetDisplayGridState(boolean aState) {
+    public void commandSetDisplayGridState(final boolean aState) {
 
         graph.setGridEnabled(aState);
         graph.setGridVisible(aState);
@@ -600,7 +600,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public final void setIntelligentLayoutEnabled(boolean aStatus) {
+    public final void setIntelligentLayoutEnabled(final boolean aStatus) {
         if (!aStatus) {
             if (layoutThread != null) {
                 layoutThread.interrupt();
@@ -615,17 +615,17 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void setSelectedObject(ModelItem aItem) {
-        DefaultGraphCell theCell = findCellforObject(aItem);
+    public void setSelectedObject(final ModelItem aItem) {
+        final DefaultGraphCell theCell = findCellforObject(aItem);
         if (theCell != null) {
             graph.setSelectionCell(theCell);
             graph.scrollCellToVisible(theCell);
         }
     }
 
-    public DefaultGraphCell findCellforObject(ModelItem aItem) {
-        for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
-            DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
+    public DefaultGraphCell findCellforObject(final ModelItem aItem) {
+        for (final CellView theView : graph.getGraphLayoutCache().getCellViews()) {
+            final DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
             if (aItem.equals(theCell.getUserObject())) {
                 return theCell;
             }
@@ -633,10 +633,10 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
         return null;
     }
 
-    private List<DefaultGraphCell> getCellsFor(List<ModelItem> aItems) {
-        List<DefaultGraphCell> theCells = new ArrayList<>();
-        for (ModelItem theItem : aItems) {
-            DefaultGraphCell theCell = findCellforObject(theItem);
+    private List<DefaultGraphCell> getCellsFor(final List<ModelItem> aItems) {
+        final List<DefaultGraphCell> theCells = new ArrayList<>();
+        for (final ModelItem theItem : aItems) {
+            final DefaultGraphCell theCell = findCellforObject(theItem);
             if (theCell != null) {
                 theCells.add(theCell);
             }
@@ -645,28 +645,28 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void commandAddToNewSubjectArea(List<ModelItem> aItems) {
+    public void commandAddToNewSubjectArea(final List<ModelItem> aItems) {
 
-        List<DefaultGraphCell> theCells = getCellsFor(aItems);
+        final List<DefaultGraphCell> theCells = getCellsFor(aItems);
 
-        if (theCells.size() > 0) {
+        if (!theCells.isEmpty()) {
             graph.commandAddToNewSubjectArea(theCells);
             ERDesignerComponent.getDefault().updateSubjectAreasMenu();
         }
     }
 
     @Override
-    public void commandDelete(List<ModelItem> aItems) {
+    public void commandDelete(final List<ModelItem> aItems) {
 
-        List<DefaultGraphCell> theCells = getCellsFor(aItems);
+        final List<DefaultGraphCell> theCells = getCellsFor(aItems);
 
-        if (theCells.size() > 0) {
+        if (!theCells.isEmpty()) {
 
             if (MessagesHelper.displayQuestionMessage(graph,
                     ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
                 try {
                     graph.commandDeleteCells(theCells);
-                } catch (VetoException ex) {
+                } catch (final VetoException ex) {
                     MessagesHelper.displayErrorMessage(graph,
                             ERDesignerComponent.getDefault().getResourceHelper().getFormattedText(
                                     ERDesignerBundle.CANNOTDELETEMODELITEM,
@@ -677,14 +677,14 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void commandCreateComment(Comment aComment, Point2D aLocation) {
-        CommentCell theCell = new CommentCell(aComment);
+    public void commandCreateComment(final Comment aComment, final Point2D aLocation) {
+        final CommentCell theCell = new CommentCell(aComment);
         theCell.transferPropertiesToAttributes(aComment);
 
-        Object theTargetCell = graph.getFirstCellForLocation(aLocation.getX(), aLocation.getY());
+        final Object theTargetCell = graph.getFirstCellForLocation(aLocation.getX(), aLocation.getY());
         if (theTargetCell instanceof SubjectAreaCell) {
-            SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
-            SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
+            final SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
+            final SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
             theArea.getComments().add(aComment);
 
             theSACell.add(theCell);
@@ -700,26 +700,26 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void commandCreateRelation(Relation aRelation) {
+    public void commandCreateRelation(final Relation aRelation) {
 
-        TableCell theImportingCell = (TableCell) findCellforObject(aRelation.getImportingTable());
-        TableCell theExportingCell = (TableCell) findCellforObject(aRelation.getExportingTable());
+        final TableCell theImportingCell = (TableCell) findCellforObject(aRelation.getImportingTable());
+        final TableCell theExportingCell = (TableCell) findCellforObject(aRelation.getExportingTable());
 
-        RelationEdge theEdge = new RelationEdge(aRelation,
+        final RelationEdge theEdge = new RelationEdge(aRelation,
                 theImportingCell, theExportingCell);
 
         graph.getGraphLayoutCache().insert(theEdge);
     }
 
     @Override
-    public void commandCreateTable(Table aTable, Point2D aLocation) {
-        TableCell theImportingCell = new TableCell(aTable);
+    public void commandCreateTable(final Table aTable, final Point2D aLocation) {
+        final TableCell theImportingCell = new TableCell(aTable);
         theImportingCell.transferPropertiesToAttributes(aTable);
 
-        Object theTargetCell = graph.getFirstCellForLocation(aLocation.getX(), aLocation.getY());
+        final Object theTargetCell = graph.getFirstCellForLocation(aLocation.getX(), aLocation.getY());
         if (theTargetCell instanceof SubjectAreaCell) {
-            SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
-            SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
+            final SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
+            final SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
             theArea.getTables().add(aTable);
 
             theSACell.add(theImportingCell);
@@ -735,14 +735,14 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void commandCreateView(View aView, Point2D aLocation) {
-        ViewCell theCell = new ViewCell(aView);
+    public void commandCreateView(final View aView, final Point2D aLocation) {
+        final ViewCell theCell = new ViewCell(aView);
         theCell.transferPropertiesToAttributes(aView);
 
-        Object theTargetCell = graph.getFirstCellForLocation(aLocation.getX(), aLocation.getY());
+        final Object theTargetCell = graph.getFirstCellForLocation(aLocation.getX(), aLocation.getY());
         if (theTargetCell instanceof SubjectAreaCell) {
-            SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
-            SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
+            final SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
+            final SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
             theArea.getViews().add(aView);
 
             theSACell.add(theCell);
@@ -759,13 +759,13 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void commandShowOrHideRelationsFor(Table aTable, boolean aShow) {
-        Set<RelationEdge> theCellsToHide = new HashSet<>();
-        for (Object theItem : graph.getGraphLayoutCache().getCellViews()) {
+    public void commandShowOrHideRelationsFor(final Table aTable, final boolean aShow) {
+        final Set<RelationEdge> theCellsToHide = new HashSet<>();
+        for (final Object theItem : graph.getGraphLayoutCache().getCellViews()) {
             if (theItem instanceof RelationEdgeView) {
-                RelationEdgeView theView = (RelationEdgeView) theItem;
-                RelationEdge theCell = (RelationEdge) theView.getCell();
-                Relation theRelation = (Relation) theCell.getUserObject();
+                final RelationEdgeView theView = (RelationEdgeView) theItem;
+                final RelationEdge theCell = (RelationEdge) theView.getCell();
+                final Relation theRelation = (Relation) theCell.getUserObject();
                 if (theRelation.getExportingTable() == aTable || theRelation.getImportingTable() == aTable) {
                     theCellsToHide.add(theCell);
                 }
@@ -785,17 +785,17 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void addExportEntries(DefaultMenu aMenu, Exporter aExporter) {
-        DefaultAction theAllInOneAction = new DefaultAction(
+    public void addExportEntries(final DefaultMenu aMenu, final Exporter aExporter) {
+        final DefaultAction theAllInOneAction = new DefaultAction(
                 ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ALLINONEFILE);
-        DefaultMenuItem theAllInOneItem = new DefaultMenuItem(theAllInOneAction);
+        final DefaultMenuItem theAllInOneItem = new DefaultMenuItem(theAllInOneAction);
         theAllInOneAction.addActionListener(new ExportGraphicsCommand(this,
                 aExporter, ExportType.ALL_IN_ONE));
         aMenu.add(theAllInOneItem);
 
-        DefaultAction theOnePerTableAction = new DefaultAction(
+        final DefaultAction theOnePerTableAction = new DefaultAction(
                 ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ONEFILEPERTABLE);
-        DefaultMenuItem theOnePerTable = new DefaultMenuItem(
+        final DefaultMenuItem theOnePerTable = new DefaultMenuItem(
                 theOnePerTableAction);
         theOnePerTableAction.addActionListener(new ExportGraphicsCommand(this,
                 aExporter, ExportType.ONE_PER_FILE));
@@ -834,35 +834,35 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void initExportEntries(ResourceHelperProvider aProvider, DefaultMenu aExportMenu) {
+    public void initExportEntries(final ResourceHelperProvider aProvider, final DefaultMenu aExportMenu) {
         aExportMenu.setEnabled(true);
-        List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
+        final List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
         if (theSupportedFormats.contains("IMAGE/PNG")) {
-            DefaultMenu theSingleExportMenu = new DefaultMenu(aProvider,
+            final DefaultMenu theSingleExportMenu = new DefaultMenu(aProvider,
                     ERDesignerBundle.ASPNG);
             aExportMenu.add(theSingleExportMenu);
 
             addExportEntries(theSingleExportMenu, new ImageExporter("png"));
         }
         if (theSupportedFormats.contains("IMAGE/JPEG")) {
-            DefaultMenu theSingleExportMenu = new DefaultMenu(aProvider,
+            final DefaultMenu theSingleExportMenu = new DefaultMenu(aProvider,
                     ERDesignerBundle.ASJPEG);
             aExportMenu.add(theSingleExportMenu);
 
             addExportEntries(theSingleExportMenu, new ImageExporter("jpg"));
         }
         if (theSupportedFormats.contains("IMAGE/BMP")) {
-            DefaultMenu theSingleExportMenu = new DefaultMenu(aProvider,
+            final DefaultMenu theSingleExportMenu = new DefaultMenu(aProvider,
                     ERDesignerBundle.ASBMP);
             aExportMenu.add(theSingleExportMenu);
 
             addExportEntries(theSingleExportMenu, new ImageExporter("bmp"));
         }
 
-        DefaultAction theExportSVGAction = new DefaultAction(aProvider,
+        final DefaultAction theExportSVGAction = new DefaultAction(aProvider,
                 ERDesignerBundle.ASSVG);
 
-        DefaultMenu theSVGExportMenu = new DefaultMenu(theExportSVGAction);
+        final DefaultMenu theSVGExportMenu = new DefaultMenu(theExportSVGAction);
 
         aExportMenu.add(theSVGExportMenu);
         addExportEntries(theSVGExportMenu, new SVGExporter());
@@ -905,16 +905,16 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public void initLayoutMenu(ERDesignerComponent aComponent, DefaultMenu aLayoutMenu) {
+    public void initLayoutMenu(final ERDesignerComponent aComponent, final DefaultMenu aLayoutMenu) {
         aLayoutMenu.setEnabled(true);
 
-        DefaultAction layoutCluster = new DefaultAction(
+        final DefaultAction layoutCluster = new DefaultAction(
                 e -> performClusterLayout(), aComponent, ERDesignerBundle.LAYOUTCLUSTER);
 
-        DefaultAction layoutTreeAction = new DefaultAction(
+        final DefaultAction layoutTreeAction = new DefaultAction(
                 e -> performTreeLayout(), aComponent, ERDesignerBundle.LAYOUTTREE);
 
-        DefaultAction layoutRadialAction = new DefaultAction(
+        final DefaultAction layoutRadialAction = new DefaultAction(
                 e -> performRadialLayout(), aComponent, ERDesignerBundle.LAYOUTRADIAL);
 
         aLayoutMenu.add(layoutCluster);
@@ -922,25 +922,25 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
         aLayoutMenu.add(layoutRadialAction);
         aLayoutMenu.addSeparator();
 
-        DefaultAction layoutGrid = new DefaultAction(
+        final DefaultAction layoutGrid = new DefaultAction(
                 e -> performJGraphSimpleGridLayout(), aComponent, ERDesignerBundle.LAYOUTGRID);
 
-        DefaultAction layoutSelfOrganizing = new DefaultAction(
+        final DefaultAction layoutSelfOrganizing = new DefaultAction(
                 e -> performJGraphSelfOrganizingLayout(), aComponent, ERDesignerBundle.LAYOUTSELFORGANIZING);
 
-        DefaultAction layoutOrganic = new DefaultAction(
+        final DefaultAction layoutOrganic = new DefaultAction(
                 e -> performJGraphOrganicLayout(), aComponent, ERDesignerBundle.LAYOUTORGANIC);
 
-        DefaultAction layoutFastOrganic = new DefaultAction(
+        final DefaultAction layoutFastOrganic = new DefaultAction(
                 e -> performJGraphFastOrganicLayout(), aComponent, ERDesignerBundle.LAYOUTFASTORGANIC);
 
-        DefaultAction layoutRadialTree = new DefaultAction(
+        final DefaultAction layoutRadialTree = new DefaultAction(
                 e -> performJGraphRadialTreeLayout(), aComponent, ERDesignerBundle.LAYOUTRADIALTREE);
 
-        DefaultAction layoutTree2 = new DefaultAction(
+        final DefaultAction layoutTree2 = new DefaultAction(
                 e -> performJGraphTreeLayout2(), aComponent, ERDesignerBundle.LAYOUTTREE2);
 
-        DefaultAction layoutHierarchical = new DefaultAction(
+        final DefaultAction layoutHierarchical = new DefaultAction(
                 e -> performJGraphHierarchicalLayout(), aComponent, ERDesignerBundle.LAYOUTHIERARCHICAL);
 
 
@@ -953,18 +953,18 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
         aLayoutMenu.add(layoutHierarchical);
     }
 
-    private List<Set<Table>> buildHierarchy(Model aModel) {
+    private List<Set<Table>> buildHierarchy(final Model aModel) {
         // Try to build a hierarchy
-        List<Set<Table>> theLayers = new ArrayList<>();
+        final List<Set<Table>> theLayers = new ArrayList<>();
         Set<Table> theCurrentLayer = new HashSet<>();
-        Set<Table> theAlreadyKnown = new HashSet<>();
-        for (Table theTable : aModel.getTables()) {
+        final Set<Table> theAlreadyKnown = new HashSet<>();
+        for (final Table theTable : aModel.getTables()) {
             boolean isTopLevel = true;
-            List<Relation> theRelations = aModel.getRelations().getExportedKeysFor(theTable);
-            if (theRelations.size() == 0) {
+            final List<Relation> theRelations = aModel.getRelations().getExportedKeysFor(theTable);
+            if (theRelations.isEmpty()) {
                 isTopLevel = true;
             } else {
-                for (Relation theRelation : theRelations) {
+                for (final Relation theRelation : theRelations) {
                     if (theRelation.getImportingTable() != theTable) {
                         isTopLevel = false;
                     }
@@ -981,23 +981,23 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
         Set<Table> theTablesToSearch = new HashSet<>();
         theTablesToSearch.addAll(theCurrentLayer);
-        while (theTablesToSearch.size() > 0) {
+        while (!theTablesToSearch.isEmpty()) {
             theCurrentLayer = new HashSet<>();
-            for (Table theTable : theTablesToSearch) {
-                for (Relation theRelation : aModel.getRelations().getForeignKeysFor(theTable)) {
+            for (final Table theTable : theTablesToSearch) {
+                for (final Relation theRelation : aModel.getRelations().getForeignKeysFor(theTable)) {
                     if (theRelation.getExportingTable() != theTable && !theAlreadyKnown.contains(theRelation.getExportingTable())) {
                         theCurrentLayer.add(theRelation.getExportingTable());
                         theAlreadyKnown.add(theRelation.getExportingTable());
                     }
                 }
             }
-            if (theCurrentLayer.size() > 0) {
+            if (!theCurrentLayer.isEmpty()) {
 
-                Set<Table> theTablesToRemove = new HashSet<>();
+                final Set<Table> theTablesToRemove = new HashSet<>();
 
-                for (Table theTable : theCurrentLayer) {
+                for (final Table theTable : theCurrentLayer) {
                     boolean isUsedInSameLayer = false;
-                    for (Relation theRelation : aModel.getRelations().getExportedKeysFor(theTable)) {
+                    for (final Relation theRelation : aModel.getRelations().getExportedKeysFor(theTable)) {
                         if (theRelation.getImportingTable() != theTable && theCurrentLayer.contains(theRelation.getImportingTable())) {
                             isUsedInSameLayer = true;
                         }
@@ -1020,40 +1020,40 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     private void updatePositions() {
-        Map<Object, Map> theModificatios = new HashMap<>();
-        for (CellView theView : graph.getGraphLayoutCache().getAllViews()) {
+        final Map<Object, Map> theModificatios = new HashMap<>();
+        for (final CellView theView : graph.getGraphLayoutCache().getAllViews()) {
 
             if (theView.getCell() instanceof ModelCellWithPosition) {
 
-                ModelCellWithPosition theCell = (ModelCellWithPosition) theView.getCell();
+                final ModelCellWithPosition theCell = (ModelCellWithPosition) theView.getCell();
                 theCell.transferPropertiesToAttributes(theCell.getUserObject());
 
                 theModificatios.put(theCell, theCell.getAttributes());
             }
         }
 
-        if (theModificatios.size() > 0) {
+        if (!theModificatios.isEmpty()) {
             graph.getGraphLayoutCache().edit(theModificatios);
         }
     }
 
-    private void performJGraphLayout(JGraphLayout aLayout) {
-        JGraphFacade facade = new JGraphFacade(graph);
+    private void performJGraphLayout(final JGraphLayout aLayout) {
+        final JGraphFacade facade = new JGraphFacade(graph);
         facade.run(aLayout, true);
 
-        Map nested = facade.createNestedMap(true, true); // Obtain a mapof the resulting attribute changes from the facade
+        final Map nested = facade.createNestedMap(true, true); // Obtain a mapof the resulting attribute changes from the facade
         graph.getGraphLayoutCache().edit(nested); // Apply the results tothe actual graph
     }
 
     private void performJGraphSelfOrganizingLayout() {
-        JGraphSelfOrganizingOrganicLayout theLayout = new JGraphSelfOrganizingOrganicLayout();
+        final JGraphSelfOrganizingOrganicLayout theLayout = new JGraphSelfOrganizingOrganicLayout();
         theLayout.setMinRadius(150);
         theLayout.setStartRadius(300);
         performJGraphLayout(theLayout);
     }
 
     private void performJGraphSimpleGridLayout() {
-        SimpleGridLayout theLayout = new SimpleGridLayout();
+        final SimpleGridLayout theLayout = new SimpleGridLayout();
         theLayout.setNumCellsPerRow(10);
         theLayout.setHeightSpacing(20);
         theLayout.setWidthSpacing(20);
@@ -1065,7 +1065,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     private void performJGraphOrganicLayout() {
-        JGraphOrganicLayout theLayout = new JGraphOrganicLayout();
+        final JGraphOrganicLayout theLayout = new JGraphOrganicLayout();
         theLayout.setOptimizeEdgeCrossing(true);
         theLayout.setOptimizeNodeDistribution(true);
         theLayout.setNodeDistributionCostFactor(500000);
@@ -1073,32 +1073,32 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     private void performJGraphRadialTreeLayout() {
-        JGraphRadialTreeLayout theLayout = new JGraphRadialTreeLayout();
+        final JGraphRadialTreeLayout theLayout = new JGraphRadialTreeLayout();
         theLayout.setAutoRadius(true);
         performJGraphLayout(theLayout);
     }
 
     private void performJGraphHierarchicalLayout() {
-        JGraphHierarchicalLayout theLayout = new JGraphHierarchicalLayout();
+        final JGraphHierarchicalLayout theLayout = new JGraphHierarchicalLayout();
         performJGraphLayout(theLayout);
     }
 
     private void performJGraphTreeLayout2() {
-        JGraphTreeLayout theLayout = new JGraphTreeLayout();
+        final JGraphTreeLayout theLayout = new JGraphTreeLayout();
         theLayout.setAlignment(SwingConstants.TOP);
         theLayout.setPositionMultipleTrees(true);
         performJGraphLayout(theLayout);
     }
 
     private void performJGraphFastOrganicLayout() {
-        JGraphFastOrganicLayout theLayout = new JGraphFastOrganicLayout();
+        final JGraphFastOrganicLayout theLayout = new JGraphFastOrganicLayout();
         performJGraphLayout(theLayout);
     }
 
     private void performClusterLayout() {
-        Model theModel = graph.getDBModel();
+        final Model theModel = graph.getDBModel();
 
-        LayoutHelper theHelper = new LayoutHelper();
+        final LayoutHelper theHelper = new LayoutHelper();
         theHelper.performClusterLayout(theModel);
 
         ERDesignerComponent.getDefault().setModel(theModel);
@@ -1106,11 +1106,11 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     private void performTreeLayout() {
 
-        Model theModel = graph.getDBModel();
+        final Model theModel = graph.getDBModel();
 
-        List<Set<Table>> theLayers = buildHierarchy(theModel);
+        final List<Set<Table>> theLayers = buildHierarchy(theModel);
 
-        LayoutHelper theHelper = new LayoutHelper();
+        final LayoutHelper theHelper = new LayoutHelper();
         theHelper.performTreeLayout(new Point(20, 20), theLayers, theModel.getViews());
 
         updatePositions();
@@ -1120,39 +1120,39 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     private void performRadialLayout() {
 
-        Model theModel = graph.getDBModel();
+        final Model theModel = graph.getDBModel();
 
-        List<Set<Table>> theLayers = buildHierarchy(theModel);
+        final List<Set<Table>> theLayers = buildHierarchy(theModel);
 
-        int centerx = 500 * (theLayers.size() + 1);
-        int centery = 500 * (theLayers.size() + 1);
+        final int centerx = 500 * (theLayers.size() + 1);
+        final int centery = 500 * (theLayers.size() + 1);
         int theRadius = 0;
         for (int theLayer = theLayers.size() - 1; theLayer >= 0; theLayer--) {
-            Set<Table> theLayerTables = theLayers.get(theLayer);
-            if (theLayerTables.size() > 0) {
+            final Set<Table> theLayerTables = theLayers.get(theLayer);
+            if (!theLayerTables.isEmpty()) {
 
-                TableCellView.MyRenderer theRenderer = new TableCellView.MyRenderer();
+                final TableCellView.MyRenderer theRenderer = new TableCellView.MyRenderer();
                 double thePerimeter = 0;
                 double theMinRadius = 0;
-                for (Table theTable : theLayerTables) {
-                    JComponent theRendererComponent = theRenderer.getRendererComponent(theTable);
-                    Dimension theSize = theRendererComponent.getPreferredSize();
-                    double theR = Math.sqrt(theSize.width * theSize.width + theSize.height * theSize.height);
+                for (final Table theTable : theLayerTables) {
+                    final JComponent theRendererComponent = theRenderer.getRendererComponent(theTable);
+                    final Dimension theSize = theRendererComponent.getPreferredSize();
+                    final double theR = Math.sqrt(theSize.width * theSize.width + theSize.height * theSize.height);
                     thePerimeter += theR;
 
                     theMinRadius = Math.max(theMinRadius, theR);
                 }
                 thePerimeter += theLayerTables.size() * 40;
 
-                double theRadiusIncrement = (thePerimeter / (Math.PI * 2)) - theRadius;
+                final double theRadiusIncrement = (thePerimeter / (Math.PI * 2)) - theRadius;
                 theRadius += Math.max(theRadiusIncrement, theMinRadius);
 
-                double theIncrement = Math.toDegrees(360 / theLayerTables.size());
+                final double theIncrement = Math.toDegrees(360 / theLayerTables.size());
                 double theAngle = 0;
 
-                for (Table theTable : theLayerTables) {
-                    int theXP = centerx + (int) (Math.cos(theAngle) * theRadius);
-                    int theYP = centery + (int) (Math.sin(theAngle) * theRadius);
+                for (final Table theTable : theLayerTables) {
+                    final int theXP = centerx + (int) (Math.cos(theAngle) * theRadius);
+                    final int theYP = centery + (int) (Math.sin(theAngle) * theRadius);
                     theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, theXP, theYP);
                     theAngle += theIncrement;
                 }
@@ -1160,12 +1160,12 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
             }
         }
 
-        if (theModel.getViews().size() > 0) {
-            double theIncrement = Math.toDegrees(360 / theModel.getViews().size());
+        if (!theModel.getViews().isEmpty()) {
+            final double theIncrement = Math.toDegrees(360 / theModel.getViews().size());
             double theAngle = 0;
-            for (View theView : theModel.getViews()) {
-                int theXP = centerx + (int) (Math.cos(theAngle) * theRadius);
-                int theYP = centery + (int) (Math.sin(theAngle) * theRadius);
+            for (final View theView : theModel.getViews()) {
+                final int theXP = centerx + (int) (Math.cos(theAngle) * theRadius);
+                final int theYP = centery + (int) (Math.sin(theAngle) * theRadius);
                 theView.getProperties().setPointProperty(View.PROPERTY_LOCATION, theXP, theYP);
                 theAngle += theIncrement;
             }

@@ -30,8 +30,8 @@ public final class DialogUtils {
 
 	public static String promptForPassword() {
 
-		String theMesssage = HELPER.getText(ERDesignerBundle.PLEASEENTERDATABASEPASSWORD);
-		String theTitle = HELPER.getText(ERDesignerBundle.CONNECTIONCONFIGURATION);
+		final String theMesssage = HELPER.getText(ERDesignerBundle.PLEASEENTERDATABASEPASSWORD);
+		final String theTitle = HELPER.getText(ERDesignerBundle.CONNECTIONCONFIGURATION);
 		return JOptionPane.showInputDialog(null, theMesssage, theTitle, JOptionPane.QUESTION_MESSAGE);
 	}
 }

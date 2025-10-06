@@ -31,13 +31,13 @@ public class GenericFileFilter extends FileFilter {
 
 	private final String description;
 
-	public GenericFileFilter(String aExtension, String aDescription) {
+	public GenericFileFilter(final String aExtension, final String aDescription) {
 		extension = aExtension;
 		description = aDescription;
 	}
 
 	@Override
-	public boolean accept(File aFileName) {
+	public boolean accept(final File aFileName) {
 		if (aFileName.isDirectory()) {
 			return true;
 		}
@@ -49,9 +49,9 @@ public class GenericFileFilter extends FileFilter {
 		return description;
 	}
 
-	public File getCompletedFile(File aFile) {
+	public File getCompletedFile(final File aFile) {
 		if (!aFile.getName().toLowerCase().endsWith(extension)) {
-			return new File(aFile.toString() + extension);
+			return new File(aFile + extension);
 		}
 		return aFile;
 	}

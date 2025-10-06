@@ -38,27 +38,27 @@ public class Index extends OwnedModelItem<Table> implements
         return indexType;
     }
 
-    public void setIndexType(IndexType aIndexType) {
+    public void setIndexType(final IndexType aIndexType) {
         indexType = aIndexType;
     }
 
     @Override
     public Index clone() {
-        Index theIndex = new Index();
+        final Index theIndex = new Index();
         theIndex.setSystemId(getSystemId());
         theIndex.setOwner(getOwner());
         theIndex.setName(getName());
         theIndex.setIndexType(getIndexType());
         theIndex.getProperties().copyFrom(getProperties());
 
-        for (IndexExpression theExpression : expressions) {
+        for (final IndexExpression theExpression : expressions) {
             theIndex.getExpressions().add(theExpression.clone());
         }
         return theIndex;
     }
 
     @Override
-    public void restoreFrom(Index aValue) {
+    public void restoreFrom(final Index aValue) {
         setName(aValue.getName());
         setIndexType(aValue.getIndexType());
         setOwner(aValue.getOwner());
@@ -69,7 +69,7 @@ public class Index extends OwnedModelItem<Table> implements
         expressions.addAll(aValue.getExpressions().stream().collect(Collectors.toList()));
     }
 
-    public boolean isModified(Index aIndex, boolean aUseName) {
+    public boolean isModified(final Index aIndex, final boolean aUseName) {
 
         if (!getName().equals(aIndex.getName())) {
             return true;
@@ -88,8 +88,8 @@ public class Index extends OwnedModelItem<Table> implements
         }
 
         for (int i = 0; i < expressions.size(); i++) {
-            IndexExpression theMyExpression = expressions.get(i);
-            IndexExpression theOtherExpression = aIndex.getExpressions().get(i);
+            final IndexExpression theMyExpression = expressions.get(i);
+            final IndexExpression theOtherExpression = aIndex.getExpressions().get(i);
 
             if (theMyExpression.isModified(theOtherExpression, aUseName)) {
                 return true;
@@ -97,8 +97,8 @@ public class Index extends OwnedModelItem<Table> implements
         }
 
         for (int i = 0; i < aIndex.getExpressions().size(); i++) {
-            IndexExpression theOtherExpression = aIndex.getExpressions().get(i);
-            IndexExpression theMyExpression = expressions.get(i);
+            final IndexExpression theOtherExpression = aIndex.getExpressions().get(i);
+            final IndexExpression theMyExpression = expressions.get(i);
 
             if (theMyExpression.isModified(theOtherExpression, aUseName)) {
                 return true;

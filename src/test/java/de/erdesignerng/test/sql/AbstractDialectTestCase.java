@@ -25,7 +25,6 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.*;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 import java.io.IOException;
 
@@ -120,7 +119,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
     }
 
     public void testCreateTableWithPKAndIndex() throws ElementAlreadyExistsException, ElementInvalidNameException,
-            VetoException, IOException {
+            IOException {
 
         Model theModel = new Model();
         theModel.setDialect(dialect);
@@ -142,7 +141,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         assertTrue(theStatements.equals(theReference));
     }
 
-    public void testRenameAttribute() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException,
+    public void testRenameAttribute() throws ElementAlreadyExistsException, ElementInvalidNameException,
             IOException {
 
         Model theModel = new Model();
@@ -170,7 +169,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
 
     }
 
-    public void testAddAttribute() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException,
+    public void testAddAttribute() throws ElementAlreadyExistsException, ElementInvalidNameException,
             IOException {
 
         Model theModel = new Model();
@@ -204,7 +203,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
 
     }
 
-    public void testRenameTable() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException,
+    public void testRenameTable() throws ElementAlreadyExistsException, ElementInvalidNameException,
             IOException {
 
         Model theModel = new Model();
@@ -231,7 +230,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         assertTrue(theStatements.equals(theReference));
     }
 
-    public void testDropIndex() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException,
+    public void testDropIndex() throws ElementAlreadyExistsException, ElementInvalidNameException,
             IOException {
 
         Model theModel = new Model();
@@ -590,7 +589,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         assertTrue(theStatements.equals(theReference));
     }
 
-    public void testAddView() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException,
+    public void testAddView() throws ElementAlreadyExistsException, ElementInvalidNameException,
             IOException {
 
         Model theModel = new Model();
@@ -617,7 +616,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         assertTrue(theStatements.equals(theReference));
     }
 
-    public void testChangeView() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException,
+    public void testChangeView() throws ElementAlreadyExistsException, ElementInvalidNameException,
             IOException {
 
         Model theModel = new Model();

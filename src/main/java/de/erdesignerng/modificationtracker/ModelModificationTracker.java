@@ -27,50 +27,50 @@ import de.erdesignerng.model.View;
 
 public interface ModelModificationTracker {
 
-	void removeTable(Table aTable) throws VetoException;
+	void removeTable(Table aTable);
 
-	void removeRelation(Relation aRelation) throws VetoException;
+	void removeRelation(Relation aRelation);
 
-	void addTable(Table aTable) throws VetoException;
+	void addTable(Table aTable);
 
-	void removeAttributeFromTable(Table aTable, Attribute<Table> aAttribute) throws VetoException;
+	void removeAttributeFromTable(Table aTable, Attribute<Table> aAttribute);
 
-	void removeIndexFromTable(Table aTable, Index aIndex) throws VetoException;
+	void removeIndexFromTable(Table aTable, Index aIndex);
 
-	void addAttributeToTable(Table aTable, Attribute<Table> aAttribute) throws VetoException;
+	void addAttributeToTable(Table aTable, Attribute<Table> aAttribute);
 
-	void changeAttribute(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) throws VetoException;
+	void changeAttribute(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute);
 
-	void addIndexToTable(Table aTable, Index aIndex) throws VetoException;
+	void addIndexToTable(Table aTable, Index aIndex);
 
-	void changeIndex(Index anExistingIndex, Index aNewIndex) throws VetoException;
+	void changeIndex(Index anExistingIndex, Index aNewIndex);
 
-	void renameTable(Table aTable, String aNewName) throws VetoException;
+	void renameTable(Table aTable, String aNewName);
 
-	void changeTableComment(Table aTable, String aNewComment) throws VetoException;
+	void changeTableComment(Table aTable, String aNewComment);
 
-	void renameAttribute(Attribute<Table> anExistingAttribute, String aNewName) throws VetoException;
+	void renameAttribute(Attribute<Table> anExistingAttribute, String aNewName);
 
-	void addRelation(Relation aRelation) throws VetoException;
+	void addRelation(Relation aRelation);
 
-	void changeRelation(Relation aRelation, Relation aTempRelation) throws VetoException;
+	void changeRelation(Relation aRelation, Relation aTempRelation);
 
-	void removePrimaryKeyFromTable(Table aTable, Index aIndex) throws VetoException;
+	void removePrimaryKeyFromTable(Table aTable, Index aIndex);
 
-	void addPrimaryKeyToTable(Table aTable, Index aIndex) throws VetoException;
+	void addPrimaryKeyToTable(Table aTable, Index aIndex);
 
-	void addView(View aView) throws VetoException;
+	void addView(View aView);
 
-	void removeView(View aView) throws VetoException;
+	void removeView(View aView);
 
-	void changeView(View aView) throws VetoException;
+	void changeView(View aView);
 
-	void addDomain(Domain aDomain) throws VetoException;
+	void addDomain(Domain aDomain);
 
-	void removeDomain(Domain aDomain) throws VetoException;
+	void removeDomain(Domain aDomain);
 
-	void addCustomType(CustomType aCustomType) throws VetoException;
+	void addCustomType(CustomType aCustomType);
 
-	void removeCustomType(CustomType aCustomType) throws VetoException;
+	void removeCustomType(CustomType aCustomType);
 
 }

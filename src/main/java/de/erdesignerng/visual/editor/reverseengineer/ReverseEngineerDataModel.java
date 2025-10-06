@@ -37,7 +37,7 @@ public class ReverseEngineerDataModel {
 	 * @param tableGenerator
 	 *			the tableGenerator to set
 	 */
-	public void setTableGenerator(NameValuePair tableGenerator) {
+	public void setTableGenerator(final NameValuePair tableGenerator) {
 		this.tableGenerator = tableGenerator;
 	}
 
@@ -52,7 +52,7 @@ public class ReverseEngineerDataModel {
 	 * @param tableOptions
 	 *			the tableOptions to set
 	 */
-	public void setTableOptions(List<Object> tableOptions) {
+	public void setTableOptions(final List<Object> tableOptions) {
 		this.tableOptions = tableOptions;
 	}
 

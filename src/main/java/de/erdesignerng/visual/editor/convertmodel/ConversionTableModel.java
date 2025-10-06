@@ -37,8 +37,8 @@ public class ConversionTableModel implements TableModel {
 
 	private final String targetName;
 
-	public ConversionTableModel(String aSourceName, String aTargetName, List<DataType> aDataTypes,
-			DataType[] aTargetTypes) {
+	public ConversionTableModel(final String aSourceName, final String aTargetName, final List<DataType> aDataTypes,
+                                final DataType[] aTargetTypes) {
 		sourceName = aSourceName;
 		targetName = aTargetName;
 		dataTypes = aDataTypes;
@@ -46,7 +46,7 @@ public class ConversionTableModel implements TableModel {
 	}
 
 	@Override
-	public Class<Object> getColumnClass(int aColumn) {
+	public Class<Object> getColumnClass(final int aColumn) {
 		return Object.class;
 	}
 
@@ -56,7 +56,7 @@ public class ConversionTableModel implements TableModel {
 	}
 
 	@Override
-	public String getColumnName(int aColumn) {
+	public String getColumnName(final int aColumn) {
 		if (aColumn == 0) {
 			return sourceName;
 		}
@@ -69,7 +69,7 @@ public class ConversionTableModel implements TableModel {
 	}
 
 	@Override
-	public Object getValueAt(int aRow, int aColumn) {
+	public Object getValueAt(final int aRow, final int aColumn) {
 		if (aColumn == 1) {
 			return targetTypes[aRow];
 		}
@@ -77,20 +77,20 @@ public class ConversionTableModel implements TableModel {
 	}
 
 	@Override
-	public boolean isCellEditable(int aRow, int aColumn) {
+	public boolean isCellEditable(final int aRow, final int aColumn) {
 		return aColumn != 0;
 	}
 
 	@Override
-	public void setValueAt(Object aValue, int aRow, int aColumn) {
+	public void setValueAt(final Object aValue, final int aRow, final int aColumn) {
 		targetTypes[aRow] = (DataType) aValue;
 	}
 
 	@Override
-	public void addTableModelListener(TableModelListener l) {
+	public void addTableModelListener(final TableModelListener l) {
 	}
 
 	@Override
-	public void removeTableModelListener(TableModelListener l) {
+	public void removeTableModelListener(final TableModelListener l) {
 	}
 }

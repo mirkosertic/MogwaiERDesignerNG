@@ -103,37 +103,37 @@ public final class HSQLDBDialect extends Dialect {
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final int... aJdbcType) {
 		return new HSQLDBDataType(aName, aDefinition, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final int... aJdbcType) {
 		return new HSQLDBDataType(aName, aDefinition, anIdentity, aJdbcType);
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+	public DataType createDataType(final String aName, final String aDefinition, final boolean anIdentity, final boolean anArray, final int... aJdbcType) {
 		return new HSQLDBDataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
 	}
 
 	@Override
-	public TableProperties createTablePropertiesFor(Table aTable) {
-		HSQLDBTableProperties theResult = new HSQLDBTableProperties();
+	public TableProperties createTablePropertiesFor(final Table aTable) {
+		final HSQLDBTableProperties theResult = new HSQLDBTableProperties();
 		theResult.initializeFrom(aTable);
 		return theResult;
 	}
 
 	@Override
-	public ViewProperties createViewPropertiesFor(View aView) {
-		HSQLDBViewProperties theResult = new HSQLDBViewProperties();
+	public ViewProperties createViewPropertiesFor(final View aView) {
+		final HSQLDBViewProperties theResult = new HSQLDBViewProperties();
 		theResult.initializeFrom(aView);
 		return theResult;
 	}
 
 	@Override
-	public IndexProperties createIndexPropertiesFor(Index aIndex) {
-		HSQLDBIndexProperties theResult = new HSQLDBIndexProperties();
+	public IndexProperties createIndexPropertiesFor(final Index aIndex) {
+		final HSQLDBIndexProperties theResult = new HSQLDBIndexProperties();
 		theResult.initializeFrom(aIndex);
 		return theResult;
 	}

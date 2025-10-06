@@ -27,8 +27,8 @@ import org.w3c.dom.NodeList;
 public class XMLDomainSerializer extends AbstractXMLDomainSerializer {
 
 	@Override
-	public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
-		Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
+	public void serialize(final Domain aDomain, final Document aDocument, final Element aRootElement) {
+		final Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
 
 		// Basisdaten des Modelelementes speichern
 		theDomainElement.setAttribute(ID, aDomain.getSystemId());
@@ -41,12 +41,12 @@ public class XMLDomainSerializer extends AbstractXMLDomainSerializer {
 	}
 
 	@Override
-	public void deserialize(Model aModel, Document aDocument) {
-		NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
+	public void deserialize(final Model aModel, final Document aDocument) {
+		final NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
 		for (int i = 0; i < theElements.getLength(); i++) {
-			Element theElement = (Element) theElements.item(i);
+			final Element theElement = (Element) theElements.item(i);
 
-			Domain theDomain = new Domain();
+			final Domain theDomain = new Domain();
 			theDomain.setSystemId(theElement.getAttribute(ID));
 			theDomain.setName(theElement.getAttribute(NAME));
 			theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theElement.getAttribute(DATATYPE)));

@@ -31,7 +31,7 @@ import java.util.Map;
  */
 public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<SubjectArea>, HideableCell {
 
-    public SubjectAreaCell(SubjectArea aArea) {
+    public SubjectAreaCell(final SubjectArea aArea) {
         super(aArea);
 
         GraphConstants.setAutoSize(getAttributes(), true);
@@ -41,20 +41,20 @@ public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<Subje
     }
 
     @Override
-    public void transferAttributesToProperties(Map aAttributes) {
+    public void transferAttributesToProperties(final Map aAttributes) {
     }
 
     @Override
-    public void transferPropertiesToAttributes(SubjectArea aObject) {
+    public void transferPropertiesToAttributes(final SubjectArea aObject) {
     }
 
     public boolean isExpanded() {
-        SubjectArea theArea = (SubjectArea) getUserObject();
+        final SubjectArea theArea = (SubjectArea) getUserObject();
         return theArea.isExpanded();
     }
 
-    public void setExpanded(boolean aExpanded) {
-        SubjectArea theArea = (SubjectArea) getUserObject();
+    public void setExpanded(final boolean aExpanded) {
+        final SubjectArea theArea = (SubjectArea) getUserObject();
         theArea.setExpanded(aExpanded);
     }
 }

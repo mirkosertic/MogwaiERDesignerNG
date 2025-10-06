@@ -40,8 +40,8 @@ public class ModelItemDefaultCellRenderer extends DefaultRenderer implements Tab
     }
 
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-                                                   int row, int column) {
+    public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected, final boolean hasFocus,
+                                                   final int row, final int column) {
 
         setText(objectToString(value));
         setIcon(objectToIcon(value));
