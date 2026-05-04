@@ -27,7 +27,7 @@ jobs:
        with:
            name: ${{ matrix.releasename }}
            path: 'target/release'
-     - uses: AButler/upload-release-assets@v3.0
+     - uses: AButler/upload-release-assets@v4.0
        with:
            files: 'target/release/*'
            repo-token: ${{ secrets.GITHUB_TOKEN }}
