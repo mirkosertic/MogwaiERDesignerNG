@@ -36,6 +36,36 @@ Releases are available [at GitHub](https://github.com/mirkosertic/MogwaiERDesign
 
 An extensive user manual is available [here](userdoc/MogwaiERDesignerNG.pdf).
 
+## Building from source
+You need to install java version 14 inorder to build project.
+```bash
+wget https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz
+tar -xvzf openjdk-14.0.2_linux-x64_bin.tar.gz
+sudo mv jdk-14.0.2 /usr/lib/jvm/jdk-14
+export JAVA_HOME=/usr/lib/jvm/jdk-14                                         
+export PATH=$JAVA_HOME/bin:$PATH
+```
+Install apache maven.
+```
+sudo yum install maven # redhat
+sudo apt install maven # debian
+```
+
+Build project and create release package:
+```bash
+mvn clean package -DskipDeb  # redhat
+mvn clean package -DskipRpm  # debian
+```
+Packaged release file will be created in `target/release`.
+You can use it to install app system-wide.
+
+To run app without installing it:
+```bash
+cd target/staging
+bash run.sh # linux
+bash run.bat  # windows
+```
+
 ## Screenshots
 
 ### Main Screen
